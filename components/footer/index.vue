@@ -173,7 +173,7 @@
 
 <style lang="scss" scoped>
 	.icon {
-      width: 0.8rem; height: 0.506666rem;
+      width: 0.7rem; height: 0.44rem;
 		vertical-align: middle;
 	   fill: currentColor;
 	   overflow: hidden;
@@ -188,7 +188,7 @@
        overflow: hidden;
     }
     .icon2{
-    	width: 0.746666rem; height: 0.746666rem;
+    	width: 0.64rem; height: 0.64rem;
        vertical-align:middle;
        fill: currentColor;
        
@@ -208,10 +208,10 @@
 						border-bottom: 1px solid #dde0e0;
 					}
 					.name{
-						height: 1.4rem;
-						line-height: 1.4rem;
+						height: 1.32rem;
+						line-height: 1.32rem;
 						position: relative;
-						font-size: 0.34rem;
+						font-size: 0.32rem;
 						i{
 							position: absolute;
 							right: 0;
@@ -248,10 +248,10 @@
 				padding: 0.7rem 0 1.1rem;
 				text-align: center;
 				.cooperation{
-					margin-top: 0.5rem;
+					margin-top: 0.45rem;
 					a{
 						display: inline-block;
-						margin-left: 0.373333rem;
+						margin-left: 0.3rem;
 						&:first-child{
 							margin-left: 0;
 						}
