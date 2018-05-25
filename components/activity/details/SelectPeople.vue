@@ -1,0 +1,199 @@
+<template>
+	<div id="selectPeople" class="selectPeople">
+		<div class="selectCont">
+			<div class="back" @click="cancle()"><i class="iconfont">&#xe615;</i></div>
+			<div class="head">
+				<h3>How many guests</h3>
+				<p>Final headcount does not include babies.</p>
+			</div>
+			<div class="choose">
+				<ul>
+					<li class="clearfix">
+						<b>Adults</b>
+						<div class="select">
+							<em class="iconfont defult" v-if="adults<=1">&#xe64d;</em>
+							<em class="iconfont" @click="del(0)" v-else>&#xe64d;</em>
+							<div>{{adults}}</div>
+							<em class="iconfont defult"  v-if="(children+adults)>=picInfo.maxParticipants">&#xe64b;</em>
+							<em class="iconfont" v-else  @click="add(0)">&#xe64b;</em>
+						</div>
+					</li>
+					<li class="clearfix">
+						<b>Children<br/><span>{{picInfo.infantStandard}} - {{picInfo.childStandard}} years</span></b>
+						<div class="select">
+								<em class="iconfont" v-if="children>0" @click="del(1)">&#xe64d;</em>
+								<em class="iconfont defult" v-else>&#xe64d;</em>
+							<div>{{children}}</div>
+							<em class="iconfont defult" v-if="(children+adults)>=picInfo.maxParticipants">&#xe64b;</em>
+							<em class="iconfont" @click="add(1)" v-else>&#xe64b;</em>
+							
+						</div>
+					</li>
+					<li class="clearfix">
+						<b>Babies</b>
+						<div class="select">
+							<em class="iconfont" v-if="infant>0" @click="del(2)">&#xe64d;</em>
+							<em class="iconfont defult" v-else>&#xe64d;</em>
+							<div>{{infant}}</div>
+							<em class="iconfont" v-if="infant<picInfo.maxParticipants-1" @click="add(2)">&#xe64b;</em>
+							<em class="iconfont defult" v-else>&#xe64b;</em>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="save">
+				<button @click="save">Save</button>
+			</div>
+		</div>
+	</div>
+</template>
+
+<script>
+	export default {
+		props:["picInfo"],
+		name: "selectPeople",
+		data(){
+			return {
+				adults:1,
+				children:0,
+				infant:0	
+			}
+		},
+		
+		components: {
+		},
+		methods: {
+			cancle() {
+				this.$emit('call-back', false);
+			},
+			add(id) {
+				if(id == 0) {
+					this.adults++;
+					console.log(this.picInfo)
+				} else if(id == 1) {
+					this.children++;
+				} else {
+					this.infant++;
+				}
+				
+			},
+			del(id) {
+				if(id == 0) {
+					this.adults--;
+				} else if(id == 1) {
+					this.children--;
+				} else {
+					this.infant--;
+				}
+			},
+			save(){
+				let select={
+					adults:this.adults,
+					children:this.children,
+					infant:this.infant
+				}
+				this.$emit('sureSelect', select);
+				this.$emit('call-back', false);
+			}
+
+},
+mounted: function() {
+
+	},
+	watch: {
+
+	}
+};</script>
+<style lang="scss" scoped>
+	.selectPeople{
+		position: fixed;
+		left: 0;
+		top: 0;
+		width: 100%;
+		min-height: 100%;
+		z-index: 999;
+		background: #fff;
+
+		.selectCont{
+			padding:0 0.586666rem;
+			.back{
+				padding: 0.34rem 0 0.4rem;
+			}
+			.head{
+				h3{
+					font-size:0.6rem;
+					font-weight: bold;
+				}
+				p{
+					font-size:0.28rem;
+				}
+			}
+			.choose{
+				margin-top: 0.5rem;
+				ul{
+					li{
+						margin-top: 1rem;
+						&:firt-child{
+							margin-top: 0;
+						}
+						b{
+							float: left;
+							line-height: 0.773333rem;
+							font-size: 0.5rem;
+							font-weight: bold;
+							 span {
+			                      font-weight: normal;
+			                      color: #878e95;
+			                      font-size: 0.426666rem
+			                      
+			                    }
+						}
+						.select{
+							float: right;
+							em{
+								font-weight: bold;
+								display: inline-block;
+								width: 0.7rem;
+								height: 0.7rem;
+								border:1px solid #1bbc9d;
+								border-radius: 50%;
+								font-size: 0.2rem;
+								text-align:center;
+								line-height:0.7rem;
+								color:#1bbc9d;
+								
+							}
+							div{
+								display: inline-block;
+								margin:0 0.44rem;
+								font-size: 0.44rem;
+								vertical-align: middle;
+							}
+						}
+					}
+				}
+			}
+			.save{
+				position: fixed;
+				bottom: 0;
+				left: 0;
+				width: 100%;
+				padding: 0.373333rem 0.586666rem;
+				button{
+					width: 100%;
+					height:1.2rem;
+					line-height:1.2rem;
+					background-image: linear-gradient(270deg,#009efd 0%,#1bbc9d 100%);
+					text-align: center;
+					color: #fff;
+					border-radius: 0.6rem;
+					font-size: 0.346666rem;
+					font-weight: bold;
+				}
+			}
+		}
+		.defult{
+			opacity: .5;
+		}
+	}
+</style>
