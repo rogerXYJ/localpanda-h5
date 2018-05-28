@@ -281,7 +281,7 @@
 									}
 								}).then(function(response) {
 									var loginState = (that.logIn?that.logIn:0);
-									var thisUrl = "https://www.localpanda.cn/activity/payment/mobile/?objectId=" + response.data.response + '&login='+loginState;
+									var thisUrl = "https://www.localpanda.cn/activity/payment/?objectId=" + response.data.response + '&login='+loginState;
 									if(obj.currency=='CNY'){
 										var ua = window.navigator.userAgent.toLowerCase();
 										var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
@@ -291,7 +291,7 @@
 											window.location.href = thisUrl;
 										}
 									}else{
-										window.location.href = "https://www.localpanda.com/activity/payment/mobile/?objectId=" + response.data.response + obj.currency + '&login='+loginState;
+										window.location.href = "https://www.localpanda.com/activity/payment/?objectId=" + response.data.response + obj.currency + '&login='+loginState;
 									}
 									
 								}, function(response) {})
@@ -330,7 +330,7 @@
 								}
 							}).then(function(response) {
 								var loginState = (that.logIn?that.logIn:0);
-								var thisUrl = "https://www.localpanda.cn/activity/payment/mobile/?objectId=" + response.data.response + '&login='+loginState;
+								var thisUrl = "https://www.localpanda.cn/activity/payment/?objectId=" + response.data.response + '&login='+loginState;
 								
 								if(obj.currency=='CNY'){
 									var ua = window.navigator.userAgent.toLowerCase();
@@ -342,7 +342,7 @@
 									}
 									
 								}else{
-									window.location.href = "https://www.localpanda.com/activity/payment/mobile/?objectId=" + response.data.response + '&login='+loginState;
+									window.location.href = "https://www.localpanda.com/activity/payment/?objectId=" + response.data.response + '&login='+loginState;
 								}
 
 							}, function(response) {})
@@ -386,12 +386,11 @@
 			line-height: 1.013333rem;
 			color: #666;
 			i {
-				font-size: 0.426666rem;
+				font-size: 0.32rem;
 				font-weight: bold;
 			}
 		}
 		.fillInfo{
-			margin-top: 0.2rem;
 			h3{
 				font-size:0.6rem;
 				font-weight: bold;
@@ -401,12 +400,13 @@
 				.oderTitle{
 					font-size: 0.34rem;
 					font-weight: bold;
+					line-height: 1.3;
 				}
 				.oderDetail{
-					padding: 0.24rem 0 0.4rem;
+					padding: 0.15rem 0 0.4rem;
 					border-bottom:2px solid #ebebeb;
 					span{
-						font-size: 0.28rem;
+						font-size: 0.26rem;
 						margin-right: 0.4rem;
 						&:last-child{
 							margin-right: 0;
@@ -416,21 +416,21 @@
 			}
 			.orderContact{
 				h4{
-					padding:0.4rem 0 0.2rem;
-					font-size: 0.34rem;
+					padding:0.3rem 0 0.2rem;
+					font-size: 0.32rem;
 				}
 				.inputItem{
 					margin-top:0.2rem;
 					padding-bottom: 0.28rem;
 					/*border-bottom: 2px solid #ebebeb;*/
 					p{
-						font-size:0.26rem;
+						font-size:0.24rem;
 						color:#878e95;
 					}
 					input{
 						width:100%;
-						height: 0.94rem;
-						line-height: 0.94rem;
+						height: 0.9rem;
+						line-height: 0.9rem;
 						border:1px solid #dde0e0;
 						border-radius: 0.06rem;
 						padding-left: 0.24rem;
@@ -448,10 +448,9 @@
 				margin-top: 0.5rem;
 				position: relative;
 				span {
-					font-size: 0.26rem;
+					font-size: 0.24rem;
 					margin-left: 0.7rem;
 					display: block;
-					line-height: 0.4rem;
 				}
 				.checkbox {
 					position: absolute;
@@ -474,13 +473,13 @@
 				
 			}
 			.Comments{
-				margin-top: 0.5rem;
+				margin-top: 0.4rem;
 				padding-bottom: 0.8rem;
 				.information{
 					padding-bottom: 0.266666rem;
 					
 					h4{
-						font-size: 0.26rem;
+						font-size: 0.24rem;
 						span{
 							color: #878E95;
 						}
@@ -490,12 +489,11 @@
 						border:1px solid #dde0e0;
 						border-radius: 0.08rem;
 						width: 100%;
-						padding-left: 0.24rem;
-						padding-top: 0.293333rem;
-						margin-top: 0.346666rem;
+						padding-left: 0.25rem;
+						padding-top: 0.2rem;
+						margin-top: 0.2rem;
 						font-size: 0.28rem;
 						font-family: Arial;
-						line-height: 0.4rem;
 						&:-webkit-placeholder { /* Mozilla Firefox 4 to 18 */
     						color: #dde0e0; 
 						}

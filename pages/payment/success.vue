@@ -29,7 +29,7 @@
    
     
     </div>
-    <footMobile></footMobile>
+    <foot></foot>
   </div>
 </template>
 
@@ -37,7 +37,7 @@
 	if (process.browser) {
 	  require('~/assets/js/plugin/talk.js');
 	}
-	import footMobile from "~/components/footer/index"
+	import foot from "~/components/footer/index"
   export default {
 
 		name: 'payResult',
@@ -60,7 +60,7 @@
 			}
 		},
 		components: {
-			footMobile
+			foot
 		},
 		methods: {
 			getJumpUrl(isLogin){

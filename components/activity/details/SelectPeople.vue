@@ -139,12 +139,12 @@ mounted: function() {
 						b{
 							float: left;
 							line-height: 0.773333rem;
-							font-size: 0.5rem;
+							font-size: 0.42rem;
 							font-weight: bold;
 							 span {
 			                      font-weight: normal;
 			                      color: #878e95;
-			                      font-size: 0.426666rem
+			                      font-size: 0.32rem
 			                      
 			                    }
 						}
@@ -153,20 +153,21 @@ mounted: function() {
 							em{
 								font-weight: bold;
 								display: inline-block;
-								width: 0.7rem;
-								height: 0.7rem;
+								width: 0.6rem;
+								height: 0.6rem;
 								border:1px solid #1bbc9d;
 								border-radius: 50%;
-								font-size: 0.2rem;
+								font-size: 0.32rem;
 								text-align:center;
-								line-height:0.7rem;
+								line-height:0.6rem;
+								font-weight: normal;
 								color:#1bbc9d;
 								
 							}
 							div{
 								display: inline-block;
 								margin:0 0.44rem;
-								font-size: 0.44rem;
+								font-size: 0.42rem;
 								vertical-align: middle;
 							}
 						}
@@ -181,8 +182,8 @@ mounted: function() {
 				padding: 0.373333rem 0.586666rem;
 				button{
 					width: 100%;
-					height:1.2rem;
-					line-height:1.2rem;
+					height:1rem;
+					line-height:1rem;
 					background-image: linear-gradient(270deg,#009efd 0%,#1bbc9d 100%);
 					text-align: center;
 					color: #fff;

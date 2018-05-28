@@ -25,6 +25,8 @@
       	<div class="marsk" v-if="isscroll" @click.stop="showMeau">
         	<i class="iconfont">&#xe665;</i>
         </div>
+				
+				<foot></foot>
 	</div>
 </template>
 
@@ -36,15 +38,16 @@
 	//element-ui 组件
 	require('~/plugins/element-ui.js');
 
-
+	import Vue from 'vue';
 	import Head from '~/components/header/index'
 	import Mbanner from "~/components/activity/details/Mbanner";
 	import Mdetails from "~/components/activity/details/Mdetails";
 	import Mmeau from '~/components/activity/details/m-meau'
+	import foot from "~/components/footer/index"
 	
 	import { delNullArr,getUrlParams } from "~/assets/js/utils";
 
-	import Vue from 'vue';
+	
 
 	export default {
 		name: "activitiesDetail",
@@ -194,7 +197,8 @@
 			Mbanner,
 			Mdetails,
 			Mmeau,
-			Head
+			Head,
+			foot
 		},
 		methods: {
 			showMeau(){

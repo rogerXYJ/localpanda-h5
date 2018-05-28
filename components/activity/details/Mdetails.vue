@@ -8,6 +8,20 @@
 					<span :key="index" v-for="(i,index) in detail.tourTypes">{{i}}</span>
 				</div>
 			</div>
+
+			<div class="price">
+				<div class="picRate">
+					<select class="currency_type" id="changeCurrency" @change="changeCurrency" v-model="defaultCurrency">
+						<option :value="item.code" v-for="item in exchange" :key="item.code">{{item.code}}</option>
+					</select>
+					<span class="iconfont">&#xe666;</span>
+				</div>
+				<div class="picinfo">
+					<p v-if="picInfo.originalPrice">From <span class="oldpic">{{nowExchange.symbol}} {{returnFloat(picInfo.originalPrice)}}</span></p>
+					<p> <b>{{nowExchange.symbol}} {{returnFloat(picInfo.bottomPrice)}}</b> pp</p>
+				</div>
+			</div>
+
 			<div class="toursMessage">
 				<ul>
 					<li class="clearfix">
@@ -74,7 +88,7 @@
 					<h3>Price Details</h3>
 					<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is  {{nowExchange.symbol}}  {{returnFloat(picInfo.childDiscount)}}  {{nowExchange.code}}  less than adults' price.</p>
 					<el-table :data="sixArr" stripe style="width: 100%">
-						<el-table-column prop="capacity" label="Number of people"  align="center">
+						<el-table-column prop="capacity" label="No. of people"  align="center">
 							<template slot-scope="scope">
 								<span v-if="scope.row.capacity==1">1 person</span>
 								<span v-else>{{scope.row.capacity}} people</span>
@@ -165,19 +179,9 @@
 				</div>
 			</div>
 		</div>
-		<div class="book clearfix">
-			<div class="picinfo">
-				<p v-if="picInfo.originalPrice" class="oldpic">{{nowExchange.symbol}} {{returnFloat(picInfo.originalPrice)}}</p>
-				<p>From <b>{{nowExchange.symbol}} {{returnFloat(picInfo.bottomPrice)}}</b> pp</p>
-			</div>
-			
-			<button class="bookBtn" @click="goBooking">Book Now</button>
-			<div class="picRate">
-				<select class="currency_type" id="changeCurrency" @change="changeCurrency" v-model="defaultCurrency">
-					<option :value="item.code" v-for="item in exchange" :key="item.code">{{item.code}}</option>
-				</select>
-				<span class="iconfont">&#xe666;</span>
-			</div>
+		<div class="book">
+			<button><a :href="'/inquiry?objectId='+id">Inquire</a></button>
+			<button class="bookBtn" @click="goBooking">Check Price</button>
 		</div>
 		<photo :photoList="photoList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></photo>
 	</div>
@@ -351,7 +355,7 @@ if(process.browser) {
 				}
 				objDetail=JSON.stringify(objDetail)
 				localStorage.setItem("objDetail",objDetail)
-				location.href="/activity/details/mobile/bookDetail"
+				location.href="/activity/details/bookDetail"
 			},
 			 returnFloat(value) {
 				value*=1;
@@ -437,6 +441,8 @@ if(process.browser) {
 				if(response.status==200){
 					that.exchange = response.data;
 					that.nowExchange = that.exchange[0];
+					//设置当前货币符号
+					that.picInfo.symbol = that.nowExchange.symbol;
 
 					//设置币种
 					var ua = window.navigator.userAgent.toLowerCase();
@@ -501,7 +507,6 @@ if(process.browser) {
 		font-size: 0.2rem;
 		font-weight: bold;
 		color: #353a3f;
-		word-wrap:break-word!important;
 		padding: 0!important;
 		
 	}
@@ -537,29 +542,80 @@ if(process.browser) {
 		border: 0;
 	}
 	/*@import "~assets/scss/_table.scss";*/
+
+	.price {
+		text-align: right;
+	.picinfo {
+			display: inline-block;
+			
+			p {
+				font-size: 0.28rem;
+				color: #878e95;
+				b {
+					font-size: 0.44rem;
+					color: #353a3f;
+				}
+				span.oldpic {
+					text-decoration: line-through;
+				}
+			}
+		}
+		.picRate {
+			display: inline-block;
+			color: #fff;
+			position: relative;
+			opacity: 0.5;
+			margin-right: 0.2rem;
+			span {
+				font-size: 10px;
+			}
+			.iconfont {
+				float: right;
+				margin-top: 0.2rem;
+				height: 0.8rem;
+				line-height: 0.8rem;
+				text-align: center;
+				font-size: 0.4rem;
+				color: #666;
+			}
+			.currency_type {
+				background: none;
+				color: #666;
+				border: none;
+				height: 0.8rem;
+				padding: 0 0 0 0.2rem;
+				font-size: 0.28rem;
+				margin-top: 0.2rem;
+				-webkit-appearance: none;
+				-moz-appearance: none;
+				appearance: none;
+			}
+		}
+	}
+
 </style>
 
 <style lang="scss" scoped>
 	@import "~/assets/font/iconfont.css";
 	.m-details {
-		padding: 0 0.4rem 2rem;
+		padding: 0 0.4rem 0rem;
 		.m-details-cont {
-			margin-top: 0.64rem;
+			margin-top: 0.4rem;
 			.toursType {
-				font-size: 0.266666rem;
+				font-size: 0.22rem;
 				color: #1bbc9d;
 			}
 			.activitiyTitle {
-				margin-top: 0.266666rem;
+				margin-top: 0.15rem;
 				h3 {
-					font-size: 0.42rem;
+					font-size: 0.46rem;
 					font-weight: bold;
 				}
 				.types {
-					margin: 0.22rem 0 0.3rem;
+					margin: 0.2rem 0 0.2rem;
 					font-size: 0.3rem;
 					span {
-						font-size: 0.3rem;
+						font-size: 0.26rem;
 						position: relative;
 						padding: 0 0.16rem;
 						&:first-child {
@@ -587,16 +643,14 @@ if(process.browser) {
 						
 						label {
 							float: left;
-							font-size: 0.3rem;
-							margin-top: 0.06rem;
+							font-size: 0.28rem;
 						}
 						span {
 							display: inline-block;
 							margin-left: 0.24rem;
-							font-size: 0.28rem;
+							font-size: 0.26rem;
 							float:left;
 							width: 90%;
-							line-height:0.46rem;
 						}
 					}
 				}
@@ -604,8 +658,7 @@ if(process.browser) {
 			.says {
 				padding: 0.5rem 0 0.4rem;
 				border-bottom: 1px solid #dde0e0;
-				font-size: 0.346666rem;
-				line-height: 0.48rem;
+				font-size: 0.28rem;
 			}
 			.heightLights {
 				padding: 0.4rem 0;
@@ -623,7 +676,7 @@ if(process.browser) {
 						margin-left: -0.4rem;
 					}
 					span {
-						font-size: 0.28rem;
+						font-size: 0.26rem;
 						display: block;
 					}
 				}
@@ -642,8 +695,7 @@ if(process.browser) {
 					
 						margin-top: 0.44rem;
 						p {
-							font-size: 0.28rem;
-							line-height: 0.42rem;
+							font-size: 0.26rem;
 							margin-top: 0.266666rem;
 							&:first-child {
 								margin-top: 0;
@@ -658,8 +710,7 @@ if(process.browser) {
 										font-weight: bold;
 									}
 									p {
-										font-size: 0.28rem;
-										line-height: 0.42rem;
+										font-size: 0.26rem;
 										margin-top: 0.24rem;
 									}
 								}
@@ -688,8 +739,8 @@ if(process.browser) {
 					font-weight: bold;
 				}
 				.childDiscount{
-					margin-top: 0.266666rem;
-					font-size: 0.32rem;
+					margin-top: 0.22rem;
+					font-size: 0.28rem;
 				}
 				ul {
 					li {
@@ -699,7 +750,7 @@ if(process.browser) {
 						font-size: 0.32rem;
 						position: relative;
 						h5 {
-							font-size: 0.346666rem;
+							font-size: 0.28rem;
 						}
 						p {
 							font-size: 0.26rem;
@@ -724,16 +775,16 @@ if(process.browser) {
 			}
 			.inqury{
 				border-bottom: 1px solid #dde0e0;
-				height: 1.706666rem;
-				line-height: 1.706666rem;
-				font-size:0.346666rem;
+				height: 1.44rem;
+				line-height: 1.44rem;
+				font-size:0.28rem;
 				font-weight: bold;
 				color: #1bbc9d;
 				position: relative;
 				i{
 					position: absolute;	
 					right: 0;
-					font-size: 0.346666rem;
+					font-size: 0.28rem;
 					color: #dde0e0;
 				}
 			}
@@ -745,9 +796,8 @@ if(process.browser) {
 					font-weight: bold;
 				}
 				p {
-					margin-top: 0.213333rem;
-					font-size: 0.28rem;
-					line-height: 0.48rem;
+					margin-top: 0.18rem;
+					font-size: 0.26rem;
 				}
 				.photoCover {
 						margin-top: 0.4rem;
@@ -788,16 +838,15 @@ if(process.browser) {
 					}
 			}
 			.recommend {
-				margin-top: 0.626666rem;
-				padding-bottom: 0.533333rem;
+				margin-top: 0.45rem;
 				h3 {
-					font-size: 0.4rem;
+					font-size: 0.36rem;
 					font-weight: bold;
-					margin-bottom: 0.64rem;
+					margin-bottom: 0.45rem;
 				}
 				.swiper-wrapper {
 					.swiper-slide {
-						
+						width:80%;
 						&:last-child {
 							margin-right: 0;
 						}
@@ -821,14 +870,14 @@ if(process.browser) {
 							}
 						}
 						.activity-cont {
-							height: 3.013333rem;
+							height: 3.2rem;
 							position: relative;
 							padding: 0.373333rem;
 							box-shadow: 0px 2px 3px 0px rgba(53, 58, 63, 0.1);
 							.activity-info {
 								.duration {
 									float: right;
-									font-size: 0.293333rem;
+									font-size: 0.24rem;
 									color: #878e95;
 									i {
 										font-size: 0.24rem;
@@ -838,7 +887,7 @@ if(process.browser) {
 								}
 								.activity-cont-type {
 									float: left;
-									font-size:  0.293333rem;
+									font-size:  0.24rem;
 									color: #d87b65;
 									i {
 										font-size:  0.24rem;
@@ -849,8 +898,8 @@ if(process.browser) {
 							}
 							h4 {
 								color: #353a3f;
-								height: 1.013333rem;
-								line-height: 0.506666rem;
+								height: 0.8rem;
+								line-height: 0.4rem;
 								text-overflow: ellipsis;
 								display: -webkit-box;
 								display: -moz-box;
@@ -859,8 +908,8 @@ if(process.browser) {
 								-webkit-line-clamp: 2;
 								word-wrap: break-word;
 								overflow: hidden;
-								margin-top: 0.213333rem;
-								font-size: 0.32rem;
+								margin-top: 0.14rem;
+								font-size: 0.3rem;
 								font-weight: bold;
 							}
 							/*.activity-cont-duration {
@@ -879,16 +928,16 @@ if(process.browser) {
 								bottom: 0.4rem;
 								.old-pic {
 									text-align: right;
-									font-size: 0.293333rem;
+									font-size: 0.24rem;
 									color: #878e95;
 									text-decoration: line-through;
 								}
 								.current-price {
-									font-size: 0.26rem;
+									font-size: 0.24rem;
 									color: #878e95;
 									margin-top: 0.093333rem;
 									b {
-										font-size: 0.4rem;
+										font-size: 0.36rem;
 										color: #353a3f;
 										margin-left: 6px;
 									}
@@ -903,86 +952,51 @@ if(process.browser) {
 			}
 			
 		}
-		.book{
-				width:100%;
-				box-sizing:border-box;
-				position: fixed;
-				height: 1.52rem;
-				padding:0 0.3rem;
-				bottom: 0;
-				left: 0;
-				z-index: 9999;
-				background: #fff;
-				border-top:1px solid #dde0e0; 
-				
-				.picinfo{
-					float:left;
-					margin-top:0.35rem;
-					p{
-						font-size:0.28rem;
-						color: #878e95;
-						b{
-							font-size:0.34rem;
-							color: #353a3f;
-						}
-						&.oldpic{
-							text-decoration: line-through;
-						}
-					}
-					
-					
-				}
-				.picRate {
-					float: right;
-					color: #fff;
-					position: relative;
-					opacity: 0.5;
-					margin-right: 0.2rem;
-					span {
-						font-size: 10px;
-					}
-					.iconfont{
-						float: right;
-						margin-top: 0.4rem;
-						height: 0.8rem;
-						line-height: 0.8rem;
-						text-align:center;
-						font-size:22px;
-						color:#666;
-					}
-					.currency_type{
-						background: none;
-						color:#666;
-						border:none;
-						height: 0.8rem;
-						padding: 0 0 0 0.2rem;
-						font-size:0.34rem;
-						margin-top: 0.4rem;
-						
-						-webkit-appearance: none;
-						-moz-appearance: none;
-						appearance: none;
-					}
-				}
-				.bookBtn{
-					float: right;
-					width: 2.4rem;
-					height: 1rem;
-					line-height:0.8rem;
-					text-align: center;
-					color: #FFF;
-					font-weight: bold;
+		.book {
+			width: 100%;
+			box-sizing: border-box;
+			position: fixed;
+			height: 1.4rem;
+			padding: 0 0.4rem;
+			bottom: 0;
+			left: 0;
+			z-index: 9999;
+			background: #fff;
+			border-top: 1px solid #dde0e0;
+			display: flex;
+			button{
+				flex: 1;
+				margin-right: 0.32rem;
+				width: 3.6rem;
+				height: 0.9rem;
+				line-height: 0.9rem;
+				text-align: center;
+				color: #FFF;
+				font-weight: bold;
+				border-radius: 0.6rem;
+				margin-top: 0.23rem;
+				font-size: 0.36rem;
+				&:last-child{
+					margin-right: 0;
 					background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
-					border-radius: 0.6rem;
-					margin-top: 0.26rem;
-					font-size: 0.32rem;
 				}
+				&:first-child{
+					border: solid 1px #1bbc9d;
+					background: #fff;
+					a{
+						display: block;
+						color: #1bbc9d;
+						font-size:0.36rem;
+					}
+				}
+				
 			}
-			.view{
-				margin-top: 0.266666rem;
-				color:#1bbc9d;
-				font-size: 0.346666rem;
-			}
+		}
+		.view{
+			margin-top: 0.266666rem;
+			color:#1bbc9d;
+			font-size: 0.346666rem;
+		}
 		.show {
 			overflow: inherit!important;
 			height: auto!important;

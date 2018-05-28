@@ -89,7 +89,7 @@
 				console.log(this.checkedCategory)
 			},
 			clear() {
-				location.href="/activity/list/mobile/"+this.loc
+				location.href="/activity/list/"+this.loc
 			},
 			close() {
 				this.$emit("callBack", false)
@@ -105,7 +105,7 @@
 				})
 				opctions=JSON.stringify(opctions)
 				this.sort=JSON.stringify(this.sort)
-				location.href = "/activity/list/mobile/" + this.loc + "?options=" + opctions  + (/SCORE/.test(this.sort)?"":"&sort=" + this.sort);
+				location.href = "/activity/list/" + this.loc + "?options=" + opctions  + (/SCORE/.test(this.sort)?"":"&sort=" + this.sort);
 
 			},
 			delNull(obj){
@@ -127,8 +127,8 @@
 </script>
 <style lang="scss">
 	.el-checkbox__inner {
-		width: 0.426666rem;
-		height: 0.426666rem;
+		width: 0.32rem;
+		height: 0.32rem;
 		border-radius: 0.04rem;
 		&:after {
 			left: 0.133333rem;
@@ -139,7 +139,7 @@
 		width:100%;
 	}
 	.el-checkbox__label {
-		font-size: 0.426666rem;
+		font-size: 0.34rem;
 		color: #353a3f;
 	}
 </style>
@@ -155,18 +155,18 @@
 			position: absolute;
 			background: #fff;
 			width: 100%;
-			height: calc(100% - 3.333333rem);
+			height: 100%;
 			overflow-y: auto;
 			padding-bottom: 1.946666rem;
 			-webkit-overflow-scrolling: touch;
 			max-height: 100%;
 			.head {
 				border-bottom: 1px solid #dde0e0;
-				height: 1.386666rem;
-				line-height: 1.386666rem;
+				height: 1.1rem;
+				line-height: 1.1rem;
 				text-align: center;
 				position: relative;
-				font-size: 0.373333rem;
+				font-size: 0.32rem;
 				font-weight: bold;
 				position: fixed;
 				width: 100%;
@@ -174,8 +174,8 @@
 				background: #fff;
 				i {
 					position: absolute;
-					left: 0.586666rem;
-					font-size: 0.4rem;
+					left: 0.4rem;
+					font-size: 0.32rem;
 				}
 				.clear {
 					position: absolute;
@@ -185,13 +185,13 @@
 				}
 			}
 			.filter-detail {
-				padding-top: 1.386666rem;
+				padding-top: 1.1rem;
 				
 				.title{
-					padding-left: 0.586666rem;
-					font-size: 0.32rem;
-					line-height: 0.986666rem;
-					height: 0.986666rem;
+					padding-left: 0.4rem;
+					font-size: 0.24rem;
+					line-height: 0.8rem;
+					height: 0.8rem;
 					background: #faf9f8;
 					
 					
@@ -200,9 +200,9 @@
 					border-top: 1px solid #dde0e0;
 					border-bottom:1px solid #dde0e0;
 					.checkboxlist{
-						margin:0 0.586666rem;
-						line-height: 1.24rem;
-						height: 1.24rem;
+						margin:0 0.4rem;
+						line-height: 1rem;
+						height: 1rem;
 						border-bottom:1px solid #dde0e0;
 						&:last-child{
 							border: 0;
@@ -217,18 +217,18 @@
 			bottom: 0;
 			left: 0;
 			width: 100%;
-			padding: 0.373333rem 0.586666rem;
-			z-index: 8999;
+			padding: 0.32rem 0.4rem;
+			z-index: 10;
 			background: #fff;
 			button {
-				width: calc(100% - 1.173333rem);
-				height: 1.2rem;
-				line-height: 1.2rem;
+				width: 100%;
+				height: 1rem;
+				line-height: 1rem;
 				background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
 				text-align: center;
 				color: #fff;
-				border-radius: 0.6rem;
-				font-size: 0.346666rem;
+				border-radius: 0.5rem;
+				font-size: 0.28rem;
 				font-weight: bold;
 			}
 		}

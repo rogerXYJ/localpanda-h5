@@ -115,7 +115,6 @@
 				var picInfo = this.picInfo;
 				var thisDetail = picInfo.details;
 
-				console.log(picInfo);
 				//换算折扣价
 				var exchange = this.exchange;
 				for(var i=0;i<exchange.length;i++){
@@ -433,40 +432,6 @@
 		width: 20px!important;
 		height: 20px!important;
 	}
-	#launcher {
-		bottom: 0.266666rem!important;
-	}
-	input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {   
-	 /* WebKit browsers */   
-	color: #878e95;   
-	}   
-	input:-moz-placeholder, textarea:-moz-placeholder {   
-	/* Mozilla Firefox 4 to 18 */   
-	color: #878e95   
-	}   
-	input::-moz-placeholder, textarea::-moz-placeholder {   
-	 /* Mozilla Firefox 19+ */   
-	color: #878e95
-	}   
-	input:-ms-input-placeholder, textarea:-ms-input-placeholder {   
-	 /* Internet Explorer 10+ */   
-	color: #878e95  
-	}
-	.dateTime {
-		
-		.flatpickr-input {
-			border: none!important;
-			padding-left: 0!important;
-			height: 1.4rem!important;
-			text-align: right;
-			color: #1bbc9d;
-			font-size: 0.36rem!important;
-			width: 100%;
-			
-		}
-		
-	}
-
 	.flatpickr-calendar{
 		padding: 10px 0;
 		width: 90%;
@@ -502,12 +467,49 @@
 			max-height: 45px;
 		}
 	}
-	.flatpickr-calendar.arrowTop:before,.flatpickr-calendar.arrowTop:after{
+	.flatpickr-calendar.open:before,.flatpickr-calendar.open:after{
 		display: none;
 	}
 	.flatpickr-day.nextMonthDay{
 		color: #393939!important;
 	}
+
+	
+	#launcher {
+		bottom: 0.266666rem!important;
+	}
+	input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {   
+	 /* WebKit browsers */   
+	color: #878e95;   
+	}   
+	input:-moz-placeholder, textarea:-moz-placeholder {   
+	/* Mozilla Firefox 4 to 18 */   
+	color: #878e95   
+	}   
+	input::-moz-placeholder, textarea::-moz-placeholder {   
+	 /* Mozilla Firefox 19+ */   
+	color: #878e95
+	}   
+	input:-ms-input-placeholder, textarea:-ms-input-placeholder {   
+	 /* Internet Explorer 10+ */   
+	color: #878e95  
+	}
+	.dateTime {
+		
+		.flatpickr-input {
+			border: none!important;
+			padding-left: 0!important;
+			height: 1.4rem!important;
+			text-align: right;
+			color: #1bbc9d;
+			font-size: 0.36rem!important;
+			width: 100%;
+			
+		}
+		
+	}
+
+	
 </style>
 <style lang="scss" scoped>
 	
@@ -541,7 +543,7 @@
 					line-height: 1.4rem;
 					label {
 						float: left;
-						font-size: 0.38rem;
+						font-size: 0.36rem;
 					}
 					div {
 						float: right;
@@ -573,7 +575,7 @@
 						float: right;
 						width: auto;
 						position: relative;
-						margin:0 20px 0 0;
+						margin:0 0.3rem 0 0;
 						span {
 							font-size: 10px;
 						}
@@ -613,13 +615,13 @@
 			padding: 0.373333rem 0.586666rem;
 			button {
 				width: 100%;
-				height: 1.2rem;
-				line-height: 1.2rem;
+				height: 1rem;
+				line-height: 1rem;
 				background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
 				text-align: center;
 				color: #fff;
 				border-radius: 0.6rem;
-				font-size: 0.346666rem;
+				font-size: 0.32rem;
 				font-weight: bold;
 			}
 		}
