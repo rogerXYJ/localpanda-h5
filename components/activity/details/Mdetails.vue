@@ -355,7 +355,7 @@ if(process.browser) {
 				}
 				objDetail=JSON.stringify(objDetail)
 				localStorage.setItem("objDetail",objDetail)
-				location.href="/activity/details/bookDetail"
+				location.href="/activity/check/"
 			},
 			 returnFloat(value) {
 				value*=1;

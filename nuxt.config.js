@@ -33,6 +33,5 @@ module.exports = {
   },
   performance: {
     prefetch: false
-
   }
 }

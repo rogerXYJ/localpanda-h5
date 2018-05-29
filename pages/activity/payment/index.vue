@@ -403,7 +403,7 @@
 						}
 						that.loadingStatus = false;
 						//跳转
-						window.location.href = "https://www.localpanda.com/payment/mobile/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + '&succeed=' + thisData.succeed + '&msg=' + msg + '&symbol=' + that.opctions.symbol + '&currency=' + that.opctions.currency;
+						window.location.href = "/activity/payment/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + '&succeed=' + thisData.succeed + '&msg=' + msg + '&symbol=' + that.opctions.symbol + '&currency=' + that.opctions.currency;
 					}
 				);
 			},
@@ -412,7 +412,7 @@
 			wxPay(postData) {
 				var self = this;
 				this.loadingStatus = true;
-
+				alert(JSON.stringify(postData))
 				self.axios.post("https://www.localpanda.cn/api/payment/pay/wechat", JSON.stringify(postData), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
@@ -436,7 +436,9 @@
 						self.onBridgeReady(response.data);
 					}
 
-				}, function(response) {})
+				}, function(response) {
+					alert(JSON.stringify(response));
+				})
 			},
 
 			//H5唤起微信支付
@@ -455,7 +457,7 @@
 						//self.showWxOpenBox = true;
 						//self.loadingStatus = false;
 
-						var callUrl = 'https://www.localpanda.cn/payment/mobile/wxMobilePay?email=' + self.email + '&orderId=' + self.orderId + '&amount=' + self.opctions.amount + '&symbol=' + self.opctions.symbol + '&currency=' + self.opctions.currency + '&login=' + (self.logIn ? self.logIn : 0);
+						var callUrl = 'https://www.localpanda.com/activity/payment/wxMobilePay?email=' + self.email + '&orderId=' + self.orderId + '&amount=' + self.opctions.amount + '&symbol=' + self.opctions.symbol + '&currency=' + self.opctions.currency + '&login=' + (self.logIn ? self.logIn : 0);
 						var openWxUrl = data.mweb_url + '&redirect_url=' + encodeURIComponent(callUrl);
 
 						//唤起微信a标签的href
@@ -538,11 +540,11 @@
 
 							}
 							//跳转
-							window.location.href = "/payment/mobile/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + '&succeed=' + thisData.succeed + '&symbol=' + that.opctions.symbol + '&currency=' + that.opctions.currency + '&msg=' + msg;
+							window.location.href = "/activity/payment/mobile/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + '&succeed=' + thisData.succeed + '&symbol=' + that.opctions.symbol + '&currency=' + that.opctions.currency + '&msg=' + msg;
 							//
 						}, function(response) {
 							//请求失败跳转
-							window.location.href = "/payment/mobile/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + '&succeed=false&symbol=' + that.opctions.symbol + '&currency=' + that.opctions.currency;
+							window.location.href = "/activity/payment/mobile/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + '&succeed=false&symbol=' + that.opctions.symbol + '&currency=' + that.opctions.currency;
 						})
 					
 			},
@@ -617,7 +619,7 @@
 				var self = this;
 				self.loadingStatus = true;
 				//查询订单
-				this.axios.get("/api/payment/wechat/status?orderId=" + self.orderId + '&flag=1', {
+				this.axios.get("https://www.localpanda.com/api/payment/wechat/status?orderId=" + self.orderId + '&flag=1', {
 					headers: {
 						'Content-Type': 'application/json;'
 					}
@@ -630,7 +632,7 @@
 						} else {
 							msg = 'fail';
 						}
-						window.location.href = "https://www.localpanda.com/payment/mobile/success?email=" + self.email + "&orderId=" + self.orderId + '&amount=' + self.opctions.amount + "&succeed=" + succeed + '&symbol=' + self.opctions.symbol + '&currency=' + self.opctions.currency + '&msg=' + msg;
+						window.location.href = "/activity/payment/success?email=" + self.email + "&orderId=" + self.orderId + '&amount=' + self.opctions.amount + "&succeed=" + succeed + '&symbol=' + self.opctions.symbol + '&currency=' + self.opctions.currency + '&msg=' + msg;
 					} else {
 						alert('Please try again!');
 					}

@@ -5,7 +5,7 @@
 			<span class="destination ">
 				<i class="iconfont">&#xe610;</i>
 				<select v-model="value" @change="locationFn(value)">
-					<option v-for="item in options">{{item.label}}</option>
+					<option :key="index" v-for="(item,index) in options">{{item.label}}</option>
 				</select>
 			</span>
 			<span class="destination" @touchend="showFilter">
@@ -15,15 +15,15 @@
 			<span class="destination">
 				<i class="iconfont">&#xe66b;</i>
 				<select  @change="sortFn(selected)" v-model="selected">
-					<option v-for="item in select">{{item.selectText}}</option>
+					<option :key="index" v-for="(item,index) in select">{{item.selectText}}</option>
 				</select>
 			</span>
 		</div>
 		<div class="list-cont" v-if="records>0">
 			<ul class="clearfix">
-				<li class="activity-item" v-for="item in activityList">
+				<li class="activity-item" :key="index" v-for="(item,index) in activityList">
 
-					<a :href="'/activity/details/'+item.activityId" target="_blank">
+					<a :href="'/activity/details/'+item.activityId">
 						<div class="activity">
 
 							<div class="activity-photo" v-lazy:background-image="item.coverPhotoUrl">

@@ -281,17 +281,17 @@
 									}
 								}).then(function(response) {
 									var loginState = (that.logIn?that.logIn:0);
-									var thisUrl = "https://www.localpanda.cn/activity/payment/?objectId=" + response.data.response + '&login='+loginState;
+									var thisUrl = "/activity/payment/?objectId=" + response.data.response + '&login='+loginState;
 									if(obj.currency=='CNY'){
 										var ua = window.navigator.userAgent.toLowerCase();
 										var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
 										if(isWx){
-											window.location.href = 'https://www.localpanda.cn/wx/getcode?link='+encodeURIComponent(thisUrl.replace('code','oldcode'));
+											window.location.href = 'https://www.localpanda.com/relay/getWechatToken.html?url='+encodeURIComponent('https://www.localpanda.com'+thisUrl);
 										}else{
 											window.location.href = thisUrl;
 										}
 									}else{
-										window.location.href = "https://www.localpanda.com/activity/payment/?objectId=" + response.data.response + obj.currency + '&login='+loginState;
+										window.location.href = "/activity/payment/?objectId=" + response.data.response + obj.currency + '&login='+loginState;
 									}
 									
 								}, function(response) {})
@@ -330,19 +330,19 @@
 								}
 							}).then(function(response) {
 								var loginState = (that.logIn?that.logIn:0);
-								var thisUrl = "https://www.localpanda.cn/activity/payment/?objectId=" + response.data.response + '&login='+loginState;
+								var thisUrl = "/activity/payment/?objectId=" + response.data.response + '&login='+loginState;
 								
 								if(obj.currency=='CNY'){
 									var ua = window.navigator.userAgent.toLowerCase();
 									var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
 									if(isWx){
-										window.location.href = 'https://www.localpanda.cn/wx/getcode?link='+encodeURIComponent(thisUrl.replace('code','oldcode'));
+										window.location.href = 'https://www.localpanda.com/relay/getWechatToken.html?url='+encodeURIComponent('https://www.localpanda.com'+thisUrl);
 									}else{
 										window.location.href = thisUrl;
 									}
 									
 								}else{
-									window.location.href = "https://www.localpanda.com/activity/payment/?objectId=" + response.data.response + '&login='+loginState;
+									window.location.href = "/activity/payment/?objectId=" + response.data.response + '&login='+loginState;
 								}
 
 							}, function(response) {})

@@ -73,10 +73,10 @@
         var ua = window.navigator.userAgent.toLowerCase();
         this.isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
 
-        var tryHref = 'https://www.localpanda.'+(this.symbol=='¥'?'cn':'com')+'/activity/payment/mobile/?objectId='+this.orderId+'&login='+(this.logIn?this.logIn:0);
+        var tryHref = '/activity/payment/?objectId='+this.orderId+'&login='+(this.logIn?this.logIn:0);
 
         if(this.isWx && this.symbol=='¥'){
-          tryHref = 'https://www.localpanda.cn/wx/getcode?link='+encodeURIComponent(tryHref);
+          tryHref = 'https://www.localpanda.com/relay/getWechatToken.html?url='+encodeURIComponent(tryHref);
         }
       
         return tryHref;
