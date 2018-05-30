@@ -285,11 +285,11 @@
 //
 //							}
 //							//跳转
-//							window.location.href = "/payment/mobile/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + '&succeed=' + thisData.succeed + '&symbol=' + that.opctions.symbol + '&currency=' + that.opctions.currency + '&msg=' + msg;
+//							window.location.href = "/payment/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + '&succeed=' + thisData.succeed + '&symbol=' + that.opctions.symbol + '&currency=' + that.opctions.currency + '&msg=' + msg;
 //							//
 //						}, function(response) {
 //							//请求失败跳转
-//							window.location.href = "/payment/mobile/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + '&succeed=false&symbol=' + that.opctions.symbol + '&currency=' + that.opctions.currency;
+//							window.location.href = "/payment/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + '&succeed=false&symbol=' + that.opctions.symbol + '&currency=' + that.opctions.currency;
 //						})
 //					}
 //				})
@@ -540,11 +540,11 @@
 
 							}
 							//跳转
-							window.location.href = "/activity/payment/mobile/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + '&succeed=' + thisData.succeed + '&symbol=' + that.opctions.symbol + '&currency=' + that.opctions.currency + '&msg=' + msg;
+							window.location.href = "/activity/payment/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + '&succeed=' + thisData.succeed + '&symbol=' + that.opctions.symbol + '&currency=' + that.opctions.currency + '&msg=' + msg;
 							//
 						}, function(response) {
 							//请求失败跳转
-							window.location.href = "/activity/payment/mobile/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + '&succeed=false&symbol=' + that.opctions.symbol + '&currency=' + that.opctions.currency;
+							window.location.href = "/activity/payment/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + '&succeed=false&symbol=' + that.opctions.symbol + '&currency=' + that.opctions.currency;
 						})
 					
 			},
@@ -645,7 +645,7 @@
 			},
 			tryAgain() {
 				//var self = this;
-				//window.location.href = 'https://www.localpanda.cn/activity/payment/mobile/?objectId='+self.orderId+'&login='+(self.logIn?self.logIn:0);
+				//window.location.href = 'https://www.localpanda.cn/activity/payment/?objectId='+self.orderId+'&login='+(self.logIn?self.logIn:0);
 			},
 			hideWxOpenBox() {
 				this.showWxOpenBox = false;

@@ -5,6 +5,8 @@
     tap-highlight-color: rgba(0, 0, 0, 0);
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+//基础变量
+@import "~/assets/scss/_mixin.scss";
 //字体
 @import "~/assets/font/iconfont.css";
 // 字体上传到cdn再引用 不要引用无效地址
@@ -40,8 +42,9 @@ html{
 div,input,p,textarea{ box-sizing: border-box;}
 
 body{
-    font-size:0.24rem;
+    font-size:px(24);
     line-height:1.5;
+    //@include scale(1);
 }
 
 ul,li{
