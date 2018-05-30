@@ -16,17 +16,17 @@
 				<h4>Reservation Information</h4>
 				
 				<div class="inputItem" :class="{err:oderFirstNameErr}">
-					<p>First name</p>
+					<p>First name <b>*</b></p>
 					<input :class="{err:oderFirstNameErr}"  @focus="fousOderfisrtname"  v-model="oderFirstName" />
 				</div>
 				<div class="inputItem" :class="{err:oderlastNameErr}">
-					<p>Last name</p>
+					<p>Last name  <b>*</b></p>
 					<input :class="{err:oderlastNameErr}"  @focus="fousoderlastName"   v-model="oderlastName" />
 				</div>
 			
 			
 				<div class="inputItem" :class="{err:emailAddressErr}">
-					<p>Email Address</p>
+					<p>Email Address  <b>*</b></p>
 					<input :class="{err:emailAddressErr}"  @focus="fousEmal"  v-model="emailAddress" />
 				</div>
 				<div class="inputItem" :class="{err:phoneErr}">
@@ -43,18 +43,18 @@
 				
 				<h4>Key Traveler</h4>
 				<div class="inputItem" :class="{err:TravellerFirstNameErr}">
-					<p>First name</p>
+					<p>First name <b>*</b></p>
 					<input :class="{err:TravellerFirstNameErr}"  @focus="fousFirst()" v-model="TravellerFirstName" />
 
 				</div>
 				<div class="inputItem" :class="{err:TravellerlastNameErr}">
-					<p>Last name</p>
+					<p>Last name <b>*</b></p>
 					<input :class="{err:TravellerlastNameErr}"  @focus="fousLastName()" v-model="TravellerlastName" />
 				</div>
 			
 			
 				<div class="inputItem" :class="{err:TravelleremailAddressErr}">
-					<p>Email Address</p>
+					<p>Email Address <b>*</b></p>
 					<input :class="{err:TravelleremailAddressErr}"  @focus="fousidcard" v-model="TravelleremailAddress" />
 				</div>
 				<div class="inputItem" :class="{err:TravellerphoneErr}">
@@ -423,6 +423,9 @@
 					margin-top:0.2rem;
 					padding-bottom: 0.28rem;
 					/*border-bottom: 2px solid #ebebeb;*/
+					b{
+						color: red;
+					}
 					p{
 						font-size:0.24rem;
 						color:#878e95;
