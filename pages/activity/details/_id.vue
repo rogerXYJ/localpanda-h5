@@ -18,6 +18,7 @@
 			:itemsIncluded="itemsIncluded" 
 			:recommed="recommed"
 			:photoList="photoList"
+			:destination="destination"
 			></Mdetails>
 		<transition name="slideleft">
             <Mmeau v-show="isShowMeau" class="Mmeau" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList" :id="id"></Mmeau>

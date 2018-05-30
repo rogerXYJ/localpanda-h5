@@ -5,7 +5,7 @@
 			<div class="activitiyTitle">
 				<h3>{{detail.title}}</h3>
 				<div class="types">
-					<span :key="index" v-for="(i,index) in detail.tourTypes">{{i}}</span>
+					<a :href="returnUrl(i)" v-for="i in detail.tourTypes">{{i}}</a>
 				</div>
 			</div>
 
@@ -214,7 +214,8 @@ if(process.browser) {
 			"inclusions",
 			"exclusions",
 			"notice",
-			"photoList"
+			"photoList",
+			"destination"
 		],
 		name: 'm-details',
 		data() {
@@ -339,6 +340,16 @@ if(process.browser) {
 				} else {
 					return(parseFloat(this.cutXiaoNum(val, 1)) + 0.1).toFixed(1);
 				}
+			},
+			//内链
+			returnUrl(val){
+				val=val.replace(/&/g, 'And')
+				let options={
+					tourtype:[val]
+				}
+				
+				let url="/activity/list/"+this.destination+"?options="+JSON.stringify(options)
+				return url
 			},
 			showTable() {
 				this.isShowTable = false
@@ -614,10 +625,11 @@ if(process.browser) {
 				.types {
 					margin: 0.2rem 0 0.2rem;
 					font-size: 0.3rem;
-					span {
+					a {
 						font-size: 0.26rem;
 						position: relative;
 						padding: 0 0.16rem;
+						color: #1bbc9d;
 						&:first-child {
 							padding-left: 0;
 						}
