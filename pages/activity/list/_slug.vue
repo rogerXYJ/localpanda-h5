@@ -469,7 +469,7 @@
 				border: solid 1px #dde0e0;
 				border-radius: 8px;
 				display: inline-block;
-				padding:0.14rem 0.2rem 0.14rem 0.12rem;
+				padding:0.14rem 0.16rem 0.14rem 0.1rem;
 				&:nth-child(2){
 					i{
 						margin-right:0;

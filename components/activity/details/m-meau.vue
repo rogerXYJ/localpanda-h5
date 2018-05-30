@@ -35,7 +35,7 @@
 				</li>
 			</ul>
 			<div class="inquiryTab">
-				<a :href="'/inquiry?objectId='+id">Send us any questions you have here</a>
+				<a :href="'/info/inquiry?objectId='+id">Send us any questions you have here</a>
 				<i class="iconfont">&#xe620;</i>
 			</div>
 		</div>
@@ -108,10 +108,12 @@
 				
 				li {
 					text-align: center;
-					margin-top: 0.44rem;
+					margin-top: 0.14rem;
 					a {
 						font-size: 0.34rem;
 						color: #878e95;
+						display: block;
+						padding: 0.15rem 0;
 					}
 				}
 			}
