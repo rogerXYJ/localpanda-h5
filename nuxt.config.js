@@ -14,7 +14,6 @@ module.exports = {
       'swiper',
       'axios',
       'vue-lazyload',
-      //'element-ui',
       '~/assets/font/iconfont.js'
     ],
   },
