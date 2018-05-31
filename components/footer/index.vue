@@ -32,7 +32,7 @@
 								</svg>
 							</span>
 						</div>
-						<div class="item" v-for="(j,index) in i.cont" v-else><a :class="j.url?'':'font-color'" :href="j.url?j.url:'javascript:;'" >{{j.text}}</a></div>
+						<div class="item" :key="thisindex" v-for="(j,thisindex) in i.cont" v-else><a :class="j.url?'':'font-color'" :href="j.url?j.url:'javascript:;'" >{{j.text}}</a></div>
 					</div>
 				</li>
 			</ul>
@@ -76,33 +76,32 @@
 	  require('~/assets/font/iconfont.js')
 	  
 	}
-	export default{
+	export default {
 		name:'footMobile',
 		data(){
 			return{
-				footData:[
-					{
+				footData:[{
 						name:"Explore",
 						cont:[
 							{
 								text:"Activities in Shanghai",
-								url:"/activity/list/mobile/Shanghai"
+								url:"/activity/list/Shanghai"
 							},
 							{
 								text:"Activities in Beijing",
-								url:"/activity/list/mobile/Beijing"
+								url:"/activity/list/Beijing"
 							},
 							{
 								text:"Activities in Chengdu",
-								url:"/activity/list/mobile/Chengdu"
+								url:"/activity/list/Chengdu"
 							},
 							{
 								text:"Activities in Xi'an",
-								url:"/activity/list/mobile/Xian"
+								url:"/activity/list/Xian"
 							},
 							{
 								text:"Activities in Guilin",
-								url:"/activity/list/mobile/Guilin"
+								url:"/activity/list/Guilin"
 							},
 							
 						],

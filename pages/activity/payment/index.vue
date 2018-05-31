@@ -353,7 +353,7 @@
 //			},
 			wxInit(){
 				var self = this;
-				self.axios.get("https://api.localpanda.cn/api/payment/wxinfo/get?code=" + this.wxcode+'&orderId='+self.orderId, {
+				self.axios.get("https://api.localpanda.com/api/payment/wxinfo/get?code=" + this.wxcode+'&orderId='+self.orderId, {
 					headers: {
 						'Content-Type': 'application/json'
 					}
@@ -413,8 +413,8 @@
 			wxPay(postData) {
 				var self = this;
 				this.loadingStatus = true;
-				alert(JSON.stringify(postData))
-				self.axios.post("https://api.localpanda.cn/api/payment/pay/wechat", JSON.stringify(postData), {
+				
+				self.axios.post("https://api.localpanda.com/api/payment/pay/wechat", JSON.stringify(postData), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}
@@ -438,7 +438,7 @@
 					}
 
 				}, function(response) {
-					alert(JSON.stringify(response));
+					
 				})
 			},
 
@@ -447,7 +447,7 @@
 				var self = this;
 				//this.loadingStatus = true;
 
-				self.axios.post("https://api.localpanda.cn/api/payment/pay/wechat", JSON.stringify(postData), {
+				self.axios.post("https://api.localpanda.com/api/payment/pay/wechat", JSON.stringify(postData), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}
@@ -649,7 +649,7 @@
 			},
 			tryAgain() {
 				//var self = this;
-				//window.location.href = 'https://www.localpanda.cn/activity/payment/?objectId='+self.orderId+'&login='+(self.logIn?self.logIn:0);
+				//window.location.href = 'https://www.localpanda.com/activity/payment/?objectId='+self.orderId+'&login='+(self.logIn?self.logIn:0);
 			},
 			hideWxOpenBox() {
 				this.showWxOpenBox = false;

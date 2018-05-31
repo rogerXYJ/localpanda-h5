@@ -178,7 +178,7 @@
 				<div v-swiper:swiper="swiperOption">
 					<div class="swiper-wrapper">
 						<div class="swiper-slide" :key="index" v-for="(i,index) in recommed">
-							<a :href="'/activity/details/mobile/'+i.activityId">
+							<a :href="'/activity/details/'+i.activityId">
 								<div class="activity-pic">
 									<img v-lazy="i.coverPhotoUrl">
 								</div>
