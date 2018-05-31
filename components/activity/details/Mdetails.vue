@@ -613,17 +613,17 @@ if(process.browser) {
 		.m-details-cont {
 			margin-top: 0.4rem;
 			.toursType {
-				font-size: 0.22rem;
+				font-size: 0.2rem;
 				color: #1bbc9d;
 			}
 			.activitiyTitle {
-				margin-top: 0.15rem;
+				margin-top: 0.1rem;
 				h3 {
 					font-size: 0.46rem;
 					font-weight: bold;
 				}
 				.types {
-					margin: 0.2rem 0 0.2rem;
+					margin: 0.1rem 0 0.2rem;
 					font-size: 0.3rem;
 					a {
 						font-size: 0.26rem;
@@ -705,7 +705,7 @@ if(process.browser) {
 					.introduction {
 						
 					
-						margin-top: 0.44rem;
+						margin-top: 0.4rem;
 						p {
 							font-size: 0.26rem;
 							margin-top: 0.266666rem;
@@ -889,22 +889,22 @@ if(process.browser) {
 							.activity-info {
 								.duration {
 									float: right;
-									font-size: 0.24rem;
+									font-size: 0.22rem;
 									color: #878e95;
 									i {
-										font-size: 0.24rem;
+										font-size: 0.22rem;
 										color: #878e95;
 										margin-right: 0.173333rem;
 									}
 								}
 								.activity-cont-type {
 									float: left;
-									font-size:  0.24rem;
+									font-size:  0.22rem;
 									color: #d87b65;
 									i {
-										font-size:  0.24rem;
+										font-size:  0.22rem;
 										color: #d87b65;
-										margin-right: 0.173333rem;
+										margin-right: 0.14rem;
 									}
 								}
 							}
