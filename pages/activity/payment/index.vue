@@ -72,7 +72,7 @@
 								<div id="card-cvc" class="field empty"></div>
 							</div>
 						</div>
-
+						<p  v-if="payStatus">{{payErrMsg}}</p>
 					</div>
 
 				</div>
@@ -99,7 +99,7 @@
 
 			</div>
 			<div class="btn">
-				<button @touchstart="getToken()" v-if="payData && !openWxUrl">Pay</button>
+				<button @touchend="getToken()" v-if="payData && !openWxUrl">Pay</button>
 				<a v-if="openWxUrl" :href="openWxUrl" @click="wxOpenClick">Pay</a>
 			</div>
 		</div>
@@ -181,7 +181,8 @@
 				tryAgainHref: '',
 				cardNumber:'',
 				stripe:"",
-				
+				payErrMsg:'',
+				payStatus:false
 			}
 		},
 		components: {
@@ -481,6 +482,7 @@
 			},
 			//stript支付 token
 			getToken(){
+				console.log(1)
 				let that=this
 				if(this.opctions.currency == 'CNY') {
 					//微信内部
@@ -493,11 +495,13 @@
 				that.stripe.createToken(that.cardNumber).then(function(result) {
 			       if (result.error) {
 			      // Inform the user if there was an error.
-				     
+				     that.payStatus=true
+				     console.log(result.error.message)
+				     that.payErrMsg=result.error.message
 				    } else {
 				      // Send the token to your server.
 				      //stripeTokenHandler(result.token);
-				      
+				      that.payStatus=false
 				      
 				      console.log(result.token)
 				      that.stripeTokenHandler(result.token)
@@ -709,7 +713,7 @@
 				padding: 0 0.4rem;
 				.headcommon {
 					border-radius: 0.106666rem;
-					padding: 0.4rem 0;
+					padding: 0.4rem 0.3rem;
 					box-shadow: 0px 8px 40px 0px rgba(0, 0, 0, 0.06);
 					.serviceform {
 						h3 {
@@ -779,6 +783,11 @@
 					.paymentCard {
 						margin-top: 0.44rem;
 						padding:0 0.266666rem;
+						p{
+							margin-top: 0.2rem;
+							font-size: 0.26rem;
+							color: red;
+						}
 						.cardNub{
 							label{
 								font-size: 0.32rem;
@@ -832,6 +841,7 @@
 				left: 0;
 				width: 100%;
 				padding: 0.26rem 0.4rem;
+				background: #fff;
 				button,
 				a {
 					display: block;
