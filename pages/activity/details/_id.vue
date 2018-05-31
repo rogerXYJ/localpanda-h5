@@ -37,7 +37,7 @@
 	}
 	
 	//element-ui 组件
-	require('~/plugins/element-ui.js');
+	//require('~/plugins/element-ui.js');
 
 	import Vue from 'vue';
 	import Head from '~/components/header/index'

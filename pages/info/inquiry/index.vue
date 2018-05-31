@@ -308,6 +308,13 @@ on a 1-1 basis.</p>
 			font-size: 0.34rem!important;
 		}
 	}
+
+	.alertTitle {
+		.box{
+			margin-left: 0 !important;
+		}
+	}
+
 </style> 
 <style lang="scss" scoped>
 	.inquiry{
@@ -458,5 +465,9 @@ on a 1-1 basis.</p>
 		.color8{
 			color: #878e95;
 		}
+
+		
 	}
+
+	
 </style> 

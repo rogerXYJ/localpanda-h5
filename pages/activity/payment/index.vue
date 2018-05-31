@@ -353,7 +353,7 @@
 //			},
 			wxInit(){
 				var self = this;
-				self.axios.get("https://www.localpanda.cn/api/payment/wxinfo/get?code=" + this.wxcode+'&orderId='+self.orderId, {
+				self.axios.get("https://api.localpanda.cn/api/payment/wxinfo/get?code=" + this.wxcode+'&orderId='+self.orderId, {
 					headers: {
 						'Content-Type': 'application/json'
 					}
@@ -414,7 +414,7 @@
 				var self = this;
 				this.loadingStatus = true;
 				alert(JSON.stringify(postData))
-				self.axios.post("https://www.localpanda.cn/api/payment/pay/wechat", JSON.stringify(postData), {
+				self.axios.post("https://api.localpanda.cn/api/payment/pay/wechat", JSON.stringify(postData), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}
@@ -447,7 +447,7 @@
 				var self = this;
 				//this.loadingStatus = true;
 
-				self.axios.post("https://www.localpanda.cn/api/payment/pay/wechat", JSON.stringify(postData), {
+				self.axios.post("https://api.localpanda.cn/api/payment/pay/wechat", JSON.stringify(postData), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}
@@ -623,7 +623,7 @@
 				var self = this;
 				self.loadingStatus = true;
 				//查询订单
-				this.axios.get("https://www.localpanda.com/api/payment/wechat/status?orderId=" + self.orderId + '&flag=1', {
+				this.axios.get("https://api.localpanda.com/api/payment/wechat/status?orderId=" + self.orderId + '&flag=1', {
 					headers: {
 						'Content-Type': 'application/json;'
 					}

@@ -291,7 +291,7 @@
 											window.location.href = thisUrl;
 										}
 									}else{
-										window.location.href = "/activity/payment/?objectId=" + response.data.response + obj.currency + '&login='+loginState;
+										window.location.href = "/activity/payment/?objectId=" + response.data.response + '&login='+loginState;
 									}
 									
 								}, function(response) {})

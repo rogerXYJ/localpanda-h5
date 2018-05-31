@@ -30,7 +30,7 @@ export default {
             var query = this.query;
 
             //查询订单
-            this.axios.get("https://www.localpanda.com/api/payment/wechat/status?orderId="+query.orderId+'&flag=1',{
+            this.axios.get("https://api.localpanda.com/api/payment/wechat/status?orderId="+query.orderId+'&flag=1',{
                 headers: {
                     'Content-Type': 'application/json;'
                 }

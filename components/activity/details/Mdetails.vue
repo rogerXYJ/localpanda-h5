@@ -87,7 +87,30 @@
 			<div class="provide" v-if="picInfo.details.length>0" id="picDetails">
 					<h3>Price Details</h3>
 					<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is  {{nowExchange.symbol}}  {{returnFloat(picInfo.childDiscount)}}  {{nowExchange.code}}  less than adults' price.</p>
-					<el-table :data="sixArr" stripe style="width: 100%">
+
+					<table class="price_list">
+						<tr>
+							<th>No. of people</th>
+							<th>Total cost</th>
+							<th>Price per person</th>
+						</tr>
+						<tr :key="index" v-for="(item,index) in sixArr">
+							<td>
+								<span v-if="item.capacity==1">1 person</span>
+								<span v-else>{{item.capacity}} people</span>
+							</td>
+							<td><span>{{nowExchange.symbol}} {{returnFloat(item.price)}} {{nowExchange.code}}</span></td>
+							<td>
+								<div v-show="item.capacity">
+									<span>{{nowExchange.symbol}} {{returnFloat(item.price/item.capacity)}} {{nowExchange.code}}</span>
+								</div>
+							</td>
+						</tr>
+					</table>
+
+
+
+					<!-- <el-table :data="sixArr" stripe style="width: 100%">
 						<el-table-column prop="capacity" label="No. of people"  align="center">
 							<template slot-scope="scope">
 								<span v-if="scope.row.capacity==1">1 person</span>
@@ -106,7 +129,7 @@
 								</div>
 							</template>
 						</el-table-column>
-					</el-table>
+					</el-table> -->
 					<div class="view" v-if="isShowTable" @click="showTable">View More</div>
 				</div>
 			<div class="provide" id="provide">
@@ -181,7 +204,7 @@
 		</div>
 		<div class="book">
 			<button><a :href="'/info/inquiry?objectId='+id">Inquire</a></button>
-			<button class="bookBtn" @click="goBooking">Check Price</button>
+			<button class="bookBtn" @click="goBooking">Book</button>
 		</div>
 		<photo :photoList="photoList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></photo>
 	</div>
@@ -553,6 +576,29 @@ if(process.browser) {
 		border: 0;
 	}
 	/*@import "~assets/scss/_table.scss";*/
+
+	.price_list{
+		margin-top: 0.2rem;
+		width: 100%;
+		tr{
+			&:nth-child(2n+3){
+				background: rgba(27, 188, 157, .06) !important;
+			}
+		
+			th{
+				text-align: center;
+				
+			}
+			td{
+				text-align: center;
+				font-size: 0.24rem;
+				line-height: 0.56rem;
+				padding: 0.1rem 0;
+				
+			}
+		}
+		
+	}
 
 	.price {
 		text-align: right;
