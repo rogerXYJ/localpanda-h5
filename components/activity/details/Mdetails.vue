@@ -180,7 +180,7 @@
 			</div>
 		</div>
 		<div class="book">
-			<button><a :href="'/inquiry?objectId='+id">Inquire</a></button>
+			<button><a :href="'/info/inquiry?objectId='+id">Inquire</a></button>
 			<button class="bookBtn" @click="goBooking">Check Price</button>
 		</div>
 		<photo :photoList="photoList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></photo>
@@ -305,7 +305,7 @@ if(process.browser) {
 				}
 			},
 			goInqury(){
-				location.href="/inquiry?objectId="+this.id
+				location.href="/info/inquiry?objectId="+this.id
 			},
 			showMore(id) {
 				if(id == 0) {
