@@ -87,7 +87,30 @@
 			<div class="provide" v-if="picInfo.details.length>0" id="picDetails">
 					<h3>Price Details</h3>
 					<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is  {{nowExchange.symbol}}  {{returnFloat(picInfo.childDiscount)}}  {{nowExchange.code}}  less than adults' price.</p>
-					<el-table :data="sixArr" stripe style="width: 100%">
+
+					<table class="price_list">
+						<tr>
+							<th>No. of people</th>
+							<th>Total cost</th>
+							<th>Price per person</th>
+						</tr>
+						<tr :key="index" v-for="(item,index) in sixArr">
+							<td>
+								<span v-if="item.capacity==1">1 person</span>
+								<span v-else>{{item.capacity}} people</span>
+							</td>
+							<td><span>{{nowExchange.symbol}} {{returnFloat(item.price)}} {{nowExchange.code}}</span></td>
+							<td>
+								<div v-show="item.capacity">
+									<span>{{nowExchange.symbol}} {{returnFloat(item.price/item.capacity)}} {{nowExchange.code}}</span>
+								</div>
+							</td>
+						</tr>
+					</table>
+
+
+
+					<!-- <el-table :data="sixArr" stripe style="width: 100%">
 						<el-table-column prop="capacity" label="No. of people"  align="center">
 							<template slot-scope="scope">
 								<span v-if="scope.row.capacity==1">1 person</span>
@@ -106,7 +129,7 @@
 								</div>
 							</template>
 						</el-table-column>
-					</el-table>
+					</el-table> -->
 					<div class="view" v-if="isShowTable" @click="showTable">View More</div>
 				</div>
 			<div class="provide" id="provide">
@@ -152,10 +175,10 @@
 			</div>
 			<div class="recommend" id="recommend" v-if="recommed.length>0">
 				<h3>Similar Experiences</h3>
-				<div v-swiper:swiper="swiperOption">
+				<div class="swiper-container" id="swiper_tuijian">
 					<div class="swiper-wrapper">
 						<div class="swiper-slide" :key="index" v-for="(i,index) in recommed">
-							<a :href="'/activity/details/mobile/'+i.activityId">
+							<a :href="'/activity/details/'+i.activityId">
 								<div class="activity-pic">
 									<img v-lazy="i.coverPhotoUrl">
 								</div>
@@ -180,8 +203,8 @@
 			</div>
 		</div>
 		<div class="book">
-			<button><a :href="'/inquiry?objectId='+id">Inquire</a></button>
-			<button class="bookBtn" @click="goBooking">Check Price</button>
+			<button><a :href="'/info/inquiry?objectId='+id">Inquire</a></button>
+			<button class="bookBtn" @click="goBooking">Book</button>
 		</div>
 		<photo :photoList="photoList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></photo>
 	</div>
@@ -192,11 +215,11 @@
 
 import vue from 'vue'
 import photo from '~/components/activity/details/photo'
-if(process.browser) {
-	const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr')
-	vue.use(VueAwesomeSwiper)
-	require('swiper/dist/css/swiper.css')
-}
+// if(process.browser) {
+// 	const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr')
+// 	vue.use(VueAwesomeSwiper)
+// 	require('swiper/dist/css/swiper.css')
+// }
 	
 	export default {
 		props: [
@@ -222,12 +245,6 @@ if(process.browser) {
 			return {
 				isShowMore: false,
 				showbtn: 0,
-				swiperOption: {
-					lazy: true,
-					slidesPerView :"auto",
-					initialSlide: 0,
-					spaceBetween:17,
-				},
 				sixArr: [],
 				isShowTable: false, //价格明细
 				alertPicStatus: false,
@@ -305,7 +322,7 @@ if(process.browser) {
 				}
 			},
 			goInqury(){
-				location.href="/inquiry?objectId="+this.id
+				location.href="/info/inquiry?objectId="+this.id
 			},
 			showMore(id) {
 				if(id == 0) {
@@ -482,8 +499,14 @@ if(process.browser) {
 			}
 
 
-
+			new Swiper('#swiper_tuijian', {
+				lazy: true,
+				slidesPerView :"auto",
+				initialSlide: 0,
+				spaceBetween:17,
+			});
 			
+
 
 			//var ua = window.navigator.userAgent.toLowerCase();
 			//that.isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
@@ -554,6 +577,29 @@ if(process.browser) {
 	}
 	/*@import "~assets/scss/_table.scss";*/
 
+	.price_list{
+		margin-top: 0.2rem;
+		width: 100%;
+		tr{
+			&:nth-child(2n+3){
+				background: rgba(27, 188, 157, .06) !important;
+			}
+		
+			th{
+				text-align: center;
+				
+			}
+			td{
+				text-align: center;
+				font-size: 0.24rem;
+				line-height: 0.56rem;
+				padding: 0.1rem 0;
+				
+			}
+		}
+		
+	}
+
 	.price {
 		text-align: right;
 	.picinfo {
@@ -613,17 +659,17 @@ if(process.browser) {
 		.m-details-cont {
 			margin-top: 0.4rem;
 			.toursType {
-				font-size: 0.22rem;
+				font-size: 0.2rem;
 				color: #1bbc9d;
 			}
 			.activitiyTitle {
-				margin-top: 0.15rem;
+				margin-top: 0.1rem;
 				h3 {
 					font-size: 0.46rem;
 					font-weight: bold;
 				}
 				.types {
-					margin: 0.2rem 0 0.2rem;
+					margin: 0.1rem 0 0.2rem;
 					font-size: 0.3rem;
 					a {
 						font-size: 0.26rem;
@@ -705,7 +751,7 @@ if(process.browser) {
 					.introduction {
 						
 					
-						margin-top: 0.44rem;
+						margin-top: 0.4rem;
 						p {
 							font-size: 0.26rem;
 							margin-top: 0.266666rem;
@@ -889,22 +935,22 @@ if(process.browser) {
 							.activity-info {
 								.duration {
 									float: right;
-									font-size: 0.24rem;
+									font-size: 0.22rem;
 									color: #878e95;
 									i {
-										font-size: 0.24rem;
+										font-size: 0.22rem;
 										color: #878e95;
 										margin-right: 0.173333rem;
 									}
 								}
 								.activity-cont-type {
 									float: left;
-									font-size:  0.24rem;
+									font-size:  0.22rem;
 									color: #d87b65;
 									i {
-										font-size:  0.24rem;
+										font-size:  0.22rem;
 										color: #d87b65;
-										margin-right: 0.173333rem;
+										margin-right: 0.14rem;
 									}
 								}
 							}

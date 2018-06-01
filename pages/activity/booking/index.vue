@@ -582,14 +582,14 @@
 				left: 0;
 				.next{
 					width: 90%;
-					height:1rem;
+					height:0.9rem;
 					background-image: linear-gradient(270deg,#009efd 0%, #1bbc9d 100%);
 					font-size: 0.3rem;
 					color: #FFF;
 					text-align: center;
-					line-height: 1rem;
+					line-height: 0.9rem;
 					margin: 0 auto;
-					border-radius: 0.6rem;
+					border-radius: 0.45rem;
 
 				}
 			}

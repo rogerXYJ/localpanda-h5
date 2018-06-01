@@ -1,13 +1,13 @@
 <template>
 	<div id="banner">
 		<!--<div class="back"><i class="iconfont" @click="back">&#xe615;</i></div>-->
-		<div v-swiper:swiper="swiperOptionBanner">
+		<div class="swiper-container" id="swiper_bannerbox">
 			<div class="swiper-wrapper">
 				<div class="swiper-slide" :key="index" v-for="(slide, index) in bannerPhotos">
-					<img :src="slide"  />
+					<img v-lazy="slide"  />
 				</div>
 			</div>
-			
+			<div class="swiper-pagination" id="swiper_banner_pagination"></div>
 		</div>
 		
 	</div>
@@ -16,30 +16,17 @@
 
 import vue from 'vue'
 
-if (process.browser){
-  	const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr')
-	vue.use(VueAwesomeSwiper)
-  	require('swiper/dist/css/swiper.css')
+// if (process.browser){
+//   	const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr')
+// 	vue.use(VueAwesomeSwiper)
+//   	require('swiper/dist/css/swiper.css')
   	
-}
+// }
 export default {
   props: ["bannerPhotos", "destination"],
   name: "banner",
   data() {
-    return {
-      swiperOptionBanner: {
-        lazy: true,
-        autoplay: {
-        	 disableOnInteraction: false	
-        },
-        delay: 3000,
-        autoplayDisableOnInteraction: false,
-        speed: 1000,
-        loop: true,
-        WrapperSize: true,
-		initialSlide: 0,
-      },
-    };
+    return {};
   },
   components: {},
   methods: {
@@ -48,7 +35,10 @@ export default {
     	}
   },
   mounted: function() {
-  
+    
+    
+    
+
   }
 };
 </script>
@@ -66,7 +56,9 @@ export default {
   }
   img {
     width: 100%;
-    height: 100%;
+  }
+  img[lazy=loading]{
+    width: 1px;
   }
   
 }

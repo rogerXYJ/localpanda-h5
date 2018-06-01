@@ -8,7 +8,7 @@
 			<div class="details">
 				<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is   {{picInfo.symbol}}  {{returnFloat(picInfo.childDiscount)}} {{picInfo.currency}}  less than adults' price.</p>
 				<el-table :data="sixArr" stripe style="width: 100%">
-					<el-table-column prop="capacity" label="Number of people"  align="center" width="90">
+					<el-table-column prop="capacity" label="No. of people"  align="center" width="90">
 						<template slot-scope="scope">
 							<span v-if="scope.row.capacity==1">1 person</span>
 							<span v-else>{{scope.row.capacity}} people</span>
@@ -171,7 +171,7 @@
 	}
 	.el-table th>.cell {
 		
-		font-size: 0.32rem;
+		font-size: 0.26rem;
 		font-weight: bold;
 		color: #353a3f;
 		
@@ -179,7 +179,7 @@
 		
 	}
 	.el-table {
-		margin-top: 0.64rem;
+		margin-top: 0.2rem;
 	}
 	
 	.el-table--group::after,
@@ -242,7 +242,7 @@
 			
 			p{
 				font-size: 0.32rem;
-				margin-top: 0.266666rem;
+				margin-top: 0.2rem;
 			}
 		}
 	}

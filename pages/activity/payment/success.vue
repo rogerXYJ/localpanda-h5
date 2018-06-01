@@ -21,7 +21,7 @@
 
     <p class="order_contact c_666" v-if="showTipTxt && success">You ordered as a guest. You can click this button to view your order details.</p>
     <p class="order_contact c_666" v-else-if="success">Click this button and view your order details.</p>
-	<div class="btn">
+	<div class="btn_success">
 		 <a class="btn_href" :href="getJumpUrl(logIn)" v-if="success && email">View My Order</a>
 	    <a class="btn_href" href="/" v-else-if="!email">Back to home</a>
 	    <a class="btn_href" :href="tryUrl" v-else>Try again</a>
@@ -149,7 +149,7 @@
     .c_666{
       color: #666;
     }
-	.btn{
+	.btn_success{
 		
 		position: fixed; 
 		left: 0;

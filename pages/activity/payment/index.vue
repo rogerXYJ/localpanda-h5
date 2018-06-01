@@ -102,6 +102,7 @@
 			<div class="btn">
 				<button @touchend="getToken()" v-if="payData && !showWxUrl">Pay</button>
 				<a v-if="showWxUrl" :href="openWxUrl" @click="wxOpenClick">Pay</a>
+
 			</div>
 		</div>
 
@@ -431,7 +432,6 @@
 			wxPay(postData) {
 				var self = this;
 				this.loadingStatus = true;
-				alert(JSON.stringify(postData))
 				self.axios.post("https://api.localpanda.com/api/payment/pay/wechat", JSON.stringify(postData), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
@@ -456,7 +456,7 @@
 					}
 
 				}, function(response) {
-					alert(JSON.stringify(response));
+					
 				})
 			},
 
@@ -670,7 +670,7 @@
 			},
 			tryAgain() {
 				//var self = this;
-				//window.location.href = 'https://www.localpanda.cn/activity/payment/?objectId='+self.orderId+'&login='+(self.logIn?self.logIn:0);
+				//window.location.href = 'https://www.localpanda.com/activity/payment/?objectId='+self.orderId+'&login='+(self.logIn?self.logIn:0);
 			},
 			hideWxOpenBox() {
 				this.showWxOpenBox = false;
@@ -861,7 +861,7 @@
 					}
 				}
 			}
-			.btn {
+			.btn_pay {
 				position: fixed;
 				bottom: 0;
 				left: 0;
