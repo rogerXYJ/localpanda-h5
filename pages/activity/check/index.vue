@@ -44,7 +44,7 @@
 			<p>{{dateErrText}}</p>
 			<p>You can get a 100% refund up to {{refundTimeLimit}} hours before your trip.</p>
 		</div>
-		<div class="btn">
+		<div class="btn_next">
 			<button @click="order">Next</button>
 		</div>
 		<transition name="slideleft">
@@ -607,7 +607,7 @@
 				}
 			}
 		}
-		.btn {
+		.btn_next {
 			position: fixed;
 			bottom: 0;
 			left: 0;
@@ -616,12 +616,12 @@
 			z-index: 99;
 			button {
 				width: 100%;
-				height: 1rem;
-				line-height: 1rem;
+				height: 0.9rem;
+				line-height: 0.9rem;
 				background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
 				text-align: center;
 				color: #fff;
-				border-radius: 0.6rem;
+				border-radius: 0.45rem;
 				font-size: 0.32rem;
 				font-weight: bold;
 			}

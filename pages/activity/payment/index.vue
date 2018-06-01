@@ -98,7 +98,7 @@
 				</div>-->
 
 			</div>
-			<div class="btn">
+			<div class="btn_pay">
 				<button @touchend="getToken()" v-if="payData && !openWxUrl">Pay</button>
 				<a v-if="openWxUrl" :href="openWxUrl" @click="wxOpenClick">Pay</a>
 			</div>
@@ -835,7 +835,7 @@
 					}
 				}
 			}
-			.btn {
+			.btn_pay {
 				position: fixed;
 				bottom: 0;
 				left: 0;

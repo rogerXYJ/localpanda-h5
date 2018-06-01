@@ -20,7 +20,8 @@
 					<a href="#exclusions">Exclusions</a>
 				</li>
 				<li v-if="notice.length>0">
-					<a href="#notice"></a>Additional Info</li>
+					<a href="#notice">Additional Info</a>
+				</li>
 				<li v-if="picInfo.priceInstructions">
 					<a href="#PriceNote">Price Note</a>
 				</li>

@@ -45,9 +45,7 @@ on a 1-1 basis.</p>
 			</div>
 		</div>
 		
-		<div class="btn">
-			<button @click.stop="submit">Submit</button>
-		</div>
+		<div class="btn" @click.stop="submit">Submit</div>
 		<Dialog @setIsShowAlert="setShowAlert" 
 				:isShowAlert="isShowAlert"
 				:alertTitle="alertTitle"
@@ -61,7 +59,7 @@ on a 1-1 basis.</p>
 
 <script>
 
-	import Dialog from "~/components/inquiry/Dialog"
+	import Dialog from "~/components/info/inquiry/Dialog"
 	import { regExp, GetDateStr, addmulMonth } from '~/assets/js/utils'
 	import Flatpickr from 'flatpickr';
 	export default {
@@ -318,7 +316,7 @@ on a 1-1 basis.</p>
 </style> 
 <style lang="scss" scoped>
 	.inquiry{
-		padding:0 0.5rem;
+		padding:0 0.5rem 1rem;
 		.back {
 			padding: 0.34rem 0 0.3rem;
 			i{
@@ -437,19 +435,7 @@ on a 1-1 basis.</p>
 			}
 		}
 		.btn{
-			padding: 0.6rem 0;
-			
-			button{
-				width: 100%;
-				height: 1rem;
-				line-height:1rem;
-				text-align: center;
-				background-image: linear-gradient(270deg,#009efd 0%,#1bbc9d 100%);
-				font-size: 0.3rem;
-				color: #fff;
-				font-weight: bold; 
-				border-radius:0.5rem;
-			};
+			margin-top: 0.6rem;
 		}
 		.win_bg{ width:100%;height: 100%; background-color:rgba(0,0,0,0.5); position:fixed; left:0; top:0;}
 		.fade-enter-active, .fade-leave-active {

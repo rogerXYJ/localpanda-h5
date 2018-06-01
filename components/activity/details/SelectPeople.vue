@@ -182,13 +182,13 @@ mounted: function() {
 				padding: 0.373333rem 0.586666rem;
 				button{
 					width: 100%;
-					height:1rem;
-					line-height:1rem;
+					height:0.9rem;
+					line-height:0.9rem;
 					background-image: linear-gradient(270deg,#009efd 0%,#1bbc9d 100%);
 					text-align: center;
 					color: #fff;
-					border-radius: 0.6rem;
-					font-size: 0.346666rem;
+					border-radius: 0.45rem;
+					font-size: 0.3rem;
 					font-weight: bold;
 				}
 			}

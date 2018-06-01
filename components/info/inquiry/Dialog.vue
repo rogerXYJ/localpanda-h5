@@ -65,6 +65,7 @@
 			z-index: 1100;
 			border-radius: 0.4rem;
 			overflow: hidden;
+			margin-left: 0!important;
 			.con{
 				width:6.16rem;
 				margin: 0 auto;
@@ -95,6 +96,7 @@
 				color: #fff;
 				line-height: 1rem;
 				font-size:0.4rem; 
+				display: block;
 			}
 		}
 		.c{}

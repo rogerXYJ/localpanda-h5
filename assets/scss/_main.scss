@@ -80,13 +80,23 @@ button {
     display: none;
 }
 input,button,select,textarea{ outline:none;overflow: hidden;}
-
-
-
 input {
     padding-left: 10px;
 }
 
+
+.btn{
+    height: 0.9rem;
+    line-height: 0.9rem;
+    text-align: center;
+    width: 100%;
+    display: inline-block;
+    background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
+    background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+    border-radius: 0.45rem;
+    color: #fff;
+    font-size: 0.3rem;
+}
 
 /*
  * vue专用
