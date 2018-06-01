@@ -39,21 +39,23 @@
 					</div>
 				</div>
 				<div class="payment">
-					<div class="striptcard" v-if="opctions.currency == 'CNY'">
+					<div class="striptcard" @click="selectCard(1)" v-if="opctions.currency == 'CNY'">
 						<i>
 							<svg class="icon" aria-hidden="true">
 							    <use xlink:href="#icon-wechat"></use>
 							</svg>
 						</i>
 						<span>Wechat</span>
-						<div class="selectCarType"></div>
+						<div class="selectCarType" v-if="id==0"></div>
+						<div class="selectCarTypeNull"  v-else></div>
 					</div>
-					<div class="striptcard" v-else>
+					<div class="striptcard" @click="selectCard(0)">
 						<i class="iconfont">&#xe675;</i>
 						<span>Credit/Debit Card </span>
-						<div class="selectCarType"></div>
+						<div class="selectCarType" v-if="opctions.currency != 'CNY'||id==1"></div>
+						<div class="selectCarTypeNull" v-else></div>
 					</div>
-					<div class="paymentCard" v-if="opctions.currency != 'CNY'">
+					<div class="paymentCard"  v-show="opctions.currency != 'CNY'||id==1">
 						<div class="cardNub">
 							<label>CARD NUMBER</label>
 							<div class="cardNub_ clearfix">
@@ -72,9 +74,8 @@
 								<div id="card-cvc" class="field empty"></div>
 							</div>
 						</div>
-						<p  v-if="payStatus">{{payErrMsg}}</p>
+					<p style="margin-top: 0.2rem; font-size: 0.32rem;color:red" v-if="payStatus">{{payErrMsg}}</p>
 					</div>
-
 				</div>
 				<!--<div class="pic">
 					<div class="adult clearfix">
@@ -99,8 +100,8 @@
 
 			</div>
 			<div class="btn">
-				<button @touchend="getToken()" v-if="payData && !openWxUrl">Pay</button>
-				<a v-if="openWxUrl" :href="openWxUrl" @click="wxOpenClick">Pay</a>
+				<button @touchend="getToken()" v-if="payData && !showWxUrl">Pay</button>
+				<a v-if="showWxUrl" :href="openWxUrl" @click="wxOpenClick">Pay</a>
 			</div>
 		</div>
 
@@ -178,11 +179,14 @@
 				payData: '',
 				showWxOpenBox: false,
 				openWxUrl: '',
+				showWxUrl:false,
 				tryAgainHref: '',
 				cardNumber:'',
 				stripe:"",
-				payErrMsg:'',
-				payStatus:false
+				id:'',//切换支付方式
+				payStatus:false,
+				payErrMsg:''
+				
 			}
 		},
 		components: {
@@ -195,6 +199,21 @@
 
 				this.changePrice(value);
 
+			},
+			selectCard(id){
+				
+				if(id==0){
+					this.id=1
+					this.showWxUrl=false
+					
+				}else{
+					this.id=0
+					if(!this.isWx){
+						this.showWxUrl=true
+					}
+				}
+				
+				console.log(this.id)
 			},
 			changePrice(value) {
 				var priceAll = this.opctions.priceAll;
@@ -313,10 +332,9 @@
 								objectType: 'ACTIVITY'
 							});
 						}
-					} else {
-						//默认用来显示支付按钮，微信里面用来公众号支付数据
-						that.payData = 1;
-					}
+					};
+					//默认用来显示支付按钮，微信里面用来公众号支付数据
+					that.payData = 1;
 
 				}, function(res) {})
 			},
@@ -353,7 +371,7 @@
 //			},
 			wxInit(){
 				var self = this;
-				self.axios.get("https://www.localpanda.cn/api/payment/wxinfo/get?code=" + this.wxcode+'&orderId='+self.orderId, {
+				self.axios.get("https://api.localpanda.com/api/payment/wxinfo/get?code=" + this.wxcode+'&orderId='+self.orderId, {
 					headers: {
 						'Content-Type': 'application/json'
 					}
@@ -414,7 +432,7 @@
 				var self = this;
 				this.loadingStatus = true;
 				alert(JSON.stringify(postData))
-				self.axios.post("https://www.localpanda.cn/api/payment/pay/wechat", JSON.stringify(postData), {
+				self.axios.post("https://api.localpanda.com/api/payment/pay/wechat", JSON.stringify(postData), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}
@@ -447,7 +465,7 @@
 				var self = this;
 				//this.loadingStatus = true;
 
-				self.axios.post("https://www.localpanda.cn/api/payment/pay/wechat", JSON.stringify(postData), {
+				self.axios.post("https://api.localpanda.com/api/payment/pay/wechat", JSON.stringify(postData), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}
@@ -464,6 +482,7 @@
 						//唤起微信a标签的href
 						self.openWxUrl = openWxUrl;
 						self.tryAgainHref = openWxUrl;
+						self.showWxUrl = true;
 						//window.location.href = openWxUrl;
 
 					} else {
@@ -482,32 +501,33 @@
 			},
 			//stript支付 token
 			getToken(){
-				console.log(1)
 				let that=this
 				if(this.opctions.currency == 'CNY') {
 					//微信内部
 					if(this.isWx) {
 						this.wxPay(this.payData);
 					}
-					return;
+					
 				}
+				console.log(11)
+					that.stripe.createToken(that.cardNumber).then(function(result) {
+				       if (result.error) {
+				      // Inform the user if there was an error.
+					     that.payStatus=true
+					     that.payErrMsg=result.error.message
+					    } else {
+					      // Send the token to your server.
+					      //stripeTokenHandler(result.token);
+					      that.payStatus=false
+					      
+					      console.log(result.token)
+					      that.stripeTokenHandler(result.token)
+					
+					    }
+				   })
 				
-				that.stripe.createToken(that.cardNumber).then(function(result) {
-			       if (result.error) {
-			      // Inform the user if there was an error.
-				     that.payStatus=true
-				     console.log(result.error.message)
-				     that.payErrMsg=result.error.message
-				    } else {
-				      // Send the token to your server.
-				      //stripeTokenHandler(result.token);
-				      that.payStatus=false
-				      
-				      console.log(result.token)
-				      that.stripeTokenHandler(result.token)
 				
-				    }
-			   })
+				
 			},
 			//发起支付
 			stripeTokenHandler(token){
@@ -555,6 +575,7 @@
 			// 设置卡元素
 			stripeFn() {
 				this.stripe=Stripe(payCode)
+				console.log(this.stripe)
 				var elements = this.stripe.elements({
 					fonts: [{
 						cssSrc: 'https://fonts.googleapis.com/css?family=Quicksand',
@@ -623,7 +644,7 @@
 				var self = this;
 				self.loadingStatus = true;
 				//查询订单
-				this.axios.get("https://www.localpanda.com/api/payment/wechat/status?orderId=" + self.orderId + '&flag=1', {
+				this.axios.get("https://api.localpanda.com/api/payment/wechat/status?orderId=" + self.orderId + '&flag=1', {
 					headers: {
 						'Content-Type': 'application/json;'
 					}
@@ -773,7 +794,17 @@
 							width: 0.34rem;
 							height: 0.34rem;
 							border-radius: 50%;
-							border: 0.1rem solid #1bbc9d;
+							border: 0.12rem solid #1bbc9d;
+							position: absolute;
+							right: 0;
+							top: 50%;
+							transform: translateY(-50%);
+						}
+						.selectCarTypeNull{
+							width: 0.38rem;
+							height: 0.38rem;
+							border-radius: 50%;
+							border:0.02rem solid #d0d0d0;
 							position: absolute;
 							right: 0;
 							top: 50%;
@@ -783,11 +814,6 @@
 					.paymentCard {
 						margin-top: 0.44rem;
 						padding:0 0.266666rem;
-						p{
-							margin-top: 0.2rem;
-							font-size: 0.26rem;
-							color: red;
-						}
 						.cardNub{
 							label{
 								font-size: 0.32rem;
