@@ -8,7 +8,7 @@
 					<div class="swiper-container gallery-top" id="swiper_photo">
 						<div class="swiper-wrapper">
 							<div class="swiper-slide" :key="index" v-for="(i,index) in photoList">
-								<img :src="i.url" />
+								<img v-lazy="i.url" />
 							</div>					
 						</div>
 					</div>

@@ -245,12 +245,6 @@ import photo from '~/components/activity/details/photo'
 			return {
 				isShowMore: false,
 				showbtn: 0,
-				swiperOption: {
-					lazy: true,
-					slidesPerView :"auto",
-					initialSlide: 0,
-					spaceBetween:17,
-				},
 				sixArr: [],
 				isShowTable: false, //价格明细
 				alertPicStatus: false,
@@ -505,7 +499,6 @@ import photo from '~/components/activity/details/photo'
 			}
 
 
-
 			new Swiper('#swiper_tuijian', {
 				lazy: true,
 				slidesPerView :"auto",
@@ -514,9 +507,6 @@ import photo from '~/components/activity/details/photo'
 			});
 			
 
-			
-
-			
 
 			//var ua = window.navigator.userAgent.toLowerCase();
 			//that.isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;

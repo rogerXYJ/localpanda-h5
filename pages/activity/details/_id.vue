@@ -233,6 +233,24 @@
 			this.logIn = window.localStorage.getItem("logstate");
 			document.addEventListener("click", function(){data.isShowMeau=false});
 			window.addEventListener("scroll", this.scorllBar);
+
+
+			setTimeout(function(){
+				new Swiper('#swiper_bannerbox', {
+					autoplay: {
+						delay: 3000,
+						disableOnInteraction: false
+					},
+					loop: true,
+					lazy: true,
+					// 如果需要分页器
+					pagination: {
+						el: '#swiper_banner_pagination'
+					}
+				});
+			},200);
+		
+
 		},
 		watch: {
 			isShowMeau:function(val,oldVal){

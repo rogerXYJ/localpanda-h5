@@ -4,7 +4,7 @@
 		<div class="swiper-container" id="swiper_bannerbox">
 			<div class="swiper-wrapper">
 				<div class="swiper-slide" :key="index" v-for="(slide, index) in bannerPhotos">
-					<img :src="slide"  />
+					<img v-lazy="slide"  />
 				</div>
 			</div>
 			<div class="swiper-pagination" id="swiper_banner_pagination"></div>
@@ -36,20 +36,8 @@ export default {
   },
   mounted: function() {
     
-    new Swiper('#swiper_bannerbox', {
-      autoplay: {
-        delay: 3000,
-        disableOnInteraction: false
-      },
-      loop: true,
-      lazy:true,
-      setWrapperSize : true,
-      // 如果需要分页器
-      pagination: {
-        el: '#swiper_banner_pagination'
-      }
-    });
-
+    
+    
 
   }
 };
@@ -68,7 +56,9 @@ export default {
   }
   img {
     width: 100%;
-    height: 100%;
+  }
+  img[lazy=loading]{
+    width: 1px;
   }
   
 }
