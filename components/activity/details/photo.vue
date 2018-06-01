@@ -1,11 +1,11 @@
 <template>
 	<div id="photo" v-bind:class="['alertPicOuter',alertPicActive ? 'on' : 'off']">
 		<div class="false" @click="cancle"><i class="iconfont">&#xe606;</i></div>
-			<div class="swiper-pagination" slot="pagination"></div>
+			<div class="swiper-pagination" id="swiper_photo_pagination"></div>
 			<div v-bind:class="{'boxshow animated zoomIn' : alertPicActive , 'boxshow animated zoomOut' : !alertPicActive}">
 				<div class="conter">
 					
-					<div v-swiper:swiperTop="swiperOptionTop" class="gallery-top" ref="swiperTop">
+					<div class="swiper-container gallery-top" id="swiper_photo">
 						<div class="swiper-wrapper">
 							<div class="swiper-slide" :key="index" v-for="(i,index) in photoList">
 								<img :src="i.url" />
@@ -98,8 +98,24 @@ export default {
 			alertPicStatus: function(val, oldVal) {
 				if(val) {
 					this.alertPicActive = true;
+
+					var self = this;
+					setTimeout(function(){
+						self.swiper_photo = new Swiper('#swiper_photo', {
+							lazy: {
+								loadPrevNext: true,
+							},
+							// 如果需要分页器
+							pagination: {
+								el: '#swiper_photo_pagination',
+								type: 'fraction'
+							}
+						});
+					},200);
+					
 				} else {
 					this.alertPicActive = false;
+					this.swiper_photo.destroy();
 				}
 			}
 		},
@@ -117,6 +133,7 @@ export default {
 		mounted:function() {
 			 
 			 
+		
 		},
 		props: ['alertPicStatus','photoList']
 	}

@@ -12,20 +12,20 @@ module.exports = {
     //publicPath: '/mobile/_nuxt/', //PC和移动共存区分用
 
     vendor: [
-      'swiper',
+      //'swiper',
       'axios',
       'vue-lazyload',
       '~/assets/font/iconfont.js'
     ],
   },
   plugins: [
-    { src: '~/plugins/swiper.js', ssr: false },
+    // { src: '~/plugins/swiper.js', ssr: false },
     { src: '~/plugins/axios.js'},
     { src: '~/plugins/vue-lazyload.js', ssr: false },
     { src: '~/plugins/ga.js', ssr: false }
   ],
   css: [
-    'swiper/dist/css/swiper.css',
+    '~/assets/scss/plugin/swiper.min.css',
     '~/assets/scss/_main.scss'
   ],
   render: {

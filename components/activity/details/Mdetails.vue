@@ -175,7 +175,7 @@
 			</div>
 			<div class="recommend" id="recommend" v-if="recommed.length>0">
 				<h3>Similar Experiences</h3>
-				<div v-swiper:swiper="swiperOption">
+				<div class="swiper-container" id="swiper_tuijian">
 					<div class="swiper-wrapper">
 						<div class="swiper-slide" :key="index" v-for="(i,index) in recommed">
 							<a :href="'/activity/details/'+i.activityId">
@@ -215,11 +215,11 @@
 
 import vue from 'vue'
 import photo from '~/components/activity/details/photo'
-if(process.browser) {
-	const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr')
-	vue.use(VueAwesomeSwiper)
-	require('swiper/dist/css/swiper.css')
-}
+// if(process.browser) {
+// 	const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr')
+// 	vue.use(VueAwesomeSwiper)
+// 	require('swiper/dist/css/swiper.css')
+// }
 	
 	export default {
 		props: [
@@ -505,6 +505,16 @@ if(process.browser) {
 			}
 
 
+
+			new Swiper('#swiper_tuijian', {
+				lazy: true,
+				slidesPerView :"auto",
+				initialSlide: 0,
+				spaceBetween:17,
+			});
+			
+
+			
 
 			
 
