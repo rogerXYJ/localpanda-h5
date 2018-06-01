@@ -12,7 +12,7 @@
 					<input class="input validate" type="text" vType="enName" v-model="firstName" placeholder="Last name">
 				</li>
 				<li>
-					<input class="input validate" type="text" vType="text" v-model="email" placeholder="Email">
+					<input class="input validate" type="text" vType="email" v-model="email" placeholder="Email">
 				</li>
 				<li>
 					<span class="btn" @click="search">Submit</span>
