@@ -1,8 +1,9 @@
 <template >
 	<div class="searchMyBooking" >
-		<div class="pageBack" @click="pageBack">
-			<i class="iconfont">&#xe615;</i>
-		</div>
+
+		<!-- 返回上一页，可以设置title属性,标签内有插槽可以写右上角的按钮等 -->
+		<headBack title=""></headBack>
+		
 		<div class="page_main">
 			<h2>For Guest Users</h2>
 			<p class="top_tip">Please enter reservee's following<br>information to view the order status</p>
@@ -34,11 +35,12 @@
 
 <script>
 	import Validate from "~/assets/js/panda/validate.js"
+	import headBack from "~/components/header/back"
 
 	export default {
 		name: 'searchMyBooking',
 		components: {
-			
+			headBack
 		},
 		data(){
 			return {
@@ -50,9 +52,6 @@
 			}
 		},
 		methods: {
-			pageBack(){
-				history.back()
-			},
 			search(){
 				var self = this;
 
@@ -216,12 +215,6 @@
 	}
 </script>
 <style lang="scss">
-	.pageBack{
-		height: 0.9rem;
-		line-height: 0.9rem;
-		padding: 0 0.4rem;
-		font-size: 0.44rem;
-	}
 	.page_main{
 		padding: 0 0.4rem;
 	}
@@ -291,8 +284,8 @@
 			text-align: center;
 		}
 		.btn{
-			background-color: #4361b3;
-			margin-top: 0.36rem;
+			background: #4361b3;
+			margin: 0.36rem 0 0;
 			i{
 				font-size: 0.36rem;
 				vertical-align: top;
