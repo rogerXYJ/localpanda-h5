@@ -1,5 +1,5 @@
 <template>
-	<div class="fillYourInfo">
+	<div class="fillYourInfo" id="fillYourInfo">
 		<div class="back"><i class="iconfont" @click="back">&#xe615;</i></div>
 		<div class="fillInfo">
 			<h3>Fill in your information</h3>
@@ -29,8 +29,15 @@
 					<p>Email Address  <b>*</b></p>
 					<input :class="{err:emailAddressErr}"  @focus="fousEmal"  v-model="emailAddress" />
 				</div>
+				<div class="inputItem" :class="{err:codeErr}">
+					<p>Country Code  <b>*</b></p>
+					<div class="inputbox">
+						<input :class="{err:codeErr}" readonly="readonly" onfocus="this.blur()" @click="showCodeFn(0)"  v-model="mobileCode" />
+						<i class="iconfont">&#xe60f;</i>
+					</div>
+				</div>
 				<div class="inputItem" :class="{err:phoneErr}">
-					<p>Mobile phone(optional)</p>
+					<p>Mobile phone <b>*</b></p>
 					<input :class="{err:phoneErr}"  @focus="fousPhone" v-model="phone" />
 				</div>
 			</div>
@@ -57,6 +64,13 @@
 					<p>Email Address <b>*</b></p>
 					<input :class="{err:TravelleremailAddressErr}"  @focus="fousidcard" v-model="TravelleremailAddress" />
 				</div>
+				<div class="inputItem" :class="{err:TravellerCodeErr}">
+					<p>Country Code </p>
+					<div class="inputbox">
+						<input :class="{err:TravellerCodeErr}" readonly="readonly" onfocus="this.blur()"  @click="showCodeFn(1)"  v-model="mobileTravellCode" />
+						<i class="iconfont">&#xe60f;</i>
+					</div>
+				</div>
 				<div class="inputItem" :class="{err:TravellerphoneErr}">
 					<p>Mobile phone(optional)</p>
 					<input :class="{err:TravellerphoneErr}"  @focus="fousphonenumb()" v-model="Travellerphone" />
@@ -75,15 +89,19 @@
 		<div class="nextBtn">
 			<div class="next" @touchend="next">NEXT</div>
 		</div>
+		<transition name="fade">
+            <booking v-show="isShowBook" :countryCode="countryCode" @getCode="setCode" @back="setback" class="view"></booking>
+        </transition>
 	</div>
 </template>
 
 <script>
 	import Vue from 'vue'
-
+	import booking from '~/components/booking'
 
 	
 	import { regExp } from '~/assets/js/utils.js'
+	import countryCode from '~/assets/js/countryCode.js'
 	export default {
 		name: 'fillYourInfo',
 		async asyncData({ apiBasePath }) {
@@ -124,20 +142,63 @@
 				check: 0, //checked
 				addOder: false,
 				
+				
+				//国家
+				mobileCode:'',
+				codeErr:'',
+				countryCode: countryCode.phone_countries,
+				
+				//显示code列表
+				showCode: false,
+				code: '',
+				
+				TravellerCodeErr: false,
+				mobileTravellCode: "", //选中国家区号
+				TravellerCode: '', //区号
+				showTravellCode: false,
+				
+				index:"",//区分联系人
+				isShowBook:false
 			}
 
 		},
 		components: {
-			
+			booking
 
 		},
 		methods: {
+			//关闭国家
+			setback(val){
+				this.isShowBook=val	
+			},
+			//获取code
+			setCode(val){
+				console.log(this.index)
+				if(this.index==0){
+					this.mobileCode=val.mobileCode
+					this.code=val.code
+				}else{
+					this.mobileTravellCode=val.mobileCode
+					this.TravellerCode=val.code
+				}
+				this.isShowBook=val.status
+			},
 			back(){
 				 history.back()
 			},
+			//显示国家
+			showCodeFn(index){
+				if(index==0){
+					this.codeErr=false
+					this.index=0
+				}else{
+					this.TravellerCodeErr=false
+					this.index=1
+				}
+				this.isShowBook=true
+			},
 			checkFn(id) {
 				if(id == 0) {
-
 					this.check = 1
 
 				} else {
@@ -157,27 +218,6 @@
 				this.isShowAlertTitle = val;
 			},
 
-			goBackFn() {
-				let $this = this
-				if(window.history && window.history.pushState) {
-					window.addEventListener('popstate', function() {
-						var hashLocation = location.hash;
-						var hashSplit = hashLocation.split("#!/");
-						var hashName = hashSplit[1];
-						if(hashName !== '') {
-							var hash = window.location.hash;
-							if(hash === '') {
-								$this.isShowAlertTitle = true
-								$this.alertMessage = "If you leave the page, the information will not be saved. Are you sure to leave?";
-							}
-
-						}
-					})
-					window.history.pushState('popstate', null, '#');
-
-				}
-			},
-			
 			fousOderfisrtname() {
 				this.oderFirstNameErr = false
 			},
@@ -222,7 +262,10 @@
 					that.emailAddressErr = true
 					
 					
-				} else if(!regExp.isMobil(that.phone)) {
+				}else if(!that.mobileCode){
+					that.codeErr=true
+					
+				}else if(that.phone=="" || !regExp.isMobil(that.phone)) {
 					that.phoneErr = true
 					
 					
@@ -262,13 +305,13 @@
 								"contactInfo": {
 									"firstName": that.oderFirstName,
 									"lastName": that.oderlastName,
-									"phoneNumber": that.phone ? that.phone : null,
+									"phoneNumber":that.code+that.phone,
 									"emailAddress": that.emailAddress
 								},
 								"travelerInfo": {
 									"firstName": that.TravellerFirstName,
 									"lastName": that.TravellerlastName,
-									"phoneNumber": that.Travellerphone,
+									"phoneNumber": that.travellCode+that.Travellerphone,
 									"emailAddress": that.TravelleremailAddress
 								},
 								"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
@@ -315,7 +358,7 @@
 							"contactInfo": {
 								"firstName": that.oderFirstName,
 								"lastName": that.oderlastName,
-								"phoneNumber": that.phone ? that.phone : null,
+								"phoneNumber": that.code+that.phone,
 								"emailAddress": that.emailAddress
 							},
 							"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
@@ -366,7 +409,15 @@
 
 		},
 		watch: {
-
+			isShowBook:function(val,oldVal){
+				if(val){
+					console.log(val)
+					document.getElementsByTagName("body")[0].style.overflowY="hidden"
+					
+				}else{
+					document.getElementsByTagName("body")[0].style.overflowY="inherit"
+				}
+			}
 		}
 	}
 </script>
@@ -376,10 +427,11 @@
 	}
 	::-webkit-input-placeholder { /* WebKit browsers */
 	    color:    #878e95; 
+	    
 	}
 	
 </style>
-<style lang="scss" scoped>
+<style lang="scss">
 	.fillYourInfo {
 		padding: 0 0.4rem 1.4rem;
 		.back {
@@ -430,15 +482,28 @@
 						font-size:0.24rem;
 						color:#878e95;
 					}
+					.inputbox{
+						position: relative;
+						i{
+							position: absolute;
+							right: 0.1rem;
+							top: 0.4rem;
+							color:#878e95;
+							font-size: 0.18rem;
+						}
+					}
 					input{
 						width:100%;
 						height: 0.9rem;
 						line-height: 0.9rem;
 						border:1px solid #dde0e0;
 						border-radius: 0.06rem;
-						padding-left: 0.24rem;
+						padding:0 0.24rem 0 0.24rem;
 						font-size: 0.36rem;
 						margin-top: 0.133333rem;
+						overflow: hidden;/*超出部分隐藏*/
+			            white-space: nowrap;/*不换行*/
+			            text-overflow:ellipsis;/*超出部分文字以...显示*/
 						&:-webkit-placeholder { /* Mozilla Firefox 4 to 18 */
     						color: #878e95; 
 						}
@@ -535,7 +600,17 @@
 				border-color: red!important;
 				color: red!important;
 			}
+		.view {
 			
+		
+			transition: all .3s;
+		}
+		.fade-enter-active, .fade-leave-active {
+		transition: opacity .5s;
+		}
+		.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+		opacity: 0;
+		}
 	}
 	
 	

@@ -1,6 +1,6 @@
 <template>
 	<div class="payNow">
-		<div class="oderdetial">
+		<div class="oderdetial" id="oderdetial">
 			<div class="back" @click="back">
 				<i class="iconfont">&#xe615;</i>
 				<span>Order Summary</span>
@@ -39,21 +39,23 @@
 					</div>
 				</div>
 				<div class="payment">
-					<div class="striptcard" v-if="opctions.currency == 'CNY'">
+					<div class="striptcard" @click="selectCard(0)" v-if="opctions.currency == 'CNY'">
 						<i>
 							<svg class="icon" aria-hidden="true">
 							    <use xlink:href="#icon-wechat"></use>
 							</svg>
 						</i>
 						<span>Wechat</span>
-						<div class="selectCarType"></div>
+						<div class="selectCarType" v-if="id==1"></div>
+						<div class="selectCarTypeNull"  v-else></div>
 					</div>
-					<div class="striptcard" v-else>
+					<div class="striptcard" @click="selectCard(1)">
 						<i class="iconfont">&#xe675;</i>
 						<span>Credit/Debit Card </span>
-						<div class="selectCarType"></div>
+						<div class="selectCarType" v-if="id==0"></div>
+						<div class="selectCarTypeNull" v-else></div>
 					</div>
-					<div class="paymentCard" v-if="opctions.currency != 'CNY'">
+					<div class="paymentCard"  v-show="id==0">
 						<div class="cardNub">
 							<label>CARD NUMBER</label>
 							<div class="cardNub_ clearfix">
@@ -72,9 +74,8 @@
 								<div id="card-cvc" class="field empty"></div>
 							</div>
 						</div>
-						<p  v-if="payStatus">{{payErrMsg}}</p>
+					<p style="margin-top: 0.2rem; font-size: 0.32rem;color:red" v-if="payStatus">{{payErrMsg}}</p>
 					</div>
-
 				</div>
 				<!--<div class="pic">
 					<div class="adult clearfix">
@@ -99,8 +100,9 @@
 
 			</div>
 			<div class="btn_pay">
-				<button @touchend="getToken()" v-if="payData && !openWxUrl">Pay</button>
-				<a v-if="openWxUrl" :href="openWxUrl" @click="wxOpenClick">Pay</a>
+				<a v-if="(id==1 && openWxUrl)||!isWx && id==1" :href="openWxUrl" @click="wxOpenClick">Pay</a>
+				<button @touchend="getToken()" v-else>Pay</button>
+
 			</div>
 		</div>
 
@@ -181,8 +183,11 @@
 				tryAgainHref: '',
 				cardNumber:'',
 				stripe:"",
+				id:0,//切换支付方式
+				payStatus:false,
 				payErrMsg:'',
-				payStatus:false
+				isPay:false
+				
 			}
 		},
 		components: {
@@ -195,6 +200,23 @@
 
 				this.changePrice(value);
 
+			},
+			selectCard(id){
+				console.log(id)
+				if(id==0){
+					this.id=1
+					//document.getElementById("oderdetial").scrollIntoView()
+				}else{
+					this.id=0
+					setTimeout(function(){
+						document.body.scrollTop=
+						document.getElementById("oderdetial").scrollHeight-document.documentElement.clientHeight;
+						document.documentElement.scrollTop=
+						document.getElementById("oderdetial").scrollHeight-document.documentElement.clientHeight;
+					},0)
+				}
+				
+				
 			},
 			changePrice(value) {
 				var priceAll = this.opctions.priceAll;
@@ -304,6 +326,7 @@
 
 					//人民币支付
 					if(that.opctions.currency == 'CNY') {
+						that.id=1
 						//微信外部H5
 						if(!that.isWx) {
 							that.openWxPay({
@@ -313,10 +336,9 @@
 								objectType: 'ACTIVITY'
 							});
 						}
-					} else {
-						//默认用来显示支付按钮，微信里面用来公众号支付数据
-						that.payData = 1;
-					}
+					};
+					//默认用来显示支付按钮，微信里面用来公众号支付数据
+					that.payData = 1;
 
 				}, function(res) {})
 			},
@@ -410,10 +432,9 @@
 			},
 
 			//微信内部支付
-			wxPay(postData) {
+			wxPay(postData){
 				var self = this;
 				this.loadingStatus = true;
-				
 				self.axios.post("https://api.localpanda.com/api/payment/pay/wechat", JSON.stringify(postData), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
@@ -446,7 +467,7 @@
 			openWxPay(postData) {
 				var self = this;
 				//this.loadingStatus = true;
-
+				self.loadingStatus = true
 				self.axios.post("https://api.localpanda.com/api/payment/pay/wechat", JSON.stringify(postData), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
@@ -456,7 +477,7 @@
 					if(data.return_code == 'SUCCESS') {
 
 						//self.showWxOpenBox = true;
-						//self.loadingStatus = false;
+						self.loadingStatus = false;
 
 						var callUrl = 'https://www.localpanda.com/activity/payment/wxMobilePay?email=' + self.email + '&orderId=' + self.orderId + '&amount=' + self.opctions.amount + '&symbol=' + self.opctions.symbol + '&currency=' + self.opctions.currency + '&login=' + (self.logIn ? self.logIn : 0);
 						var openWxUrl = data.mweb_url + '&redirect_url=' + encodeURIComponent(callUrl);
@@ -482,37 +503,47 @@
 			},
 			//stript支付 token
 			getToken(){
-				console.log(1)
-				let that=this
-				if(this.opctions.currency == 'CNY') {
-					//微信内部
-					if(this.isWx) {
-						this.wxPay(this.payData);
-					}
-					return;
-				}
-				
-				that.stripe.createToken(that.cardNumber).then(function(result) {
-			       if (result.error) {
-			      // Inform the user if there was an error.
-				     that.payStatus=true
-				     console.log(result.error.message)
-				     that.payErrMsg=result.error.message
-				    } else {
-				      // Send the token to your server.
-				      //stripeTokenHandler(result.token);
-				      that.payStatus=false
-				      
-				      console.log(result.token)
-				      that.stripeTokenHandler(result.token)
-				
-				    }
-			   })
-			},
-			//发起支付
-			stripeTokenHandler(token){
 				let that=this
 				that.loadingStatus = true;
+				console.log(this.postData)
+				if(that.isWx) {
+					//微信内部
+					if(that.id==1) {
+						this.wxPay(this.payData);
+					}else{
+						this.pay()
+					}
+					
+				}else{
+					this.pay()
+				}
+			},
+			pay(){
+				let that=this
+				that.stripe.createToken(that.cardNumber).then(function(result) {
+				       if (result.error) {
+				      // Inform the user if there was an error.
+				      //console.log(that.loadingStatus)
+				      	that.loadingStatus = false
+				      	//console.log(that.loadingStatus)
+					     that.payStatus=true
+					     that.payErrMsg=result.error.message
+					    } else {
+					      // Send the token to your server.
+					      //stripeTokenHandler(result.token);
+					      that.payStatus=false
+					      
+					      console.log(result.token)
+					      if(!that.isPay){
+					      	that.stripeTokenHandler(result.token,that.isPay)
+						  }
+					    }
+				   })
+			},
+			//发起支付
+			stripeTokenHandler(token,isPay){
+				isPay=true
+				let that=this
 						let obj = {
 							amount: that.opctions.amount * 100,
 							currency: that.opctions.currency,
@@ -523,16 +554,19 @@
 						}
 
 						//console.log(that.opctions.currency);
-
+						
 						Vue.axios.post(that.apiBasePath + "payment/pay/stripe", JSON.stringify(obj), {
 							headers: {
 								'Content-Type': 'application/json; charset=UTF-8'
 							}
 						}).then(function(response) {
+							 that.payStatus=false
+							 
 							var thisData = response.data;
 							var msg = '';
 							//成功
 							if(response.status == 200) {
+								isPay=false
 								var pageTracker = _gat._getTracker("UA-107010673-1");
 								pageTracker._addTrans(that.orderId, "", that.opctions.amount, "", "", "", "", "");
 								pageTracker._addItem(that.orderId, that.opctions.activityId, "", "", that.opctions.amount, "1");
@@ -555,6 +589,7 @@
 			// 设置卡元素
 			stripeFn() {
 				this.stripe=Stripe(payCode)
+				console.log(this.stripe)
 				var elements = this.stripe.elements({
 					fonts: [{
 						cssSrc: 'https://fonts.googleapis.com/css?family=Quicksand',
@@ -665,15 +700,19 @@
 			this.stripeFn();
 			this.ua = window.navigator.userAgent.toLowerCase();
 			this.isWx = (this.ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
+//			console.log(this.opctions.currency)
+//			if(this.opctions.currency=="CNY"){
+//				this.id=0
+//			}
 			if(this.isWx) {
 				this.wxInit();
 			}
-
+			
 			this.logIn = this.urlQuery.login ? this.urlQuery.login : 0;
 			if(!this.logIn) {
 				this.logInHide = true;
 			}
-
+			
 			//检测是否是安卓唤起微信，针对安卓无法跳转回调页面
 			if(localStorage.getItem('AndroidOpenWx') == 'true') {
 				this.showWxOpenBox = true;
@@ -759,7 +798,7 @@
 						position: relative;
 						i {
 							font-size: 0.7rem;
-							color: #dde0e0;
+							color: #f4b33f;
 							vertical-align: middle;
 							
 						}
@@ -773,7 +812,17 @@
 							width: 0.34rem;
 							height: 0.34rem;
 							border-radius: 50%;
-							border: 0.1rem solid #1bbc9d;
+							border: 0.12rem solid #1bbc9d;
+							position: absolute;
+							right: 0;
+							top: 50%;
+							transform: translateY(-50%);
+						}
+						.selectCarTypeNull{
+							width: 0.38rem;
+							height: 0.38rem;
+							border-radius: 50%;
+							border:0.02rem solid #d0d0d0;
 							position: absolute;
 							right: 0;
 							top: 50%;
@@ -783,11 +832,6 @@
 					.paymentCard {
 						margin-top: 0.44rem;
 						padding:0 0.266666rem;
-						p{
-							margin-top: 0.2rem;
-							font-size: 0.26rem;
-							color: red;
-						}
 						.cardNub{
 							label{
 								font-size: 0.32rem;
@@ -798,7 +842,7 @@
 								border-bottom: 0.026666rem solid #ebebeb;
 								i {
 									font-size: 0.7rem;
-									color: #dde0e0;
+									color: #f4b33f;
 									margin-top: -0.266666rem;
 									display: inline-block;
 									
