@@ -32,7 +32,7 @@
 				<div class="inputItem" :class="{err:codeErr}">
 					<p>Country Code  <b>*</b></p>
 					<div class="inputbox">
-						<input :class="{err:codeErr}" readonly="readonly" @click="showCodeFn(0)"  v-model="mobileCode" />
+						<input :class="{err:codeErr}" readonly="readonly" onfocus="this.blur()" @click="showCodeFn(0)"  v-model="mobileCode" />
 						<i class="iconfont">&#xe60f;</i>
 					</div>
 				</div>
@@ -67,7 +67,7 @@
 				<div class="inputItem" :class="{err:TravellerCodeErr}">
 					<p>Country Code </p>
 					<div class="inputbox">
-						<input :class="{err:TravellerCodeErr}"  @click="showCodeFn(1)"  v-model="mobileTravellCode" />
+						<input :class="{err:TravellerCodeErr}" readonly="readonly" onfocus="this.blur()"  @click="showCodeFn(1)"  v-model="mobileTravellCode" />
 						<i class="iconfont">&#xe60f;</i>
 					</div>
 				</div>
@@ -486,7 +486,7 @@
 						position: relative;
 						i{
 							position: absolute;
-							right: 0.4rem;
+							right: 0.1rem;
 							top: 0.4rem;
 							color:#878e95;
 							font-size: 0.18rem;
@@ -498,9 +498,12 @@
 						line-height: 0.9rem;
 						border:1px solid #dde0e0;
 						border-radius: 0.06rem;
-						padding-left: 0.24rem;
+						padding:0 0.24rem 0 0.24rem;
 						font-size: 0.36rem;
 						margin-top: 0.133333rem;
+						overflow: hidden;/*超出部分隐藏*/
+			            white-space: nowrap;/*不换行*/
+			            text-overflow:ellipsis;/*超出部分文字以...显示*/
 						&:-webkit-placeholder { /* Mozilla Firefox 4 to 18 */
     						color: #878e95; 
 						}

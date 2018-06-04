@@ -1,15 +1,17 @@
 <template>
 	<div class="bookings">
 		<div class="bookingbox">
-			<div class="iconfont back" @touchend="back">&#xe606;</div>
-			<div class="title">Select country code</div>
-			<div class="select">
-				<input v-model="selectCode" />
+			<div class="head">
+				<div class="iconfont back" @touchend="back">&#xe606;</div>
+				<div class="title">Select country code</div>
+				<div class="select">
+					<input v-model="selectCode" />
+				</div>
 			</div>
-			<ul v-if="countryCode.length>0">
-				<li v-for="(item,index) in codeList" @touchend="selectCodeFn(item.country_name,item.prefix)">{{item.country_name}} (+{{item.prefix}})</li>
+			<ul v-if="codeList.length>0">
+				<li v-for="(item,index) in codeList" @click="selectCodeFn(item.country_name,item.prefix)">{{item.country_name}} (+{{item.prefix}})</li>
 			</ul>
-			<div class="empty">There are no results that match your search.</div>
+			<div class="empty" v-else>There are no results that match your search.</div>
 		</div>
 	</div>
 </template>
@@ -22,6 +24,7 @@
 			return{
 				selectCode:"",
 				codeList:'',
+				scroll:false
 			}
 			
 		},
@@ -42,9 +45,13 @@
 				}
     			this.$emit('getCode',codeDetails)
 			},
+			
     	},
     	mounted: function() {
+    		let $this=this
     		this.codeList=this.countryCode
+    		
+    		
     	},
     	watch:{
     		selectCode: function(val, oldVal) {
@@ -82,6 +89,13 @@
 </script>
 
 <style lang="scss" scoped>
+.head{
+	position: fixed;
+	top: 0;
+	background: #fff;
+	width: calc(100% - 0.9rem);
+	padding-bottom: 0.3rem;
+}
 	.bookings{
 		position: fixed;
 		top: 0;
@@ -97,6 +111,7 @@
 			top: 0;
 			padding:0 0.44rem 0.46rem;
 			height:100%;
+			
 			.title{
 				font-size: 0.4rem;
 				font-weight: bold;
@@ -112,6 +127,7 @@
 				}
 			}
 			ul{
+				padding-top: 1.6rem;
 				li{
 					margin-top: 0.58rem;
 					font-size: 0.36rem;
