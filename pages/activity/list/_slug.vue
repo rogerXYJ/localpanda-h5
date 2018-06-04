@@ -78,7 +78,7 @@
 			<span slot="no-more">You've reached the bottom of the page.</span>
 			<span slot="no-results" class="no-results"></span>
 		</infinite-loading>
-		<div class="inquireBtn"><a href="/info/feedback">Inquire</a></div>
+		<div class="inquireBtn"><a href="/feedback">Inquire</a></div>
 		<footMobile></footMobile>
 	</div>
 </template>
@@ -296,6 +296,13 @@
 		},
 		methods: {
 			locationFn(loc){
+				ga('gtag_UA_107010673_1.send', {
+						hitType: 'event',
+						eventCategory: 'activity_list',
+						eventAction: 'switch',
+						eventLabel: 'destination'+loc,
+	
+					});
 				location.href="/activity/list/"+loc
 			},
 			setCallBack(val){
@@ -318,18 +325,39 @@
 					this.sort = {
 						type: "SCORE"
 					}
+					ga('gtag_UA_107010673_1.send', {
+						hitType: 'event',
+						eventCategory: 'activity_list',
+						eventAction: 'sort',
+						eventLabel: 'score',
+	
+					});
 				} 
 				if(val == "Price :Low to High") {
 					this.sort = {
 						type: "PRICE",
 						reverse: false
 					}
+					ga('gtag_UA_107010673_1.send', {
+						hitType: 'event',
+						eventCategory: 'activity_list',
+						eventAction: 'sort',
+						eventLabel: 'price_up',
+	
+					});
 				}
 				if(val == "Price :High to Low") {
 					this.sort = {
 						type: "PRICE",
 						reverse: true
 					}
+					ga('gtag_UA_107010673_1.send', {
+						hitType: 'event',
+						eventCategory: 'activity_list',
+						eventAction: 'sort',
+						eventLabel: 'price_down',
+	
+					});
 				}
 					this.sort=JSON.stringify(this.sort)
 					
@@ -463,16 +491,13 @@
 			.destination{
 				font-size: 0.28rem;
 				margin-left: 0.12rem;
-				
-				border: solid 1px #dde0e0;
-				border-radius: 8px;
-				display: inline-block;
-				padding:0.14rem 0.16rem 0.14rem 0.1rem;
-				line-height: 0.4rem;
-
 				&:first-child{
 					margin-left: 0;
 				}
+				border: solid 1px #dde0e0;
+				border-radius: 8px;
+				display: inline-block;
+				padding:0.14rem 0.2rem 0.14rem 0.12rem;
 				&:nth-child(2){
 					i{
 						margin-right:0;
@@ -480,10 +505,9 @@
 				}
 				i{
 					font-size: 0.25rem;
-					margin-right: 0.1rem;
+					margin-right: 0.15rem;
 					color:#cacccc;
-					vertical-align: top;
-					line-height: 0.4rem;
+					
 				}
 				select{
 					-webkit-appearance: none;
@@ -492,10 +516,6 @@
 					border: none;
 					font-size: 0.28rem;
 					background:transparent;
-					vertical-align: top;
-					display: inline-block;
-					height: 0.4rem;
-					line-height: 0.4rem;
 				}	
 			}
 			@media only screen and (min-width: 700px){

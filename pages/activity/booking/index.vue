@@ -17,22 +17,22 @@
 				
 				<div class="inputItem" :class="{err:oderFirstNameErr}">
 					<p>First name <b>*</b></p>
-					<input :class="{err:oderFirstNameErr}"  @focus="fousOderfisrtname"  v-model="oderFirstName" />
+					<input :class="{err:oderFirstNameErr}"  @blur="gaBlur(0)" @focus="fousOderfisrtname"  v-model="oderFirstName" />
 				</div>
 				<div class="inputItem" :class="{err:oderlastNameErr}">
 					<p>Last name  <b>*</b></p>
-					<input :class="{err:oderlastNameErr}"  @focus="fousoderlastName"   v-model="oderlastName" />
+					<input :class="{err:oderlastNameErr}"  @focus="fousoderlastName"  @blur="gaBlur(1)"  v-model="oderlastName" />
 				</div>
 			
 			
 				<div class="inputItem" :class="{err:emailAddressErr}">
 					<p>Email Address  <b>*</b></p>
-					<input :class="{err:emailAddressErr}"  @focus="fousEmal"  v-model="emailAddress" />
+					<input :class="{err:emailAddressErr}"  @focus="fousEmal"  @blur="gaBlur(2)"  v-model="emailAddress" />
 				</div>
 				<div class="inputItem" :class="{err:codeErr}">
 					<p>Country Code  <b>*</b></p>
 					<div class="inputbox">
-						<input :class="{err:codeErr}" readonly="readonly" onfocus="this.blur()" @click="showCodeFn(0)"  v-model="mobileCode" />
+						<input :class="{err:codeErr}" readonly="readonly"   onfocus="this.blur()" @click="showCodeFn(0)"  v-model="mobileCode" />
 						<i class="iconfont">&#xe60f;</i>
 					</div>
 				</div>
@@ -79,8 +79,8 @@
 			<div class="Comments">
 				<div class="information">
 					<h4>Other required information</h4>
-					<textarea v-if="opctions.category=='Private Tour'" v-model="comments" placeholder="please provide your hotel address so the guide can pick you up." onfocus="this.placeholder=''" onblur="this.placeholder='please provide your hotel address so the guide can pick you up.'"></textarea>
-					<textarea v-else v-model="comments"></textarea>
+					<textarea v-if="opctions.category=='Private Tour'" @blur="gaBlur(3)" v-model="comments" placeholder="please provide your hotel address so the guide can pick you up." onfocus="this.placeholder=''" onblur="this.placeholder='please provide your hotel address so the guide can pick you up.'"></textarea>
+					<textarea v-else v-model="comments" @blur="gaBlur(3)"></textarea>
 				</div>
 
 				<p>You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.</p>
@@ -243,6 +243,84 @@
 			fousphonenumb(i) {
 				this.TravellerphoneErr = false
 			},
+			gaBlur(id){
+				
+				if(id == 0) {
+					if(this.oderFirstName) {
+						ga('gtag_UA_107010673_1.send', {
+							hitType: 'event',
+							eventCategory: 'activity_booking',
+							eventAction: 'input',
+							eventLabel: 'first_name',
+						});
+						ga('gtag_UA_107010673_1.send', {
+							hitType: 'event',
+							eventCategory: 'activity_booking',
+							eventAction: 'input',
+							eventLabel: 'booking_input',
+						});
+					}
+
+				} else if(id == 1) {
+					if(this.oderlastName) {
+						ga('gtag_UA_107010673_1.send', {
+							hitType: 'event',
+							eventCategory: 'activity_booking',
+							eventAction: 'input',
+							eventLabel: 'last_name',
+						});
+						ga('gtag_UA_107010673_1.send', {
+							hitType: 'event',
+							eventCategory: 'activity_booking',
+							eventAction: 'input',
+							eventLabel: 'booking_input',
+						});
+					}
+
+				} else if(id == 2) {
+					if(this.emailAddress) {
+						ga('gtag_UA_107010673_1.send', {
+							hitType: 'event',
+							eventCategory: 'activity_booking',
+							eventAction: 'input',
+							eventLabel: 'email_address',
+						});
+						ga('gtag_UA_107010673_1.send', {
+							hitType: 'event',
+							eventCategory: 'activity_booking',
+							eventAction: 'input',
+							eventLabel: 'booking_input',
+						});
+					}
+
+				} else {
+					if(this.comments) {
+						ga('gtag_UA_107010673_1.send', {
+							hitType: 'event',
+							eventCategory: 'activity_booking',
+							eventAction: 'input',
+							eventLabel: 'comment',
+						});
+						ga('gtag_UA_107010673_1.send', {
+							hitType: 'event',
+							eventCategory: 'activity_booking',
+							eventAction: 'input',
+							eventLabel: 'booking_input',
+						});
+					}
+
+				}
+
+			
+			},
+			gaFail(){
+				ga('gtag_UA_107010673_1.send', {
+							hitType: 'event',
+							eventCategory: 'activity_booking',
+							eventAction: 'submit',
+							eventLabel: 'activity_order_fail',
+						});
+			},
 			next() {
 				const that = this
 				var obj;
@@ -252,43 +330,48 @@
 				//that.addOder = true
 				if(that.oderFirstName == "" || regExp.isNub(that.oderFirstName) || regExp.isCode(that.oderFirstName)) {
 					that.oderFirstNameErr = true
-					
+					that.gaFail()
 					
 				} else if(that.oderlastName == "" || regExp.isNub(that.oderlastName) || regExp.isCode(that.oderlastName)) {
 					that.oderlastNameErr = true
-					
+					that.gaFail()
 					
 				} else if(!regExp.isEmail(that.emailAddress)) {
 					that.emailAddressErr = true
-					
+					that.gaFail()
 					
 				}else if(!that.mobileCode){
 					that.codeErr=true
-					
+					that.gaFail()
 				}else if(that.phone=="" || !regExp.isMobil(that.phone)) {
 					that.phoneErr = true
-					
+					that.gaFail()
 					
 				} else {
 					if(that.check == 1) {
 						if(that.TravellerFirstName == "" || regExp.isNub(that.TravellerFirstName) || regExp.isCode(that.TravellerFirstName)) {
 							that.TravellerFirstNameErr = true
-							
+							that.gaFail()
 							
 						} else if(that.TravellerlastName == "" || regExp.isNub(that.TravellerlastName) || regExp.isCode(that.TravellerlastName)) {
 							that.TravellerlastNameErr = true
-							
+							that.gaFail()
 							
 						} else if(!regExp.isEmail(that.TravelleremailAddress)) {
 							that.TravelleremailAddressErr = true
-							
+							that.gaFail()
 							
 						} else if(!regExp.isMobil(that.Travellerphone)) {
 							that.TravellerphoneErr = true
 							
 							
 						} else {
-							
+								ga('gtag_UA_107010673_1.send', {
+								hitType: 'event',
+								eventCategory: 'activity_booking',
+								eventAction: 'submit',
+								eventLabel: 'activity_order_succ',
+							});
 							obj = {
 								"userId": that.opctions.userId,
 								"activityId": that.opctions.activityId,
@@ -341,7 +424,12 @@
 							}
 						}
 					} else {
-						
+						ga('gtag_UA_107010673_1.send', {
+								hitType: 'event',
+								eventCategory: 'activity_booking',
+								eventAction: 'submit',
+								eventLabel: 'activity_order_succ',
+							});
 						obj = {
 							"userId": that.opctions.userId,
 							"activityId": that.opctions.activityId,
