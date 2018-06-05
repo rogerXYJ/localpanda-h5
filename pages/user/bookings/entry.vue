@@ -48,7 +48,7 @@
 				lastName: "",
 				firstName: "",
 				email: "",
-				errorText: "The information marked red is incorrect. Please enter again. If you have any questions, you can email service@localpanda.com or call +862180182090.",
+				errorText: "",
 				showErrorText: false
 			}
 		},
@@ -73,11 +73,14 @@
 							window.localStorage.setItem("obj",JSON.stringify(postData));
 							window.location.href="/user/myBookings?menu=0&flag=1"
 						}else{
+							self.errorText = "Sorry, we didn't find an order under this name and email";
 							self.showErrorText = true;
 						}
 					}, function(response) {})
+				}else{
+					self.errorText = 'The information marked red is incorrect. Please enter again. If you have any questions, you can email service@localpanda.com or call +862180182090.';
+					self.showErrorText = true;
 				}
-				
 				
 			},
 			facebookLogin(){

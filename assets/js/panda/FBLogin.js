@@ -83,7 +83,6 @@ var FBLogin = (function(){
 					//登录成功回调
 					self.logOk(logInfo);
 				}else{
-					alert('未登录！');
 					FB.login(function(response){
 						var logInfo = response.authResponse;
 						self.logOk(logInfo);
