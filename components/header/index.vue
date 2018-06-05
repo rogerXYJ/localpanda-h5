@@ -24,11 +24,11 @@
 			<a href="/">Home</a>
 			<a href="javascript:;" @click="showLoginPage" v-if="!islogIn">Log in</a>
 			<a href="/user/profile?menu=1&flag=1" v-else>My Profile</a>
-			<a href="/user/searchMyBookings">My Bookings</a>
+			<a href="/user/bookings/entry">My Bookings</a>
 			<a href="/travel/customize/step1">Customize Your Trip</a>
 			<a href="/info/contact-us">Contact Us</a>
 			<a href="/info/about-us">About Us</a>
-			<a href="javascript:;" @click="logOut" v-if="islogIn">Log Out</a>
+			<a href="javascript:;" @click="logout" v-if="islogIn">Log Out</a>
 		</nav>
 
 		<!-- 弹出登录 -->
@@ -47,6 +47,7 @@
 
 <script>
 	import headBack from "~/components/header/back";
+	import FBLogin from "~/assets/js/panda/FBLogin.js";
 
 	export default {
 		name:'M-head',
@@ -86,133 +87,31 @@
 				//隐藏背景
 				this.showWinBg = false;
 			},
-
-			//facebook登录相关***********
-			ChangeCallback(response) {
-				if(response.status === 'connected') {
-
-				} else if(response.status === 'not_authorized') { //未经授权
-					FB.logout(function(response) {})
-				} else {
-					//console.log('不是登陆到Facebook;不知道是否授权');
+			setBodyHidden(type){
+				if(type){
+					document.body.style.overflowY = 'hidden';
+				}else{
+					document.body.style.overflowY = 'inherit';
 				}
-			},
-			fbAsyncInit() {
-				let that = this
-				FB.init({
-					appId: '487179281653793',
-					cookie: true,
-					xfbml: true,
-					version: 'v2.10'
-				});
-				FB.AppEvents.logPageView();
-
-				// check on loading
-				FB.getLoginStatus(function(response) {
-					that.ChangeCallback(response);
-				})
-				that.loadJs=true
 				
 			},
-			loadScript(url, callback,Fn) {
-				var that=this
-				var script = document.createElement('script');
-				var head = document.getElementsByTagName('head')[0];
-				var loaded;
-				script.src = url;
-				if(typeof callback === 'function'){
-						script.onload = script.onreadystatechange = function(){
-								if(!loaded && (!script.readyState || /loaded|complete/.test(script.readyState))){
-										script.onload = script.onreadystatechange = null;
-										loaded = true;
-										callback();
-										if(that.loadJs==true){
-											Fn()
-										}
-								}
-						}
-				}
-				head.appendChild(script);
-			},
 			facebookLogin(){
-				let that = this
-				that.loadScript("//connect.facebook.net/en_US/sdk.js",that.fbAsyncInit,that.logIn)
+				//faceBook登录,默认调用方法，其它调用参数，见js文件顶部
+				new FBLogin();
 			},
-			logIn(){
-				let that=this
-				FB.login(function(response) {
-					/*console.log("login"+response)*/
-					if(response.authResponse) {
-						that.checkLoginState()
-					}
+			logout(){
+
+				//faceBook退出登录,默认调用方法，其它调用参数，见js文件顶部
+				new FBLogin({
+					logout:true
 				});
-			},
-			checkLoginState() {
-				let that = this
-				FB.getLoginStatus(function(response) {
-					that.statusChangeCallback(response);
-					//location.reload()
-				})
-			},
-			statusChangeCallback(response) {
-				const that = this
-				if(response.status === 'connected') { //登陆状态已连接
-					that.fbToken = response.authResponse.accessToken;
-					that.faceUserID = response.authResponse.userID;
-					/*console.log(response.authResponse.userID )
-					console.log(that.faceUserID)*/
-					var Istrue = false
-					//获取用户信息
-					FB.api('/me?fields=name,picture', function(response) {
-						Istrue = true
-						that.logImg = response.picture.data.url
-						
-						window.localStorage.setItem("user_photo", that.logImg)
-						that.islogIn = 1;
-
-						window.localStorage.setItem("logstate", that.islogIn);
-						window.localStorage.setItem("fbToken", that.fbToken);
-						
-						that.getToken(Istrue)
-					});
-
-					//setTimeout(function(){history.go(0)},300)
-				} else if(response.status === 'not_authorized') { //未经授权
-					FB.logout(function(response) {})
-				} else {
-					//console.log('不是登陆到Facebook;不知道是否授权');
-				}
-			},
-			getToken(Istrue) {
-				if(Istrue == true) {
-					let $this = this;
-					let obj = {
-						accessToken: $this.fbToken,
-						userId: $this.faceUserID
-					}
-					this.axios.post("https://api.localpanda.com/api/user/login/facebook", JSON.stringify(obj), {
-						headers: {
-							'Content-Type': 'application/json; charset=UTF-8'
-						}
-					}).then(function(response) {
-						/*console.log("getToken"+response)*/
-						
-						$this.userid = response.data.response
-						
-						window.localStorage.setItem("userid", $this.userid)
-						
-						window.location.href="/user/myBookings?menu=0&flag=1"
-						
-
-					}, function(response) {})
-				}
-			},
-			logOut(){
-				let that=this
-				that.loadScript("//connect.facebook.net/en_US/sdk.js",that.fbAsyncInit)
 			}
-			//facebook登录相关***********
 
+		},
+		watch:{
+			showWinBg:function(val){
+				this.setBodyHidden(val);
+			}
 		},
 		mounted: function() {
 			
@@ -228,9 +127,8 @@
 	background:#fff;
 	height: 0.99rem;
 	
-	margin-bottom: 0.36rem;
 	position: relative;
-	z-index: 9;
+	z-index: 100;
 	
 	.header_box{
 		position: relative;

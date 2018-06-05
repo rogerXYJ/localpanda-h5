@@ -25,8 +25,8 @@ export default ({ app }) => {
   }else{
     //添加google统计代码
     var scriptArr = [
-      'https://www.googletagmanager.com/gtag/js?id=UA-107010673-1',
-      'https://www.google-analytics.com/ga.js?id=UA-107010673-1'
+      'https://www.googletagmanager.com/gtag/js?id=UA-107010673-2',
+      'https://www.google-analytics.com/ga.js?id=UA-107010673-2'
     ]
     for(var i=0;i<scriptArr.length;i++){
       var gaScript = document.createElement('script');
@@ -39,6 +39,6 @@ export default ({ app }) => {
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments)};
     gtag('js', new Date());
-    gtag('config', 'UA-107010673-1');
+    gtag('config', 'UA-107010673-2');
   }
 }

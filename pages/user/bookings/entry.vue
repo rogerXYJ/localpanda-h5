@@ -35,6 +35,7 @@
 
 <script>
 	import Validate from "~/assets/js/panda/validate.js"
+	import FBLogin from "~/assets/js/panda/FBLogin.js";
 	import headBack from "~/components/header/back"
 
 	export default {
@@ -54,9 +55,6 @@
 		methods: {
 			search(){
 				var self = this;
-
-
-
 
 				let postData = {
 					"lastName": this.lastName,
@@ -82,126 +80,15 @@
 				
 				
 			},
-
-			ChangeCallback(response) {
-				if(response.status === 'connected') {
-
-				} else if(response.status === 'not_authorized') { //未经授权
-					FB.logout(function(response) {})
-				} else {
-					//console.log('不是登陆到Facebook;不知道是否授权');
-				}
-			},
-			fbAsyncInit() {
-				let that = this
-				FB.init({
-					appId: '487179281653793',
-					cookie: true,
-					xfbml: true,
-					version: 'v2.10'
-				});
-				FB.AppEvents.logPageView();
-
-				// check on loading
-				FB.getLoginStatus(function(response) {
-					that.ChangeCallback(response);
-				})
-				that.loadJs=true
-				
-			},
-			loadScript(url, callback,Fn) {
-				var that=this
-				var script = document.createElement('script');
-				var head = document.getElementsByTagName('head')[0];
-				var loaded;
-				script.src = url;
-				if(typeof callback === 'function'){
-						script.onload = script.onreadystatechange = function(){
-								if(!loaded && (!script.readyState || /loaded|complete/.test(script.readyState))){
-										script.onload = script.onreadystatechange = null;
-										loaded = true;
-										callback();
-										if(that.loadJs==true){
-											Fn()
-										}
-								}
-						}
-				}
-				head.appendChild(script);
-			},
 			facebookLogin(){
-				let that = this
-				that.loadScript("//connect.facebook.net/en_US/sdk.js",that.fbAsyncInit,that.logIn)
-			},
-			logIn(){
-				let that=this
-				FB.login(function(response) {
-					/*console.log("login"+response)*/
-					if(response.authResponse) {
-						that.checkLoginState()
+				//faceBook登录,默认调用方法，其它调用参数，见js文件顶部
+				new FBLogin({
+					loginCallBack:function(){
+						location.href="/user/myBookings?menu=0&flag=1";
 					}
 				});
-			},
-			checkLoginState() {
-				let that = this
-				FB.getLoginStatus(function(response) {
-					that.statusChangeCallback(response);
-					//location.reload()
-				})
-			},
-			statusChangeCallback(response) {
-				const that = this
-				if(response.status === 'connected') { //登陆状态已连接
-					that.fbToken = response.authResponse.accessToken;
-					that.faceUserID = response.authResponse.userID;
-					/*console.log(response.authResponse.userID )
-					console.log(that.faceUserID)*/
-					var Istrue = false
-					//获取用户信息
-					FB.api('/me?fields=name,picture', function(response) {
-						Istrue = true
-						that.logImg = response.picture.data.url
-						
-						window.localStorage.setItem("user_photo", that.logImg)
-						that.islogIn = 1;
-
-						window.localStorage.setItem("logstate", that.islogIn);
-						window.localStorage.setItem("fbToken", that.fbToken);
-						
-						that.getToken(Istrue)
-					});
-
-					//setTimeout(function(){history.go(0)},300)
-				} else if(response.status === 'not_authorized') { //未经授权
-					FB.logout(function(response) {})
-				} else {
-					//console.log('不是登陆到Facebook;不知道是否授权');
-				}
-			},
-			getToken(Istrue) {
-				if(Istrue == true) {
-					let $this = this;
-					let obj = {
-						accessToken: $this.fbToken,
-						userId: $this.faceUserID
-					}
-					this.axios.post("https://api.localpanda.com/api/user/login/facebook", JSON.stringify(obj), {
-						headers: {
-							'Content-Type': 'application/json; charset=UTF-8'
-						}
-					}).then(function(response) {
-						/*console.log("getToken"+response)*/
-						
-						$this.userid = response.data.response
-						
-						window.localStorage.setItem("userid", $this.userid)
-						
-						window.location.href="/user/myBookings?menu=0&flag=1"
-						
-
-					}, function(response) {})
-				}
 			}
+
 			
 		},
 		mounted(){

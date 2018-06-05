@@ -1018,7 +1018,7 @@ import photo from '~/components/activity/details/photo'
 			padding: 0 0.4rem;
 			bottom: 0;
 			left: 0;
-			z-index: 9999;
+			z-index: 99;
 			background: #fff;
 			border-top: 1px solid #dde0e0;
 			display: flex;
