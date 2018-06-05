@@ -10,8 +10,6 @@ export default ({ app }) => {
 
   //测试和线上key
   window.payCode = buildData.payCode ? buildData.payCode : 'pk_test_ymxnY3KoqRcjCEElfvFxPy1G';
-  window.Ga=/www/.test(window.location.href)?'UA-107010673-1':'UA-107010673-2'
-  consolelog(window.Ga)
   //判断是否禁用ga
   if(!buildData.testGa){
     //防止ga报错，默认添加ga方法
