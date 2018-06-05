@@ -11,6 +11,7 @@ module.exports = {
 //    payCode: 'pk_live_mRSdUvgwE4pZo2IVofL4cVch',
     //publicPath: '/mobile/_nuxt/', //PC和移动共存区分用
 
+
     vendor: [
       //'swiper',
       'axios',

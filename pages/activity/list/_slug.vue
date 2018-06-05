@@ -483,9 +483,13 @@
 </script>
 
 <style lang="scss" scoped>
-
+	
 	.M-activityList{
+		.header{
+			margin-bottom: 0.36rem;
+		}
 		.filterInfo{
+			
 			padding:0 0.4rem 0.36rem;
 			border-bottom:1px solid #dde0e0;
 			.destination{

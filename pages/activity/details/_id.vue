@@ -248,7 +248,7 @@
 						el: '#swiper_banner_pagination'
 					}
 				});
-			},200);
+			},500);
 		
 
 		},
