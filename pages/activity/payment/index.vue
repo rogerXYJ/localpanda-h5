@@ -504,6 +504,13 @@
 			//stript支付 token
 			getToken(){
 				let that=this
+				ga('gtag_UA_107010673_1.send', {
+						hitType: 'event',
+						eventCategory: 'activity_payment',
+						eventAction: 'click',
+						eventLabel: 'activity_pay'
+	
+					});
 				that.loadingStatus = true;
 				console.log(this.postData)
 				if(that.isWx) {

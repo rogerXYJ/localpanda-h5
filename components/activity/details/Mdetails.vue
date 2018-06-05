@@ -203,7 +203,7 @@
 			</div>
 		</div>
 		<div class="book">
-			<button><a :href="'/info/inquiry?objectId='+id">Inquire</a></button>
+			<button><a :href="'/info/inquiry?objectId='+id" @click="gaInquire">Inquire</a></button>
 			<button class="bookBtn" @click="goBooking">Book</button>
 		</div>
 		<photo :photoList="photoList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></photo>
@@ -259,6 +259,15 @@ import photo from '~/components/activity/details/photo'
 		photo
 	},
 		methods: {
+			gaInquire(){
+				ga('gtag_UA_107010673_1.send', {
+						hitType: 'event',
+						eventCategory: 'activity_detail',
+						eventAction: 'click',
+						eventLabel: 'activity_inquiry',
+	
+					});
+			},
 			changeCurrency(e){
 				var self = this;
 				var value = e.target ? e.target.value : e;

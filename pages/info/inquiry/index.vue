@@ -111,19 +111,38 @@ on a 1-1 basis.</p>
 		textInfofocus() {
 			this.textInfoErr = false
 		},
+		GAfail(){
+			ga('gtag_UA_107010673_1.send', {
+					hitType: 'event',
+					eventCategory: 'activity_detail',
+					eventAction: 'submit',
+					eventLabel: 'activity_inquiry_fail',
+
+				});
+		},
        submit(){
        		let that = this
 			if(that.name == '' || regExp.isNub(that.name) || regExp.isCode(that.name)) {
+				that.GAfail()
 				that.nameError = true
 			} else if(!regExp.isEmail(that.email)) {
 				that.emailErr = true
+				that.GAfail()
 			}else if(that.peopleNub==0){
-				console.log(111)
+				that.GAfail()
 				that.isshowchoose=true
-				console.log(that.isshowchoose)
+			
 			}else if(that.textInfo == '') {
 				that.textInfoErr = true
+				that.GAfail()
 			}else{
+				ga('gtag_UA_107010673_1.send', {
+						hitType: 'event',
+						eventCategory: 'activity_detail',
+						eventAction: 'submit',
+						eventLabel: 'activity_inquiry_succ',
+	
+					});
 				var obj = {
 					objectType: that.objectType,
 					userName: that.name,
