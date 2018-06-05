@@ -153,6 +153,7 @@ get back to you within 1 day. </p>
 				
 			}
 			if(status==false){
+				
 				that.gaFail()
 			}
        },
