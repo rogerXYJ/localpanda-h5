@@ -131,6 +131,7 @@
 						</el-table-column>
 					</el-table> -->
 					<div class="view" v-if="isShowTable" @click="showTable">View More</div>
+					<p v-if="picInfo.priceInstructions" class="picNote">{{picInfo.priceInstructions}}</p>
 				</div>
 			<div class="provide" id="provide">
 				<h3>What's Included?</h3>
@@ -157,15 +158,15 @@
 				<h3>Additional Info</h3>
 				<p v-for="(item,index) in notice" :key="index">{{item}}</p>
 			</div>
-			<div class="notes" v-if="picInfo.priceInstructions" id="PriceNote">
+			<!-- <div class="notes" v-if="picInfo.priceInstructions" id="PriceNote">
 				<h3>Price Note</h3>
 				<p>{{picInfo.priceInstructions}}</p>
-			</div>
+			</div> -->
 			<div class="notes" v-if="picInfo.refundInstructions" id="CancellationPolicy">
-				<h3>Cancellation Policy</h3>
-				<p>{{picInfo.refundInstructions}}</p>
+				<h3>Rescheduling and Cancellation Policy</h3>
+				<p v-html="picInfo.refundInstructions.replace(/\r\n/g,'<br/>')"></p >
 			</div>
-			<div class="notes" id="notes">
+			<div class="notes" id="notes" v-if="remark.length>0">
 				<h3>Notes</h3>
 				<p v-if="remark" :key="index" v-for="(item,index) in remark">{{item}}</p>
 			</div>
@@ -585,6 +586,11 @@ import photo from '~/components/activity/details/photo'
 		border: 0;
 	}
 	/*@import "~assets/scss/_table.scss";*/
+
+	.picNote{
+		margin-top: 0.1rem;
+		font-size: 0.28rem;
+	}
 
 	.price_list{
 		margin-top: 0.2rem;
