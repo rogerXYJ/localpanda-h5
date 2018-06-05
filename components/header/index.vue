@@ -26,7 +26,7 @@
 			<a href="/user/profile?menu=1&flag=1" v-else>My Profile</a>
 			<a href="/user/bookings/entry">My Bookings</a>
 			<a href="/travel/customize/step1">Customize Your Trip</a>
-			<a href="/info/contact-us">Contact Us</a>
+			<a href="/info/feedback/">Contact Us</a>
 			<a href="/info/about-us">About Us</a>
 			<a href="javascript:;" @click="logout" v-if="islogIn">Log Out</a>
 		</nav>
@@ -38,7 +38,7 @@
 
 			<div class="login_content">
 				<h2>Login</h2>
-				<p>If you have already logged in via your <br>Facebook account and placed an order, you can login <br>through Facebook and view the status of your order</p>
+				<p>You can use your Facebook account to log into www.localpanda.com and access our platform’s services. Your login will be directed to Facebook. Local Panda does not track or own your personal information e.g. Facebook account or password. Please be assured to use our platform.</p>
 				<span class="btn" @click="facebookLogin"><i class="iconfont">&#xe613;</i>Log in with Facebook</span>
 			</div>
 		</div>
@@ -232,7 +232,6 @@
 				font-size: 0.26rem;
 				line-height: 0.3rem;
 				margin-top: 0.3rem;
-				text-align: center;
 			}
 			.btn{
 				background: #4361b3;
