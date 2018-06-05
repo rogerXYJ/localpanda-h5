@@ -75,15 +75,36 @@ get back to you within 1 day. </p>
 		textInfofocus() {
 			this.textInfoErr = false
 		},
+		gaFail(){
+			ga('gtag_UA_107010673_2.send', {
+				hitType: 'event',
+				eventCategory: 'public',
+				eventAction: 'submit',
+				eventLabel: 'feedback_fail',
+
+			});
+		},
        submit(){
+       		let status=false
        		let that = this
 			if(that.name == '' || regExp.isNub(that.name) || regExp.isCode(that.name)) {
 				that.nameError = true
+				status=false
 			} else if(!regExp.isEmail(that.email)) {
 				that.emailErr = true
+				status=false
 			}else if(that.textInfo == '') {
 				that.textInfoErr = true
+				status=false
 			}else{
+				status=true
+				ga('gtag_UA_107010673_2.send', {
+					hitType: 'event',
+					eventCategory: 'public',
+					eventAction: 'submit',
+					eventLabel: 'feedback_succ',
+	
+				});
 				if(window.localStorage.getItem("userid")){
 						var obj = {
 							userId:window.localStorage.getItem("userid"),
@@ -130,6 +151,9 @@ get back to you within 1 day. </p>
 					})
 				}
 				
+			}
+			if(status==false){
+				that.gaFail()
 			}
        },
     

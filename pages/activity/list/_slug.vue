@@ -296,7 +296,7 @@
 		},
 		methods: {
 			locationFn(loc){
-				ga('gtag_UA_107010673_1.send', {
+				ga('gtag_UA_107010673_2.send', {
 						hitType: 'event',
 						eventCategory: 'activity_list',
 						eventAction: 'switch',
@@ -325,7 +325,7 @@
 					this.sort = {
 						type: "SCORE"
 					}
-					ga('gtag_UA_107010673_1.send', {
+					ga('gtag_UA_107010673_2.send', {
 						hitType: 'event',
 						eventCategory: 'activity_list',
 						eventAction: 'sort',
@@ -338,7 +338,7 @@
 						type: "PRICE",
 						reverse: false
 					}
-					ga('gtag_UA_107010673_1.send', {
+					ga('gtag_UA_107010673_2.send', {
 						hitType: 'event',
 						eventCategory: 'activity_list',
 						eventAction: 'sort',
@@ -351,7 +351,7 @@
 						type: "PRICE",
 						reverse: true
 					}
-					ga('gtag_UA_107010673_1.send', {
+					ga('gtag_UA_107010673_2.send', {
 						hitType: 'event',
 						eventCategory: 'activity_list',
 						eventAction: 'sort',

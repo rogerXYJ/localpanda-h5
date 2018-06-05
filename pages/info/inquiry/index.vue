@@ -112,7 +112,7 @@ on a 1-1 basis.</p>
 			this.textInfoErr = false
 		},
 		GAfail(){
-			ga('gtag_UA_107010673_1.send', {
+			ga('gtag_UA_107010673_2.send', {
 					hitType: 'event',
 					eventCategory: 'activity_detail',
 					eventAction: 'submit',
@@ -121,22 +121,24 @@ on a 1-1 basis.</p>
 				});
 		},
        submit(){
+       		let ok=false
        		let that = this
 			if(that.name == '' || regExp.isNub(that.name) || regExp.isCode(that.name)) {
-				that.GAfail()
+				ok=false
 				that.nameError = true
 			} else if(!regExp.isEmail(that.email)) {
 				that.emailErr = true
-				that.GAfail()
+				ok=false
 			}else if(that.peopleNub==0){
-				that.GAfail()
+				ok=false
 				that.isshowchoose=true
 			
 			}else if(that.textInfo == '') {
 				that.textInfoErr = true
-				that.GAfail()
+				ok=false
 			}else{
-				ga('gtag_UA_107010673_1.send', {
+				ok=true
+				ga('gtag_UA_107010673_2.send', {
 						hitType: 'event',
 						eventCategory: 'activity_detail',
 						eventAction: 'submit',
@@ -180,6 +182,9 @@ on a 1-1 basis.</p>
 					})
 				}
 				
+			}
+			if(ok==false){
+				that.GAfail()
 			}
        },
        showchoose(){

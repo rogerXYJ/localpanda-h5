@@ -36,7 +36,13 @@
     			this.$emit('back',false)
     		},
     		selectCodeFn(country,code) {
-    			
+    			ga('gtag_UA_107010673_2.send', {
+						hitType: 'event',
+						eventCategory: 'activity_booking',
+						eventAction: 'input',
+						eventLabel: 'country_code'
+	
+					});
     			let codeDetails={
 					mobileCode:country + "(+" + code + ")",
 					code:"(+" + code + ")",
