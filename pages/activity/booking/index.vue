@@ -247,13 +247,13 @@
 				
 				if(id == 0) {
 					if(this.oderFirstName) {
-						ga('gtag_UA_107010673_1.send', {
+						ga('gtag_UA_107010673_2.send', {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
 							eventAction: 'input',
 							eventLabel: 'first_name',
 						});
-						ga('gtag_UA_107010673_1.send', {
+						ga('gtag_UA_107010673_2.send', {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
 							eventAction: 'input',
@@ -263,13 +263,13 @@
 
 				} else if(id == 1) {
 					if(this.oderlastName) {
-						ga('gtag_UA_107010673_1.send', {
+						ga('gtag_UA_107010673_2.send', {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
 							eventAction: 'input',
 							eventLabel: 'last_name',
 						});
-						ga('gtag_UA_107010673_1.send', {
+						ga('gtag_UA_107010673_2.send', {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
 							eventAction: 'input',
@@ -279,13 +279,13 @@
 
 				} else if(id == 2) {
 					if(this.emailAddress) {
-						ga('gtag_UA_107010673_1.send', {
+						ga('gtag_UA_107010673_2.send', {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
 							eventAction: 'input',
 							eventLabel: 'email_address',
 						});
-						ga('gtag_UA_107010673_1.send', {
+						ga('gtag_UA_107010673_2.send', {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
 							eventAction: 'input',
@@ -293,15 +293,30 @@
 						});
 					}
 
-				} else {
+				}else if(id == 3){
+					if(this.phone) {
+						ga('gtag_UA_107010673_2.send', {
+							hitType: 'event',
+							eventCategory: 'activity_booking',
+							eventAction: 'input',
+							eventLabel: 'phone_number',
+						});
+						ga('gtag_UA_107010673_2.send', {
+							hitType: 'event',
+							eventCategory: 'activity_booking',
+							eventAction: 'input',
+							eventLabel: 'booking_input',
+						});
+					}
+				}else {
 					if(this.comments) {
-						ga('gtag_UA_107010673_1.send', {
+						ga('gtag_UA_107010673_2.send', {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
 							eventAction: 'input',
 							eventLabel: 'comment',
 						});
-						ga('gtag_UA_107010673_1.send', {
+						ga('gtag_UA_107010673_2.send', {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
 							eventAction: 'input',
@@ -314,59 +329,60 @@
 			
 			},
 			gaFail(){
-				ga('gtag_UA_107010673_1.send', {
-							hitType: 'event',
-							eventCategory: 'activity_booking',
-							eventAction: 'submit',
-							eventLabel: 'activity_order_fail',
-						});
+				ga('gtag_UA_107010673_2.send', {
+					hitType: 'event',
+					eventCategory: 'activity_booking',
+					eventAction: 'submit',
+					eventLabel: 'activity_order_fail',
+				});
 			},
 			next() {
 				const that = this
 				var obj;
-
+				let next=false
 				var deviceType  = /(iPad)/i.test(navigator.userAgent)?'IPAD':'MOBILE';
 
 				//that.addOder = true
 				if(that.oderFirstName == "" || regExp.isNub(that.oderFirstName) || regExp.isCode(that.oderFirstName)) {
 					that.oderFirstNameErr = true
-					that.gaFail()
+					next=false
 					
 				} else if(that.oderlastName == "" || regExp.isNub(that.oderlastName) || regExp.isCode(that.oderlastName)) {
 					that.oderlastNameErr = true
-					that.gaFail()
+					next=false
 					
 				} else if(!regExp.isEmail(that.emailAddress)) {
 					that.emailAddressErr = true
-					that.gaFail()
+					next=false
 					
 				}else if(!that.mobileCode){
 					that.codeErr=true
-					that.gaFail()
+					next=false
 				}else if(that.phone=="" || !regExp.isMobil(that.phone)) {
 					that.phoneErr = true
-					that.gaFail()
+					next=false
 					
 				} else {
 					if(that.check == 1) {
 						if(that.TravellerFirstName == "" || regExp.isNub(that.TravellerFirstName) || regExp.isCode(that.TravellerFirstName)) {
 							that.TravellerFirstNameErr = true
-							that.gaFail()
+							next=false
 							
 						} else if(that.TravellerlastName == "" || regExp.isNub(that.TravellerlastName) || regExp.isCode(that.TravellerlastName)) {
 							that.TravellerlastNameErr = true
-							that.gaFail()
+							next=false
 							
 						} else if(!regExp.isEmail(that.TravelleremailAddress)) {
 							that.TravelleremailAddressErr = true
-							that.gaFail()
+							next=false
 							
 						} else if(!regExp.isMobil(that.Travellerphone)) {
 							that.TravellerphoneErr = true
-							
+							next=false
 							
 						} else {
-								ga('gtag_UA_107010673_1.send', {
+								next=true
+								ga('gtag_UA_107010673_2.send', {
 								hitType: 'event',
 								eventCategory: 'activity_booking',
 								eventAction: 'submit',
@@ -423,8 +439,12 @@
 								}, function(response) {})
 							}
 						}
+						if(next==false){
+							that.gaFail()
+						}
 					} else {
-						ga('gtag_UA_107010673_1.send', {
+						next=true
+						ga('gtag_UA_107010673_2.send', {
 								hitType: 'event',
 								eventCategory: 'activity_booking',
 								eventAction: 'submit',
@@ -480,7 +500,9 @@
 						}
 					}
 					//console.log(that.addOder)
-
+					if(next==false){
+						that.gaFail()
+					}
 				}
 			}
 

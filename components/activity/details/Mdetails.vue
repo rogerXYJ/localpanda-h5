@@ -260,7 +260,7 @@ import photo from '~/components/activity/details/photo'
 	},
 		methods: {
 			gaInquire(){
-				ga('gtag_UA_107010673_1.send', {
+				ga('gtag_UA_107010673_2.send', {
 						hitType: 'event',
 						eventCategory: 'activity_detail',
 						eventAction: 'click',
