@@ -78,7 +78,7 @@
 			<span slot="no-more">You've reached the bottom of the page.</span>
 			<span slot="no-results" class="no-results"></span>
 		</infinite-loading>
-		<div class="inquireBtn"><a href="/feedback">Inquire</a></div>
+		<div class="inquireBtn"><a href="/info/feedback/">Inquire</a></div>
 		<footMobile></footMobile>
 	</div>
 </template>

@@ -14,11 +14,11 @@
 					<a href="#picDetails">Price Details</a>
 				</li>
 				<li>
-					<a href="#provide">What's Included</a>
+					<a href="#provide">Inclusions & Exclusions</a>
 				</li>
-				<li v-if="exclusions">
+				<!-- <li v-if="exclusions">
 					<a href="#exclusions">Exclusions</a>
-				</li>
+				</li> -->
 				<li v-if="notice.length>0">
 					<a href="#notice">Additional Info</a>
 				</li>
@@ -26,7 +26,7 @@
 					<a href="#PriceNote">Price Note</a>
 				</li>
 				<li v-if="picInfo.refundInstructions">
-					<a href="#CancellationPolicy">Cancellation Policy</a>
+					<a href="#CancellationPolicy">Rescheduling / Cancellation</a>
 				</li>
 				<li>
 					<a href="#notes">Notes</a>

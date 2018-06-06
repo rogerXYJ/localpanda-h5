@@ -134,7 +134,7 @@
 							},
 							{
 								text:"Privacy Policy",
-								
+								url:"/info/privacy-policy"
 								
 							},
 							{
