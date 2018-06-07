@@ -7,7 +7,33 @@
 			</div>
 			<div class="details">
 				<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is   {{picInfo.symbol}}  {{returnFloat(picInfo.childDiscount)}} {{picInfo.currency}}  less than adults' price.</p>
-				<el-table :data="sixArr" stripe style="width: 100%">
+
+
+				<table class="price_list">
+					<tr>
+						<th>No. of people</th>
+						<th>Total cost</th>
+						<th>Price per person</th>
+					</tr>
+					<tr :key="index" v-for="(item,index) in sixArr">
+						<td>
+							<span v-if="item.capacity==1">1 person</span>
+							<span v-else>{{item.capacity}} people</span>
+						</td>
+						<td>
+							<span>{{picInfo.symbol}} {{returnFloat(item.price)}} {{picInfo.currency}}</span>
+						</td>
+						<td>
+							<div v-show="item.capacity">
+								<span>{{picInfo.symbol}} {{returnFloat(item.price/item.capacity)}} {{picInfo.currency}}</span>
+							</div>
+						</td>
+					</tr>
+				</table>
+
+
+
+				<!-- <el-table :data="sixArr" stripe style="width: 100%">
 					<el-table-column prop="capacity" label="No. of people"  align="center" width="90">
 						<template slot-scope="scope">
 							<span v-if="scope.row.capacity==1">1 person</span>
@@ -26,7 +52,8 @@
 							</div>
 						</template>
 					</el-table-column>
-				</el-table>
+				</el-table> -->
+
 			</div>
 		</div>
 	</div>
@@ -41,6 +68,8 @@
 		],
 		name: "priceDetail",
 		data() {
+
+			console.log(this.picInfo);
 			return {
 				sixArr:[],
 			}
@@ -91,6 +120,10 @@
 				}
 			},
 			tableData(details) {
+				//没有数据返回出去，以免报错
+				if(!details){
+					return;
+				}
 				//console.log(details);
 				var newObj = function(obj) {
 					var o = {};
@@ -102,8 +135,6 @@
 
 				let newArr = [],
 					tableD = [];
-
-
 
 				if(details.length==1){
 					for(let i=0;i<details[0].capacity;i++){
@@ -211,6 +242,28 @@
 	}
 </style>
 <style lang="scss" scoped>
+	.price_list{
+		margin-top: 0.2rem;
+		width: 100%;
+		tr{
+			&:nth-child(2n+3){
+				background: rgba(27, 188, 157, .06) !important;
+			}
+		
+			th{
+				text-align: center;
+				
+			}
+			td{
+				text-align: center;
+				font-size: 0.24rem;
+				line-height: 0.56rem;
+				padding: 0.1rem 0;
+				
+			}
+		}
+		
+	}
 	.priceDetail{
 		position: fixed;
 		left: 0;

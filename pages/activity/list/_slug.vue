@@ -89,8 +89,7 @@
 	import InfiniteLoading from 'vue-infinite-loading/src/components/Infiniteloading.vue'
 	import Mfilter from '~/components/activity/list/M-filter'
 	import footMobile from "~/components/footer/index"
-		//element-ui 组件
-	require('~/plugins/element-ui.js');
+
 
 	import Vue from "vue";
 	

@@ -64,9 +64,6 @@
 
 <script>
 	import Flatpickr from 'flatpickr';
-
-	//element-ui 组件
-	require('~/plugins/element-ui.js');
 	
 	import { GetDateStr, addmulMonth, getPriceMark} from "~/assets/js/utils";
 	import SelectPeople from "~/components/activity/details/SelectPeople"
@@ -358,6 +355,8 @@
 			this.title= objDetail.title
 			this.category= objDetail.category
 			this.refundTimeLimit= objDetail.refundTimeLimit*24
+
+			console.log(this.picInfo);
 
 
 			//加载币种
