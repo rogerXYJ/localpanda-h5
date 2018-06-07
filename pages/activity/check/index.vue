@@ -335,7 +335,7 @@
 		            : null
 		        };
 		        orderInfo = JSON.stringify(orderInfo);
-		        console.log(orderInfo);
+		        
 		        localStorage.setItem("orderInfo", orderInfo);
 				
 				location.href="/activity/booking/"
@@ -355,8 +355,6 @@
 			this.title= objDetail.title
 			this.category= objDetail.category
 			this.refundTimeLimit= objDetail.refundTimeLimit*24
-
-			console.log(this.picInfo);
 
 
 			//加载币种
