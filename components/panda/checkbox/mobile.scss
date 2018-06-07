@@ -22,12 +22,14 @@
     input{
       opacity: 0;
       z-index: -1;
+      vertical-align: top;
     }
     .iconfont{
       color: #fff;
       opacity: 0;
       -webkit-transition:all 0.2s linear 0s;
       font-size: 0.24rem;
+      line-height: 0.32rem;
       position: absolute;
       left: 50%;
       top: 50%;

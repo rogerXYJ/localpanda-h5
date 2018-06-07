@@ -142,12 +142,10 @@
 	.checkbox{
 		width:100%;
 	}
-	.checkbox_label {
-		font-size: 0.34rem;
-		color: #353a3f;
-	}
+	
 </style>
 <style lang="scss" scoped>
+	
 	.M-filter {
 		position: fixed;
 		top: 0;
@@ -155,6 +153,13 @@
 		z-index: 9999;
 		background: #fff;
 		height: 100%;
+
+		.checkbox_label {
+			font-size: 0.34rem;
+			line-height: 1rem;
+			color: #353a3f;
+			display: block;
+		}
 		.cont {
 			position: absolute;
 			background: #fff;

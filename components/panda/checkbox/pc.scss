@@ -20,19 +20,22 @@
     box-sizing: border-box;
     border: #ddd solid 1px;
     position: relative;
+    overflow: hidden;
     input{
       opacity: 0;
       z-index: -1;
+      vertical-align: top;
     }
     .iconfont{
       color: #fff;
       opacity: 0;
       -webkit-transition:all 0.2s linear 0s;
       font-size: 10px;
+      line-height: 15px;
       position: absolute;
       left: 50%;
       top: 50%;
-      transform: translate(-50%,-50%) scale(0.6);
+      transform: translate(-50%,-52%) scale(0.6);
       font-weight: normal;
     }
   }
