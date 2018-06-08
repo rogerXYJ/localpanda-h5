@@ -16,11 +16,11 @@
 				<h4>Reservation Information</h4>
 				
 				<div class="inputItem" :class="{err:oderFirstNameErr}">
-					<p>First name <b>*</b></p>
+					<p>First Name <b>*</b></p>
 					<input :class="{err:oderFirstNameErr}"  @blur="gaBlur(0)" @focus="fousOderfisrtname"  v-model="oderFirstName" />
 				</div>
 				<div class="inputItem" :class="{err:oderlastNameErr}">
-					<p>Last name  <b>*</b></p>
+					<p>Last Name  <b>*</b></p>
 					<input :class="{err:oderlastNameErr}"  @focus="fousoderlastName"  @blur="gaBlur(1)"  v-model="oderlastName" />
 				</div>
 			
@@ -37,7 +37,7 @@
 					</div>
 				</div>
 				<div class="inputItem" :class="{err:phoneErr}">
-					<p>Mobile phone <b>*</b></p>
+					<p>Mobile Phone <b>*</b></p>
 					<input :class="{err:phoneErr}"  @focus="fousPhone" v-model="phone" />
 				</div>
 			</div>
@@ -50,12 +50,12 @@
 				
 				<h4>Key Traveler</h4>
 				<div class="inputItem" :class="{err:TravellerFirstNameErr}">
-					<p>First name <b>*</b></p>
+					<p>First Name <b>*</b></p>
 					<input :class="{err:TravellerFirstNameErr}"  @focus="fousFirst()" v-model="TravellerFirstName" />
 
 				</div>
 				<div class="inputItem" :class="{err:TravellerlastNameErr}">
-					<p>Last name <b>*</b></p>
+					<p>Last Name <b>*</b></p>
 					<input :class="{err:TravellerlastNameErr}"  @focus="fousLastName()" v-model="TravellerlastName" />
 				</div>
 			
@@ -72,13 +72,13 @@
 					</div>
 				</div>
 				<div class="inputItem" :class="{err:TravellerphoneErr}">
-					<p>Mobile phone(optional)</p>
+					<p>Mobile Phone(optional)</p>
 					<input :class="{err:TravellerphoneErr}"  @focus="fousphonenumb()" v-model="Travellerphone" />
 				</div>
 			</div>
 			<div class="Comments">
 				<div class="information">
-					<h4>Other required information</h4>
+					<h4>Other Required Information</h4>
 					<textarea v-if="opctions.category=='Private Tour'" @blur="gaBlur(3)" v-model="comments" placeholder="please provide your hotel address so the guide can pick you up." onfocus="this.placeholder=''" onblur="this.placeholder='please provide your hotel address so the guide can pick you up.'"></textarea>
 					<textarea v-else v-model="comments" @blur="gaBlur(3)"></textarea>
 				</div>
