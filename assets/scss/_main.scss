@@ -10,9 +10,13 @@
 //字体
 @import "~/assets/font/iconfont.css";
 // 字体上传到cdn再引用 不要引用无效地址
+//@font-face{
+//  font-family: "Ubuntu";
+//  src:url('https://d2q486kjf9cwwu.cloudfront.net/static/font/ubuntu-r-s.woff');
+//}
 @font-face{
-    font-family: "Ubuntu";
-    src:url('https://d2q486kjf9cwwu.cloudfront.net/static/font/ubuntu-r-s.woff');
+font-family: "Ubuntu";
+src:url('~/static/font/Ubuntu-R.ttf');
 }
 
 body,
