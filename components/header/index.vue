@@ -53,7 +53,7 @@
 
 <script>
 	import headBack from "~/components/header/back";
-	import FBLogin from "~/assets/js/panda/FBLogin.js";
+	import FBLogin from "~/plugins/panda/FBLogin/";
 
 	export default {
 		props:["isExpats"],

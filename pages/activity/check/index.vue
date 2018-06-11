@@ -64,9 +64,6 @@
 
 <script>
 	import Flatpickr from 'flatpickr';
-
-	//element-ui 组件
-	require('~/plugins/element-ui.js');
 	
 	import { GetDateStr, addmulMonth, getPriceMark} from "~/assets/js/utils";
 	import SelectPeople from "~/components/activity/details/SelectPeople"
@@ -338,7 +335,7 @@
 		            : null
 		        };
 		        orderInfo = JSON.stringify(orderInfo);
-		        console.log(orderInfo);
+		        
 		        localStorage.setItem("orderInfo", orderInfo);
 				
 				location.href="/activity/booking/"

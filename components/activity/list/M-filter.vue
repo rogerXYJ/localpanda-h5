@@ -11,34 +11,34 @@
 				<div class="fliterList">
 					<div class="title">CATEGORIES</div>
 					<div class="detail">
-						<el-checkbox-group v-model="checkedCategory">
+						<checkbox-group v-model="checkedCategory">
 							<div class="checkboxlist" v-for="(item,key,index) in category">
-								<el-checkbox :label="key" :key="key">{{key}} ({{item}})</el-checkbox>
+								<checkbox :label="key" :key="key">{{key}} ({{item}})</checkbox>
 							</div>
-						</el-checkbox-group>
+						</checkbox-group>
 					</div>
 				</div>
 				<div class="fliterList">
 					
 					<div class="title">DURATION</div>
 					<div class="detail">
-						<el-checkbox-group v-model="checkedDurations">
+						<checkbox-group v-model="checkedDurations">
 							<div class="checkboxlist" v-for="(i,key,index) in durations">
-								<el-checkbox v-if="key==0" :label="key" :key="key">Half Day ({{i}})</el-checkbox>
-								<el-checkbox v-if="key==1" :label="key" :key="key">{{key}} Day ({{i}})</el-checkbox>
-								<el-checkbox v-if="key>1" :label="key" :key="key">{{key}} Days ({{i}})</el-checkbox>
+								<checkbox v-if="key==0" :label="key" :key="key">Half Day ({{i}})</checkbox>
+								<checkbox v-if="key==1" :label="key" :key="key">{{key}} Day ({{i}})</checkbox>
+								<checkbox v-if="key>1" :label="key" :key="key">{{key}} Days ({{i}})</checkbox>
 							</div>
-						</el-checkbox-group>
+						</checkbox-group>
 					</div>
 				</div>
 				<div class="fliterList" >
 					<div class="title">THEMES</div>
 					<div class="detail">
-						<el-checkbox-group v-model="checkedTourtype">
+						<checkbox-group v-model="checkedTourtype">
 							<div class="checkboxlist" v-for="(i,key,index) in tourtype">
-								<el-checkbox :label="key" :key="key">{{key}} ({{i}})</el-checkbox>
+								<checkbox :label="key" :key="key">{{key}} ({{i}})</checkbox>
 							</div>
-						</el-checkbox-group>
+						</checkbox-group>
 					</div>
 				</div>
 				
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-	
+	import {checkboxGroup,checkbox} from "~/plugins/panda/checkbox/"
 	//import { checklist } from 'vux'
 	export default {
 		props: [
@@ -82,6 +82,8 @@
 			}
 		},
 		 components: {
+			checkboxGroup,
+			checkbox
 		    //checklist
 		 },
 		methods: {
@@ -128,7 +130,7 @@
 	}
 </script>
 <style lang="scss">
-	.el-checkbox__inner {
+	.checkbox__inner {
 		width: 0.32rem;
 		height: 0.32rem;
 		border-radius: 0.04rem;
@@ -137,15 +139,13 @@
 			top: 0.066666rem;
 		}
 	}
-	.el-checkbox{
+	.checkbox{
 		width:100%;
 	}
-	.el-checkbox__label {
-		font-size: 0.34rem;
-		color: #353a3f;
-	}
+	
 </style>
 <style lang="scss" scoped>
+	
 	.M-filter {
 		position: fixed;
 		top: 0;
@@ -153,6 +153,13 @@
 		z-index: 9999;
 		background: #fff;
 		height: 100%;
+
+		.checkbox_label {
+			font-size: 0.34rem;
+			line-height: 1rem;
+			color: #353a3f;
+			display: block;
+		}
 		.cont {
 			position: absolute;
 			background: #fff;
