@@ -1,21 +1,27 @@
 <template>
 	<div class="header">
-		<div class="nav_bg" :class="{show_nav:showWinBg}" @click="hideDialog"></div>
+		<div class="nav_bg" :class="{'show_nav':showWinBg}"  @click="hideDialog"></div>
 
-		<div class="header_box">
+		<div class="header_box" :class="{'background-nomal':isExpats}">
 			<!-- 导航展开按钮 -->
 			<div class="header_btn" @click="showNav">
-				<span></span>
-				<span></span>
-				<span></span>
+				<span v-for="item in 3" :class="{'color-white':isExpats}"></span>
+				<!--<span></span>
+				<span></span>-->
 			</div>
 
 			<!-- logo -->
-			<div class="logo">
+			<div class="logo" v-if="isExpats">
+				<svg aria-hidden="true" @click="goHome">
+						<use xlink:href="#icon-logo_2"></use>
+				</svg>
+			</div>
+			<div class="logo" v-else>
 				<svg aria-hidden="true" @click="goHome">
 						<use xlink:href="#icon-logo_"></use>
 				</svg>
 			</div>
+			
 		</div>
 		
 
@@ -50,6 +56,7 @@
 	import FBLogin from "~/assets/js/panda/FBLogin.js";
 
 	export default {
+		props:["isExpats"],
 		name:'M-head',
 		data(){
 			return {
@@ -123,17 +130,22 @@
 </script>
 
 <style lang="scss" scoped>
+.background-nomal{
+		background: transparent!important;
+		border: none!important;
+	}
+.color-white{
+	background: #fff!important;
+}
 .header{
-	background:#fff;
 	height: 0.99rem;
-	
 	position: relative;
 	z-index: 100;
 	
 	.header_box{
 		position: relative;
 		z-index: 2;
-		background-color: #fff;
+		background: #fff;
 		border-bottom: #dde0e0 solid 1px;
 		.logo{
 			margin-left: 0.4rem;
@@ -144,6 +156,7 @@
 				width: 100%;
 				height: 100%;
 			}
+			
 		}
 		.header_btn{
 			float: right;
