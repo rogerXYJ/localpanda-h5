@@ -52,7 +52,7 @@
 </template>
 
 <script>
-	import {checkboxGroup,checkbox} from "~/components/panda/checkbox/"
+	import {checkboxGroup,checkbox} from "~/plugins/panda/checkbox/"
 	//import { checklist } from 'vux'
 	export default {
 		props: [

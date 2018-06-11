@@ -34,8 +34,8 @@
 </template>
 
 <script>
-	import Validate from "~/assets/js/panda/validate.js"
-	import FBLogin from "~/assets/js/panda/FBLogin.js";
+	import Validate from "~/plugins/panda/validate/"
+	import FBLogin from "~/plugins/panda/FBLogin/";
 	import headBack from "~/components/header/back"
 
 	export default {
