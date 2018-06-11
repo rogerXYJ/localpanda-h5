@@ -492,25 +492,21 @@
 			padding:0 0.4rem 0.36rem;
 			border-bottom:1px solid #dde0e0;
 			.destination{
-				font-size: 0.28rem;
-				margin-left: 0.12rem;
+				font-size: 0.27rem;
+				margin-left: 0.15rem;
+				vertical-align: top;
 				&:first-child{
 					margin-left: 0;
 				}
 				border: solid 1px #dde0e0;
 				border-radius: 8px;
 				display: inline-block;
-				padding:0.14rem 0.1rem 0.14rem 0.1rem;
-				&:nth-child(2){
-					i{
-						margin-right:0;
-					}
-				}
+				padding:0.14rem 0.16rem 0.14rem 0.1rem;
 				i{
 					font-size: 0.25rem;
-					margin-right: 0.15rem;
+					margin-right: 0.1rem;
 					color:#cacccc;
-					
+					float: left;
 				}
 				select{
 					-webkit-appearance: none;

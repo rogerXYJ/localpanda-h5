@@ -42,6 +42,21 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+.swiper-container{
+	.swiper-pagination{
+		.swiper-pagination-bullet{
+			background-color: rgb(53, 58, 63);
+			opacity: 0.5;
+		}
+		.swiper-pagination-bullet-active{
+			opacity: 1;
+			background-color: #fff;
+		}
+	}
+}
+</style>
+
 <style lang="scss" scoped>
 #banner {
   position: relative;
@@ -60,7 +75,12 @@ export default {
   img[lazy=loading]{
     width: 1px;
   }
+
+	
+	
   
 }
+
+
 
 </style>

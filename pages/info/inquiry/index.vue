@@ -227,7 +227,7 @@ on a 1-1 basis.</p>
 				that.isshowchoose = false
 			})
 
-			document.getElementById('win_bg').addEventListener('touchstart', function() {
+			document.getElementById('win_bg').addEventListener('click', function() {
 				that.showWinBg=false;
 			})
 
@@ -265,7 +265,7 @@ on a 1-1 basis.</p>
 		transform: translate(-50%,-50%);
 		opacity: 1;
 		visibility: initial;
-		
+		position: fixed;
 		&.animate.open{
 			animation: all 0 cubic-bezier(.23,1,.32,1);
 			z-index: 999;

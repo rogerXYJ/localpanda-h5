@@ -116,7 +116,7 @@
 							},
 							{
 								text:"Contact Us",
-								url:"/info/contact-us"
+								url:"/info/feedback/"
 							}
 						],
 						show:false

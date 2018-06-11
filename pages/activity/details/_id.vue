@@ -59,6 +59,10 @@
 			apiBasePath,
 			redirect
 		}) {
+
+			var consoleTimeS = new Date().getTime();
+			console.log('node start time:'+consoleTimeS);
+
 			let id = route.params.id;
 			// 服务端渲染部分 这部分操作还没有页面实例，只是初始化页面数据
 			let data = {
@@ -171,6 +175,10 @@
 					message: JSON.stringify(err)
 				});
 			}
+
+			var consoleTimeS2 = new Date().getTime();
+			console.log('node end time:'+consoleTimeS2);
+			console.log('在node端渲染，请求接口花费时间：'+(consoleTimeS2-consoleTimeS)/1000+' S');
 			
 			return data;
 		},
@@ -235,6 +243,7 @@
 			window.addEventListener("scroll", this.scorllBar);
 
 
+			//等待渲染完毕后调用
 			setTimeout(function(){
 				new Swiper('#swiper_bannerbox', {
 					autoplay: {
@@ -248,8 +257,7 @@
 						el: '#swiper_banner_pagination'
 					}
 				});
-			},500);
-		
+			},1000);
 
 		},
 		watch: {
