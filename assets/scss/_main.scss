@@ -10,6 +10,10 @@
 //字体
 @import "~/assets/font/iconfont.css";
 // 字体上传到cdn再引用 不要引用无效地址
+//@font-face{
+//  font-family: "Ubuntu";
+//  src:url('https://d2q486kjf9cwwu.cloudfront.net/static/font/ubuntu-r-s.woff');
+//}
 @font-face{
     font-family: "Ubuntu";
     src:url('https://resource.localpanda.cn/static/font/ubuntu-r-s.woff');
@@ -50,10 +54,12 @@ body{
 ul,li{
     list-style: none;
 }
-h1,h2,h3,h4,h5{
+h1,h2,h3,h4,h5,{
     font-weight: normal;
 }
-
+em,i{
+    font-style: normal;
+}
 .clearfix:after {
     content: "";
     display: block;
@@ -119,7 +125,9 @@ input {
         margin-top: 6px;
     }
 }
-
+.swiper-pagination-bullet{
+    
+}
 
 //checkbox
 // .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{

@@ -9,7 +9,7 @@
 				</div>
 			</div>
 			<ul v-if="codeList.length>0">
-				<li v-for="(item,index) in codeList" @click="selectCodeFn(item.country_name,item.prefix)">{{item.country_name}} (+{{item.prefix}})</li>
+				<li :key="index" v-for="(item,index) in codeList" @click="selectCodeFn(item.country_name,item.prefix)">{{item.country_name}} (+{{item.prefix}})</li>
 			</ul>
 			<div class="empty" v-else>There are no results that match your search.</div>
 		</div>
@@ -56,7 +56,7 @@
     	mounted: function() {
     		let $this=this
     		this.codeList=this.countryCode
-    		
+    		console.log(this.countryCode)
     		
     	},
     	watch:{
@@ -76,11 +76,9 @@
 							}
 							other.push(json)
 
-						} else {
-
 						}
 					}
-
+					console.log(other)
 					self.codeList = other
 					//this.countryCode=arr
 
@@ -133,7 +131,7 @@
 				}
 			}
 			ul{
-				padding-top: 1.6rem;
+				padding-top: 3.04rem;
 				li{
 					margin-top: 0.58rem;
 					font-size: 0.36rem;

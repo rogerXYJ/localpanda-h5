@@ -516,7 +516,7 @@
 			this.opctions = JSON.parse(localStorage.getItem("orderInfo"))
 			this.logIn = window.localStorage.getItem("logstate")
 			/*this.goBackFn()*/
-
+			console.log(countryCode)
 		},
 		watch: {
 			isShowBook:function(val,oldVal){

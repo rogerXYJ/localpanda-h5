@@ -4,11 +4,18 @@
 			<div class="swiper-pagination" id="swiper_photo_pagination"></div>
 			<div v-bind:class="{'boxshow animated zoomIn' : alertPicActive , 'boxshow animated zoomOut' : !alertPicActive}">
 				<div class="conter">
-					
 					<div class="swiper-container gallery-top" id="swiper_photo">
 						<div class="swiper-wrapper">
 							<div class="swiper-slide" :key="index" v-for="(i,index) in photoList">
-								<img v-lazy="i.url" />
+								<div class="swiper-zoom-container">
+									<img class="isExpats" v-lazy="i.url" v-if="i.title"/>
+									<img class="image" v-lazy="i.url" v-else>
+								
+									<div class="des" v-if="i.title">
+										<h3>{{i.title}}</h3>
+										<p>{{i.content}}</p>
+									</div>
+								</div>
 							</div>					
 						</div>
 					</div>
@@ -33,7 +40,7 @@ export default {
 			var self = this;
 			return {
 				alertPicActive: false,
-				
+				des:false,
 				swiperOptionTop: {
 					 pagination: {
 			            el: '.swiper-pagination',
@@ -98,7 +105,7 @@ export default {
 			alertPicStatus: function(val, oldVal) {
 				if(val) {
 					this.alertPicActive = true;
-
+					console.log(this.index)
 					var self = this;
 					setTimeout(function(){
 						self.swiper_photo = new Swiper('#swiper_photo', {
@@ -109,7 +116,10 @@ export default {
 							pagination: {
 								el: '#swiper_photo_pagination',
 								type: 'fraction'
-							}
+							},
+							initialSlide:self.index?self.index:0,
+							zoom:true
+							
 						});
 					},200);
 					
@@ -135,7 +145,7 @@ export default {
 			 
 		
 		},
-		props: ['alertPicStatus','photoList']
+		props: ['alertPicStatus','photoList','index']
 	}
 </script>
 
@@ -170,8 +180,31 @@ export default {
 			    		img{
 			    			max-width: 100%;
 			    			position: relative;
-			    			top: 50%;
-			    			transform: translateY(-50%);
+			    			
+			    		}
+			    		.image{
+			    				
+			    				top: 50%;
+			    				transform: translateY(-50%);
+			    			}
+			    			.isExpats{
+			    				top: 2.37rem;
+			    			}
+			    		.des{
+			    			position: absolute;
+			    			bottom: 1.37rem;
+			    			left: 0.3rem;
+			    			color: #fff;
+			    			h3{
+			    				font-size: 0.44rem;
+			    				font-weight: bold;
+			    				text-align: left;
+			    			}
+			    			p{
+			    				font-size: 0.24rem;
+			    				text-align: left;
+			    				margin-top: 0.28rem;
+			    			}
 			    		}
 			    	}
 			    }
@@ -208,6 +241,9 @@ export default {
 					font-size: 0.32rem;
 					color: #fff!important;
 			    	
+		}
+		.swiper-zoom-container{
+			display: inherit;
 		}
 		.false {
 			&:hover {
