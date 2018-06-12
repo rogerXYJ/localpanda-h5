@@ -67,3 +67,7 @@
 	}
 </script>
 
+<style lang="scss">
+//样式类型，pc.scss 和 mobile.scss
+@import "./mobile.scss";
+</style>
