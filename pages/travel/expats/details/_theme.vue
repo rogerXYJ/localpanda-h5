@@ -29,7 +29,7 @@
 							<div class="clearfix">
 								<div class="price">
 									<span>Starting from</span>
-									<b>${{item.bottomPrice}} <i>${{item.originalPrice}}</i></b>
+									<b>¥{{item.bottomPrice}} <i>¥{{item.originalPrice}}</i></b>
 									<span>per person</span>
 								</div>
 								<div class="introduce">
@@ -38,7 +38,7 @@
 
 								</div>
 							</div>
-							<div class="city"><b>Citys</b> :<span v-html="item.destinations"></span></div>
+							<div class="city"><b>Cities</b> :<span v-html="item.destinations"></span></div>
 							<div class="tags">
 								<span v-for="i in item.tags.split(',')">{{i}}</span>
 							</div>

@@ -22,9 +22,9 @@
 				<li v-if="notice.length>0">
 					<a href="#notice">Additional Info</a>
 				</li>
-				<li v-if="picInfo.priceInstructions">
+				<!--<li v-if="picInfo.priceInstructions">
 					<a href="#PriceNote">Price Note</a>
-				</li>
+				</li>-->
 				<li v-if="picInfo.refundInstructions">
 					<a href="#CancellationPolicy">Rescheduling / Cancellation</a>
 				</li>

@@ -26,7 +26,7 @@ horseriding, karting & kayaking</span>
 						</div>
 					</div>
 					<div class="clickBtn">
-						<button><a href="details/excursions">Wanna Get It Free?</a></button>
+						<button><a href="/travel/expats/details/excursions">Wanna Get It Free?</a></button>
 						<button><a href="/activity/details/11270">Book Now!</a></button>
 
 					</div>
