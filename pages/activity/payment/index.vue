@@ -335,6 +335,17 @@
 								amount: that.opctions.amount * 100, // 支付金额，单位是“分”
 								objectType: 'ACTIVITY'
 							});
+						}else{
+							//code用过或者没有code则从新获取
+							var localWxCode = localStorage.getItem('localWxCode');
+							if(that.wxcode == localWxCode && that.opctions.currency == 'CNY' || !that.wxcode && that.opctions.currency == 'CNY') {
+								location.href = 'https://www.localpanda.com/relay/getWechatToken.html?url=' + encodeURIComponent(location.href);
+								return;
+							}
+							//本地存储code
+							localStorage.setItem('localWxCode', that.wxcode);
+							
+							that.wxInit();
 						}
 					};
 					//默认用来显示支付按钮，微信里面用来公众号支付数据
@@ -712,9 +723,7 @@
 //			if(this.opctions.currency=="CNY"){
 //				this.id=0
 //			}
-			if(this.isWx) {
-				this.wxInit();
-			}
+			
 			
 			this.logIn = this.urlQuery.login ? this.urlQuery.login : 0;
 			if(!this.logIn) {

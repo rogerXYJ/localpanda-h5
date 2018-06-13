@@ -20,6 +20,7 @@
       'label':{},
       'value':{},
       disabled: Boolean,
+      change:{}
     },
 		data() {
 			return {
@@ -54,6 +55,9 @@
 		methods: {
       inputChange(e){
         this.$emit('input', this.label);
+        if(typeof this.change =='function'){
+          this.change(e);
+        }
       }
 		},
 		mounted(){
