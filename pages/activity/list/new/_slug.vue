@@ -9,6 +9,7 @@
 		.filter_box{
 			position: relative;
 			z-index: 3;
+			min-height: 0.9rem;
 			.filter_type{
 				background-color: #fff;
 				padding-top:0.06rem;
@@ -88,6 +89,15 @@
 					}
 				}
 			}
+			.filter_fixed{
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				z-index: 99;
+				border-bottom: #eee solid 1px;
+				box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+			}
 		}
 
 		//条件结果
@@ -144,13 +154,13 @@
 							background-position: center;
 						}
 						.list_content{
-							padding: 0.1rem 0.2rem 0.2rem;
+							padding: 0.1rem 0.2rem 0.16rem;
 							h4{
 								color: #353a3f;
 								font-size: 0.28rem;
 								font-weight: bold;
 								line-height: 0.32rem;
-								height: 0.64rem;
+								max-height: 0.64rem;
 								overflow: hidden;
 							}
 							.list_tag{
@@ -173,6 +183,7 @@
 							}
 							.price_box{
 								margin-top: 0.16rem;
+								overflow: hidden;
 								.list_price{
 									float: right;
 									color: #878e95;
@@ -206,6 +217,9 @@
 					}
 				}
 			}
+			.list_loading{
+				margin-top: 0.2rem;
+			}
 		}
 
 		.filter_dialog{
@@ -228,6 +242,7 @@
 			}
 			.filter_content{
 				height: calc(100vh - 1rem -1.5rem);
+				-webkit-overflow-scrolling: touch;
 				overflow-y: auto;
 				dt{
 					height: 0.74rem;
@@ -286,8 +301,8 @@
 		<Head></Head>
 
 		<!-- 筛选 -->
-		<div class="filter_box">
-			<dl class="filter_type clearfix">
+		<div class="filter_box" id="filter_box">
+			<dl class="filter_type clearfix" :class="{filter_fixed:isFixed}">
 
 				<!-- products -->
 				<dd>
@@ -334,7 +349,7 @@
 		<!-- 产品列表 -->
 		<div class="list_box">
 			<ul class="list_ul">
-				<li :key="index" v-for="(item,index) in listdata.entities">
+				<li :key="index" v-for="(item,index) in activityList">
 					<a :href="'/activity/details/'+item.activityId">
 						<div class="list_img" v-lazy:background-image="item.coverPhotoUrl"></div>
 						<div class="list_content">
@@ -345,12 +360,17 @@
 							<p class="duration"><b>Duration:</b>{{item.duration}} {{toLower(item.durationUnit)}}</p>
 							<div class="price_box">
 								<span class="list_price">From<b>${{item.bottomPrice}}</b>pp</span>
-								<span class="tag_group">{{item.groupType}}</span>
+								<span class="tag_private" v-if="item.groupType=='Private Tour'">{{item.groupType}}</span>
+								<span class="tag_group" v-if="item.groupType=='Group Tour'">{{item.groupType}}</span>
 							</div>
 						</div>
 					</a>
 				</li>
 			</ul>
+			<infinite-loading class="list_loading" @infinite="infiniteHandler" spinner="bubbles"  ref="infiniteLoading">
+				<span slot="no-more">You've reached the bottom of the page.</span>
+				<span slot="no-results" class="no-results"></span>
+			</infinite-loading>
 		</div>
 		
 		<Foot></Foot>
@@ -364,7 +384,7 @@
 					<dt>{{item.type}}</dt>
 					<dd v-if="item.type=='DURATION'">
 						<checkbox-group v-model="filterCheck.duration">
-							<checkbox :key="index2" v-for="(itemType,key,index2) in item.items" :label="key">{{getStr(key)}} ( {{itemType}} )</checkbox>
+							<checkbox :key="index2" v-for="(itemType,key,index2) in item.items" :label="key">{{getDayStr(key)}} ( {{itemType}} )</checkbox>
 						</checkbox-group>
 					</dd>
 					<dd v-else>
@@ -388,6 +408,7 @@
 	import Foot from "~/components/footer/index"
 	import {checkboxGroup,checkbox} from "~/plugins/panda/checkbox/"
 	import {radioGroup,radio} from "~/plugins/panda/radio/"
+	import InfiniteLoading from 'vue-infinite-loading/src/components/Infiniteloading.vue'
 
 	import Vue from "vue";
 	
@@ -400,23 +421,50 @@
 			checkboxGroup,
 			checkbox,
 			radioGroup,
-			radio
+			radio,
+			InfiniteLoading
 		},
 		async asyncData({
 			route,
 			apiBasePath
 		}) {
+			//当前城市
 			let loc = route.params.slug;
 			
-
+			//接口默认数据
 			var listdata = {};
-
+			//默认请求接口post的数据
 			var postData = {
-				location:'Beijing',
+				location:loc,
 				pageNum:1,
 				pageSize:10,
 				sort:{"type":"SCORE"}
 			};
+
+			//获取url数据
+			var query = route.query;
+			var options = query.options ? JSON.parse(query.options) : '';
+			var sort = query.sort ? JSON.parse(query.sort) : '';
+
+			//根据url数据生成post需要的格式
+			var postFilters = [];
+			for(var key in options){
+				postFilters.push({
+					type: key.toUpperCase(),
+					filterValues: options[key]
+				});
+			};
+
+			//如果有筛选数据,则在默认数据里添加上filters
+			if(options){
+				postData.filters = postFilters;
+			};
+
+			//如果有排序数据,则在默认数据里修改sort
+			if(sort){
+				postData.sort = sort;
+			}
+
 
 			try{
 				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(postData), {
@@ -429,8 +477,8 @@
 			//列表页数据
 			var data = listdata.data;
 
-			//根据接口数据，生成需要筛选的类型默认数据和默认选中数据
-			var filter = {},
+			//根据接口数据，生成需要筛选的类型默认数据和默认filter数据
+			var filterAll = {},
 				filterCheck = {};
 			if(data.aggregations){
 				data.aggregations.forEach(item => {
@@ -438,40 +486,66 @@
 					for(var key in item.items){
 						thisFilter.push(key);
 					}
-					var type = item.type.toLowerCase();
-					filter[type] = thisFilter;
-					filterCheck[type] = thisFilter;
+					//当前类型
+					var thisType = item.type.toLowerCase();
+					filterAll[thisType] = thisFilter;  ////添加filter每种类型数据
+					filterCheck[thisType] = options[thisType] ? options[thisType] : []; //添加filter每种类型默认check数据
 				});
 			}
 
+			//默认排序数据
+			var rankCheck = 'Recommended';
+			if(sort && sort.type=='PRICE'){
+				if(sort.reverse == true){
+					rankCheck = 'Price :High to Low';
+				}else{
+					rankCheck = 'Price :Low to High';
+				}
+			}
+
+
+			
 
 			return {
 				listdata: data,
+				activityList: data.entities,
+				apiBasePath: apiBasePath,
+
 				cityCheck:loc,
 				city:['Shanghai','Beijing','Chengdu','Xian','Guilin'],
 				showCity:false,
 
 				productsCheck:[],   //打钩的值
 				products:[],
-				showProducts:false,
+				showProducts:false, //一期city暂时放在products
 
 				filterCheck:filterCheck,
-				filter: filter,
+				filter: filterAll,
 				showFilter: false,
 
-				rankCheck:'Recommended',
+				rankCheck: rankCheck,
 				rank:['Recommended','Price :Low to High','Price :High to Low'],
-				showRank:false
+				showRank:false,
+
+				isFixed:false,
+				nowPage:1
 			}
 		},
 		computed:{
+			//渲染选中标签
 			filterTag:function(){
 				var allTag = [];
 				for(var key in this.filterCheck){
-					console.log(this.filterCheck[key]);
-					allTag.splice(this.filterCheck[key]);
+					var thisArr = this.filterCheck[key];
+					//处理duration数组的天数显示
+					if(key == 'duration'){
+						thisArr = thisArr.map(item=>{
+							return this.getDayStr(item); //调用数字转天数得方法，重写数组
+						})
+					}
+					//把所有标签的数组连接到一个数组里
+					allTag = allTag.concat(thisArr);
 				}
-				console.log(allTag);
 				return allTag;
 			}
 		},
@@ -486,7 +560,9 @@
 
 			//products相关
 			productsFn(){
+				//显示Products
 				this.showProducts=!this.showProducts;	
+				//隐藏排序弹窗
 				this.showRank = false;
 			},
 			productsClear(){
@@ -552,7 +628,6 @@
 				var rankCheck = this.rankCheck;
 				var sort = '';
 
-				console.log(rankCheck);
 				if(rankCheck=='Price :Low to High'){
 					sort = {"type":"PRICE","reverse":false}
 				}else if(rankCheck=='Price :High to Low'){
@@ -573,30 +648,90 @@
 				location.href = path + (hasOptions?'?options=' + optionsEncode:'') + (sort?(hasOptions?'&':'?')+'sort='+JSON.stringify(sort):'');
 
 			},
-			filterStr(){
-				// for(var key in this.filterCheck){
-
-				// }
+			hideBodyScroll(){
+				document.body.style.overflowY = 'hidden';
+			},
+			showBodyScroll(){
+				document.body.style.overflowY = 'inherit';
 			},
 
 			
 			toLower(text){
 				return text.toLowerCase();
 			},
-			getStr(text){
+			getDayStr(text){
 				if(text==0){
 					return 'Half Day';
 				}else if(text==1){
 					return text+' Day';
 				}
 				return text+' Days';
+			},
+			infiniteHandler($state){
+				var that = this;
+				
+				this.nowPage++;
+				
+				//默认请求接口post的数据
+				var postData = {
+					location: this.$route.params.slug,
+					pageNum:this.nowPage,
+					pageSize:10,
+					sort:{"type":"SCORE"}
+				};
+
+				this.axios.post(that.apiBasePath + "search/activity", JSON.stringify(postData), {
+					headers: {
+						'Content-Type': 'application/json; charset=UTF-8'
+					}
+				}).then(function(response) {
+					if(response.data.entities&&response.data.entities.length) {
+						that.activityList=that.activityList.concat(response.data.entities)
+						$state.loaded();
+					}else{
+						 $state.complete();
+					}
+				}, function(response) {
+					$state.complete();
+				})
 			}
 		},
 		watch: {
-			
+			showProducts:function(value){
+				if(value){
+					this.hideBodyScroll();
+				}else{
+					this.showBodyScroll();
+				}
+			},
+			showFilter:function(value){
+				if(value){
+					this.hideBodyScroll();
+				}else{
+					this.showBodyScroll();
+				}
+			},
+			showRank:function(value){
+				if(value){
+					this.hideBodyScroll();
+				}else{
+					this.showBodyScroll();
+				}
+			}
 		},
 		mounted: function() {
-			console.log(this.$data.filter);
+			
+			//筛选悬浮
+			var filterBox = document.getElementById('filter_box'),
+				filterBoxTop = filterBox.offsetTop;
+			window.addEventListener("scroll", (e)=>{
+				if(scrollY>filterBoxTop){
+					this.isFixed=true
+				}else{
+					this.isFixed=false
+				}
+			});
+			console.log(this.$data.listdata);
 		},
 		head() {
 			let location = this.value;
