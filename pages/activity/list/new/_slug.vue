@@ -96,7 +96,6 @@
 				width: 100%;
 				z-index: 99;
 				border-bottom: #eee solid 1px;
-				box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 			}
 		}
 
@@ -360,8 +359,8 @@
 							<p class="duration"><b>Duration:</b>{{item.duration}} {{toLower(item.durationUnit)}}</p>
 							<div class="price_box">
 								<span class="list_price">From<b>${{item.bottomPrice}}</b>pp</span>
-								<span class="tag_private" v-if="item.groupType=='Private Tour'">{{item.groupType}}</span>
-								<span class="tag_group" v-if="item.groupType=='Group Tour'">{{item.groupType}}</span>
+								<span class="tag_private" v-if="item.groupType=='Private'">{{item.groupType}} Tour</span>
+								<span class="tag_group" v-if="item.groupType=='Group'">{{item.groupType}} Tour</span>
 							</div>
 						</div>
 					</a>
@@ -377,19 +376,19 @@
 
 		<div class="filter_dialog" :class="{show_filter:showFilter}">
 			<Back title="Filter" type="close" :close="filterClose">
-				<span class="filter_clear" @click="filterClear">Clear</span>
+				<span class="filter_clear" @click="filterClear" v-show="showClear">Clear</span>
 			</Back>
 			<div class="filter_content">
 				<dl :key="index" v-for="(item,index) in listdata.aggregations">
 					<dt>{{item.type}}</dt>
 					<dd v-if="item.type=='DURATION'">
 						<checkbox-group v-model="filterCheck.duration">
-							<checkbox :key="index2" v-for="(itemType,key,index2) in item.items" :label="key">{{getDayStr(key)}} ( {{itemType}} )</checkbox>
+							<checkbox :change="filterChange" :key="index2" v-for="(itemType,key,index2) in item.items" :label="key">{{getDayStr(key)}} ( {{itemType}} )</checkbox>
 						</checkbox-group>
 					</dd>
 					<dd v-else>
 						<checkbox-group v-model="filterCheck[toLower(item.type)]">
-							<checkbox :key="index2" v-for="(itemType,key,index2) in item.items" :label="key">{{key}} ( {{itemType}} )</checkbox>
+							<checkbox :change="filterChange" :key="index2" v-for="(itemType,key,index2) in item.items" :label="key">{{key}} ( {{itemType}} )</checkbox>
 						</checkbox-group>
 					</dd>
 				</dl>
@@ -399,6 +398,8 @@
 				<span class="btn" @click="filterConfirm">See experiences</span>
 			</div>
 		</div>
+
+		<Loading :loadingStatus="loadingStatus"></Loading>
 	</div>
 </template>
 <script>
@@ -409,6 +410,7 @@
 	import {checkboxGroup,checkbox} from "~/plugins/panda/checkbox/"
 	import {radioGroup,radio} from "~/plugins/panda/radio/"
 	import InfiniteLoading from 'vue-infinite-loading/src/components/Infiniteloading.vue'
+	import Loading from "~/components/plugin/Loading"
 
 	import Vue from "vue";
 	
@@ -422,7 +424,8 @@
 			checkbox,
 			radioGroup,
 			radio,
-			InfiniteLoading
+			InfiniteLoading,
+			Loading
 		},
 		async asyncData({
 			route,
@@ -510,6 +513,7 @@
 				listdata: data,
 				activityList: data.entities,
 				apiBasePath: apiBasePath,
+				postData: postData,
 
 				cityCheck:loc,
 				city:['Shanghai','Beijing','Chengdu','Xian','Guilin'],
@@ -528,7 +532,8 @@
 				showRank:false,
 
 				isFixed:false,
-				nowPage:1
+				loadingStatus: false,
+				showClear: options?true:false
 			}
 		},
 		computed:{
@@ -581,6 +586,11 @@
 			filterClose(){
 				this.showFilter = false;
 			},
+			//确定选择
+			filterConfirm(){
+				this.jumpUrl();
+				this.loadingStatus = true;
+			},
 			filterClear(){
 				//清空数据
 				for(var key in this.filterCheck){
@@ -588,6 +598,26 @@
 				}
 				//跳转url
 				this.jumpUrl();
+				this.loadingStatus = true;
+			},
+			filterChange(e){
+				var that = this;
+				//检测是否显示clear
+				setTimeout(function(){
+					var filterLen = 0;
+					var nowCheck = that.filterCheck;
+					for(var key in nowCheck){
+						if(nowCheck[key].length){
+							filterLen++;
+						};
+					}
+					if(filterLen){
+						that.showClear = true;
+					}else{
+						that.showClear = false;
+					}
+				},100);
+				
 			},
 
 			//rank相关
@@ -599,13 +629,15 @@
 			rankChange(e){
 				this.rankCheck = e.target.value;
 				this.jumpUrl();
+				this.loadingStatus = true;
 			},
 			
 			//切换城市
 			cityChange(e){
 				var isNew = /\/new\//.test(location.href);
 				location.href = '/activity/list/'+(isNew?'new/':'') + e.target.value;
-				this.productsFn();
+				//this.productsFn();
+				this.loadingStatus = true;
 			},
 			
 
@@ -613,10 +645,7 @@
 			// productsConfirm(){
 			// 	this.jumpUrl();
 			// },
-			//确定选择
-			filterConfirm(){
-				this.jumpUrl();
-			},
+			
 
 			//跳转刷新
 			jumpUrl(){
@@ -670,17 +699,10 @@
 			infiniteHandler($state){
 				var that = this;
 				
-				this.nowPage++;
-				
-				//默认请求接口post的数据
-				var postData = {
-					location: this.$route.params.slug,
-					pageNum:this.nowPage,
-					pageSize:10,
-					sort:{"type":"SCORE"}
-				};
-
-				this.axios.post(that.apiBasePath + "search/activity", JSON.stringify(postData), {
+				//修改翻页数量
+				this.postData.pageNum++;
+				//请求数据
+				this.axios.post(that.apiBasePath + "search/activity", JSON.stringify(this.postData), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}
