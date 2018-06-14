@@ -181,14 +181,23 @@
 								font-weight: bold;
 								line-height: 0.32rem;
 								max-height: 0.64rem;
-								overflow: hidden;
+								overflow:hidden;
+								-webkit-line-clamp: 2;
+								-webkit-box-orient: vertical;
+								display: -webkit-box;
+								text-overflow: ellipsis;
 							}
 							.list_tag{
 								font-size: 0.22rem;
 								color: #1bbc9d;
 								margin-top: 0.1rem;
 								line-height: 0.28rem;
-								overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+								max-height: 0.56rem;
+								overflow:hidden;
+								-webkit-line-clamp: 2;
+								-webkit-box-orient: vertical;
+								display: -webkit-box;
+								text-overflow: ellipsis;
 								width: 100%;
 								span{
 									margin-right: 0.14rem;
