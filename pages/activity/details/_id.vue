@@ -185,7 +185,7 @@
 		head() {
 			let title = this.detail.title;
 			let description = this.detail.category + " " + this.detail.duration + " " + this.detail.durationUnit + " " + this.detail.title;
-			let keywords = this.detail.tourTypes.join(",")
+			let keywords = this.detail.tourTypes ? this.detail.tourTypes.join(",") : '';
 			return {
 				title: title,
 				meta: [{

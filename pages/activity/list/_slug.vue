@@ -134,6 +134,11 @@
 		//列表
 		.list_box{
 			padding: 0 0.2rem;
+			.noListData{
+				font-size: 0.32rem;
+				text-align: center;
+				padding:0.4rem 0.2rem;
+			}
 			.list_ul{
 				li{
 					margin-top: 0.16rem;
@@ -151,9 +156,22 @@
 							top: 0;
 							width: 29%;
 							height: 100%;
-							min-height: 2rem;
+							min-height: 1.6rem;
 							background-size: cover;
 							background-position: center;
+							p{
+								position: absolute;
+								left: 0;
+								bottom: 0;
+								padding-left: 0.1rem;
+								width: 100%;
+								font-size: 0.18rem;
+								height: 0.34rem;
+								line-height: 0.35rem;
+								overflow: hidden;
+								color: #fff;
+								background-color: rgba(0, 0, 0, 0.7);
+							}
 						}
 						.list_content{
 							padding: 0.1rem 0.2rem 0.16rem;
@@ -185,7 +203,6 @@
 							}
 							.price_box{
 								margin-top: 0.16rem;
-								overflow: hidden;
 								.list_price{
 									float: right;
 									color: #878e95;
@@ -257,6 +274,10 @@
 				}
 				dd{
 					padding: 0 0.44rem;
+					.checkbox-group{
+						max-height: 5.64rem;
+						overflow: hidden;
+					}
 					.checkbox_label{
 						display: block;
 						margin-left: 0;
@@ -264,6 +285,13 @@
 						&:nth-last-child(1){
 							border:none;
 						}
+					}
+					.filter_more{
+						color: #1bbc9d;
+						font-size: 0.24rem;
+						display: inline-block;
+						padding: 0.1rem 0.2rem 0.3rem;
+						margin-left: 0.3rem;
 					}
 				}
 				
@@ -344,27 +372,33 @@
 		</div>
 
 		<!-- 筛选结果 -->
-		<div class="requirement_result">
+		<!-- <div class="requirement_result">
 			<span :key="index" v-for="(item,index) in filterTag">{{item}}</span>
-		</div>
-		<div class="destination_result"><b>{{cityCheck}}</b>（{{listdata.records}} activities found）</div>
+		</div> -->
+		<div class="destination_result" v-show="activityList.length"><b>{{cityCheck}}</b>( {{listdata.records}} {{listdata.records>1?'activities':'activity'}} found )</div>
 
 		<!-- 产品列表 -->
 		<div class="list_box">
-			<ul class="list_ul">
+			<div class="noListData" v-show="!activityList.length">
+				<p>No activities or tours that match your interests are found.</p>
+				<p>You can try to modify your screening conditions.</p>
+			</div>
+			<ul class="list_ul" v-show="activityList.length">
 				<li :key="index" v-for="(item,index) in activityList">
 					<a :href="'/activity/details/'+item.activityId">
-						<div class="list_img" v-lazy:background-image="item.coverPhotoUrl"></div>
+						<div class="list_img" v-lazy:background-image="item.coverPhotoUrl">
+							<p>{{item.category}}</p>
+						</div>
 						<div class="list_content">
 							<h4>{{item.title}}</h4>
 							<div class="list_tag">
-								<span :key="index" v-for="(item,index) in item.category.split(' ')">"{{item}}"</span>
+								<span :key="index" v-for="(item,index) in item.tourTypes">"{{item}}"</span>
 							</div>
 							<p class="duration"><b>Duration:</b>{{item.duration}} {{toLower(item.durationUnit)}}</p>
-							<div class="price_box">
+							<div class="price_box clearfix">
 								<span class="list_price">From<b>${{item.bottomPrice}}</b>pp</span>
-								<span class="tag_private" v-if="item.groupType=='Private'">{{item.groupType}} Tour</span>
-								<span class="tag_group" v-if="item.groupType=='Group'">{{item.groupType}} Tour</span>
+								<span class="tag_private" v-if="item.groupType=='Private'">{{item.groupType}}</span>
+								<span class="tag_group" v-if="item.groupType=='Group'">{{item.groupType}}</span>
 							</div>
 						</div>
 					</a>
@@ -378,23 +412,27 @@
 		
 		<Foot></Foot>
 
+		<!-- 筛选 -->
 		<div class="filter_dialog" :class="{show_filter:showFilter}">
 			<Back title="Filter" type="close" :close="filterClose">
 				<span class="filter_clear" @click="filterClear" v-show="showClear">Clear</span>
 			</Back>
 			<div class="filter_content">
-				<dl :key="index" v-for="(item,index) in listdata.aggregations">
-					<dt>{{item.type}}</dt>
+				<dl :key="index" v-for="(item,index) in listdata.aggregations" v-show="item.items">
+					<dt>{{item.name}}</dt>
 					<dd v-if="item.type=='DURATION'">
 						<checkbox-group v-model="filterCheck.duration">
 							<checkbox :change="filterChange" :key="index2" v-for="(itemType,key,index2) in item.items" :label="key">{{getDayStr(key)}} ( {{itemType}} )</checkbox>
 						</checkbox-group>
+						<span class="filter_more" @click="showMore" v-if="getObjLength(item.items)>6">View More</span>
 					</dd>
 					<dd v-else>
 						<checkbox-group v-model="filterCheck[toLower(item.type)]">
 							<checkbox :change="filterChange" :key="index2" v-for="(itemType,key,index2) in item.items" :label="key">{{key}} ( {{itemType}} )</checkbox>
 						</checkbox-group>
+						<span class="filter_more" @click="showMore" v-if="getObjLength(item.items)>6">View More</span>
 					</dd>
+
 				</dl>
 			</div>
 
@@ -453,14 +491,27 @@
 			var options = query.options ? JSON.parse(query.options) : '';
 			var sort = query.sort ? JSON.parse(query.sort) : '';
 
+			//兼容老的key
+			var oldType = function(text){
+				if(text=='TOURTYPE'){
+					return 'TOUR_TYPE';
+				}else if(text=='DURATIONS'){
+					return 'DURATION';
+				}
+				return keyUpper;
+			};
+
 			//根据url数据生成post需要的格式
 			var postFilters = [];
 			for(var key in options){
+				var keyUpper = key.toUpperCase();
 				postFilters.push({
-					type: key.toUpperCase(),
+					type: oldType(keyUpper),//兼容老的字段
 					filterValues: options[key]
 				});
 			};
+
+			
 
 			//如果有筛选数据,则在默认数据里添加上filters
 			if(options){
@@ -471,7 +522,6 @@
 			if(sort){
 				postData.sort = sort;
 			}
-
 
 			try{
 				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(postData), {
@@ -510,12 +560,9 @@
 				}
 			}
 
-
-			
-
 			return {
 				listdata: data,
-				activityList: data.entities,
+				activityList: data.entities?data.entities:[],
 				apiBasePath: apiBasePath,
 				postData: postData,
 
@@ -570,7 +617,7 @@
 			//products相关
 			productsFn(){
 				//显示Products
-				this.showProducts=!this.showProducts;	
+				this.showProducts=!this.showProducts;
 				//隐藏排序弹窗
 				this.showRank = false;
 			},
@@ -688,6 +735,13 @@
 				document.body.style.overflowY = 'inherit';
 			},
 
+			showMore(e){
+				var thisMore = e.target;
+				var thisGroupBox = thisMore.parentNode.querySelectorAll('.checkbox-group')[0];
+				thisGroupBox.style.maxHeight = 'initial';
+				thisMore.style.display = 'none';
+			},
+
 			
 			toLower(text){
 				return text.toLowerCase();
@@ -699,6 +753,13 @@
 					return text+' Day';
 				}
 				return text+' Days';
+			},
+			getObjLength(obj){
+				var thisObjLength = 0;
+				for(var key in obj){
+					thisObjLength++;
+				}
+				return thisObjLength;
 			},
 			infiniteHandler($state){
 				var that = this;
