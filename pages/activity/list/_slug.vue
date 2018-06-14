@@ -282,6 +282,7 @@
 					color: #878e95;
 					font-size: 0.24rem;
 					font-weight: bold;
+					text-transform:uppercase;
 				}
 				dd{
 					padding: 0 0.44rem;
@@ -506,15 +507,28 @@
 			var options = query.options ? JSON.parse(query.options) : '';
 			var sort = query.sort ? JSON.parse(query.sort) : '';
 
-			//兼容老的key
+
+			//兼容老的key，老key转为新key
 			var oldType = function(text){
 				if(text=='TOURTYPE'){
 					return 'TOUR_TYPE';
 				}else if(text=='DURATIONS'){
 					return 'DURATION';
 				}
-				return keyUpper;
+				return text;
 			};
+
+			//兼容老的key，新key转为老key
+			var oldTypeKey = function(text){
+				if(text=='tour_type'){
+					return 'tourtype';
+				}else if(text=='duration'){
+					return 'durations';
+				}
+				return text;
+			};
+
+			
 
 			//根据url数据生成post需要的格式
 			var postFilters = [];
@@ -561,7 +575,7 @@
 					//当前类型
 					var thisType = item.type.toLowerCase();
 					filterAll[thisType] = thisFilter;  ////添加filter每种类型数据
-					filterCheck[thisType] = options[thisType] ? options[thisType] : []; //添加filter每种类型默认check数据
+					filterCheck[thisType] = options[oldTypeKey(thisType)] ? options[oldTypeKey(thisType)] : []; //添加filter每种类型默认check数据
 				});
 			}
 
