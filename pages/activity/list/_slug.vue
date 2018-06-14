@@ -39,6 +39,9 @@
 						}
 						
 					}
+					.active{
+						color: #1bbc9d;
+					}
 					&:nth-last-child(1){
 						.iconfont{
 							font-size: 0.26rem;
@@ -268,6 +271,7 @@
 			.filter_dialog_footer{
 				background-color: #fff;
 				padding: 0.28rem 0.3rem;
+				border-top: #dde0e0 solid 1px;
 			}
 		}
 		.show_filter{
@@ -305,7 +309,7 @@
 
 				<!-- products -->
 				<dd>
-					<span class="filter_type_btn" @click="productsFn"><i class="iconfont">&#xe679;</i>City</span>
+					<span class="filter_type_btn" :class="{active:showProducts}" @click="productsFn"><i class="iconfont">&#xe679;</i>Destination</span>
 					<div class="filter_products" @click="hideFilter" :class="{show_products:showProducts}">
 						<radio-group v-model="cityCheck">
 							<ul class="products_list city_list">
@@ -325,7 +329,7 @@
 				<dd><span class="filter_type_btn" @click="filterFn"><i class="iconfont">&#xe668;</i>Filter</span></dd>
 
 				<!-- Rank -->
-				<dd><span class="filter_type_btn" @click="rankFn"><i class="iconfont">&#xe66b;</i>Rank</span>
+				<dd><span class="filter_type_btn" :class="{active:showRank}" @click="rankFn"><i class="iconfont">&#xe66b;</i>Rank</span>
 					<div class="filter_products" @click="hideFilter" :class="{show_rank:showRank}">
 						<radio-group v-model="rankCheck">
 							<ul class="rank_list">
@@ -756,10 +760,17 @@
 			console.log(this.$data.listdata);
 		},
 		head() {
-			let location = this.value;
+			let location = this.cityCheck;
 			let title = "The Top " + location + " Tours | " + location + " Local Activities and Experiences";
-			let keywords = "";
-			let description = ""
+			let keywords = "Best Things to do in " + location + ", " + location + " tours, " + location + " trip, " + location + " travel, " + location + " tour packages, " + location + " guide, china tours"
+
+			let description = {
+				Beijing: "See top things to do in Beijing, including Beijing city tours, Beijing walking tours, Beijing history & culture tours, and Beijing food tours. Visit the Forbidden City, Temple of Heaven, Great Wall, Tiananmen Square, and Beijing Summer Palace with our local China tour guides.",
+				Shanghai: "See top things to do in Shanghai, including Shanghai city tours, Shanghai walking tours, Shanghai history & culture tours, and Shanghai food tours. Visit the bund shanghai, the Shanghai Tower, the French concession, yu garden, zhujiajiao and Suzhou with our local China tour guides.",
+				Chengdu: "See top things to do in Chengdu, including Chengdu city tours, Chengdu walking tours, Chengdu history & culture tours, and Chengdu food tours. Visit the Giant Panda Breeding Research Base, Mount Qingcheng, Wenshu Yuan Monestary, Jinli Street, and Dujiangyan with our local China tour guides.",
+				Xian:"See top things to do in Xi'an, including Xi'an city tours, Xi'an walking tours, Xi'an history & culture tours, and Xi'an food tours. Visit the Terra-cotta Warriors, Xi'an City Wall, Muslim Quarter, Shaanxi History Museum, and Xi'an markets with our local China tour guides.",
+				Guilin: "See top things to do in Guilin, including Guilin scenic tours, Guilin walking tours, Guilin history & culture tours, Guilin food tours, and Guilin Biking tours. See the best scenery in Guilin including Elephant Trunk Hill, Guilin Forest, Li River, Sun & Moon Pagodas, and Yaoshan Mountain."
+			};
 			return {
 				title: title,
 				meta: [{
@@ -770,7 +781,7 @@
 					{
 						hid: "description",
 						name: "description",
-						content: description
+						content: description[location]
 					}
 				]
 			};
