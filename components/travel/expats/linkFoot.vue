@@ -30,43 +30,43 @@ export default {
 			tourList:[
 				{
 					name:"Shangri-la",
-					imgUrl:'https://resource.localpanda.cn/content/landingpage/experts/Shangrila.jpg',
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/Shangrila.jpg',
 					linkUrl:'/travel/expats/details/shangrila'
 				},
 				{
 					name:"Tibet",
-					imgUrl:'https://resource.localpanda.cn/content/landingpage/experts/Tibet.jpg',
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/Tibet.jpg',
 					linkUrl:'/travel/expats/details/tibet'
 				},
 				{
 					name:"Zhangjiajie",
-					imgUrl:'https://resource.localpanda.cn/content/landingpage/experts/Zhangjiajie.jpg',
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/Zhangjiajie.jpg',
 					linkUrl:'/travel/expats/details/zhangjiajie'
 				},
 				{
 					name:"Xinjiang",
-					imgUrl:'https://resource.localpanda.cn/content/landingpage/experts/Xinjiang.jpg',
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/Xinjiang.jpg',
 					linkUrl:'/travel/expats/details/xinjiang'
 				},
 				{
 					name:"Silk Road",
-					imgUrl:'https://resource.localpanda.cn/content/landingpage/experts/SilkRoad.jpg',
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/SilkRoad.jpg',
 					linkUrl:'/travel/expats/details/silk_road'
 				},
 				{
 					name:"Yellow Mountain",
-					imgUrl:'https://resource.localpanda.cn/content/landingpage/experts/YellowMountain.jpg',
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/YellowMountain.jpg',
 					linkUrl:'/travel/expats/details/yellow_mountain'
 				},
 				{
 					name:"Inner Mongolia",
-					imgUrl:'https://resource.localpanda.cn/content/landingpage/experts/InnerMongolia.jpg',
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/InnerMongolia.jpg',
 					linkUrl:'/travel/expats/details/inner_mongolia'
 				},
 				{
 					name:"Seasonal Deal",
 					nameText:'Members Only',
-					imgUrl:'https://resource.localpanda.cn/content/landingpage/experts/SeasonalDeal.jpg',
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/SeasonalDeal.jpg',
 					linkUrl:'/travel/expats/details/excursions'
 				}
 			
