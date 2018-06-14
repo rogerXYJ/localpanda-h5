@@ -19,7 +19,12 @@
 			</div>
 		</div>
 		<div class="product">
-			<ul>
+			<div class="title" v-if="products&&products.length>0">
+				<h3>Hand-picked Trip Experiences</h3>
+				<h4>See the itineraries designed for you</h4>
+			</div>
+			<div class="empty" v-show="!products">Destination Experiences Are Coming Soon …</div>
+			<ul v-if="products&&products.length>0">
 				<li v-for="item in products">
 					<a :href="'/activity/details/'+item.id">
 						<div class="productPic" :style="{backgroundImage:'url('+item.cover+')'}">
@@ -38,6 +43,7 @@
 
 								</div>
 							</div>
+							<div class="date" v-if="item.startDate"><b>Starting Date</b>:<span>{{item.startDate}}</span></div>
 							<div class="city"><b>Cities</b> :<span v-html="item.destinations"></span></div>
 							<div class="tags">
 								<span v-for="i in item.tags.split(',')">{{i}}</span>
@@ -48,7 +54,7 @@
 				</li>
 			</ul>
 		</div>
-		<linkFoot></linkFoot>
+		<linkFoot :noUrl="noUrl"></linkFoot>
 		<banner :photoList="bannerPic" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack" :index="index"></banner>
 	</div>
 </template>
@@ -67,10 +73,25 @@
 				products: [],
 				alertPicStatus: false,
 				index: '',
+				tdk:{},
+				noUrl:false
+				
 			}
 		},
 		head() {
 			return {
+				title: this.tdk.title,
+				meta: [{
+						hid: "keywords",
+						name: "keywords",
+						content: this.tdk.keywords
+					},
+					{
+						hid: "description",
+						name: "description",
+						content: this.tdk.description
+					}
+				],
 				script: [{
 					src: 'https://resource.localpanda.cn/static/js/swiper-4.2.6.min.js',
 					type: 'text/javascript'
@@ -94,49 +115,58 @@
 				//console.log(that.theme)
 				that.axios.get("https://api.localpanda.com/api/content/landingpage/expats/" + that.theme).then((res) => {
 					that.bannerPic = res.data.photos
-					console.log(that.bannerPic)
 					that.products = res.data.products
+					if(res.data.products){
+						that.noUrl=false
+					}else{
+						that.noUrl=true
+					}
+					that.tdk={
+						title:res.data.title,
+						keywords:res.data.keywords,
+						description:res.data.description
+					}
+					that.$nextTick(function(){
+						new Swiper('#swiper_banner', {
+						
+						//延迟加载 
+							lazy: {
+								loadPrevNext: true,
+								//loadPrevNextAmount: 3,
+							},
+							//前进后退按钮
+							navigation: {
+								nextEl: '.swiper-button-next',
+								prevEl: '.swiper-button-prev',
+							},
+							// 如果需要分页器
+							pagination: {
+								el: '#swiper_banner_pagination',
+								type: 'fraction'
+		
+							}
+							
+						});
+					})  
 
 				}, (res) => {})
 			}
 
 		},
+	
 		components: {
 			Head,
 			linkFoot,
 			banner
 		},
 		created(){
-			this.getData()
+			
 		},
 		mounted: function() {
-			let self = this
-			
+			this.getData()
+			let self=this
 			setTimeout(function() {
-				new Swiper('#swiper_banner', {
-					//					autoplay: {
-					//						delay: 3000,
-					//						disableOnInteraction: false
-					//					},
-					//loop: true,
-					//延迟加载 
-					lazy: {
-						loadPrevNext: true,
-						//loadPrevNextAmount: 3,
-					},
-					//前进后退按钮
-					navigation: {
-						nextEl: '.swiper-button-next',
-						prevEl: '.swiper-button-prev',
-					},
-					// 如果需要分页器
-					pagination: {
-						el: '#swiper_banner_pagination',
-						type: 'fraction'
-
-					}
-					
-				});
+				
 			},500);
 			
 		}
@@ -144,10 +174,6 @@
 </script>
 
 <style lang="scss">
-	.tour {
-		margin-top: 0!important;
-	}
-	
 	.mask {
 		position: absolute;
 		left: 0;
@@ -190,7 +216,8 @@
 			
 		}
 		.swiper-pagination {
-			width: 0.81rem;
+			padding: 0 0.15rem;
+			width: auto;
 			height: 0.48rem;
 			text-align: center;
 			line-height: 0.48rem;
@@ -229,7 +256,21 @@
 	}
 	
 	.product {
-		padding: 0 0.3rem;
+		padding: 0.6rem 0.3rem 0;
+		h3 {
+			font-size: 0.44rem;
+			font-weight: bold;
+		}
+		h4 {
+			font-size: 0.24rem;
+			margin-top: 0.1rem;
+		}
+		.empty{
+			font-size: 0.44rem;
+			font-weight: bold;
+			color: #878e95;
+			text-align: center;
+		}
 		li {
 			margin-top: 0.3rem;
 			border-radius: 0.1rem;

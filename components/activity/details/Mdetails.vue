@@ -481,11 +481,11 @@ import photo from '~/components/activity/details/photo'
 					that.nowExchange = that.exchange[0];
 					//设置当前货币符号
 					that.picInfo.symbol = that.nowExchange.symbol;
-
+					
 					//设置币种
 					var ua = window.navigator.userAgent.toLowerCase();
 					var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
-					if(isWx){
+					if(isWx||that.picInfo.currency=="CNY"){
 						that.defaultCurrency = 'CNY';
 						that.changeCurrency('CNY');
 					}

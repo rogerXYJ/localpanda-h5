@@ -5,19 +5,21 @@
 
 			<Head :isExpats="isExpats" :class="{position:scroll}"></Head>
 			<h3 class="bannerTitle">Find the Ultimate Experience</h3>
-			<p class="bannerDes">We know that you’ve come a long way, and that you’ve spent a lot of time and energy to be here. We help you make sure the memories are worth it.</p>
+			<p class="bannerDes">We know that you’ve come a long way and spent a lot of time and energy to be here. We help you make sure the memories are worth it.</p>
 			<div class="bg-shadow"></div>
 			<div class="hotActivity page-content">
-				<h3>Members' Seasonal Deal</h3>
+				<h3>Seasonal Deal</h3>
 				<div class="contentBox">
 					<div class="activityPhoto">
-						<span>Jun Extravaganza: UNLIMITED archery, <br/>
-horseriding, karting & kayaking</span>
+						<a style="display: block;" href="/travel/expats/details/excursions">
+							<span>Jun Extravaganza: UNLIMITED archery, <br/>
+	horseriding, karting & kayaking</span>
+						</a>
 					</div>
 					<div class="activityInfo clearfix">
 						<div class="price">
 							<h4>Seasonal Deals:</h4>
-							<b>720RMB</b>
+							<b>638 RMB</b>
 							<h5>per person</h5>
 						</div>
 						<div class="dateCity">
@@ -32,7 +34,7 @@ horseriding, karting & kayaking</span>
 					</div>
 				</div>
 			</div>
-			<linkFoot></linkFoot>
+			<linkFoot :noUrl="noUrl"></linkFoot>
 		</div>
 
 		
@@ -47,7 +49,8 @@ horseriding, karting & kayaking</span>
 		data() {
 			return {
 				isExpats: true,
-				scroll:false
+				scroll:false,
+				noUrl:false
 			}
 		},
 		methods: {
@@ -64,12 +67,32 @@ horseriding, karting & kayaking</span>
 			}
 			
 		},
+		head(){
+			let title="China Adventure Travel | Trips & Experiences"
+			let keywords="Adventure Travel, China Trip, China Tour, China Tour Package, Tibet, Yellow Mountain, Avatar Mountains, Xinjiang, China Nature, China Scenery"
+			let description="Discover the most stunning off-the-beaten-path destinations in China with Local Panda’s signature trips to Tibet, Xinjiang, Zhangjiajie, and more."
+			return{
+				title: title,
+				meta: [{
+						hid: "keywords",
+						name: "keywords",
+						content:keywords 
+					},
+					{
+						hid: "description",
+						name: "description",
+						content: description
+					}
+				],
+			}
+		},
 		components: {
 			Head,
 			linkFoot
 		},
 		mounted: function() {
 			let that=this
+			console.log(that.noUrl)
 			window.addEventListener("scroll", this.scrollBar);
 		}
 	}
@@ -93,7 +116,7 @@ horseriding, karting & kayaking</span>
 	
 	.expats {
 		.headPhoto {
-			background: url("https://resource.localpanda.cn/content/landingpage/experts/banner.jpg") no-repeat;
+			background: url("https://resource.localpanda.cn/content/landingpage/expats/banner.jpg") no-repeat;
 			height: 5rem;
 			background-size: cover;
 			background-position: center;
@@ -125,6 +148,7 @@ horseriding, karting & kayaking</span>
 			}
 		}
 		.hotActivity {
+			margin-top: 0.62rem;
 			background-color: #fe483e;
 			box-shadow: 0px 0.08rem 0.5rem 0px rgba(253, 72, 62, 0.06);
 			border-radius: 0.1rem;
@@ -136,6 +160,7 @@ horseriding, karting & kayaking</span>
 				font-size: 0.22rem;
 				color: #fff;
 				padding-left: 0.1rem;
+				font-weight: bold;
 			}
 			;
 			.contentBox {
@@ -147,7 +172,7 @@ horseriding, karting & kayaking</span>
 					width: 100%;
 					position: relative;
 					border-radius: 0.1rem;
-					background: url("https://resource.localpanda.cn/content/landingpage/experts/MembersSeasonalDeal.jpg") no-repeat;
+					background: url("https://resource.localpanda.cn/content/landingpage/expats/MembersSeasonalDeal.jpg") no-repeat;
 					background-size: cover;
 					background-position: center;
 					span {

@@ -1,9 +1,21 @@
 <template>
 	<div class="linkfoot">
 		<div class="tour">
-			<h3>Signature Destinations</h3>
+			<h3>Summer Adventures</h3>
 			<h4>Browse a list of trips to embark your next adventure</h4>
-			<ul class="clearfix">
+			<ul class="clearfix" v-if="noUrl">
+				<li  v-for="(item,index) in activityList" :key="index" :style="{backgroundImage: 'url(' + item.imgUrl + ')'}">
+					<a :href="item.linkUrl">
+						<div class="mask"></div>
+						<div class="content">
+							<p>{{item.name}}</p>
+							<p class="text" v-if="item.nameText">{{item.nameText}}</p>
+						</div>
+					</a>
+				</li>
+				
+			</ul>
+			<ul class="clearfix" v-else >
 				<li v-for="(item,index) in tourList" :key="index" :style="{backgroundImage: 'url(' + item.imgUrl + ')'}">
 					<a :href="item.linkUrl">
 						<div class="mask"></div>
@@ -16,22 +28,23 @@
 			</ul>
 		</div>
 		<div class="customizeBtn">
-			<h4>Can’t find your ideal trip? Don’t worry!</h4>
-			<button class="btn"><a href="/travel/customize/step1">Let’s Customize Your Trip</a></button>
+			<h4>Can't find your ideal trip? Don't worry!</h4>
+			<button class="btn"><a href="/travel/customize/step1">Let's Customize Your Trip</a></button>
 		</div>
 	</div>
 </template>
 
 <script>
 export default {
+	props:["noUrl"],
     name: 'linkfoot',
     data () {
         return {
 			tourList:[
 				{
-					name:"Shangri-la",
-					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/Shangrila.jpg',
-					linkUrl:'/travel/expats/details/shangrila'
+					name:"Xinjiang",
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/Xinjiang.jpg',
+					linkUrl:'/travel/expats/details/xinjiang'
 				},
 				{
 					name:"Tibet",
@@ -39,14 +52,51 @@ export default {
 					linkUrl:'/travel/expats/details/tibet'
 				},
 				{
+					name:"Silk Road",
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/SilkRoad.jpg',
+					linkUrl:'/travel/expats/details/silk_road'
+				},
+				{
+					name:"Seasonal Deal",
+					nameText:'Members Only',
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/SeasonalDeal.jpg',
+					linkUrl:'/travel/expats/details/excursions'
+				},
+				{
 					name:"Zhangjiajie",
 					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/Zhangjiajie.jpg',
 					linkUrl:'/travel/expats/details/zhangjiajie'
 				},
+//				{
+//					name:"Yellow Mountain",
+//					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/YellowMountain.jpg',
+//					linkUrl:'/travel/expats/details/yellow_mountain'
+//				},
+//				{
+//					name:"Inner Mongolia",
+//					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/InnerMongolia.jpg',
+//					linkUrl:'/travel/expats/details/inner_mongolia'
+//				},
+				
+
+//				
+				{
+					name:"Shangri-la",
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/Shangrila.jpg',
+					linkUrl:'/travel/expats/details/shangrila'
+				},
+//				
+			],
+			activityList:[
 				{
 					name:"Xinjiang",
 					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/Xinjiang.jpg',
 					linkUrl:'/travel/expats/details/xinjiang'
+				},
+				{
+					name:"Tibet",
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/Tibet.jpg',
+					linkUrl:'/travel/expats/details/tibet'
 				},
 				{
 					name:"Silk Road",
@@ -54,24 +104,11 @@ export default {
 					linkUrl:'/travel/expats/details/silk_road'
 				},
 				{
-					name:"Yellow Mountain",
-					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/YellowMountain.jpg',
-					linkUrl:'/travel/expats/details/yellow_mountain'
-				},
-				{
-					name:"Inner Mongolia",
-					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/InnerMongolia.jpg',
-					linkUrl:'/travel/expats/details/inner_mongolia'
-				},
-				{
 					name:"Seasonal Deal",
 					nameText:'Members Only',
 					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/SeasonalDeal.jpg',
 					linkUrl:'/travel/expats/details/excursions'
-				}
-			
-			
-			
+				},
 			
 			]
         }
@@ -83,7 +120,8 @@ export default {
     	 
     },
     mounted: function() {
-	
+		console.log(this.noUrl)
+		console.log(this.tourList)
     }
   }
 </script>

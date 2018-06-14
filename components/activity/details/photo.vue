@@ -191,9 +191,10 @@ export default {
 			    				top: 2.37rem;
 			    			}
 			    		.des{
-			    			position: absolute;
-			    			bottom: 1.37rem;
-			    			left: 0.3rem;
+			    			position: relative;
+			    			padding:0 0.38rem 0 0.3rem;
+			    			margin-top:calc(50% + 1.37rem);
+			    			transform: translateY(-50%);
 			    			color: #fff;
 			    			h3{
 			    				font-size: 0.44rem;
