@@ -302,7 +302,7 @@
 						color: #1bbc9d;
 						font-size: 0.24rem;
 						display: inline-block;
-						padding: 0.1rem 0.2rem 0.3rem;
+						padding: 0.2rem 0.2rem 0.3rem;
 						margin-left: 0.3rem;
 					}
 				}
@@ -767,8 +767,17 @@
 			showMore(e){
 				var thisMore = e.target;
 				var thisGroupBox = thisMore.parentNode.querySelectorAll('.checkbox-group')[0];
-				thisGroupBox.style.maxHeight = 'initial';
-				thisMore.style.display = 'none';
+
+				if(thisMore.innerHTML=='View More'){
+					thisGroupBox.style.maxHeight = 'initial';
+					thisMore.innerHTML = 'View Less';
+				}else{
+					thisGroupBox.style.maxHeight = '5.64rem';
+					thisMore.innerHTML = 'View More';
+				}
+				
+
+				
 			},
 
 			
