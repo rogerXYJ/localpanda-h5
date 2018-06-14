@@ -188,9 +188,10 @@
 								color: #1bbc9d;
 								margin-top: 0.1rem;
 								line-height: 0.28rem;
+								overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+								width: 100%;
 								span{
 									margin-right: 0.14rem;
-									display: inline-block;
 								}
 							}
 							.duration{
@@ -263,6 +264,7 @@
 				height: calc(100vh - 1rem -1.5rem);
 				-webkit-overflow-scrolling: touch;
 				overflow-y: auto;
+				padding-bottom: 1.4rem;
 				dt{
 					height: 0.74rem;
 					line-height: 0.74rem;
@@ -300,6 +302,10 @@
 				background-color: #fff;
 				padding: 0.28rem 0.3rem;
 				border-top: #dde0e0 solid 1px;
+				position: fixed;
+				left: 0;
+				bottom: 0;
+				width: 100%;
 			}
 		}
 		.show_filter{
@@ -480,7 +486,7 @@
 			var listdata = {};
 			//默认请求接口post的数据
 			var postData = {
-				location:loc,
+				location:loc=='Xian'?"Xi'an":loc,
 				pageNum:1,
 				pageSize:10,
 				sort:{"type":"SCORE"}
@@ -566,8 +572,8 @@
 				apiBasePath: apiBasePath,
 				postData: postData,
 
-				cityCheck:loc,
-				city:['Shanghai','Beijing','Chengdu','Xian','Guilin'],
+				cityCheck:loc=='Xian'?'Xi\'an':loc,
+				city:['Shanghai','Beijing','Chengdu','Xi\'an','Guilin'],
 				showCity:false,
 
 				productsCheck:[],   //打钩的值
@@ -686,7 +692,7 @@
 			//切换城市
 			cityChange(e){
 				var isNew = /\/new\//.test(location.href);
-				location.href = '/activity/list/'+(isNew?'new/':'') + e.target.value;
+				location.href = '/activity/list/'+(isNew?'new/':'') + (e.target.value=="Xi'an"?'Xian':e.target.value);
 				//this.productsFn();
 				this.loadingStatus = true;
 			},
@@ -842,7 +848,7 @@
 					{
 						hid: "description",
 						name: "description",
-						content: description[location]
+						content: description[location=="Xi'an"?'Xian':location]
 					}
 				]
 			};
