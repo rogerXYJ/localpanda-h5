@@ -641,7 +641,7 @@
 			},
 			
 
-			//确定选择
+			//products确定选择
 			// productsConfirm(){
 			// 	this.jumpUrl();
 			// },
