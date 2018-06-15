@@ -581,7 +581,12 @@
 					//当前类型
 					var thisType = item.type.toLowerCase();
 					filterAll[thisType] = thisFilter;  ////添加filter每种类型数据
-					filterCheck[thisType] = options[oldTypeKey(thisType)] ? options[oldTypeKey(thisType)] : []; //添加filter每种类型默认check数据
+					//检测url是否有老的筛选类型
+					if(options[oldTypeKey(thisType)]){
+						filterCheck[thisType] = options[oldTypeKey(thisType)];
+					}else{
+						filterCheck[thisType] = options[thisType] ? options[thisType] : []; //添加filter每种类型默认check数据
+					}
 				});
 			}
 
