@@ -185,13 +185,13 @@
 								</div>
 								<div class="activity-cont">
 									<div class="activity-info clearfix">
-										<div class="activity-cont-type"><i class="iconfont">&#xe653;</i>{{i.category}}</div>
-										<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{i.duration}} {{i.durationUnit|firstUpperCase}}</div>
+										<div class="activity-cont-type"><i class="iconfont">&#xe653;</i>{{i.category}}{{i.groupType?' · '+i.groupType:''}}</div>
+										
 									</div>
 
 									<h4 style="-moz-box-orient: vertical;
 								    -webkit-box-orient:vertical;">{{i.title}}</h4>
-
+									<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{i.duration}} {{i.durationUnit|firstUpperCase}}</div>
 									<div class="pic">
 										<div class="old-pic" v-if="i.originalPrice">${{returnFloat(i.originalPrice)}}</div>
 										<div class="current-price">From<b>${{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
@@ -925,7 +925,7 @@ import photo from '~/components/activity/details/photo'
 						}
 						.activity-pic {
 							
-							height: 3.693333rem;
+							height: 3.4rem;
 							position: relative;
 							img {
 								width: 100%;
@@ -943,21 +943,12 @@ import photo from '~/components/activity/details/photo'
 							}
 						}
 						.activity-cont {
-							height: 3.2rem;
+							height: 3.6rem;
 							position: relative;
-							padding: 0.373333rem;
+							padding: 0.3rem;
 							box-shadow: 0px 2px 3px 0px rgba(53, 58, 63, 0.1);
 							.activity-info {
-								.duration {
-									float: right;
-									font-size: 0.22rem;
-									color: #878e95;
-									i {
-										font-size: 0.22rem;
-										color: #878e95;
-										margin-right: 0.173333rem;
-									}
-								}
+								
 								.activity-cont-type {
 									float: left;
 									font-size:  0.22rem;
@@ -985,6 +976,17 @@ import photo from '~/components/activity/details/photo'
 								font-size: 0.3rem;
 								font-weight: bold;
 							}
+
+							.duration {
+								margin-top: 0.1rem;
+									font-size: 0.22rem;
+									color: #878e95;
+									i {
+										font-size: 0.22rem;
+										color: #878e95;
+										margin-right: 0.173333rem;
+									}
+								}
 							/*.activity-cont-duration {
 								margin-top: 17px;
 								i {

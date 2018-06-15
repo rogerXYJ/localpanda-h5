@@ -668,16 +668,30 @@
 				this.showFilter=!this.showFilter;	
 				this.showProducts= false;
 				this.showRank = false;
+
+				if(this.showFilter){
+					//GA统计
+					this.ga('click','filter_open');
+				}
 			},
 			filterClose(){
 				this.showFilter = false;
+				//GA统计
+				this.ga('click','filter_close');
 			},
 			//确定选择
 			filterConfirm(){
+				//GA统计
+				this.ga('click','filter_apply');
+				//记录加载页面后是否需要Ga统计
+				localStorage.setItem('listGa','true');
+
 				this.jumpUrl();
 				this.loadingStatus = true;
 			},
 			filterClear(){
+				//GA统计
+				this.ga('click','filter_clear');
 				//清空数据
 				for(var key in this.filterCheck){
 					this.filterCheck[key] = [];
@@ -713,7 +727,21 @@
 			},
 			//切换排序
 			rankChange(e){
-				this.rankCheck = e.target.value;
+				var thisValue = e.target.value;
+				this.rankCheck = thisValue;
+
+				/* GA 排序统计  start */
+				var gaLabel = 'score';
+				if(thisValue=='Price :Low to High'){
+					gaLabel = 'price_up';
+				}else if(thisValue=='Price :High to Low'){
+					gaLabel = 'price_down';
+				};
+				this.ga('sort',gaLabel);
+				/* GA 排序统计  end */
+				
+
+				return;
 				this.jumpUrl();
 				this.loadingStatus = true;
 			},
@@ -735,6 +763,7 @@
 
 			//跳转刷新
 			jumpUrl(){
+
 				//获取当前路径
 				var path = this.$route.path;
 				//获取当前选中的数据
@@ -825,6 +854,14 @@
 				}, function(response) {
 					$state.complete();
 				})
+			},
+			ga(action,label){
+				ga('gtag_UA_107010673_2.send', {
+					hitType: 'event',
+					eventCategory: 'activity_list',
+					eventAction: action,
+					eventLabel: label
+				});
 			}
 		},
 		watch: {
@@ -851,6 +888,24 @@
 			}
 		},
 		mounted: function() {
+			console.log(this.$data);
+
+
+			//filter统计ga   start  ///////////////////////////////////////////
+			var listGa = localStorage.getItem('listGa');
+			if(listGa){
+				for(var key in this.filterCheck){
+					var thisArr = this.filterCheck[key];
+					//check的类型有数据则统计这个类型的ga
+					if(thisArr.length){
+						this.ga('filter',key);
+					}
+				}
+			}
+			//干掉ga触发，这个在点击的时候才开启触发，从新加载页面统计过后，干掉触发条件
+			localStorage.removeItem('listGa');
+			//filter统计ga   end  ///////////////////////////////////////////
+			
 			
 			//筛选悬浮
 			var filterBox = document.getElementById('filter_box'),
@@ -862,7 +917,7 @@
 					this.isFixed=false
 				}
 			});
-			console.log(this.$data.listdata);
+			
 		},
 		head() {
 			let location = this.cityCheck;

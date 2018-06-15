@@ -216,13 +216,13 @@
 					that.isshow = true
 				},0)*/
 				this.isshow = true
-				window.ga && ga("gtag_UA_107010673_1.send", {
+				window.ga && ga("gtag_UA_107010673_2.send", {
 					hitType: "event",
 					eventCategory: "activity_detail",
 					eventAction: "select",
 					eventLabel: "guests"
 				});
-				window.ga && ga("gtag_UA_107010673_1.send", {
+				window.ga && ga("gtag_UA_107010673_2.send", {
 					hitType: "event",
 					eventCategory: "activity_detail",
 					eventAction: "select",
@@ -282,7 +282,7 @@
 				
 			},
 			order(){
-		      window.ga && ga("gtag_UA_107010673_1.send", {
+		      window.ga && ga("gtag_UA_107010673_2.send", {
 		        hitType: "event",
 		        eventCategory: "activity_detail",
 		        eventAction: "click",
@@ -401,13 +401,13 @@
 	    		}
     		},
 			dateTime:function(val,oldVal){
-				window.ga && ga("gtag_UA_107010673_1.send", {
+				window.ga && ga("gtag_UA_107010673_2.send", {
 					hitType: "event",
 					eventCategory: "activity_detail",
 					eventAction: "select",
 					eventLabel:"date"
 				});
-				window.ga && ga("gtag_UA_107010673_1.send", {
+				window.ga && ga("gtag_UA_107010673_2.send", {
 					hitType: "event",
 					eventCategory: "activity_detail",
 					eventAction: "select",
