@@ -740,8 +740,6 @@
 				this.ga('sort',gaLabel);
 				/* GA 排序统计  end */
 				
-
-				return;
 				this.jumpUrl();
 				this.loadingStatus = true;
 			},
