@@ -287,15 +287,17 @@
 				dd{
 					padding: 0 0.44rem;
 					.checkbox-group{
-						max-height: 5.64rem;
+						max-height: 5.8rem;
 						overflow: hidden;
-					}
-					.checkbox_label{
-						display: block;
-						margin-left: 0;
-						border-bottom: #ededed solid 1px;
-						&:nth-last-child(1){
-							border:none;
+					
+						.checkbox_label{
+							display: block;
+							margin-left: 0;
+							border-bottom: #ededed solid 1px;
+							padding-left: 0.34rem;
+							&:nth-last-child(1){
+								border:none;
+							}
 						}
 					}
 					.filter_more{
@@ -334,6 +336,10 @@
 		padding: 0.3rem 0;
 		display: block;
 		width: 100%;
+		.checkbox_box{
+			float: left;
+			margin-left: -0.34rem;
+		}
 		.checkbox_content,.radio_content{
 			padding-left: 0.2rem;
 			font-size:0.26rem;
@@ -772,7 +778,7 @@
 					thisGroupBox.style.maxHeight = 'initial';
 					thisMore.innerHTML = 'View Less';
 				}else{
-					thisGroupBox.style.maxHeight = '5.64rem';
+					thisGroupBox.style.maxHeight = '5.8rem';
 					thisMore.innerHTML = 'View More';
 				}
 				
