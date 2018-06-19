@@ -350,6 +350,7 @@
 			this.logIn = window.localStorage.getItem("logstate");
 
 			var objDetail = JSON.parse(window.localStorage.getItem("objDetail"));
+			console.log(objDetail)
 			this.picInfo = objDetail.picInfo
 			this.id= objDetail.id
 			this.title= objDetail.title
@@ -358,7 +359,7 @@
 
 
 			//加载币种
-			that.axios.get("https://api.localpanda.com/api/public/currency/all/USD").then(function(response) {
+			that.axios.get("https://api.localpanda.com/api/public/currency/all/"+that.picInfo.currency).then(function(response) {
 				// console.log(response);
 				if(response.status==200){
 					that.exchange = response.data;
