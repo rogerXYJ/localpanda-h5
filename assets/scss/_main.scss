@@ -43,7 +43,7 @@ html{
 @media only screen and (min-width: 1000px){
     html {font-size: 90px !important;}
 }
-div,input,p,textarea,li{ box-sizing: border-box;}
+div,input,p,textarea,ul,li,dl,dd,dt,section,nav,article,aside,header,footer,address{ box-sizing: border-box;}
 
 body{
     font-size:px(24);
@@ -102,6 +102,13 @@ input {
     border-radius: 0.45rem;
     color: #fff;
     font-size: 0.3rem;
+    box-sizing: border-box;
+}
+.btn_plain{
+    background-image:none;
+    background-color: #fff;
+    color: #1bbc9d;
+    border: solid 1px #1bbc9d;
 }
 
 /*

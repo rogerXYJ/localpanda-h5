@@ -3,7 +3,7 @@
 		<div class="btn_back" @click="pageBack" v-if="type!='close'">
 			<i class="iconfont">&#xe615;</i>
 		</div>
-		<div class="btn_back" @click="pageClose" v-else>
+		<div class="btn_back" @click="close" v-else>
 			<i class="iconfont">&#xe606;</i>
 		</div>
 
@@ -23,7 +23,7 @@
 		props:[
 			'title',
 			'type',
-			'pageClose'
+			'close'
 		],
 		data(){
 			return{

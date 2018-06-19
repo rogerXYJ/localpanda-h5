@@ -1,437 +1,849 @@
+
+<style lang="scss" scoped>
+
+	
+	.activity_list{
+		background-color: #f5f7f7;
+
+		// 筛选
+		.filter_box{
+			position: relative;
+			z-index: 3;
+			min-height: 0.9rem;
+			.filter_type{
+				background-color: #fff;
+				padding-top:0.06rem;
+				position: relative;
+				dd{
+					padding: 0.24rem 0;
+					
+					float: left;
+					width: 33.3%;
+					
+					font-size: 0.24rem;
+					color: #353a3f;
+					.filter_type_btn{
+						display: inline-block;
+						text-align: center;
+						border-left: #ededed solid 1px;
+						height: 0.36rem;
+						line-height: 0.36rem;
+						width: 100%;
+						position: relative;
+						margin-left: -1px;
+						.iconfont{
+							font-size: 0.3rem;
+							color: #1bbc9d;
+							margin-right: 0.16rem;
+							vertical-align: top;
+						}
+						
+					}
+					.active{
+						color: #1bbc9d;
+					}
+					&:nth-last-child(1){
+						.iconfont{
+							font-size: 0.26rem;
+						}
+					}
+					.filter_products{
+						position: absolute;
+						left: 0;
+						top: 0.9rem;
+						width: 100%;
+						height: 100vh;
+						background-color: rgba(0,0,0,0.5);
+						border-top: #f5f5f5 solid 1px;
+						-webkit-transition:all 0.2s ease-out 0s;
+						z-index: -1;
+						opacity: 0;
+						visibility: hidden;
+						.products_list,.rank_list{
+							background-color: #fff;
+							padding: 0 0.44rem;
+							li{
+								border-bottom: #ededed solid 1px;
+								&:nth-last-child(1){
+									border:none;
+								}
+							}
+						}
+						.products_footer{
+							padding: 0.3rem;
+							background-color: #fff;
+							.btn{
+								width: 60%;
+								font-weight: bold;
+							}
+							.btn_plain{
+								width: 30%;
+								float: right;
+							}
+						}
+						.rank_list,.city_list{
+							padding-bottom: 0.2rem;
+						}
+					}
+					.show_products,.show_rank{
+						z-index: 1;
+						opacity: 1;
+						visibility: inherit;
+					}
+				}
+			}
+			.filter_fixed{
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				z-index: 99;
+				border-bottom: #eee solid 1px;
+			}
+		}
+
+		//条件结果
+		.requirement_result{
+			overflow-x: auto;
+			white-space: nowrap;
+			-webkit-overflow-scrolling: touch;
+			width: 100%;
+			padding: 0.08rem 0.2rem 0.15rem 0.11rem;
+			span{
+				display: inline-block;
+				padding: 0 0.26rem;
+				line-height: 0.52rem;
+				border: solid 1px #ebebeb;
+				background-color: #fff;
+				border-radius: 0.26rem;
+				margin-left: 0.09rem;
+				font-size: 0.24rem;
+				color: #353a3f;
+			}
+		}
+		.destination_result{
+			padding: 0.1rem 0;
+			font-size: 0.26rem;
+			color: #878e95;
+			margin-left: 0.2rem;
+			b{
+				margin-right: 0.15rem;
+			}
+		}
+
+		//列表
+		.list_box{
+			padding: 0 0.2rem;
+			.noListData{
+				font-size: 0.32rem;
+				text-align: center;
+				padding:0.4rem 0.2rem;
+			}
+			.list_ul{
+				li{
+					margin-top: 0.16rem;
+					background-color: #ffffff;
+					box-shadow: 0px 8px 50px 0px rgba(0, 0, 0, 0.06);
+					display: block;
+					position: relative;
+					padding-left: 29%;
+					overflow: hidden;
+					border-radius: 0.1rem;
+					a{
+						.list_img{
+							position: absolute;
+							left: 0;
+							top: 0;
+							width: 29%;
+							height: 100%;
+							min-height: 1.6rem;
+							background-size: cover;
+							background-position: center;
+							p{
+								position: absolute;
+								left: 0;
+								bottom: 0;
+								padding-left: 0.1rem;
+								width: 100%;
+								font-size: 0.18rem;
+								height: 0.34rem;
+								line-height: 0.35rem;
+								overflow: hidden;
+								color: #fff;
+								background-color: rgba(0, 0, 0, 0.7);
+							}
+						}
+						.list_content{
+							padding: 0.1rem 0.2rem 0.16rem;
+							h4{
+								color: #353a3f;
+								font-size: 0.28rem;
+								font-weight: bold;
+								line-height: 0.32rem;
+								max-height: 0.64rem;
+								overflow:hidden;
+								-webkit-line-clamp: 2;
+								-webkit-box-orient: vertical;
+								display: -webkit-box;
+								text-overflow: ellipsis;
+							}
+							.list_tag{
+								font-size: 0.22rem;
+								color: #1bbc9d;
+								margin-top: 0.1rem;
+								line-height: 0.28rem;
+								max-height: 0.56rem;
+								overflow:hidden;
+								-webkit-line-clamp: 2;
+								-webkit-box-orient: vertical;
+								display: -webkit-box;
+								text-overflow: ellipsis;
+								width: 100%;
+								span{
+									margin-right: 0.14rem;
+								}
+							}
+							.duration{
+								margin-top: 0.06rem;
+								font-size: 0.22rem;
+								color: #353a3f;
+								b{
+									margin-right: 0.1rem;
+								}
+							}
+							.price_box{
+								margin-top: 0.16rem;
+								.list_price{
+									float: right;
+									color: #878e95;
+									font-size: 0.22rem;
+									b{
+										color: #353a3f;
+										font-size: 0.28rem;
+										margin: 0 0.07rem;
+									}
+								}
+								.tag_private,.tag_group{
+									display: inline-block;
+									background-color: #52b589;
+									box-shadow: 0rem 0.11rem 0.35rem 0rem rgba(82, 181, 137, 0.3);
+									border-radius: 0.1rem;
+									color: #fff;
+									padding: 0 0.16rem;
+									height: 0.34rem;
+									line-height: 0.34rem;
+									font-size: 0.22rem;
+									
+								}
+								.tag_group{
+									background-color: #efae99;
+									box-shadow: 0rem 0.11rem 0.35rem 0rem rgba(239, 174, 153, 0.3);
+								}
+							}
+							
+						}
+						
+					}
+				}
+			}
+			.list_loading{
+				margin-top: 0.2rem;
+			}
+		}
+
+		.filter_dialog{
+			position: fixed;
+			left: 0;
+			top:0;
+			height: 100%;
+			width: 100%;
+			z-index: -1;
+			opacity: 0;
+			-webkit-transition:all 0.2s ease-out 0s;
+			-webkit-transform: scale(0.5);
+			background-color: #fff;
+			.head_back{
+				border-bottom: #f3f3f3 solid 1px;
+				.filter_clear{
+					color: #1bbc9d;
+					font-size: 0.28rem;
+				}
+			}
+			.filter_content{
+				height: calc(100vh - 1rem -1.5rem);
+				-webkit-overflow-scrolling: touch;
+				overflow-y: auto;
+				padding-bottom: 1.4rem;
+				dt{
+					height: 0.74rem;
+					line-height: 0.74rem;
+					background-color: #f5f7f7;
+					padding-left: 0.44rem;
+					color: #878e95;
+					font-size: 0.24rem;
+					font-weight: bold;
+					text-transform:uppercase;
+				}
+				dd{
+					padding: 0 0.44rem;
+					.checkbox-group{
+						max-height: 5.8rem;
+						overflow: hidden;
+					
+						.checkbox_label{
+							display: block;
+							margin-left: 0;
+							border-bottom: #ededed solid 1px;
+							padding-left: 0.34rem;
+							&:nth-last-child(1){
+								border:none;
+							}
+						}
+					}
+					.filter_more{
+						color: #1bbc9d;
+						font-size: 0.24rem;
+						display: inline-block;
+						padding: 0.2rem 0.2rem 0.3rem;
+						margin-left: 0.3rem;
+					}
+				}
+				
+			}
+			.filter_dialog_footer{
+				background-color: #fff;
+				padding: 0.28rem 0.3rem;
+				border-top: #dde0e0 solid 1px;
+				position: fixed;
+				left: 0;
+				bottom: 0;
+				width: 100%;
+			}
+		}
+		.show_filter{
+			opacity: 1;
+			-webkit-transform: scale(1);
+			z-index: 101;
+		}
+
+	}
+	
+
+	
+</style>
+<style lang="scss">
+	.checkbox_label,.radio_label{
+		padding: 0.3rem 0;
+		display: block;
+		width: 100%;
+		.checkbox_box{
+			float: left;
+			margin-left: -0.34rem;
+		}
+		.checkbox_content,.radio_content{
+			padding-left: 0.2rem;
+			font-size:0.26rem;
+		}
+	}
+	
+</style>
+
+
 <template>
-	<div class="M-activityList">
+	<div class="activity_list">
 		<Head></Head>
-		<div class="filterInfo" :class="{xiding:isscroll}">
-			<span class="destination ">
-				<i class="iconfont">&#xe610;</i>
-				<select v-model="value" @change="locationFn(value)">
-					<option :key="index" v-for="(item,index) in options">{{item.label}}</option>
-				</select>
-			</span>
-			<span class="destination" @touchend="showFilter">
-				<i class="iconfont">&#xe668;</i>
-				Filter
-			</span>
-			<span class="destination">
-				<i class="iconfont">&#xe66b;</i>
-				<select  @change="sortFn(selected)" v-model="selected">
-					<option :key="index" v-for="(item,index) in select">{{item.selectText}}</option>
-				</select>
-			</span>
+
+		<!-- 筛选 -->
+		<div class="filter_box" id="filter_box">
+			<dl class="filter_type clearfix" :class="{filter_fixed:isFixed}">
+
+				<!-- products -->
+				<dd>
+					<span class="filter_type_btn" :class="{active:showProducts}" @click="productsFn"><i class="iconfont">&#xe679;</i>Destination</span>
+					<div class="filter_products" @click="hideFilter" :class="{show_products:showProducts}">
+						<radio-group v-model="cityCheck">
+							<ul class="products_list city_list">
+								<li :key="index" v-for="(item,index) in city">
+									<radio :label="item" :change="cityChange">{{item=='Xian'?"Xi'an":item}}</radio>
+								</li>
+							</ul>
+						</radio-group>
+						<!-- <div class="products_footer">
+							<span class="btn btn_plain" @click="productsClear">Clear</span>
+							<span class="btn" @click="productsConfirm">See experiences</span>
+						</div> -->
+					</div>
+				</dd>
+
+				<!-- filter -->
+				<dd><span class="filter_type_btn" @click="filterFn"><i class="iconfont">&#xe668;</i>Filter</span></dd>
+
+				<!-- Rank -->
+				<dd><span class="filter_type_btn" :class="{active:showRank}" @click="rankFn"><i class="iconfont">&#xe66b;</i>Rank</span>
+					<div class="filter_products" @click="hideFilter" :class="{show_rank:showRank}">
+						<radio-group v-model="rankCheck">
+							<ul class="rank_list">
+								<li :key="index" v-for="(item,index) in rank">
+									<radio :label="item" :change="rankChange">{{item}}</radio>
+								</li>
+							</ul>
+						</radio-group>
+					</div>
+				</dd>
+			</dl>
 		</div>
-		<div class="list-cont" v-if="records>0">
-			<ul class="clearfix">
-				<li class="activity-item" :key="index" v-for="(item,index) in activityList">
 
+		<!-- 筛选结果 -->
+		<!-- <div class="requirement_result">
+			<span :key="index" v-for="(item,index) in filterTag">{{item}}</span>
+		</div> -->
+		<div class="destination_result" v-show="activityList.length"><b>{{cityCheck}}</b>( {{listdata.records}} {{listdata.records>1?'activities':'activity'}} found )</div>
+
+		<!-- 产品列表 -->
+		<div class="list_box">
+			<div class="noListData" v-show="!activityList.length">
+				<p>No activities or tours that match your interests are found.</p>
+				<p>You can try to modify your screening conditions.</p>
+			</div>
+			<ul class="list_ul" v-show="activityList.length">
+				<li :key="index" v-for="(item,index) in activityList">
 					<a :href="'/activity/details/'+item.activityId">
-						<div class="activity">
-
-							<div class="activity-photo" v-lazy:background-image="item.coverPhotoUrl">
-
-							</div>
-
+						<div class="list_img" v-lazy:background-image="item.coverPhotoUrl">
+							<p>{{item.category}}</p>
 						</div>
-						<div class="activitDe">
-							<div class="info">
-								<div class="activeType">
-									<div class="tourType">{{item.category}} · {{item.duration}} {{item.durationUnit|firstUpperCase}}</div>
-
-								</div>
-								<div class="titleText" style="-moz-box-orient: vertical;
-							    -webkit-box-orient:vertical;">
-									{{item.title}}
-								</div>
-								
-								<div class="totalPic">
-									<div class="nowPic">From <b>${{returnFloat(item.bottomPrice)}}</b><span>  pp</span></div>
-								</div>
+						<div class="list_content">
+							<h4>{{item.title}}</h4>
+							<div class="list_tag">
+								<span :key="index" v-for="(item,index) in item.tourTypes">"{{item}}"</span>
 							</div>
-
+							<p class="duration"><b>Duration:</b>{{item.duration}} {{toLower(item.durationUnit)}}</p>
+							<div class="price_box clearfix">
+								<span class="list_price">From<b>${{item.bottomPrice}}</b>pp</span>
+								<span class="tag_private" v-if="item.groupType=='Private'">{{item.groupType}}</span>
+								<span class="tag_group" v-if="item.groupType=='Group'">{{item.groupType}}</span>
+							</div>
 						</div>
 					</a>
-
 				</li>
 			</ul>
-		</div>
-		<div class="empty" v-else>
-			<p>No activities or tours that match your interests are found.</p>
-			<p>You can try to modify your screening conditions.</p>
+			<infinite-loading class="list_loading" @infinite="infiniteHandler" spinner="bubbles"  ref="infiniteLoading">
+				<span slot="no-more">You've reached the bottom of the page.</span>
+				<span slot="no-results" class="no-results"></span>
+			</infinite-loading>
 		</div>
 		
-		<transition name="slideleft">
-			<Mfilter 
-				v-show="isshow" 
-				@callBack="setCallBack" 
-				:sort="sort" 
-				:category="category" 
-				:durations="durations" 
-				:tourtype="tourtype" 
-				:loc="loc"
-				:checkedCategory="checkedCategory"
-				:checkedDurations="checkedDurations"
-				:checkedTourtype="checkedTourtype"
-				
-				class="view" 
-				></Mfilter>
-		</transition>
-		<infinite-loading  @infinite="infiniteHandler" spinner="bubbles"  ref="infiniteLoading">
-			<span slot="no-more">You've reached the bottom of the page.</span>
-			<span slot="no-results" class="no-results"></span>
-		</infinite-loading>
-		<div class="inquireBtn"><a href="/info/feedback/">Inquire</a></div>
-		<footMobile></footMobile>
+		<Foot></Foot>
+
+		<!-- 筛选 -->
+		<div class="filter_dialog" :class="{show_filter:showFilter}">
+			<Back title="Filter" type="close" :close="filterClose">
+				<span class="filter_clear" @click="filterClear" v-show="showClear">Clear</span>
+			</Back>
+			<div class="filter_content">
+				<dl :key="index" v-for="(item,index) in listdata.aggregations" v-show="item.items">
+					<dt>{{item.name}}</dt>
+					<dd v-if="item.type=='DURATION'">
+						<checkbox-group v-model="filterCheck.duration">
+							<checkbox :change="filterChange" :key="index2" v-for="(itemType,key,index2) in item.items" :label="key">{{getDayStr(key)}} ( {{itemType}} )</checkbox>
+						</checkbox-group>
+						<span class="filter_more" @click="showMore" v-if="getObjLength(item.items)>6">View More</span>
+					</dd>
+					<dd v-else>
+						<checkbox-group v-model="filterCheck[toLower(item.type)]">
+							<checkbox :change="filterChange" :key="index2" v-for="(itemType,key,index2) in item.items" :label="key">{{key}} ( {{itemType}} )</checkbox>
+						</checkbox-group>
+						<span class="filter_more" @click="showMore" v-if="getObjLength(item.items)>6">View More</span>
+					</dd>
+
+				</dl>
+			</div>
+
+			<div class="filter_dialog_footer">
+				<span class="btn" @click="filterConfirm">See experiences</span>
+			</div>
+		</div>
+
+		<Loading :loadingStatus="loadingStatus"></Loading>
 	</div>
 </template>
 <script>
 
 	import Head from '~/components/header/index'
-	import { getUrlParams } from '~/assets/js/utils';
+	import Back from '~/components/header/back'
+	import Foot from "~/components/footer/index"
+	import {checkboxGroup,checkbox} from "~/plugins/panda/checkbox/"
+	import {radioGroup,radio} from "~/plugins/panda/radio/"
 	import InfiniteLoading from 'vue-infinite-loading/src/components/Infiniteloading.vue'
-	import Mfilter from '~/components/activity/list/M-filter'
-	import footMobile from "~/components/footer/index"
-
+	import Loading from "~/components/plugin/Loading"
 
 	import Vue from "vue";
 	
 	export default {
-		name: 'M-activityList',
+		name: 'activityList',
+		components: {
+			Head,
+			Back,
+			Foot,
+			checkboxGroup,
+			checkbox,
+			radioGroup,
+			radio,
+			InfiniteLoading,
+			Loading
+		},
 		async asyncData({
 			route,
-			store,
-			error,
-			apiBasePath,
-			redirect
+			apiBasePath
 		}) {
-			let loc=route.params.slug;
-			let sort = route.query.sort ? JSON.parse(route.query.sort) :{"type": "SCORE"};
-			let opctions = route.query.opctions ? JSON.parse(route.query.opctions) : null
-			if(!route.query.opctions){
-				opctions = route.query.options ? JSON.parse(route.query.options) : null;
-			}
-			let data={
-				options: [
-					{
-						value: 'Shanghai',
-						label: 'Shanghai',
-						url: '/activity/list/Shanghai'
-					},
-					{
-						value: 'Beijing',
-						label: 'Beijing',
-						url: '/activity/list/Beijing'
-					},
-					{
-						value: 'Chengdu',
-						label: 'Chengdu',
-						url: '/activity/list/Chengdu'
-					},
-					{
-						value: "Xi'an",
-						label: "Xi'an",
-						url: '/activity/list/Xian'
-					},
-					{
-						value: "Guilin",
-						label: "Guilin",
-						url: '/activity/list/Guilin'
-					}
-				],
-				value: loc == "Xian" ? "Xi\'an" : loc,
-				loc: loc,
-				activityList: '',
-				selected: 'Recommended',
-				apiBasePath: apiBasePath,
-				select: [{
-						selectText: "Recommended",
-						type: "SCORE",
-						isSelect: true
-					},
-					{
-						selectText: "Price :Low to High",
-						type: "PRICE",
-						isSelect: true
-					},
-					{
-						selectText: "Price :High to Low",
-						type: "PRICE",
-						isSelect: false
-					}
-
-				],
-				isshow:false,
-				records: '',
-				pageNum: 1,
-				pageSize: 10,
-				sort: sort,
-				category:'',
-				durations:'',
-				tourtype:'',
-				checkedCategory: [],
-				checkedDurations: [],
-				checkedTourtype: [],
-				isscroll:false,
+			//当前城市
+			let loc = route.params.slug;
+			
+			//接口默认数据
+			var listdata = {};
+			//默认请求接口post的数据
+			var postData = {
+				location:loc=='Xian'?"Xi'an":loc,
+				pageNum:1,
+				pageSize:10,
+				sort:{"type":"SCORE"}
 			};
-			let listdata={}
-			let filters=[]
-			let obj={}
-			if(sort) {
-				if(sort.type == "PRICE" && sort.reverse == true) {
-					data.selected = "Price :High to Low"
-				} 
-				if(sort.type == "PRICE" && sort.reverse == false) {
-					data.selected = "Price :Low to High"
-				}
-			}else{
-				data.selected = "Recommended"
-			}
-			if(opctions) {
-				if(opctions.category&&opctions.category.length > 0) {
-					data.checkedCategory = data.checkedCategory.concat(opctions.category)
-					let jsonCategory = {
-						type: 'CATEGORY',
-						filterValues: data.checkedCategory
-					}
-					filters.push(jsonCategory)
-				}
-				if(opctions.durations&&opctions.durations.length > 0) {
-					data.checkedDurations = data.checkedDurations.concat(opctions.durations)
-					let jsonDurations = {
-						type: 'DURATION',
-						filterValues: data.checkedDurations
-					}
-					filters.push(jsonDurations)
-				}
-				if(opctions.tourtype&&opctions.tourtype.length > 0) {
-					for(let i = 0; i < opctions.tourtype.length; i++) {
-						opctions.tourtype[i] = opctions.tourtype[i].replace(/And/g, '&')
-					}
-					data.checkedTourtype = data.checkedTourtype.concat(opctions.tourtype)
-					let jsonTourtype = {
-						type: 'TOUR_TYPE',
-						filterValues: data.checkedTourtype
-					}
-					filters.push(jsonTourtype)
 
+			//获取url数据
+			var query = route.query;
+			var options = query.options ? JSON.parse(query.options) : '';
+			var sort = query.sort ? JSON.parse(query.sort) : '';
+
+
+			//兼容老的key，老key转为新key
+			var oldType = function(text){
+				if(text=='TOURTYPE'){
+					return 'TOUR_TYPE';
+				}else if(text=='DURATIONS'){
+					return 'DURATION';
 				}
-				obj = {
-					location: data.loc == "Xian" ? "Xi\'an" : data.loc,
-					pageNum: data.pageNum,
-					pageSize: data.pageSize,
-					filters: filters,
-					sort: sort
+				return text;
+			};
+
+			//兼容老的key，新key转为老key
+			var oldTypeKey = function(text){
+				if(text=='tour_type'){
+					return 'tourtype';
+				}else if(text=='duration'){
+					return 'durations';
 				}
-			} else {
-				obj = {
-					location: data.loc == "Xian" ? "Xi\'an" : data.loc,
-					pageNum: data.pageNum,
-					pageSize: data.pageSize,
-					sort: sort
-				}
+				return text;
+			};
+
+			
+
+			//根据url数据生成post需要的格式
+			var postFilters = [];
+			for(var key in options){
+				var keyUpper = key.toUpperCase();
+				postFilters.push({
+					type: oldType(keyUpper),//兼容老的字段
+					filterValues: options[key]
+				});
+			};
+
+			
+
+			//如果有筛选数据,则在默认数据里添加上filters
+			if(options){
+				postData.filters = postFilters;
+			};
+
+			//如果有排序数据,则在默认数据里修改sort
+			if(sort){
+				postData.sort = sort;
 			}
-			
-			
-			
+
 			try{
-				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(obj), {
+				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(postData), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}
 				})
-				data.records = listdata.data.records
-				data.activityList = listdata.data.entities
-				for(let i = 0; i < listdata.data.aggregations.length; i++) {
-					/*if(listdata.data.aggregations[i].type=="CITY"){
-						data.cities=listdata.data.aggregations[i].items
-					}else*/
-					if(listdata.data.aggregations[i].type == "CATEGORY") {
-						data.category = listdata.data.aggregations[i].items
-					} else if(listdata.data.aggregations[i].type == "DURATION") {
-						data.durations = listdata.data.aggregations[i].items
-					} else if(listdata.data.aggregations[i].type == "TOUR_TYPE") {
-						data.tourtype = listdata.data.aggregations[i].items
-					}
+			}catch(err){};
 
-				}
-			}catch(err) {
-				//return error(JSON.stringify(err));
-			}
-			return data
-		},
-		head() {
-			let location = this.value;
-			let title = "The Top " + location + " Tours | " + location + " Local Activities and Experiences";
-			let keywords = "Best Things to do in " + location + ", " + location + " tours, " + location + " trip, " + location + " travel, " + location + " tour packages, " + location + " guide, china tours"
-			if(location == "Beijing") {
-				var description = "See top things to do in Beijing, including Beijing city tours, Beijing walking tours, Beijing history & culture tours, and Beijing food tours. Visit the Forbidden City, Temple of Heaven, Great Wall, Tiananmen Square, and Beijing Summer Palace with our local China tour guides."
-			} else if(location == "Shanghai") {
-				var description = "See top things to do in Shanghai, including Shanghai city tours, Shanghai walking tours, Shanghai history & culture tours, and Shanghai food tours. Visit the bund shanghai, the Shanghai Tower, the French concession, yu garden, zhujiajiao and Suzhou with our local China tour guides."
-			} else if(location == "Guilin") {
-				var description = "See top things to do in Guilin, including Guilin scenic tours, Guilin walking tours, Guilin history & culture tours, Guilin food tours, and Guilin Biking tours. See the best scenery in Guilin including Elephant Trunk Hill, Guilin Forest, Li River, Sun & Moon Pagodas, and Yaoshan Mountain."
-			} else if(location == "Chengdu") {
-				var description = "See top things to do in Chengdu, including Chengdu city tours, Chengdu walking tours, Chengdu history & culture tours, and Chengdu food tours. Visit the Giant Panda Breeding Research Base, Mount Qingcheng, Wenshu Yuan Monestary, Jinli Street, and Dujiangyan with our local China tour guides."
-			} else {
-				var description = "See top things to do in Xi'an, including Xi'an city tours, Xi'an walking tours, Xi'an history & culture tours, and Xi'an food tours. Visit the Terra-cotta Warriors, Xi'an City Wall, Muslim Quarter, Shaanxi History Museum, and Xi'an markets with our local China tour guides."
-			}
-			return {
-				title: title,
-				meta: [{
-						hid: "keywords",
-						name: "keywords",
-						content: keywords
-					},
-					{
-						hid: "description",
-						name: "description",
-						content: description
+			//列表页数据
+			var data = listdata.data;
+
+			//根据接口数据，生成需要筛选的类型默认数据和默认filter数据
+			var filterAll = {},
+				filterCheck = {};
+			if(data.aggregations){
+				data.aggregations.forEach(item => {
+					var thisFilter = [];
+					for(var key in item.items){
+						thisFilter.push(key);
 					}
-				]
-			};
+					//当前类型
+					var thisType = item.type.toLowerCase();
+					filterAll[thisType] = thisFilter;  ////添加filter每种类型数据
+					//检测url是否有老的筛选类型
+					if(options[oldTypeKey(thisType)]){
+						filterCheck[thisType] = options[oldTypeKey(thisType)];
+					}else{
+						filterCheck[thisType] = options[thisType] ? options[thisType] : []; //添加filter每种类型默认check数据
+					}
+				});
+			}
+
+			//默认排序数据
+			var rankCheck = 'Recommended';
+			if(sort && sort.type=='PRICE'){
+				if(sort.reverse == true){
+					rankCheck = 'Price :High to Low';
+				}else{
+					rankCheck = 'Price :Low to High';
+				}
+			}
+
+			return {
+				listdata: data,
+				activityList: data.entities?data.entities:[],
+				apiBasePath: apiBasePath,
+				postData: postData,
+
+				cityCheck:loc=='Xian'?'Xi\'an':loc,
+				city:['Shanghai','Beijing','Chengdu','Xi\'an','Guilin'],
+				showCity:false,
+
+				productsCheck:[],   //打钩的值
+				products:[],
+				showProducts:false, //一期city暂时放在products
+
+				filterCheck:filterCheck,
+				filter: filterAll,
+				showFilter: false,
+
+				rankCheck: rankCheck,
+				rank:['Recommended','Price :Low to High','Price :High to Low'],
+				showRank:false,
+
+				isFixed:false,
+				loadingStatus: false,
+				showClear: options?true:false
+			}
 		},
-		components: {
-			Mfilter,
-			Head,
-			InfiniteLoading,
-			footMobile
+		computed:{
+			//渲染选中标签
+			filterTag:function(){
+				var allTag = [];
+				for(var key in this.filterCheck){
+					var thisArr = this.filterCheck[key];
+					//处理duration数组的天数显示
+					if(key == 'duration'){
+						thisArr = thisArr.map(item=>{
+							return this.getDayStr(item); //调用数字转天数得方法，重写数组
+						})
+					}
+					//把所有标签的数组连接到一个数组里
+					allTag = allTag.concat(thisArr);
+				}
+				return allTag;
+			}
 		},
 		methods: {
-			locationFn(loc){
-				ga('gtag_UA_107010673_2.send', {
-						hitType: 'event',
-						eventCategory: 'activity_list',
-						eventAction: 'switch',
-						eventLabel: 'destination'+loc,
-	
-					});
-				location.href="/activity/list/"+loc
+			hideFilter(e){
+				var isBg = /filter_products/.test(e.target.className);
+				if(isBg){
+					this.showProducts = false;
+					this.showRank = false;
+				}
 			},
-			setCallBack(val){
-				this.isshow=val
-				//页面滚动
-				document.body.style.overflowY = 'auto';
+
+			//products相关
+			productsFn(){
+				//显示Products
+				this.showProducts=!this.showProducts;
+				//隐藏排序弹窗
+				this.showRank = false;
 			},
-			showFilter(){
-				this.isshow=true;
-				//阻止页面滚动
+			productsClear(){
+				//清空数据
+				this.productsCheck = [];
+				//跳转url
+
+			},
+
+			//filter相关
+			filterFn(){
+				this.showFilter=!this.showFilter;	
+				this.showProducts= false;
+				this.showRank = false;
+
+				if(this.showFilter){
+					//GA统计
+					this.ga('click','filter_open');
+				}
+			},
+			filterClose(){
+				this.showFilter = false;
+				//GA统计
+				this.ga('click','filter_close');
+			},
+			//确定选择
+			filterConfirm(){
+				//GA统计
+				this.ga('click','filter_apply');
+				//记录加载页面后是否需要Ga统计
+				localStorage.setItem('listGa','true');
+
+				this.jumpUrl();
+				this.loadingStatus = true;
+			},
+			filterClear(){
+				//GA统计
+				this.ga('click','filter_clear');
+				//清空数据
+				for(var key in this.filterCheck){
+					this.filterCheck[key] = [];
+				}
+				//跳转url
+				this.jumpUrl();
+				this.loadingStatus = true;
+			},
+			filterChange(e){
+				var that = this;
+				//检测是否显示clear
+				setTimeout(function(){
+					var filterLen = 0;
+					var nowCheck = that.filterCheck;
+					for(var key in nowCheck){
+						if(nowCheck[key].length){
+							filterLen++;
+						};
+					}
+					if(filterLen){
+						that.showClear = true;
+					}else{
+						that.showClear = false;
+					}
+				},100);
+				
+			},
+
+			//rank相关
+			rankFn(){
+				this.showRank=!this.showRank;	
+				this.showProducts= false;
+			},
+			//切换排序
+			rankChange(e){
+				var thisValue = e.target.value;
+				this.rankCheck = thisValue;
+
+				/* GA 排序统计  start */
+				var gaLabel = 'score';
+				if(thisValue=='Price :Low to High'){
+					gaLabel = 'price_up';
+				}else if(thisValue=='Price :High to Low'){
+					gaLabel = 'price_down';
+				};
+				this.ga('sort',gaLabel);
+				/* GA 排序统计  end */
+				
+				this.jumpUrl();
+				this.loadingStatus = true;
+			},
+			
+			//切换城市
+			cityChange(e){
+				var isNew = /\/new\//.test(location.href);
+				location.href = '/activity/list/'+(isNew?'new/':'') + (e.target.value=="Xi'an"?'Xian':e.target.value);
+				//this.productsFn();
+				this.loadingStatus = true;
+			},
+			
+
+			//products确定选择
+			// productsConfirm(){
+			// 	this.jumpUrl();
+			// },
+			
+
+			//跳转刷新
+			jumpUrl(){
+
+				//获取当前路径
+				var path = this.$route.path;
+				//获取当前选中的数据
+				var filterCheck = this.filterCheck;
+				//获取rank对象
+				var rankCheck = this.rankCheck;
+				var sort = '';
+
+				if(rankCheck=='Price :Low to High'){
+					sort = {"type":"PRICE","reverse":false}
+				}else if(rankCheck=='Price :High to Low'){
+					sort = {"type":"PRICE","reverse":true}
+				}
+
+				//去掉空数据,并对跳转的数据排序，把需要的数据放在新的options里
+				var options = {};
+				for(var key in filterCheck){
+					if(filterCheck[key].length){
+						options[key] = filterCheck[key].sort();
+					}
+				}
+				//跳转并对对象转码
+				var optionsEncode = encodeURIComponent(JSON.stringify(options));
+				//检测是否有筛选项
+				var hasOptions = JSON.stringify(options)!='{}';
+				location.href = path + (hasOptions?'?options=' + optionsEncode:'') + (sort?(hasOptions?'&':'?')+'sort='+JSON.stringify(sort):'');
+
+			},
+			hideBodyScroll(){
 				document.body.style.overflowY = 'hidden';
 			},
-		
-			sortFn(val){
-				let opctions=this.getUrlParam("opctions")?JSON.parse(this.getUrlParam("opctions")):JSON.parse(this.getUrlParam("options"))
-				if(opctions==null){
-					opctions={}
+			showBodyScroll(){
+				document.body.style.overflowY = 'inherit';
+			},
+
+			showMore(e){
+				var thisMore = e.target;
+				var thisGroupBox = thisMore.parentNode.querySelectorAll('.checkbox-group')[0];
+
+				if(thisMore.innerHTML=='View More'){
+					thisGroupBox.style.maxHeight = 'initial';
+					thisMore.innerHTML = 'View Less';
+				}else{
+					thisGroupBox.style.maxHeight = '5.8rem';
+					thisMore.innerHTML = 'View More';
 				}
-				if(val == "Recommended") {
-					this.sort = {
-						type: "SCORE"
-					}
-					ga('gtag_UA_107010673_2.send', {
-						hitType: 'event',
-						eventCategory: 'activity_list',
-						eventAction: 'sort',
-						eventLabel: 'score',
-	
-					});
-				} 
-				if(val == "Price :Low to High") {
-					this.sort = {
-						type: "PRICE",
-						reverse: false
-					}
-					ga('gtag_UA_107010673_2.send', {
-						hitType: 'event',
-						eventCategory: 'activity_list',
-						eventAction: 'sort',
-						eventLabel: 'price_up',
-	
-					});
-				}
-				if(val == "Price :High to Low") {
-					this.sort = {
-						type: "PRICE",
-						reverse: true
-					}
-					ga('gtag_UA_107010673_2.send', {
-						hitType: 'event',
-						eventCategory: 'activity_list',
-						eventAction: 'sort',
-						eventLabel: 'price_down',
-	
-					});
-				}
-					this.sort=JSON.stringify(this.sort)
-					
-					location.href = "/activity/list/" + this.loc + "?options=" + JSON.stringify(opctions)  + (/SCORE/.test(this.sort)?"":"&sort=" + this.sort);
 				
-				
+
 				
 			},
-			returnFloat(value) {
-				var value = Math.round(parseFloat(value) * 100) / 100;
-				var xsd = value.toString().split(".");
-				if(xsd.length == 1) {
-					value = value.toString() + ".00";
-					return value;
-				}
-				if(xsd.length > 1) {
-					if(xsd[1].length < 2) {
-						value = value.toString() + "0";
-					}
-					return value;
-				}
+
+			
+			toLower(text){
+				return text.toLowerCase();
 			},
-			getUrlParam(k) {
-				var regExp = new RegExp('([?]|&)' + k + '=([^&]*)(&|$)');
-				var result = window.location.href.match(regExp);
-				if(result) {
-					return decodeURIComponent(result[2]);
-				} else {
-					return null;
+			getDayStr(text){
+				if(text==0){
+					return 'Half Day';
+				}else if(text==1){
+					return text+' Day';
 				}
+				return text+' Days';
+			},
+			getObjLength(obj){
+				var thisObjLength = 0;
+				for(var key in obj){
+					thisObjLength++;
+				}
+				return thisObjLength;
 			},
 			infiniteHandler($state){
-				//console.log(1111)
-				let that=this
-				that.pageNum++
-				let filters=[]
-				let obj={}
-				if(that.checkedCategory&&that.checkedCategory.length > 0) {
-					let jsonCategory = {
-						type: 'CATEGORY',
-						filterValues: that.checkedCategory
-					}
-					filters.push(jsonCategory)
-				}
-				if(that.checkedDurations&&that.checkedDurations.length > 0) {
-					let jsonDurations = {
-						type: 'DURATION',
-						filterValues: that.checkedDurations
-					}
-					filters.push(jsonDurations)
-				}
-				if(that.checkedTourtype&&that.checkedTourtype.length > 0) {
-					let jsonTourtype = {
-						type: 'TOUR_TYPE',
-						filterValues: that.checkedTourtype
-					}
-					filters.push(jsonTourtype)
-				}
-				if(filters.length&&filters.length > 0) {
-					obj = {
-						location: that.loc == "Xian" ? "Xi\'an" : that.loc,
-						pageNum: that.pageNum,
-						pageSize: that.pageSize,
-						filters: filters,
-						sort: that.sort
-					}
-				} else {
-					obj = {
-						location: that.loc == "Xian" ? "Xi\'an" : that.loc,
-						pageNum: that.pageNum,
-						pageSize: that.pageSize,
-						sort: that.sort
-					}
-				}
-				Vue.axios.post(that.apiBasePath + "search/activity", JSON.stringify(obj), {
+				var that = this;
+				
+				//修改翻页数量
+				this.postData.pageNum++;
+				//请求数据
+				this.axios.post(that.apiBasePath + "search/activity", JSON.stringify(this.postData), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}
@@ -445,224 +857,98 @@
 				}, function(response) {
 					$state.complete();
 				})
-			}
-		},
-		filters: {
-			firstUpperCase(val) {
-				if(val)
-					return val.toLowerCase().replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
+			},
+			ga(action,label){
+				ga('gtag_UA_107010673_2.send', {
+					hitType: 'event',
+					eventCategory: 'activity_list',
+					eventAction: action,
+					eventLabel: label
+				});
 			}
 		},
 		watch: {
-			pageNum: function(val, oldVal) {
+			showProducts:function(value){
+				if(value){
+					this.hideBodyScroll();
+				}else{
+					this.showBodyScroll();
+				}
 			},
-			checkedDurations(val, oldVal) {
+			showFilter:function(value){
+				if(value){
+					this.hideBodyScroll();
+				}else{
+					this.showBodyScroll();
+				}
 			},
-			checkedTourtype(val, oldVal) {
-				if(val.length > 0) {
-					for(let i = 0; i < val.length; i++) {
-						val[i] = val[i].replace(/And/g, "&")
-					}
+			showRank:function(value){
+				if(value){
+					this.hideBodyScroll();
+				}else{
+					this.showBodyScroll();
 				}
 			}
 		},
 		mounted: function() {
-			let opctions=JSON.parse(this.getUrlParam("opctions"))?JSON.parse(this.getUrlParam("opctions")):JSON.parse(this.getUrlParam("options"))
-			console.log()
-			let that=this
+			console.log(this.$data);
+
+
+			//filter统计ga   start  ///////////////////////////////////////////
+			var listGa = localStorage.getItem('listGa');
+			if(listGa){
+				for(var key in this.filterCheck){
+					var thisArr = this.filterCheck[key];
+					//check的类型有数据则统计这个类型的ga
+					if(thisArr.length){
+						this.ga('filter',key);
+					}
+				}
+			}
+			//干掉ga触发，这个在点击的时候才开启触发，从新加载页面统计过后，干掉触发条件
+			localStorage.removeItem('listGa');
+			//filter统计ga   end  ///////////////////////////////////////////
+			
+			
+			//筛选悬浮
+			var filterBox = document.getElementById('filter_box'),
+				filterBoxTop = filterBox.offsetTop;
 			window.addEventListener("scroll", (e)=>{
-				if(scrollY>400){
-					that.isscroll=true
+				if(scrollY>filterBoxTop){
+					this.isFixed=true
 				}else{
-					that.isscroll=false
+					this.isFixed=false
 				}
 			});
-		}
+			
+		},
+		head() {
+			let location = this.cityCheck;
+			let title = "The Top " + location + " Tours | " + location + " Local Activities and Experiences";
+			let keywords = "Best Things to do in " + location + ", " + location + " tours, " + location + " trip, " + location + " travel, " + location + " tour packages, " + location + " guide, china tours"
+
+			let description = {
+				Beijing: "See top things to do in Beijing, including Beijing city tours, Beijing walking tours, Beijing history & culture tours, and Beijing food tours. Visit the Forbidden City, Temple of Heaven, Great Wall, Tiananmen Square, and Beijing Summer Palace with our local China tour guides.",
+				Shanghai: "See top things to do in Shanghai, including Shanghai city tours, Shanghai walking tours, Shanghai history & culture tours, and Shanghai food tours. Visit the bund shanghai, the Shanghai Tower, the French concession, yu garden, zhujiajiao and Suzhou with our local China tour guides.",
+				Chengdu: "See top things to do in Chengdu, including Chengdu city tours, Chengdu walking tours, Chengdu history & culture tours, and Chengdu food tours. Visit the Giant Panda Breeding Research Base, Mount Qingcheng, Wenshu Yuan Monestary, Jinli Street, and Dujiangyan with our local China tour guides.",
+				Xian:"See top things to do in Xi'an, including Xi'an city tours, Xi'an walking tours, Xi'an history & culture tours, and Xi'an food tours. Visit the Terra-cotta Warriors, Xi'an City Wall, Muslim Quarter, Shaanxi History Museum, and Xi'an markets with our local China tour guides.",
+				Guilin: "See top things to do in Guilin, including Guilin scenic tours, Guilin walking tours, Guilin history & culture tours, Guilin food tours, and Guilin Biking tours. See the best scenery in Guilin including Elephant Trunk Hill, Guilin Forest, Li River, Sun & Moon Pagodas, and Yaoshan Mountain."
+			};
+			return {
+				title: title,
+				meta: [{
+						hid: "keywords",
+						name: "keywords",
+						content: keywords
+					},
+					{
+						hid: "description",
+						name: "description",
+						content: description[location=="Xi'an"?'Xian':location]
+					}
+				]
+			};
+		},
 	}
 </script>
 
-<style lang="scss" scoped>
-	
-	.M-activityList{
-		.header{
-			margin-bottom: 0.36rem;
-		}
-		.filterInfo{
-			
-			padding:0 0.4rem 0.36rem;
-			border-bottom:1px solid #dde0e0;
-			.destination{
-				font-size: 0.27rem;
-				margin-left: 0.15rem;
-				vertical-align: top;
-				&:first-child{
-					margin-left: 0;
-				}
-				border: solid 1px #dde0e0;
-				border-radius: 8px;
-				display: inline-block;
-				padding:0.14rem 0.16rem 0.14rem 0.1rem;
-				i{
-					font-size: 0.25rem;
-					margin-right: 0.1rem;
-					color:#cacccc;
-					float: left;
-				}
-				select{
-					-webkit-appearance: none;
-					-moz-appearance: none;
-					appearance: none;
-					border: none;
-					font-size: 0.28rem;
-					background:transparent;
-				}	
-			}
-			@media only screen and (min-width: 700px){
-				.destination{
-					padding:0.16rem 0.3rem;
-				}
-			}
-			
-		}
-		
-		
-		
-		.list-cont{
-			padding:0.1rem  0.4rem 0;
-			.activity-item {
-				&:nth-child(2n+2){
-					margin-right: 0;
-				}
-				float:left;
-				width:48%;
-				margin-right: 4%;
-				margin-top:0.4rem;
-				.activity {
-					.activity-photo {
-						height: 2.2rem;
-						background-repeat: no-repeat!important;
-						background-size: cover!important;
-						position: relative;
-					}
-					@media only screen and (min-width: 700px){
-						.activity-photo{
-							height: 3rem;
-						}
-					}
-				}
-				.activitDe {
-					.activeType {
-						line-height: 0.7rem;
-						.tourType {
-							color: #d87b65;
-							font-size:0.24rem;
-							
-						}
-					}
-					.titleText {
-						width: 100%;
-						height:1.2rem;
-						line-height:0.4rem;
-						text-overflow: ellipsis;
-						display: -webkit-box;
-						display: -moz-box;
-						-moz-box-orient: vertical;
-						-webkit-box-orient: vertical;
-						-webkit-line-clamp: 3;
-						-moz-line-clamp: 3;
-						-o-text-overflow: ellipsis;
-						word-wrap: break-word;
-						font-size: 0.29rem;
-						font-weight: bold;
-						text-align: left;
-						overflow: hidden;
-					}
-					.duration {
-						margin-top: 0.22rem;
-						font-size: 0.24rem;
-						color: #878e95;
-					}
-					.totalPic {
-						padding-top: 0.15rem;
-						.oldpic {
-							text-align: right;
-							font-size: 14px;
-							color: #878e95;
-							text-decoration: line-through;
-						}
-						.nowPic {
-							text-align:left;
-							font-size: 0.24rem;
-							color: #878e95;
-							b {
-								color: #353a3f;
-								font-size: 0.38rem;
-							}
-							span {
-								color: #353a3f;
-							}
-						}
-					}
-				}
-			}
-		}
-		.xiding{
-			position: fixed;
-			top:0;
-			left:0;
-			right:0;
-			background:#fff;
-			z-index: 9;
-			padding-top:0.36rem;
-		}
-		.empty{
-			padding: 0.533333rem;
-			p{
-				text-align: center;
-				font-size: 0.32rem;
-			}
-		}
-		.view {
-			width: 100%;
-			transition: all 0.3s cubic-bezier(.55, 0, .1, 1);
-		}
-		.slideleft-enter-active,
-		.slideleft-leave-active {
-			opacity: 0;
-			-webkit-transform: translate(100%, 0);
-			transform: translate(100%, 0);
-		}
-		.slideleft-enter,
-		.slideleft-leave-to {
-			opacity: 0;
-			-webkit-transform: translate(100%, 0);
-			transform: translate(100%, 0);
-		}
-		.no-results{
-			display: inline-block;
-			padding: 0 0.586666rem;
-			word-wrap:break-word; 
-			
-		}
-		.inquireBtn{
-			width: 1.8rem;
-			height: 0.84rem;
-			background-image: linear-gradient(270deg, 
-			#009efd 0%, 
-			#1bbc9d 100%),;
-			position: fixed;
-			bottom: 0.4rem;
-			right:0.4rem;
-			line-height:0.84rem;
-			text-align: center;
-			border-radius:0.42rem;
-			a{
-				display: block;
-				font-size: 0.3rem;
-				color: #fff;
-				font-weight: bold;
-				
-			}
-		}
-	}
-</style>

@@ -40,7 +40,7 @@
 		<!-- 弹出登录 -->
 		<div class="login_box" v-show="showLogin">
 			<!-- 返回上一页，可以设置title属性,标签内有插槽可以写右上角的按钮等 -->
-			<headBack :type="'close'" :pageClose="pageClose" title=""></headBack>
+			<headBack :type="'close'" :close="pageClose" title=""></headBack>
 
 			<div class="login_content">
 				<h2>Login</h2>

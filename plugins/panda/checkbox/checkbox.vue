@@ -1,3 +1,8 @@
+<style lang="scss">
+//样式类型，pc.scss 和 mobile.scss
+@import "./mobile.scss";
+</style>
+
 <template>
 	<!--//加载动画-->
 	<label class="checkbox_label" :class="{isChecked:getChecked,checkbox_disabled:isDisabled}">
@@ -16,11 +21,12 @@
 <script>
 	export default {
     name: "checkbox",
-    props:[
-      'label',
-      'value',
-      'disabled'
-    ],
+    props:{
+      'label':{},
+      'value':{},
+      disabled: Boolean,
+      change:{}
+    },
 		data() {
 			return {
         thisValue:this.value
@@ -28,7 +34,7 @@
     },
     computed:{
       isGroup(){
-        return this.$parent.$options._componentTag?true:false;
+        return this.$parent.$options.name=='checkboxGroup'?true:false;
       },
       getChecked(){
         //单个复选框操作
@@ -51,6 +57,9 @@
 		methods: {
       inputChange(e){
         this.$emit('input',!this.value);
+        if(typeof this.change =='function'){
+          this.change(e);
+        }
       }
 		},
     watch:{

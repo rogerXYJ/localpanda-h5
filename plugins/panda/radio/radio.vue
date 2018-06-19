@@ -1,3 +1,8 @@
+<style lang="scss">
+//样式类型，pc.scss 和 mobile.scss
+@import "./mobile.scss";
+</style>
+
 <template scope="scope">
 	<!--//加载动画-->
 	<label class="radio_label" :class="{isChecked:getChecked,radio_disabled:isDisabled}">
@@ -20,6 +25,7 @@
       'label':{},
       'value':{},
       disabled: Boolean,
+      change:{}
     },
 		data() {
 			return {
@@ -54,6 +60,9 @@
 		methods: {
       inputChange(e){
         this.$emit('input', this.label);
+        if(typeof this.change =='function'){
+          this.change(e);
+        }
       }
 		},
 		mounted(){
@@ -66,4 +75,3 @@
     }
 	}
 </script>
-
