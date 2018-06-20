@@ -67,6 +67,9 @@
 								&:nth-last-child(1){
 									border:none;
 								}
+								.checkbox_label{
+									padding-left: 0.34rem;
+								}
 							}
 						}
 						.products_footer{
@@ -201,6 +204,7 @@
 								width: 100%;
 								span{
 									margin-right: 0.14rem;
+									display: inline-block;
 								}
 							}
 							.duration{
@@ -326,6 +330,78 @@
 			z-index: 101;
 		}
 
+
+		.h_search_top{
+			height: 1.08rem;
+			padding: 0.22rem 1.8rem 0 0.2rem;
+			background-color: #fff;
+			border-bottom: #dde0e0 solid 1px;
+			.h_search_back{
+				position: absolute;
+				left: 0;
+				top: 0.24rem;
+				line-height: 0.62rem;
+				padding: 0 0.2rem;
+			}
+			.btn{
+				float: right;
+				margin-right: -1.56rem;
+				width: 1.36rem;
+				height: 0.62rem;
+				line-height: 0.62rem;
+				font-size: 0.24rem;
+				box-shadow: 0rem 0.11rem 0.35rem 0rem	rgba(27, 188, 157, 0.3);
+			}
+			.h_search_input_box{
+				width: 100%;
+				height: 0.62rem;
+				background-color: #ffffff;
+				box-shadow: 0rem 0rem 0.35rem 0rem rgba(53, 58, 63, 0.16);
+				border-radius: 0.31rem;
+				position: relative;
+				overflow: hidden;
+				border: #ddd solid 1px;
+				.s_input_search{
+					position: absolute;
+					left: 0.15rem;
+					top: 0.06rem;
+					color:#878e95;
+				}
+				.s_input_close{
+					position: absolute;
+					right: 0.15rem;
+					top: 0.13rem;
+					display: block;
+					width: 0.32rem;
+					height: 0.32rem;
+					box-sizing: border-box;
+					padding: 0.02rem 0 0 0.02rem;
+					line-height: 0.32rem;
+					text-align: center;
+					background-color: #dde0e0;
+					color: #fff;
+					border-radius: 50%;
+					font-size: 0.2rem;
+				}
+				input{
+					width: 100%;
+					height: 100%;
+					border: none;
+					padding-left: 0.6rem;
+					color: #353a3f;
+				}
+				input::-webkit-input-placeholder { color: #dde0e0; }
+				p{
+					position: absolute;
+					left: 0;
+					top: 0;
+					width: 100%;
+					height: 100%;
+					z-index: 1;
+				}
+			}
+		}
+
 	}
 	
 
@@ -345,13 +421,25 @@
 			font-size:0.26rem;
 		}
 	}
+	.header_search_icon{
+		display: none;
+	}
 	
 </style>
 
 
 <template>
 	<div class="activity_list">
-		<Head></Head>
+		<Head :searchDialog="showHeaderSearch" @hideSearchDialog="showHeaderSearch=false"></Head>
+
+		<!-- 搜索 -->
+		<div class="h_search_top" @click="showHeaderSearch=true">
+			<span class="btn">Search</span>
+			<div class="h_search_input_box">
+				<input type="text" id="h_search_input" v-model="searchValue" placeholder="Attration, Activity, Destination">
+				<p></p>
+			</div>
+		</div>
 
 		<!-- 筛选 -->
 		<div class="filter_box" id="filter_box">
@@ -361,17 +449,17 @@
 				<dd>
 					<span class="filter_type_btn" :class="{active:showProducts}" @click="productsFn"><i class="iconfont">&#xe679;</i>Destination</span>
 					<div class="filter_products" @click="hideFilter" :class="{show_products:showProducts}">
-						<radio-group v-model="cityCheck">
+						<checkbox-group v-model="filterCheck.category">
 							<ul class="products_list city_list">
-								<li :key="index" v-for="(item,index) in city">
-									<radio :label="item" :change="cityChange">{{item=='Xian'?"Xi'an":item}}</radio>
+								<li :key="index" v-for="(item,index) in filter.category">
+									<checkbox :label="item">{{item}}</checkbox>
 								</li>
 							</ul>
-						</radio-group>
-						<!-- <div class="products_footer">
+						</checkbox-group>
+						<div class="products_footer">
 							<span class="btn btn_plain" @click="productsClear">Clear</span>
 							<span class="btn" @click="productsConfirm">See experiences</span>
-						</div> -->
+						</div>
 					</div>
 				</dd>
 
@@ -440,8 +528,8 @@
 				<span class="filter_clear" @click="filterClear" v-show="showClear">Clear</span>
 			</Back>
 			<div class="filter_content">
-				<dl :key="index" v-for="(item,index) in listdata.aggregations" v-show="item.items">
-					<dt>{{item.name}}</dt>
+				<dl :key="index" v-for="(item,index) in aggregations" v-show="item.items && item.type !='CATEGORY'">
+					<dt>{{getFilterType(item.type)}}</dt>
 					<dd v-if="item.type=='DURATION'">
 						<checkbox-group v-model="filterCheck.duration">
 							<checkbox :change="filterChange" :key="index2" v-for="(itemType,key,index2) in item.items" :label="key">{{getDayStr(key)}} ( {{itemType}} )</checkbox>
@@ -502,7 +590,7 @@
 			var listdata = {};
 			//默认请求接口post的数据
 			var postData = {
-				location:loc=='Xian'?"Xi'an":loc,
+				keyword:loc=='Xian'?"Xi'an":loc,
 				pageNum:1,
 				pageSize:10,
 				sort:{"type":"SCORE"}
@@ -581,6 +669,7 @@
 					//当前类型
 					var thisType = item.type.toLowerCase();
 					filterAll[thisType] = thisFilter;  ////添加filter每种类型数据
+					
 					//检测url是否有老的筛选类型
 					if(options[oldTypeKey(thisType)]){
 						filterCheck[thisType] = options[oldTypeKey(thisType)];
@@ -624,7 +713,10 @@
 
 				isFixed:false,
 				loadingStatus: false,
-				showClear: options?true:false
+				showClear: options?true:false,
+
+				showHeaderSearch: false,
+				searchValue: query.keyword?query.keyword:''
 			}
 		},
 		computed:{
@@ -643,6 +735,33 @@
 					allTag = allTag.concat(thisArr);
 				}
 				return allTag;
+			},
+			//获取指定顺序的数据
+			aggregations:function(){
+				//获取默认数据
+				var aggregations = this.listdata.aggregations;
+
+				//设置自定义顺序
+				var sortDefault = {
+					'CATEGORY':1,
+					'GROUP_TYPE':2,
+					'ATTRACTION':3,
+					'DURATION':4,
+					'TOUR_TYPE':5
+				};
+
+				//给数据添加排序的序号
+				for(var i=0;i<aggregations.length;i++){
+					var thisNum = sortDefault[aggregations[i].type];
+					aggregations[i].number = thisNum ? thisNum : 10; //没有的字段默认设置顺序为10
+				};
+
+				//排序
+				aggregations = aggregations.sort(function(a,b){
+					return a.number > b.number;
+				});
+
+				return aggregations;
 			}
 		},
 		methods: {
@@ -662,11 +781,24 @@
 				this.showRank = false;
 			},
 			productsClear(){
-				//清空数据
-				this.productsCheck = [];
-				//跳转url
+				//GA统计
+				this.ga('click','products_clear');
 
+				//清空数据
+				this.filterCheck.category = [];
+				//跳转url
+				this.jumpUrl();
 			},
+			//products确定选择
+			productsConfirm(){
+				//GA统计
+				this.ga('click','products_apply');
+				//记录加载页面后是否需要Ga统计
+				localStorage.setItem('listGa','true');
+				
+				this.jumpUrl();
+			},
+
 
 			//filter相关
 			filterFn(){
@@ -758,10 +890,7 @@
 			},
 			
 
-			//products确定选择
-			// productsConfirm(){
-			// 	this.jumpUrl();
-			// },
+			
 			
 
 			//跳转刷新
@@ -836,6 +965,17 @@
 					thisObjLength++;
 				}
 				return thisObjLength;
+			},
+			getFilterType(type){
+				var typeStr = '';
+				switch(type){
+					case 'DURATION': typeStr = 'Duration'; break;
+					case 'GROUP_TYPE': typeStr = 'Service Type'; break;
+					case 'TOUR_TYPE': typeStr = 'Themes'; break;
+					case 'ATTRACTION': typeStr = 'Points of Interest'; break;
+					case 'CATEGORY': typeStr = 'Products'; break;
+				};
+				return typeStr ? typeStr : type;
 			},
 			infiniteHandler($state){
 				var that = this;

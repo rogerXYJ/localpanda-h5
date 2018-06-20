@@ -1,15 +1,18 @@
 <template>
-	<div class="header">
+	<div class="header" :class="{'header_hyaline':isExpats}">
 		<div class="nav_bg" :class="{'show_nav':showWinBg}"  @click="hideDialog"></div>
 
-		<div class="header_box" :class="{'background-nomal':isExpats}">
+		<div class="header_box">
+
 			<!-- 导航展开按钮 -->
 			<div class="header_btn" @click="showNav">
-				<span v-for="item in 3" :class="{'color-white':isExpats}"></span>
-				<!--<span></span>
-				<span></span>-->
+				<span></span>
+				<span></span>
+				<span></span>
 			</div>
 
+			<!-- 搜索 -->
+			<div class="header_search_icon iconfont" @click="showSearch=true">&#xe67a;</div>
 			<!-- logo -->
 			<div class="logo" v-if="isExpats">
 				<svg aria-hidden="true" @click="goHome">
@@ -48,6 +51,98 @@
 				<span class="btn" @click="facebookLogin"><i class="iconfont">&#xe613;</i>Log in with Facebook</span>
 			</div>
 		</div>
+
+		<!-- 搜索 -->
+		<div class="h_search_all" :class="{h_search_show:showSearch}">
+			<div class="h_search_top">
+				<i class="iconfont h_search_back" @click="showSearch=false">&#xe615;</i>
+				<span class="btn" @click="searchFn">Search</span>
+				<div class="h_search_input_box">
+					<input type="text" id="h_search_input" @focus="autoComplate" @keyup="autoComplate" v-model="searchValue" placeholder="Attration, Activity, Destination">
+					<i class="iconfont s_input_search">&#xe67a;</i>
+					<i class="iconfont s_input_close" v-show="searchValue" @click="searchValue=''">&#xe629;</i>
+				</div>
+			</div>
+			<div class="h_search_content">
+				<dl v-show="searchValue">
+					<dd :key="index" v-for="(item,index) in searchData">
+						<a :href="getUrl(item.value)">
+							<i class="iconfont" v-if="item.type=='DESTINATION'">&#xe610;</i>
+							<i class="iconfont" v-else>&#xe609;</i>
+							{{item.value}}
+						</a>
+					</dd>
+				</dl>
+
+				<div class="h_search_hot" v-show="!searchValue">
+					<dl>
+						<dt>Destination</dt>
+						<dd>
+							<a href="#">
+								<i class="iconfont">&#xe610;</i>Shanghai
+							</a>
+						</dd>
+						<dd>
+							<a href="#">
+								<i class="iconfont">&#xe610;</i>Shanghai
+							</a>
+						</dd>
+						<dd>
+							<a href="#">
+								<i class="iconfont">&#xe610;</i>Shanghai
+							</a>
+						</dd>
+						<dd>
+							<a href="#">
+								<i class="iconfont">&#xe610;</i>Shanghai
+							</a>
+						</dd>
+					</dl>
+
+					<dl>
+						<dt>poplar choices</dt>
+						<dd>
+							<a href="#">Shanghai</a>
+						</dd>
+						<dd>
+							<a href="#">Shanghai</a>
+						</dd>
+						<dd>
+							<a href="#">Shanghai</a>
+						</dd>
+						<dd>
+							<a href="#">Shanghai</a>
+						</dd>
+						<dd>
+							<a href="#">Shanghai</a>
+						</dd>
+					</dl>
+					<dl>
+						<dt>poplar choices</dt>
+						<dd>
+							<a href="#">Shanghai</a>
+						</dd>
+						<dd>
+							<a href="#">Shanghai</a>
+						</dd>
+						<dd>
+							<a href="#">Shanghai</a>
+						</dd>
+						<dd>
+							<a href="#">Shanghai</a>
+						</dd>
+						<dd>
+							<a href="#">Shanghai</a>
+						</dd>
+					</dl>
+
+				</div>
+				
+			</div>
+		</div>
+
+		
+
 	</div>
 </template>
 
@@ -56,14 +151,20 @@
 	import FBLogin from "~/plugins/panda/FBLogin/";
 
 	export default {
-		props:["isExpats"],
+		props:["searchDialog","isExpats"],
 		name:'M-head',
 		data(){
+			var query = this.$route.query;
 			return {
 				navIsShow: false,
 				showWinBg: false,
 				showLogin: false,
-				islogIn: false
+				islogIn: false,
+				showSearch: false,
+				searchData:[],
+				searchValue: query.keyword?query.keyword:'',
+				query: query,
+				path: this.$route.path
 			}
 		},
 		components: {
@@ -112,12 +213,79 @@
 				new FBLogin({
 					logout:true
 				});
-			}
+			},
 
+			autoComplate(e){
+				var self = this,
+					keyword = e.target.value;
+				if(!keyword){
+					self.searchData = [];
+					return;
+				}
+				var postData = {
+					keyword: keyword,
+					size: 10
+				}
+				//请求数据
+				this.axios.post("https://api.localpanda.com/api/suggest", JSON.stringify(postData), {
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}).then(function(response) {
+					if(response.status == 200 || response.status == 304){
+						self.searchData = response.data;
+					}
+				}, function(response) {
+					
+				})
+
+			},
+			getUrl(value){
+				var query = JSON.parse(JSON.stringify(this.query));
+				query.keyword = value;
+				var queryStr = '';
+				for(var key in query){
+					queryStr += '&' + key + '=' + query[key];
+				};
+				return this.path + (queryStr ? '?' : '') + queryStr.substring(1);
+			},
+			searchFn(){
+				if(!this.searchValue){
+					document.getElementById('h_search_input').focus();
+					return;
+				}
+				location.href = this.getUrl(this.searchValue);
+			}
+		},
+		computed:{
+			
 		},
 		watch:{
 			showWinBg:function(val){
 				this.setBodyHidden(val);
+			},
+			showSearch:function(val){
+				this.setBodyHidden(val);
+				if(val==false){
+					this.$emit('hideSearchDialog',false)
+				}else{
+					setTimeout(function(){
+					var thisInput = document.getElementById('h_search_input');
+						thisInput.focus();
+						thisInput.setSelectionRange(100,100);
+					},300);
+				}
+				
+			},
+			searchDialog:function(val){
+				this.setBodyHidden(val);
+				this.showSearch = val;
+				
+				setTimeout(function(){
+					var thisInput = document.getElementById('h_search_input');
+					thisInput.focus();
+					thisInput.setSelectionRange(100,100);
+				},300);
 			}
 		},
 		mounted: function() {
@@ -130,13 +298,7 @@
 </script>
 
 <style lang="scss" scoped>
-.background-nomal{
-		background: transparent!important;
-		border: none!important;
-	}
-.color-white{
-	background: #fff!important;
-}
+
 .header{
 	height: 0.99rem;
 	position: relative;
@@ -158,11 +320,12 @@
 			}
 			
 		}
+		
 		.header_btn{
 			float: right;
-			width: 1.15rem;
+			width: 1rem;
 			height: 0.99rem;
-			padding: 0.32rem 0.4rem;
+			padding: 0.32rem 0.4rem 0.32rem 0.25rem;
 			span{
 				width: 100%;
 				height: 0.04rem;
@@ -174,6 +337,137 @@
 				}
 			}
 		}
+
+
+		.header_search_icon{
+			height: 0.98rem;
+			line-height: 1rem;
+			overflow: hidden;
+			color: #1bbc9d;
+			float: right;
+			padding: 0 0.2rem 0 0.3rem;
+			
+		}
+	}
+
+	.h_search_all{
+		background-color: #fff;
+		position: absolute;
+		left: 0;
+		top: 0;
+		z-index: -1;
+		opacity: 0;
+		-webkit-transform: scale(0.5);
+		-webkit-transition:all 0.2s ease-out 0s; 
+  	transition:all 0.2s ease-out 0s; 
+		width: 100%;
+		height: 100vh;
+		visibility: hidden;
+		// overflow-y: auto;
+		.h_search_top{
+			height: 1.08rem;
+			padding: 0.22rem 1.86rem 0 0.76rem;
+			.h_search_back{
+				position: absolute;
+				left: 0;
+				top: 0.24rem;
+				line-height: 0.62rem;
+				padding: 0 0.2rem;
+			}
+			.btn{
+				float: right;
+				margin-right: -1.56rem;
+				width: 1.36rem;
+				height: 0.62rem;
+				line-height: 0.62rem;
+				font-size: 0.24rem;
+				box-shadow: 0rem 0.11rem 0.35rem 0rem	rgba(27, 188, 157, 0.3);
+			}
+			.h_search_input_box{
+				width: 100%;
+				height: 0.62rem;
+				background-color: #ffffff;
+				box-shadow: 0rem 0rem 0.35rem 0rem rgba(53, 58, 63, 0.16);
+				border-radius: 0.31rem;
+				position: relative;
+				overflow: hidden;
+				border: #ddd solid 1px;
+				.s_input_search{
+					position: absolute;
+					left: 0.15rem;
+					top: 0.06rem;
+					color:#878e95;
+				}
+				.s_input_close{
+					position: absolute;
+					right: 0.15rem;
+					top: 0.13rem;
+					display: block;
+					width: 0.32rem;
+					height: 0.32rem;
+					box-sizing: border-box;
+					padding: 0.02rem 0 0 0.02rem;
+					line-height: 0.32rem;
+					text-align: center;
+					background-color: #dde0e0;
+					color: #fff;
+					border-radius: 50%;
+					font-size: 0.2rem;
+				}
+				input{
+					width: 100%;
+					height: 100%;
+					border: none;
+					padding-left: 0.6rem;
+					color: #353a3f;
+				}
+				input::-webkit-input-placeholder { color: #dde0e0; }
+			}
+		}
+		.h_search_content{
+			overflow-y: auto;
+			height: calc(100vh - 1.08rem);
+			padding-bottom: 0.8rem;
+			dl{
+				overflow: hidden;
+				dt{
+					height: 0.74rem;
+					line-height: 0.74rem;
+					font-weight: bold;
+					text-transform: uppercase;
+					padding: 0 0.3rem;
+					background-color: #f5f7f7;
+					position: relative;
+					z-index: 2;
+				}
+				dd{
+					margin: -1px 0.3rem 0;
+					border-top: #ebebeb solid 1px;
+					height: 0.92rem;
+					line-height: 0.94rem;
+					overflow: hidden; text-overflow:ellipsis; white-space:nowrap;
+					color: #353a3f;
+					a{
+						font-size: 0.26rem;
+						display: block;
+						i{
+							float: left;
+							display: inline-block;
+							margin-right: 0.16rem;
+							color: #1bbc9d;
+							
+						}
+					}
+					
+				}
+			}
+		}
+	}
+	.h_search_show{
+		opacity: 1;
+		z-index: 100;
+		-webkit-transform: scale(1);
+		visibility: inherit;
 	}
 	
 	.nav_bg{
@@ -254,6 +548,17 @@
 					vertical-align: top;
 					margin-right: 0.1rem;
 				}
+			}
+		}
+	}
+}
+.header_hyaline{
+	.header_box{
+		background: transparent!important;
+		border: none!important;
+		.header_btn{
+			span{
+				background: #fff!important;
 			}
 		}
 	}
