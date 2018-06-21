@@ -434,7 +434,7 @@
 
 				<!-- products -->
 				<dd>
-					<span class="filter_type_btn" :class="{active:showProducts}" @click="productsFn"><i class="iconfont">&#xe679;</i>Destination</span>
+					<span class="filter_type_btn" :class="{active:showProducts}" @click="productsFn"><i class="iconfont">&#xe679;</i>Products</span>
 					<div class="filter_products" @click="hideFilter" :class="{show_products:showProducts}">
 						<checkbox-group v-model="filterCheck.category">
 							<ul class="products_list city_list">
@@ -1026,6 +1026,7 @@
 					case 'TOUR_TYPE': typeStr = 'Themes'; break;
 					case 'ATTRACTION': typeStr = 'Points of Interest'; break;
 					case 'CATEGORY': typeStr = 'Products'; break;
+					case 'CITY': typeStr = 'DESTINATIONS'; break;
 				};
 				return typeStr ? typeStr : type;
 			},
