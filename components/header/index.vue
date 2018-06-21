@@ -12,7 +12,7 @@
 			</div>
 
 			<!-- 搜索 -->
-			<div class="header_search_icon iconfont" @click="showSearch=true">&#xe67a;</div>
+			<div class="header_search_icon iconfont" @click="showSearchDialog=true">&#xe67a;</div>
 			<!-- logo -->
 			<div class="logo" v-if="isExpats">
 				<svg aria-hidden="true" @click="goHome">
@@ -53,12 +53,12 @@
 		</div>
 
 		<!-- 搜索 -->
-		<div class="h_search_all" :class="{h_search_show:showSearch}">
+		<div class="h_search_all" :class="{h_search_show:showSearchDialog}">
 			<div class="h_search_top">
-				<i class="iconfont h_search_back" @click="showSearch=false">&#xe615;</i>
+				<i class="iconfont h_search_back" @click="showSearchDialog=false">&#xe615;</i>
 				<span class="btn" @click="searchFn">Search</span>
 				<div class="h_search_input_box">
-					<input type="text" id="h_search_input" @focus="autoComplate" @keyup="autoComplate" v-model="searchValue" placeholder="Attration, Activity, Destination">
+					<input type="text" id="h_search_input" @keyup="autoComplate" v-model="searchValue" placeholder="Attration, Activity, Destination">
 					<i class="iconfont s_input_search">&#xe67a;</i>
 					<i class="iconfont s_input_close" v-show="searchValue" @click="searchValue=''">&#xe629;</i>
 				</div>
@@ -77,63 +77,12 @@
 				<div class="h_search_hot" v-show="!searchValue">
 					<dl>
 						<dt>Destination</dt>
-						<dd>
-							<a href="#">
-								<i class="iconfont">&#xe610;</i>Shanghai
-							</a>
-						</dd>
-						<dd>
-							<a href="#">
-								<i class="iconfont">&#xe610;</i>Shanghai
-							</a>
-						</dd>
-						<dd>
-							<a href="#">
-								<i class="iconfont">&#xe610;</i>Shanghai
-							</a>
-						</dd>
-						<dd>
-							<a href="#">
-								<i class="iconfont">&#xe610;</i>Shanghai
-							</a>
-						</dd>
+						<dd v-for="(item,index) in recommend.destination" :key="index"><a :href="getUrl(item)"><i class="iconfont">&#xe610;</i>{{item}}</a></dd>
 					</dl>
 
 					<dl>
 						<dt>poplar choices</dt>
-						<dd>
-							<a href="#">Shanghai</a>
-						</dd>
-						<dd>
-							<a href="#">Shanghai</a>
-						</dd>
-						<dd>
-							<a href="#">Shanghai</a>
-						</dd>
-						<dd>
-							<a href="#">Shanghai</a>
-						</dd>
-						<dd>
-							<a href="#">Shanghai</a>
-						</dd>
-					</dl>
-					<dl>
-						<dt>poplar choices</dt>
-						<dd>
-							<a href="#">Shanghai</a>
-						</dd>
-						<dd>
-							<a href="#">Shanghai</a>
-						</dd>
-						<dd>
-							<a href="#">Shanghai</a>
-						</dd>
-						<dd>
-							<a href="#">Shanghai</a>
-						</dd>
-						<dd>
-							<a href="#">Shanghai</a>
-						</dd>
+						<dd v-for="(item,index) in recommend.hot" :key="index"><a :href="getUrl(item)">{{item}}</a></dd>
 					</dl>
 
 				</div>
@@ -151,7 +100,7 @@
 	import FBLogin from "~/plugins/panda/FBLogin/";
 
 	export default {
-		props:["searchDialog","isExpats"],
+		props:["showSearch","isExpats"],
 		name:'M-head',
 		data(){
 			var query = this.$route.query;
@@ -160,11 +109,17 @@
 				showWinBg: false,
 				showLogin: false,
 				islogIn: false,
-				showSearch: false,
+				showSearchDialog: false,
 				searchData:[],
 				searchValue: query.keyword?query.keyword:'',
 				query: query,
-				path: this.$route.path
+				path: this.$route.path,
+
+				//搜索默认推荐
+				recommend:{
+					destination:["Shanghai","Beijing","Xi'an","Guilin","Chendu"],
+					hot:["Panda","Watertown","Great Wall","Terra-Cotta Warriors","Forbidden City","Li River","Layover Tour","Day trips","Local Food","Dumplings","Landmarks","Short Excursions","Family Friendly"]
+				}
 			}
 		},
 		components: {
@@ -218,10 +173,22 @@
 			autoComplate(e){
 				var self = this,
 					keyword = e.target.value;
+
+
+				if(e.keyCode == "13"){
+					this.searchFn();
+					return;
+				}
+
 				if(!keyword){
 					self.searchData = [];
 					return;
 				}
+
+				
+
+
+
 				var postData = {
 					keyword: keyword,
 					size: 10
@@ -245,7 +212,7 @@
 				query.keyword = value;
 				var queryStr = '';
 				for(var key in query){
-					queryStr += '&' + key + '=' + query[key];
+					queryStr += '&' + key + '=' + encodeURIComponent(query[key]);
 				};
 				return this.path + (queryStr ? '?' : '') + queryStr.substring(1);
 			},
@@ -255,6 +222,14 @@
 					return;
 				}
 				location.href = this.getUrl(this.searchValue);
+			},
+
+			searchFocus(){
+				setTimeout(function(){
+					var thisInput = document.getElementById('h_search_input');
+					thisInput.focus();
+					thisInput.setSelectionRange(100,100);
+				},200);
 			}
 		},
 		computed:{
@@ -264,31 +239,26 @@
 			showWinBg:function(val){
 				this.setBodyHidden(val);
 			},
-			showSearch:function(val){
+			showSearchDialog:function(val){
 				this.setBodyHidden(val);
 				if(val==false){
-					this.$emit('hideSearchDialog',false)
+					this.$emit('closeSearch',false)
 				}else{
-					setTimeout(function(){
-					var thisInput = document.getElementById('h_search_input');
-						thisInput.focus();
-						thisInput.setSelectionRange(100,100);
-					},300);
+					this.searchFocus();
 				}
 				
 			},
-			searchDialog:function(val){
+			showSearch:function(val){
 				this.setBodyHidden(val);
-				this.showSearch = val;
-				
-				setTimeout(function(){
-					var thisInput = document.getElementById('h_search_input');
-					thisInput.focus();
-					thisInput.setSelectionRange(100,100);
-				},300);
+				this.showSearchDialog = val;
+				this.searchFocus();
+			},
+			searchValue:function(val){
+				this.$emit('searchChange',val);
 			}
 		},
 		mounted: function() {
+			this.showSearchDialog = this.showSearch;
 			
 			var logstate = localStorage.getItem("logstate");
 			this.islogIn = logstate?true:false;
@@ -357,7 +327,7 @@
 		top: 0;
 		z-index: -1;
 		opacity: 0;
-		-webkit-transform: scale(0.5);
+		-webkit-transform: translateY(1rem);
 		-webkit-transition:all 0.2s ease-out 0s; 
   	transition:all 0.2s ease-out 0s; 
 		width: 100%;
@@ -391,7 +361,6 @@
 				border-radius: 0.31rem;
 				position: relative;
 				overflow: hidden;
-				border: #ddd solid 1px;
 				.s_input_search{
 					position: absolute;
 					left: 0.15rem;
@@ -466,7 +435,7 @@
 	.h_search_show{
 		opacity: 1;
 		z-index: 100;
-		-webkit-transform: scale(1);
+		-webkit-transform: translateY(0);
 		visibility: inherit;
 	}
 	

@@ -370,12 +370,12 @@ import photo from '~/components/activity/details/photo'
 			},
 			//内链
 			returnUrl(val){
-				val=val.replace(/&/g, 'And')
+				
 				let options={
 					tourtype:[val]
 				}
 				
-				let url="/activity/list/"+this.destination+"?options="+JSON.stringify(options)
+				let url="/activity/list/"+this.destination+"?options="+encodeURIComponent(JSON.stringify(options))
 				return url
 			},
 			showTable() {
