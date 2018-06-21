@@ -502,7 +502,7 @@
 			var listdata = {};
 			//默认请求接口post的数据
 			var postData = {
-				keyword:loc=='Xian'?"Xi'an":loc,
+				location:loc=='Xian'?"Xi'an":loc,
 				pageNum:1,
 				pageSize:10,
 				sort:{"type":"SCORE"}
