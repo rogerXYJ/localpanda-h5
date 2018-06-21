@@ -502,7 +502,7 @@
 			var listdata = {};
 			//默认请求接口post的数据
 			var postData = {
-				location:loc=='Xian'?"Xi'an":loc,
+				keyword:loc=='Xian'?"Xi'an":loc,
 				pageNum:1,
 				pageSize:10,
 				sort:{"type":"SCORE"}
@@ -716,6 +716,7 @@
 							filterLen++;
 						};
 					}
+					console.log(nowCheck)
 					if(filterLen){
 						that.showClear = true;
 					}else{
