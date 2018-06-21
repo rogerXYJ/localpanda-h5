@@ -422,7 +422,7 @@
 		<div class="h_search_top">
 			<span class="btn" @click="listSearch">Search</span>
 			<div class="h_search_input_box" @click="showHeaderSearch=true">
-				<input type="text" id="h_search_input" v-model="keyword" placeholder="Attration, Activity, Destination">
+				<input type="text" id="h_search_input" v-model="keyword" placeholder="Attraction, Activity, Destination">
 				<i class="iconfont s_input_search">&#xe67a;</i>
 				<p></p>
 			</div>
@@ -724,6 +724,7 @@
 				showProducts:false, 
 
 				filterCheck:filterCheck,
+				filterCheckDefault: filterCheck,
 				filter: filterAll,
 				showFilter: false,
 
@@ -834,6 +835,9 @@
 				this.showFilter = false;
 				//GA统计
 				this.ga('click','filter_close');
+
+				//恢复check状态
+				this.filterCheck = JSON.parse(JSON.stringify(this.filterCheckDefault));
 			},
 			//确定选择
 			filterConfirm(){
@@ -1084,6 +1088,8 @@
 					this.hideBodyScroll();
 				}else{
 					this.showBodyScroll();
+					//恢复check状态
+					this.filterCheck = JSON.parse(JSON.stringify(this.filterCheckDefault));
 				}
 			},
 			showFilter:function(value){

@@ -58,7 +58,7 @@
 				<i class="iconfont h_search_back" @click="showSearchDialog=false">&#xe615;</i>
 				<span class="btn" @click="searchFn">Search</span>
 				<div class="h_search_input_box">
-					<input type="text" id="h_search_input" @keyup="autoComplate" v-model="searchValue" placeholder="Attration, Activity, Destination">
+					<input type="text" id="h_search_input" @focus="autoComplate" @keyup="autoComplate" v-model="searchValue" placeholder="Attraction, Activity, Destination">
 					<i class="iconfont s_input_search">&#xe67a;</i>
 					<i class="iconfont s_input_close" v-show="searchValue" @click="searchValue=''">&#xe629;</i>
 				</div>
@@ -77,11 +77,12 @@
 				<div class="h_search_hot" v-show="!searchValue">
 					<dl>
 						<dt>Destination</dt>
-						<dd v-for="(item,index) in recommend.destination" :key="index"><a :href="getUrl(item)"><i class="iconfont">&#xe610;</i>{{item}}</a></dd>
+						<!-- <i class="iconfont">&#xe610;</i> -->
+						<dd v-for="(item,index) in recommend.destination" :key="index"><a :href="getUrl(item)">{{item}}</a></dd>
 					</dl>
 
 					<dl>
-						<dt>poplar choices</dt>
+						<dt>popular choices</dt>
 						<dd v-for="(item,index) in recommend.hot" :key="index"><a :href="getUrl(item)">{{item}}</a></dd>
 					</dl>
 
@@ -115,9 +116,10 @@
 				query: query,
 				path: this.$route.path,
 
+				inputTimer: null,
 				//搜索默认推荐
 				recommend:{
-					destination:["Shanghai","Beijing","Xi'an","Guilin","Chendu"],
+					destination:["Shanghai","Beijing","Xi'an","Guilin","Chengdu"],
 					hot:["Panda","Watertown","Great Wall","Terra-Cotta Warriors","Forbidden City","Li River","Layover Tour","Day trips","Local Food","Dumplings","Landmarks","Short Excursions","Family Friendly"]
 				}
 			}
@@ -174,7 +176,6 @@
 				var self = this,
 					keyword = e.target.value;
 
-
 				if(e.keyCode == "13"){
 					this.searchFn();
 					return;
@@ -185,36 +186,52 @@
 					return;
 				}
 
-				
-
-
+				if(this.inputting){
+					return;
+				}
 
 				var postData = {
 					keyword: keyword,
 					size: 10
+				};
+
+				var setTimes = 300;
+				if(e.type=='focus'){
+					setTimes = 0;
 				}
-				//请求数据
-				this.axios.post("https://api.localpanda.com/api/suggest", JSON.stringify(postData), {
-					headers: {
-						'Content-Type': 'application/json'
-					}
-				}).then(function(response) {
-					if(response.status == 200 || response.status == 304){
-						self.searchData = response.data;
-					}
-				}, function(response) {
+
+				clearTimeout(this.inputTimer);
+				this.inputTimer = setTimeout(function(){
 					
-				})
+					//请求数据
+					self.axios.post("https://api.localpanda.com/api/suggest", JSON.stringify(postData), {
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					}).then(function(response) {
+						if(response.status == 200 || response.status == 304){
+							self.searchData = response.data;
+						}
+					}, function(response) {
+						
+					})
+
+				},setTimes);
+
+
+
+				
 
 			},
 			getUrl(value){
-				var query = JSON.parse(JSON.stringify(this.query));
-				query.keyword = value;
-				var queryStr = '';
-				for(var key in query){
-					queryStr += '&' + key + '=' + encodeURIComponent(query[key]);
-				};
-				return this.path + (queryStr ? '?' : '') + queryStr.substring(1);
+				// var query = JSON.parse(JSON.stringify(this.query));
+				// query.keyword = value;
+				// var queryStr = '';
+				// for(var key in query){
+				// 	queryStr += '&' + key + '=' + encodeURIComponent(query[key]);
+				// };
+				// return '/activity/list/China' + (queryStr ? '?' : '') + queryStr.substring(1);
+				return '/activity/list/China?keyword=' + value;
 			},
 			searchFn(){
 				if(!this.searchValue){
@@ -428,6 +445,24 @@
 						}
 					}
 					
+				}
+			}
+			.h_search_hot{
+				dl{
+					padding-bottom: 0.3rem;
+					dt{
+						margin-bottom: 0.1rem;
+					}
+					dd{
+						float: left;
+						border: none;
+						background-color: #eef2f6;
+						line-height: 0.64rem;
+						height: 0.64rem;
+						padding: 0 0.3rem;
+						border-radius: 0.1rem;
+						margin:0.2rem 0 0 0.3rem;
+					}
 				}
 			}
 		}
