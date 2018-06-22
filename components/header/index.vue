@@ -480,9 +480,7 @@
 					
 				}
 			}
-			.h_search_hot dl{
-				
-			}
+			
 			.h_search_hot{
 				position: relative;
 				z-index: 2;
@@ -490,7 +488,7 @@
 				background-color: #fff;
 				dl{
 					padding-bottom: 0.3rem;
-					min-height: auto;
+					min-height: 0!important;
 					dt{
 						margin-bottom: 0.1rem;
 					}
