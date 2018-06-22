@@ -67,7 +67,7 @@
 				<div class="h_search_content_bg" @click="showSearchDialog=false"></div>
 				<dl class="h_search_complate" v-show="searchValue">
 					<dd :key="index" v-for="(item,index) in searchData">
-						<a :href="getUrl(item.value)">
+						<a :href="getUrl(item.value)" @click="ga('search','suggestion')">
 							<i class="iconfont" v-if="item.type=='DESTINATION'">&#xe610;</i>
 							<i class="iconfont" v-else>&#xe609;</i>
 							{{item.value}}
@@ -79,12 +79,12 @@
 					<dl>
 						<dt>Destination</dt>
 						<!-- <i class="iconfont">&#xe610;</i> -->
-						<dd v-for="(item,index) in recommend.destination" :key="index"><a :href="getUrl(item)">{{item}}</a></dd>
+						<dd v-for="(item,index) in recommend.destination" :key="index"><a :href="getUrl(item)" @click="ga('search','recommendation')">{{item}}</a></dd>
 					</dl>
 
 					<dl>
 						<dt>popular choices</dt>
-						<dd v-for="(item,index) in recommend.hot" :key="index"><a :href="getUrl(item)">{{item}}</a></dd>
+						<dd v-for="(item,index) in recommend.hot" :key="index"><a :href="getUrl(item)" @click="ga('search','recommendation')">{{item}}</a></dd>
 					</dl>
 
 				</div>
@@ -224,7 +224,7 @@
 				
 
 			},
-			getUrl(value){
+			getUrl(value,type){
 				// var query = JSON.parse(JSON.stringify(this.query));
 				// query.keyword = value;
 				// var queryStr = '';
@@ -232,6 +232,7 @@
 				// 	queryStr += '&' + key + '=' + encodeURIComponent(query[key]);
 				// };
 				// return '/activity/list/China' + (queryStr ? '?' : '') + queryStr.substring(1);
+
 				return '/activity/list/China?keyword=' + value;
 			},
 			searchFn(){
@@ -239,6 +240,10 @@
 					document.getElementById('h_search_input').focus();
 					return;
 				}
+				
+				//调用ga
+				this.ga('search','search');
+				
 				location.href = this.getUrl(this.searchValue);
 			},
 
@@ -248,6 +253,16 @@
 					thisInput.focus();
 					thisInput.setSelectionRange(100,100);
 				},200);
+			},
+
+			//ga公用方法
+			ga(action,label){
+				ga('gtag_UA_107010673_2.send', {
+					hitType: 'event',
+					eventCategory: this.$route.path.substring(1).split('/').join('_'),
+					eventAction: action,
+					eventLabel: label
+				});
 			}
 		},
 		computed:{
@@ -385,7 +400,8 @@
 				.s_input_search{
 					position: absolute;
 					left: 0.15rem;
-					top: 0.06rem;
+					top: 50%;
+					-webkit-transform: translateY(-50%);
 					color:#878e95;
 				}
 				.s_input_close{
