@@ -67,6 +67,9 @@
 								&:nth-last-child(1){
 									border:none;
 								}
+								.checkbox_label{
+									padding-left: 0.34rem;
+								}
 							}
 						}
 						.products_footer{
@@ -191,16 +194,18 @@
 								font-size: 0.22rem;
 								color: #1bbc9d;
 								margin-top: 0.1rem;
-								line-height: 0.28rem;
-								max-height: 0.56rem;
+								line-height: 0.29rem;
+								max-height: 0.58rem;
 								overflow:hidden;
 								-webkit-line-clamp: 2;
 								-webkit-box-orient: vertical;
 								display: -webkit-box;
 								text-overflow: ellipsis;
+								word-wrap:break-word;
 								width: 100%;
 								span{
 									margin-right: 0.14rem;
+									display: inline-block;
 								}
 							}
 							.duration{
@@ -260,8 +265,9 @@
 			z-index: -1;
 			opacity: 0;
 			-webkit-transition:all 0.2s ease-out 0s;
-			-webkit-transform: scale(0.5);
+			-webkit-transform: scale(0.3);
 			background-color: #fff;
+			visibility: hidden;
 			.head_back{
 				border-bottom: #f3f3f3 solid 1px;
 				.filter_clear{
@@ -324,6 +330,62 @@
 			opacity: 1;
 			-webkit-transform: scale(1);
 			z-index: 101;
+			visibility: inherit;
+		}
+
+
+		.h_search_top{
+			height: 1.08rem;
+			padding: 0.22rem 1.8rem 0 0.2rem;
+			background-color: #fff;
+			border-bottom: #dde0e0 solid 1px;
+			.h_search_back{
+				position: absolute;
+				left: 0;
+				top: 0.24rem;
+				line-height: 0.62rem;
+				padding: 0 0.2rem;
+			}
+			.btn{
+				float: right;
+				margin-right: -1.56rem;
+				width: 1.36rem;
+				height: 0.62rem;
+				line-height: 0.62rem;
+				font-size: 0.24rem;
+				box-shadow: 0rem 0.11rem 0.35rem 0rem	rgba(27, 188, 157, 0.3);
+			}
+			.h_search_input_box{
+				width: 100%;
+				height: 0.62rem;
+				background-color: #ffffff;
+				box-shadow: 0rem 0rem 0.35rem 0rem rgba(53, 58, 63, 0.16);
+				border-radius: 0.31rem;
+				position: relative;
+				overflow: hidden;
+				.s_input_search{
+					position: absolute;
+					left: 0.15rem;
+					top: 0.06rem;
+					color:#878e95;
+				}
+				input{
+					width: 100%;
+					height: 100%;
+					border: none;
+					padding-left: 0.6rem;
+					color: #353a3f;
+				}
+				input::-webkit-input-placeholder { color: #dde0e0; }
+				p{
+					position: absolute;
+					left: 0;
+					top: 0;
+					width: 100%;
+					height: 100%;
+					z-index: 1;
+				}
+			}
 		}
 
 	}
@@ -345,13 +407,26 @@
 			font-size:0.26rem;
 		}
 	}
+	.header_search_icon{
+		display: none;
+	}
 	
 </style>
 
 
 <template>
 	<div class="activity_list">
-		<Head></Head>
+		<Head :showSearch="showHeaderSearch" @searchChange="searchChange" @closeSearch="showHeaderSearch=false"></Head>
+
+		<!-- 搜索 -->
+		<div class="h_search_top">
+			<span class="btn" @click="listSearch">Search</span>
+			<div class="h_search_input_box" @click="showHeaderSearch=true">
+				<input type="text" id="h_search_input" v-model="keyword" placeholder="Attraction, Activity, Destination">
+				<i class="iconfont s_input_search">&#xe67a;</i>
+				<p></p>
+			</div>
+		</div>
 
 		<!-- 筛选 -->
 		<div class="filter_box" id="filter_box">
@@ -359,19 +434,19 @@
 
 				<!-- products -->
 				<dd>
-					<span class="filter_type_btn" :class="{active:showProducts}" @click="productsFn"><i class="iconfont">&#xe679;</i>Destination</span>
+					<span class="filter_type_btn" :class="{active:showProducts}" @click="productsFn"><i class="iconfont">&#xe679;</i>Products</span>
 					<div class="filter_products" @click="hideFilter" :class="{show_products:showProducts}">
-						<radio-group v-model="cityCheck">
+						<checkbox-group v-model="filterCheck.category">
 							<ul class="products_list city_list">
-								<li :key="index" v-for="(item,index) in city">
-									<radio :label="item" :change="cityChange">{{item=='Xian'?"Xi'an":item}}</radio>
+								<li :key="index" v-for="(item,index) in filter.category">
+									<checkbox :label="item">{{item}}</checkbox>
 								</li>
 							</ul>
-						</radio-group>
-						<!-- <div class="products_footer">
+						</checkbox-group>
+						<div class="products_footer">
 							<span class="btn btn_plain" @click="productsClear">Clear</span>
 							<span class="btn" @click="productsConfirm">See experiences</span>
-						</div> -->
+						</div>
 					</div>
 				</dd>
 
@@ -397,7 +472,7 @@
 		<!-- <div class="requirement_result">
 			<span :key="index" v-for="(item,index) in filterTag">{{item}}</span>
 		</div> -->
-		<div class="destination_result" v-show="activityList.length"><b>{{cityCheck}}</b>( {{listdata.records}} {{listdata.records>1?'activities':'activity'}} found )</div>
+		<div class="destination_result" v-show="activityList.length">{{listdata.records}} {{listdata.records>1?'activities':'activity'}} found</div>
 
 		<!-- 产品列表 -->
 		<div class="list_box">
@@ -413,8 +488,8 @@
 						</div>
 						<div class="list_content">
 							<h4>{{item.title}}</h4>
-							<div class="list_tag">
-								<span :key="index" v-for="(item,index) in item.tourTypes">"{{item}}"</span>
+							<div class="list_tag" v-html="tourTypesStr(item.tourTypes)">
+								<!-- <span :key="index" v-for="(item,index) in item.tourTypes">"{{item}}"</span> -->
 							</div>
 							<p class="duration"><b>Duration:</b>{{item.duration}} {{toLower(item.durationUnit)}}</p>
 							<div class="price_box clearfix">
@@ -440,8 +515,8 @@
 				<span class="filter_clear" @click="filterClear" v-show="showClear">Clear</span>
 			</Back>
 			<div class="filter_content">
-				<dl :key="index" v-for="(item,index) in listdata.aggregations" v-show="item.items">
-					<dt>{{item.name}}</dt>
+				<dl :key="index" v-for="(item,index) in aggregations" v-show="item.items && item.type !='CATEGORY'">
+					<dt>{{getFilterType(item.type)}}</dt>
 					<dd v-if="item.type=='DURATION'">
 						<checkbox-group v-model="filterCheck.duration">
 							<checkbox :change="filterChange" :key="index2" v-for="(itemType,key,index2) in item.items" :label="key">{{getDayStr(key)}} ( {{itemType}} )</checkbox>
@@ -493,25 +568,40 @@
 		},
 		async asyncData({
 			route,
+			router,
 			apiBasePath
 		}) {
+
+			var params = route.params;
 			//当前城市
-			let loc = route.params.slug;
+			var thisSlug = params.slug ? params.slug : 'china';
+
+			//目的地
+			var city = ['Shanghai','Beijing','Chengdu','Xi\'an','Guilin'];
 			
 			//接口默认数据
 			var listdata = {};
-			//默认请求接口post的数据
-			var postData = {
-				location:loc=='Xian'?"Xi'an":loc,
-				pageNum:1,
-				pageSize:10,
-				sort:{"type":"SCORE"}
-			};
 
 			//获取url数据
 			var query = route.query;
 			var options = query.options ? JSON.parse(query.options) : '';
 			var sort = query.sort ? JSON.parse(query.sort) : '';
+			var keyword = query.keyword ? query.keyword : '';
+
+			//如果什么条件都没有则默认北京的数据
+			let loc = (thisSlug.toLowerCase() =='china' && !options && !keyword) ? 'Beijing' : thisSlug;
+
+			if(keyword){
+				loc = keyword;
+			}
+
+			//默认请求接口post的数据
+			var postData = {
+				keyword:loc=='Xian'?"Xi'an":loc,
+				pageNum:1,
+				pageSize:10,
+				sort:{"type":"SCORE"}
+			};
 
 
 			//兼容老的key，老key转为新key
@@ -558,10 +648,11 @@
 				postData.sort = sort;
 			}
 
+
 			try{
 				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(postData), {
 					headers: {
-						'Content-Type': 'application/json; charset=UTF-8'
+						'Content-Type': 'application/json'
 					}
 				})
 			}catch(err){};
@@ -581,6 +672,7 @@
 					//当前类型
 					var thisType = item.type.toLowerCase();
 					filterAll[thisType] = thisFilter;  ////添加filter每种类型数据
+					
 					//检测url是否有老的筛选类型
 					if(options[oldTypeKey(thisType)]){
 						filterCheck[thisType] = options[oldTypeKey(thisType)];
@@ -592,39 +684,61 @@
 
 			//默认排序数据
 			var rankCheck = 'Recommended';
-			if(sort && sort.type=='PRICE'){
-				if(sort.reverse == true){
+			if(sort){
+				if(sort.type=='PRICE' && sort.reverse == true){
 					rankCheck = 'Price :High to Low';
-				}else{
+				}else if(sort.type=='PRICE' && sort.reverse == false){
 					rankCheck = 'Price :Low to High';
+				}else if(sort.type=='SALES'){
+					rankCheck = 'Popularity';
 				}
 			}
+
+			
+			//检测是否有filter的check数据，除去Products（category）。用于默认是否显示clear
+			var hasFilterCheck = (function(){
+				var hasNum = 0;
+				for(var key in options){
+					if(key!='category'){
+						hasNum++;
+					}
+				}
+				return hasNum;
+			}());
+			
+
+			
 
 			return {
 				listdata: data,
 				activityList: data.entities?data.entities:[],
 				apiBasePath: apiBasePath,
 				postData: postData,
+				keyword: keyword,
+				defaultKeyword: keyword,
 
 				cityCheck:loc=='Xian'?'Xi\'an':loc,
-				city:['Shanghai','Beijing','Chengdu','Xi\'an','Guilin'],
+				city: city,
 				showCity:false,
 
 				productsCheck:[],   //打钩的值
 				products:[],
-				showProducts:false, //一期city暂时放在products
+				showProducts:false, 
 
 				filterCheck:filterCheck,
+				filterCheckDefault: filterCheck,
 				filter: filterAll,
 				showFilter: false,
 
 				rankCheck: rankCheck,
-				rank:['Recommended','Price :Low to High','Price :High to Low'],
+				rank:['Recommended','Price :Low to High','Price :High to Low','Popularity'],
 				showRank:false,
 
 				isFixed:false,
 				loadingStatus: false,
-				showClear: options?true:false
+				showClear: hasFilterCheck?true:false,
+
+				showHeaderSearch: false
 			}
 		},
 		computed:{
@@ -643,6 +757,33 @@
 					allTag = allTag.concat(thisArr);
 				}
 				return allTag;
+			},
+			//获取指定顺序的数据
+			aggregations:function(){
+				//获取默认数据
+				var aggregations = this.listdata.aggregations;
+
+				//设置自定义顺序
+				var sortDefault = {
+					'CATEGORY':1,
+					'GROUP_TYPE':2,
+					'ATTRACTION':3,
+					'DURATION':4,
+					'TOUR_TYPE':5
+				};
+
+				//给数据添加排序的序号
+				for(var i=0;i<aggregations.length;i++){
+					var thisNum = sortDefault[aggregations[i].type];
+					aggregations[i].number = thisNum ? thisNum : 10; //没有的字段默认设置顺序为10
+				};
+
+				//排序
+				aggregations = aggregations.sort(function(a,b){
+					return a.number > b.number;
+				});
+
+				return aggregations;
 			}
 		},
 		methods: {
@@ -662,11 +803,24 @@
 				this.showRank = false;
 			},
 			productsClear(){
-				//清空数据
-				this.productsCheck = [];
-				//跳转url
+				//GA统计
+				this.ga('click','products_clear');
 
+				//清空数据
+				this.filterCheck.category = [];
+				//跳转url
+				this.jumpUrl();
 			},
+			//products确定选择
+			productsConfirm(){
+				//GA统计
+				this.ga('click','products_apply');
+				//记录加载页面后是否需要Ga统计
+				localStorage.setItem('listGa','true');
+				
+				this.jumpUrl();
+			},
+
 
 			//filter相关
 			filterFn(){
@@ -683,6 +837,9 @@
 				this.showFilter = false;
 				//GA统计
 				this.ga('click','filter_close');
+
+				//恢复check状态
+				this.filterCheck = JSON.parse(JSON.stringify(this.filterCheckDefault));
 			},
 			//确定选择
 			filterConfirm(){
@@ -699,30 +856,40 @@
 				this.ga('click','filter_clear');
 				//清空数据
 				for(var key in this.filterCheck){
-					this.filterCheck[key] = [];
+					//只清Products地以外的数据
+					if(key!='category'){
+						this.filterCheck[key] = [];
+					}
+					
 				}
 				//跳转url
 				this.jumpUrl();
 				this.loadingStatus = true;
 			},
+
+			//筛选的时候触发函数
 			filterChange(e){
 				var that = this;
-				//检测是否显示clear
+
+				//检测是否显示filter里的clear，由于选中时组件通信有延迟，所以在定时器里执行。
 				setTimeout(function(){
 					var filterLen = 0;
 					var nowCheck = that.filterCheck;
+
+					//判断当前的check数据，并且除去Products的数据，Products数据是单独的clear
 					for(var key in nowCheck){
-						if(nowCheck[key].length){
+						if(nowCheck[key].length && key!='category'){
 							filterLen++;
 						};
 					}
-					console.log(nowCheck)
+
+					//除了Products（category）的数据，还有数据则显示clear
 					if(filterLen){
 						that.showClear = true;
 					}else{
 						that.showClear = false;
 					}
-				},100);
+				},200);
 				
 			},
 
@@ -742,6 +909,8 @@
 					gaLabel = 'price_up';
 				}else if(thisValue=='Price :High to Low'){
 					gaLabel = 'price_down';
+				}else if(thisValue=='Popularity'){
+					gaLabel = 'popularity';
 				};
 				this.ga('sort',gaLabel);
 				/* GA 排序统计  end */
@@ -759,10 +928,7 @@
 			},
 			
 
-			//products确定选择
-			// productsConfirm(){
-			// 	this.jumpUrl();
-			// },
+			
 			
 
 			//跳转刷新
@@ -774,13 +940,24 @@
 				var filterCheck = this.filterCheck;
 				//获取rank对象
 				var rankCheck = this.rankCheck;
-				var sort = '';
-
-				if(rankCheck=='Price :Low to High'){
-					sort = {"type":"PRICE","reverse":false}
-				}else if(rankCheck=='Price :High to Low'){
-					sort = {"type":"PRICE","reverse":true}
+				
+				//默认跳转数据
+				var jumpData = {
+					options:{},
+					sort:{},
+					keyword:this.keyword
 				}
+
+				//设置当前排序数据
+				if(rankCheck=='Price :Low to High'){
+					jumpData.sort = JSON.stringify({"type":"PRICE","reverse":false})
+				}else if(rankCheck=='Price :High to Low'){
+					jumpData.sort = JSON.stringify({"type":"PRICE","reverse":true})
+				}else if(rankCheck=='Popularity'){
+					jumpData.sort = JSON.stringify({"type": "SALES"})
+				}
+
+				
 
 				//去掉空数据,并对跳转的数据排序，把需要的数据放在新的options里
 				var options = {};
@@ -789,11 +966,24 @@
 						options[key] = filterCheck[key].sort();
 					}
 				}
-				//跳转并对对象转码
-				var optionsEncode = encodeURIComponent(JSON.stringify(options));
-				//检测是否有筛选项
-				var hasOptions = JSON.stringify(options)!='{}';
-				location.href = path + (hasOptions?'?options=' + optionsEncode:'') + (sort?(hasOptions?'&':'?')+'sort='+JSON.stringify(sort):'');
+				//设置当前筛选数据，并对数据做转码操作
+				jumpData.options = encodeURIComponent(JSON.stringify(options));
+
+				//检测是否有某个筛选项，并对有效的筛选项做url连接
+				var urlQuery = '';
+				for(var key in jumpData){
+					//检测有效数据
+					if(JSON.stringify(jumpData[key]) != '{}' && jumpData[key] != '%7B%7D' && jumpData[key] != ''){
+						urlQuery += '&' + key + '=' + jumpData[key];
+					}
+				};
+				urlQuery = urlQuery.substring(1); //去掉第一个&
+				
+				//有数据则跳转
+				location.href = '/activity/list/China' + (urlQuery ? ('?' + urlQuery) : '');
+
+				//var hasOptions = JSON.stringify(options)!='{}';
+				//location.href = path + (hasOptions?'?options=' + optionsEncode:'') + (sort?(hasOptions?'&':'?')+'sort='+JSON.stringify(sort):'');
 
 			},
 			hideBodyScroll(){
@@ -838,6 +1028,28 @@
 				}
 				return thisObjLength;
 			},
+			getFilterType(type){
+				var typeStr = '';
+				switch(type){
+					case 'DURATION': typeStr = 'Duration'; break;
+					case 'GROUP_TYPE': typeStr = 'Service Type'; break;
+					case 'TOUR_TYPE': typeStr = 'Themes'; break;
+					case 'ATTRACTION': typeStr = 'Points of Interest'; break;
+					case 'CATEGORY': typeStr = 'Products'; break;
+					case 'CITY': typeStr = 'DESTINATIONS'; break;
+				};
+				return typeStr ? typeStr : type;
+			},
+			tourTypesStr(arr){
+				var str = '';
+				if(!arr){
+					return str;
+				}
+				for(var i=0;i<arr.length;i++){
+					str += '"'+arr[i]+'"　';
+				}
+				return　str;
+			},
 			infiniteHandler($state){
 				var that = this;
 				
@@ -866,6 +1078,14 @@
 					eventAction: action,
 					eventLabel: label
 				});
+			},
+
+			//头部搜索change回调
+			searchChange(value){
+				this.keyword = value;
+			},
+			listSearch(){
+				this.jumpUrl();
 			}
 		},
 		watch: {
@@ -874,6 +1094,8 @@
 					this.hideBodyScroll();
 				}else{
 					this.showBodyScroll();
+					//恢复check状态
+					this.filterCheck = JSON.parse(JSON.stringify(this.filterCheckDefault));
 				}
 			},
 			showFilter:function(value){
@@ -924,28 +1146,47 @@
 			
 		},
 		head() {
-			let location = this.cityCheck;
-			let title = "The Top " + location + " Tours | " + location + " Local Activities and Experiences";
-			let keywords = "Best Things to do in " + location + ", " + location + " tours, " + location + " trip, " + location + " travel, " + location + " tour packages, " + location + " guide, china tours"
+			let keyword = this.defaultKeyword ? this.defaultKeyword : 'China';
 
-			let description = {
-				Beijing: "See top things to do in Beijing, including Beijing city tours, Beijing walking tours, Beijing history & culture tours, and Beijing food tours. Visit the Forbidden City, Temple of Heaven, Great Wall, Tiananmen Square, and Beijing Summer Palace with our local China tour guides.",
-				Shanghai: "See top things to do in Shanghai, including Shanghai city tours, Shanghai walking tours, Shanghai history & culture tours, and Shanghai food tours. Visit the bund shanghai, the Shanghai Tower, the French concession, yu garden, zhujiajiao and Suzhou with our local China tour guides.",
-				Chengdu: "See top things to do in Chengdu, including Chengdu city tours, Chengdu walking tours, Chengdu history & culture tours, and Chengdu food tours. Visit the Giant Panda Breeding Research Base, Mount Qingcheng, Wenshu Yuan Monestary, Jinli Street, and Dujiangyan with our local China tour guides.",
-				Xian:"See top things to do in Xi'an, including Xi'an city tours, Xi'an walking tours, Xi'an history & culture tours, and Xi'an food tours. Visit the Terra-cotta Warriors, Xi'an City Wall, Muslim Quarter, Shaanxi History Museum, and Xi'an markets with our local China tour guides.",
-				Guilin: "See top things to do in Guilin, including Guilin scenic tours, Guilin walking tours, Guilin history & culture tours, Guilin food tours, and Guilin Biking tours. See the best scenery in Guilin including Elephant Trunk Hill, Guilin Forest, Li River, Sun & Moon Pagodas, and Yaoshan Mountain."
+			let pageTdk = {
+				title: 'All China {{keyword}} Trips | {{keyword}} Activities and Experiences | {{keyword}} Tours',
+				description: 'Browse top {{keyword}} experiences, {{keyword}} tours, {{keyword}} trips, {{keyword}} travel, {{keyword}} guides, and other China trips, led by local experts.',
+				keywords: 'China {{keyword}}, {{keyword}} trips, {{keyword}} tours, {{keyword}} day tours, {{keyword}} day trips, {{keyword}} city tours, {{keyword}} walking tours, {{keyword}} landmarks, {{keyword}} attractions, {{keyword}} highlights.'
 			};
+
+			
+			var isDestination = function(str){
+				//视为目的地的关键词
+				var destination = ['shanghai','beijing','chengdu','xi\'an','guilin','china'];
+				for(var i=0;i<destination.length;i++){
+					if(destination[i]==str.toLowerCase()){
+						return true;
+					}
+				}
+				return false;
+			};
+
+			//检测是否目的地
+			if(isDestination(keyword)){
+				pageTdk = {
+					title: 'The Top {{keyword}} Trips | {{keyword}} Local Activities and Experiences | {{keyword}} Tours',
+					description: 'Best Things to do in {{keyword}}, {{keyword}} tours, {{keyword}} trip, {{keyword}} travel, {{keyword}} tour packages, {{keyword}} guide, China tours',
+					keywords: 'See top things to do in {{keyword}}, including {{keyword}} city tours, {{keyword}} walking tours, {{keyword}}history & culture tours, and {{keyword}} food tours. Visit the bund {{keyword}} with our local China tour guides.'
+				};
+			}
+			
+
 			return {
-				title: title,
+				title: pageTdk.title.replace(/{{keyword}}/g,keyword),
 				meta: [{
 						hid: "keywords",
 						name: "keywords",
-						content: keywords
+						content: pageTdk.keywords.replace(/{{keyword}}/g,keyword)
 					},
 					{
 						hid: "description",
 						name: "description",
-						content: description[location=="Xi'an"?'Xian':location]
+						content: pageTdk.description.replace(/{{keyword}}/g,keyword)
 					}
 				]
 			};

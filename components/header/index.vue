@@ -1,15 +1,18 @@
 <template>
-	<div class="header">
+	<div class="header" :class="{'header_hyaline':isExpats}">
 		<div class="nav_bg" :class="{'show_nav':showWinBg}"  @click="hideDialog"></div>
 
-		<div class="header_box" :class="{'background-nomal':isExpats}">
+		<div class="header_box">
+
 			<!-- 导航展开按钮 -->
 			<div class="header_btn" @click="showNav">
-				<span v-for="item in 3" :class="{'color-white':isExpats}"></span>
-				<!--<span></span>
-				<span></span>-->
+				<span></span>
+				<span></span>
+				<span></span>
 			</div>
 
+			<!-- 搜索 -->
+			<div class="header_search_icon iconfont" @click="showSearchDialog=true">&#xe67a;</div>
 			<!-- logo -->
 			<div class="logo" v-if="isExpats">
 				<svg aria-hidden="true" @click="goHome">
@@ -48,6 +51,49 @@
 				<span class="btn" @click="facebookLogin"><i class="iconfont">&#xe613;</i>Log in with Facebook</span>
 			</div>
 		</div>
+
+		<!-- 搜索 -->
+		<div class="h_search_all" :class="{h_search_show:showSearchDialog}">
+			<div class="h_search_top">
+				<i class="iconfont h_search_back" @click="showSearchDialog=false">&#xe615;</i>
+				<span class="btn" @click="searchFn">Search</span>
+				<div class="h_search_input_box">
+					<input type="text" id="h_search_input" @focus="autoComplate" @keyup="autoComplate" v-model="searchValue" placeholder="Attraction, Activity, Destination">
+					<i class="iconfont s_input_search">&#xe67a;</i>
+					<i class="iconfont s_input_close" v-show="searchValue" @click="searchValue=''">&#xe629;</i>
+				</div>
+			</div>
+			<div class="h_search_content">
+				<div class="h_search_content_bg" @click="showSearchDialog=false"></div>
+				<dl class="h_search_complate" v-show="searchValue">
+					<dd :key="index" v-for="(item,index) in searchData">
+						<a :href="getUrl(item.value)">
+							<i class="iconfont" v-if="item.type=='DESTINATION'">&#xe610;</i>
+							<i class="iconfont" v-else>&#xe609;</i>
+							{{item.value}}
+						</a>
+					</dd>
+				</dl>
+
+				<div class="h_search_hot" v-show="!searchValue">
+					<dl>
+						<dt>Destination</dt>
+						<!-- <i class="iconfont">&#xe610;</i> -->
+						<dd v-for="(item,index) in recommend.destination" :key="index"><a :href="getUrl(item)">{{item}}</a></dd>
+					</dl>
+
+					<dl>
+						<dt>popular choices</dt>
+						<dd v-for="(item,index) in recommend.hot" :key="index"><a :href="getUrl(item)">{{item}}</a></dd>
+					</dl>
+
+				</div>
+				
+			</div>
+		</div>
+
+		
+
 	</div>
 </template>
 
@@ -56,14 +102,27 @@
 	import FBLogin from "~/plugins/panda/FBLogin/";
 
 	export default {
-		props:["isExpats"],
+		props:["showSearch","isExpats"],
 		name:'M-head',
 		data(){
+			var query = this.$route.query;
 			return {
 				navIsShow: false,
 				showWinBg: false,
 				showLogin: false,
-				islogIn: false
+				islogIn: false,
+				showSearchDialog: false,
+				searchData:[],
+				searchValue: query.keyword?query.keyword:'',
+				query: query,
+				path: this.$route.path,
+
+				inputTimer: null,
+				//搜索默认推荐
+				recommend:{
+					destination:["Shanghai","Beijing","Xi'an","Guilin","Chengdu"],
+					hot:["Panda","Watertown","Great Wall","Terra-Cotta Warriors","Forbidden City","Li River","Layover Tour","Day trips","Local Food","Dumplings","Landmarks","Short Excursions","Family Friendly"]
+				}
 			}
 		},
 		components: {
@@ -112,15 +171,112 @@
 				new FBLogin({
 					logout:true
 				});
-			}
+			},
 
+			autoComplate(e){
+				var self = this,
+					keyword = e.target.value;
+
+				if(e.keyCode == "13"){
+					this.searchFn();
+					return;
+				}
+
+				if(!keyword){
+					self.searchData = [];
+					return;
+				}
+
+				if(this.inputting){
+					return;
+				}
+
+				var postData = {
+					keyword: keyword,
+					size: 10
+				};
+
+				var setTimes = 300;
+				if(e.type=='focus'){
+					setTimes = 0;
+				}
+
+				clearTimeout(this.inputTimer);
+				this.inputTimer = setTimeout(function(){
+					
+					//请求数据
+					self.axios.post("https://api.localpanda.com/api/suggest", JSON.stringify(postData), {
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					}).then(function(response) {
+						if(response.status == 200 || response.status == 304){
+							self.searchData = response.data;
+						}
+					}, function(response) {
+						
+					})
+
+				},setTimes);
+
+
+
+				
+
+			},
+			getUrl(value){
+				// var query = JSON.parse(JSON.stringify(this.query));
+				// query.keyword = value;
+				// var queryStr = '';
+				// for(var key in query){
+				// 	queryStr += '&' + key + '=' + encodeURIComponent(query[key]);
+				// };
+				// return '/activity/list/China' + (queryStr ? '?' : '') + queryStr.substring(1);
+				return '/activity/list/China?keyword=' + value;
+			},
+			searchFn(){
+				if(!this.searchValue){
+					document.getElementById('h_search_input').focus();
+					return;
+				}
+				location.href = this.getUrl(this.searchValue);
+			},
+
+			searchFocus(){
+				setTimeout(function(){
+					var thisInput = document.getElementById('h_search_input');
+					thisInput.focus();
+					thisInput.setSelectionRange(100,100);
+				},200);
+			}
+		},
+		computed:{
+			
 		},
 		watch:{
 			showWinBg:function(val){
 				this.setBodyHidden(val);
+			},
+			showSearchDialog:function(val){
+				this.setBodyHidden(val);
+				if(val==false){
+					this.$emit('closeSearch',false)
+				}else{
+					this.searchFocus();
+				}
+				
+			},
+			showSearch:function(val){
+				this.setBodyHidden(val);
+				this.showSearchDialog = val;
+				this.searchFocus();
+			},
+			searchValue:function(val){
+				this.$emit('searchChange',val);
 			}
 		},
 		mounted: function() {
+			this.showSearchDialog = this.showSearch;
 			
 			var logstate = localStorage.getItem("logstate");
 			this.islogIn = logstate?true:false;
@@ -130,13 +286,7 @@
 </script>
 
 <style lang="scss" scoped>
-.background-nomal{
-		background: transparent!important;
-		border: none!important;
-	}
-.color-white{
-	background: #fff!important;
-}
+
 .header{
 	height: 0.99rem;
 	position: relative;
@@ -158,11 +308,12 @@
 			}
 			
 		}
+		
 		.header_btn{
 			float: right;
-			width: 1.15rem;
+			width: 1rem;
 			height: 0.99rem;
-			padding: 0.32rem 0.4rem;
+			padding: 0.32rem 0.4rem 0.32rem 0.25rem;
 			span{
 				width: 100%;
 				height: 0.04rem;
@@ -174,6 +325,184 @@
 				}
 			}
 		}
+
+
+		.header_search_icon{
+			height: 0.98rem;
+			line-height: 1rem;
+			overflow: hidden;
+			color: #1bbc9d;
+			float: right;
+			padding: 0 0.2rem 0 0.3rem;
+			
+		}
+	}
+
+	.h_search_all{
+		//background-color: #fff;
+		position: absolute;
+		left: 0;
+		top: 0;
+		z-index: -1;
+		opacity: 0;
+		-webkit-transform: translateY(1rem);
+		-webkit-transition:all 0.2s ease-out 0s; 
+  	transition:all 0.2s ease-out 0s; 
+		width: 100%;
+		height: 100vh;
+		visibility: hidden;
+		// overflow-y: auto;
+		.h_search_top{
+			background-color: #fff;
+			height: 1.08rem;
+			padding: 0.22rem 1.86rem 0 0.76rem;
+			position: relative;
+			z-index: 2;
+			.h_search_back{
+				position: absolute;
+				left: 0;
+				top: 0.24rem;
+				line-height: 0.62rem;
+				padding: 0 0.2rem;
+			}
+			.btn{
+				float: right;
+				margin-right: -1.56rem;
+				width: 1.36rem;
+				height: 0.62rem;
+				line-height: 0.62rem;
+				font-size: 0.24rem;
+				box-shadow: 0rem 0.11rem 0.35rem 0rem	rgba(27, 188, 157, 0.3);
+			}
+			.h_search_input_box{
+				width: 100%;
+				height: 0.62rem;
+				//background-color: #ffffff;
+				box-shadow: 0rem 0rem 0.35rem 0rem rgba(53, 58, 63, 0.16);
+				border-radius: 0.31rem;
+				position: relative;
+				overflow: hidden;
+				.s_input_search{
+					position: absolute;
+					left: 0.15rem;
+					top: 0.06rem;
+					color:#878e95;
+				}
+				.s_input_close{
+					position: absolute;
+					right: 0.15rem;
+					top: 0.13rem;
+					display: block;
+					width: 0.32rem;
+					height: 0.32rem;
+					box-sizing: border-box;
+					padding: 0.02rem 0 0 0.02rem;
+					line-height: 0.32rem;
+					text-align: center;
+					background-color: #dde0e0;
+					color: #fff;
+					border-radius: 50%;
+					font-size: 0.2rem;
+				}
+				input{
+					width: 100%;
+					height: 100%;
+					border: none;
+					padding-left: 0.6rem;
+					color: #353a3f;
+				}
+				input::-webkit-input-placeholder { color: #dde0e0; }
+			}
+		}
+		.h_search_content{
+			overflow-y: auto;
+			height: calc(100vh - 1.08rem);
+			//padding-bottom: 0.8rem;
+			.h_search_content_bg{
+				background-color: rgba(0, 0, 0, 0.7);
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				 left: 0;
+				 top: 0;
+			}
+			.h_search_complate,.h_search_hot dl{
+				position: relative;
+				z-index: 2;
+				background-color: #fff;
+				overflow: hidden;
+				padding-bottom: 0.3rem;
+				min-height: 9.3rem;
+				dt{
+					height: 0.74rem;
+					line-height: 0.74rem;
+					font-weight: bold;
+					text-transform: uppercase;
+					padding: 0 0.3rem;
+					background-color: #f5f7f7;
+					position: relative;
+					z-index: 2;
+				}
+				dd{
+					margin: -1px 0.3rem 0;
+					border-top: #ebebeb solid 1px;
+					height: 0.92rem;
+					line-height: 0.94rem;
+					overflow: hidden; text-overflow:ellipsis; white-space:nowrap;
+					color: #353a3f;
+					a{
+						font-size: 0.26rem;
+						display: block;
+						i{
+							float: left;
+							display: inline-block;
+							margin-right: 0.16rem;
+							color: #1bbc9d;
+							
+						}
+					}
+					
+				}
+			}
+			.h_search_hot dl{
+				
+			}
+			.h_search_hot{
+				position: relative;
+				z-index: 2;
+				min-height: 9.3rem;
+				background-color: #fff;
+				dl{
+					padding-bottom: 0.3rem;
+					min-height: auto;
+					dt{
+						margin-bottom: 0.1rem;
+					}
+					dd{
+						float: left;
+						border: none;
+						background-color: #eef2f6;
+						line-height: 0.64rem;
+						height: 0.64rem;
+						
+						border-radius: 0.1rem;
+						margin:0.2rem 0 0 0.3rem;
+						a{
+							padding: 0 0.3rem;
+							&:focus{
+								color: #1bbc9d;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	.h_search_show{
+		opacity: 1;
+		z-index: 100;
+		-webkit-transform: translateY(0);
+		visibility: inherit;
 	}
 	
 	.nav_bg{
@@ -254,6 +583,17 @@
 					vertical-align: top;
 					margin-right: 0.1rem;
 				}
+			}
+		}
+	}
+}
+.header_hyaline{
+	.header_box{
+		background: transparent!important;
+		border: none!important;
+		.header_btn{
+			span{
+				background: #fff!important;
 			}
 		}
 	}
