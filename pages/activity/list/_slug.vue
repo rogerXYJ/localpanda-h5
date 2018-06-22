@@ -421,7 +421,7 @@
 
 <template>
 	<div class="activity_list">
-		<Head :showSearch="showHeaderSearch" @searchChange="searchChange" @closeSearch="showHeaderSearch=false"></Head>
+		<Head :searchValue="keyword" :showSearch="showHeaderSearch" @searchChange="searchChange" @closeSearch="showHeaderSearch=false"></Head>
 
 		<!-- 搜索 -->
 		<div class="h_search_top">
@@ -482,8 +482,7 @@
 		<!-- 产品列表 -->
 		<div class="list_box">
 			<div class="noListData" v-show="!activityList.length">
-				<p>No activities or tours that match your interests are found.</p>
-				<p>You can try to modify your screening conditions.</p>
+				<p>No offerings that match your interests are found.You can try to modify your screening conditions.</p>
 			</div>
 			<ul class="list_ul" v-show="activityList.length">
 				<li :key="index" v-for="(item,index) in activityList">
@@ -659,7 +658,6 @@
 				postData.sort = sort;
 			}
 
-
 			try{
 				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(postData), {
 					headers: {
@@ -718,17 +716,20 @@
 			}());
 			
 
-			
+			var locNew = (loc=='Xian'?'Xi\'an':loc);
+			if(locNew.toLowerCase()=='china'){
+				locNew = '';
+			}
 
 			return {
 				listdata: data,
 				activityList: data.entities?data.entities:[],
 				apiBasePath: apiBasePath,
 				postData: postData,
-				keyword: keyword,
-				defaultKeyword: keyword,
+				keyword: keyword?keyword:locNew,
+				defaultKeyword: keyword?keyword:locNew,
 
-				cityCheck:loc=='Xian'?'Xi\'an':loc,
+				cityCheck:loc,
 				city: city,
 				showCity:false,
 
@@ -998,10 +999,12 @@
 
 			},
 			hideBodyScroll(){
-				document.body.style.overflowY = 'hidden';
+				document.getElementsByTagName('html')[0].style.overflowY = 'hidden';
+				document.getElementsByTagName('body')[0].style.overflowY = 'hidden';
 			},
 			showBodyScroll(){
-				document.body.style.overflowY = 'inherit';
+				document.getElementsByTagName('html')[0].style.overflowY = 'inherit';
+				document.getElementsByTagName('body')[0].style.overflowY = 'inherit';
 			},
 
 			showMore(e){
@@ -1127,20 +1130,24 @@
 		mounted: function() {
 			console.log(this.$data);
 
+			var self = this;
 
 			//filter统计ga   start  ///////////////////////////////////////////
 			var listGa = localStorage.getItem('listGa');
-			if(listGa){
-				for(var key in this.filterCheck){
-					var thisArr = this.filterCheck[key];
-					//check的类型有数据则统计这个类型的ga
-					if(thisArr.length){
-						this.ga('filter',key);
+			//延迟执行防止ga组件没加载完毕
+			setTimeout(function(){
+				if(listGa){
+					for(var key in self.filterCheck){
+						var thisArr = self.filterCheck[key];
+						//check的类型有数据则统计这个类型的ga
+						if(thisArr.length){
+							self.ga('filter',key);
+						}
 					}
 				}
-			}
-			//干掉ga触发，这个在点击的时候才开启触发，从新加载页面统计过后，干掉触发条件
-			localStorage.removeItem('listGa');
+				//干掉ga触发，这个在点击的时候才开启触发，从新加载页面统计过后，干掉触发条件
+				localStorage.removeItem('listGa');
+			},900);
 			//filter统计ga   end  ///////////////////////////////////////////
 			
 			

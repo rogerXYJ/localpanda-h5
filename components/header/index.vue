@@ -55,27 +55,27 @@
 		<!-- 搜索 -->
 		<div class="h_search_all" :class="{h_search_show:showSearchDialog}">
 			<div class="h_search_top">
-				<i class="iconfont h_search_back" @click="showSearchDialog=false">&#xe615;</i>
+				<i class="iconfont h_search_back" @click="hideDialogSearch">&#xe615;</i>
 				<span class="btn" @click="searchFn">Search</span>
 				<div class="h_search_input_box">
-					<input type="text" id="h_search_input" @focus="autoComplate" @keyup="autoComplate" v-model="searchValue" placeholder="Attraction, Activity, Destination">
+					<input type="text" id="h_search_input" @focus="autoComplate" @keyup="autoComplate" v-model="searchVal" placeholder="Attraction, Activity, Destination">
 					<i class="iconfont s_input_search">&#xe67a;</i>
-					<i class="iconfont s_input_close" v-show="searchValue" @click="searchValue=''">&#xe629;</i>
+					<i class="iconfont s_input_close" v-show="searchVal" @click="searchVal=''">&#xe629;</i>
 				</div>
 			</div>
 			<div class="h_search_content">
-				<div class="h_search_content_bg" @click="showSearchDialog=false"></div>
-				<dl class="h_search_complate" v-show="searchValue">
+				<div class="h_search_content_bg" @click="hideDialogSearch"></div>
+				<dl class="h_search_complate" v-show="searchVal">
 					<dd :key="index" v-for="(item,index) in searchData">
 						<a :href="getUrl(item.value)" @click="ga('search','suggestion')">
 							<i class="iconfont" v-if="item.type=='DESTINATION'">&#xe610;</i>
 							<i class="iconfont" v-else>&#xe609;</i>
-							{{item.value}}
+							<span v-html="textHighlight(item.value)"></span>
 						</a>
 					</dd>
 				</dl>
 
-				<div class="h_search_hot" v-show="!searchValue">
+				<div class="h_search_hot" v-show="!searchVal">
 					<dl>
 						<dt>Destination</dt>
 						<!-- <i class="iconfont">&#xe610;</i> -->
@@ -102,7 +102,7 @@
 	import FBLogin from "~/plugins/panda/FBLogin/";
 
 	export default {
-		props:["showSearch","isExpats"],
+		props:["showSearch",'searchValue',"isExpats"],
 		name:'M-head',
 		data(){
 			var query = this.$route.query;
@@ -113,7 +113,7 @@
 				islogIn: false,
 				showSearchDialog: false,
 				searchData:[],
-				searchValue: query.keyword?query.keyword:'',
+				searchVal: query.keyword?query.keyword:this.searchValue,
 				query: query,
 				path: this.$route.path,
 
@@ -155,9 +155,11 @@
 			},
 			setBodyHidden(type){
 				if(type){
-					document.body.style.overflowY = 'hidden';
+					document.getElementsByTagName('html')[0].style.overflowY = 'hidden';
+					document.getElementsByTagName('body')[0].style.overflowY = 'hidden';
 				}else{
-					document.body.style.overflowY = 'inherit';
+					document.getElementsByTagName('html')[0].style.overflowY = 'inherit';
+					document.getElementsByTagName('body')[0].style.overflowY = 'inherit';
 				}
 				
 			},
@@ -236,7 +238,7 @@
 				return '/activity/list/China?keyword=' + value;
 			},
 			searchFn(){
-				if(!this.searchValue){
+				if(!this.searchVal){
 					document.getElementById('h_search_input').focus();
 					return;
 				}
@@ -244,7 +246,15 @@
 				//调用ga
 				this.ga('search','search');
 				
-				location.href = this.getUrl(this.searchValue);
+				location.href = this.getUrl(this.searchVal);
+			},
+			textHighlight(value){
+				var reg = new RegExp(this.searchVal,'gi');
+				var textReg = value.match(reg);
+				if(textReg){
+					textReg = textReg[0];
+				}
+				return value.replace(reg,'<b>'+textReg+'</b>');
 			},
 
 			searchFocus(){
@@ -253,6 +263,19 @@
 					thisInput.focus();
 					thisInput.setSelectionRange(100,100);
 				},200);
+			},
+
+			hideDialogSearch(){
+				var thisInput = document.getElementById('h_search_input');
+				thisInput.blur();
+				var self = this;
+				setTimeout(function(){
+					self.showSearchDialog=false;
+				},50);
+			},
+
+			moveStop(e){
+				e.preventDefault();
 			},
 
 			//ga公用方法
@@ -286,7 +309,7 @@
 				this.showSearchDialog = val;
 				this.searchFocus();
 			},
-			searchValue:function(val){
+			searchVal:function(val){
 				this.$emit('searchChange',val);
 			}
 		},
@@ -437,7 +460,7 @@
 			.h_search_content_bg{
 				background-color: rgba(0, 0, 0, 0.7);
 				width: 100%;
-				height: 100%;
+				height: 100vh;
 				position: absolute;
 				 left: 0;
 				 top: 0;
@@ -473,9 +496,10 @@
 							float: left;
 							display: inline-block;
 							margin-right: 0.16rem;
-							color: #1bbc9d;
+							color: #353a3f;
 							
 						}
+						
 					}
 					
 				}
@@ -609,6 +633,16 @@
 			span{
 				background: #fff!important;
 			}
+		}
+	}
+}
+</style>
+
+<style lang="scss">
+.h_search_complate{
+	span{
+		b{
+			color: #1bbc9d;
 		}
 	}
 }
