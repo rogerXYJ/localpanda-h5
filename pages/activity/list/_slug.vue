@@ -980,7 +980,7 @@
 				urlQuery = urlQuery.substring(1); //去掉第一个&
 				
 				//有数据则跳转
-				location.href = path + (urlQuery ? ('?' + urlQuery) : '');
+				location.href = '/activity/list/China' + (urlQuery ? ('?' + urlQuery) : '');
 
 				//var hasOptions = JSON.stringify(options)!='{}';
 				//location.href = path + (hasOptions?'?options=' + optionsEncode:'') + (sort?(hasOptions?'&':'?')+'sort='+JSON.stringify(sort):'');
