@@ -64,7 +64,8 @@
 				</div>
 			</div>
 			<div class="h_search_content">
-				<dl v-show="searchValue">
+				<div class="h_search_content_bg" @click="showSearchDialog=false"></div>
+				<dl class="h_search_complate" v-show="searchValue">
 					<dd :key="index" v-for="(item,index) in searchData">
 						<a :href="getUrl(item.value)">
 							<i class="iconfont" v-if="item.type=='DESTINATION'">&#xe610;</i>
@@ -338,7 +339,7 @@
 	}
 
 	.h_search_all{
-		background-color: #fff;
+		//background-color: #fff;
 		position: absolute;
 		left: 0;
 		top: 0;
@@ -352,8 +353,11 @@
 		visibility: hidden;
 		// overflow-y: auto;
 		.h_search_top{
+			background-color: #fff;
 			height: 1.08rem;
 			padding: 0.22rem 1.86rem 0 0.76rem;
+			position: relative;
+			z-index: 2;
 			.h_search_back{
 				position: absolute;
 				left: 0;
@@ -373,7 +377,7 @@
 			.h_search_input_box{
 				width: 100%;
 				height: 0.62rem;
-				background-color: #ffffff;
+				//background-color: #ffffff;
 				box-shadow: 0rem 0rem 0.35rem 0rem rgba(53, 58, 63, 0.16);
 				border-radius: 0.31rem;
 				position: relative;
@@ -413,9 +417,22 @@
 		.h_search_content{
 			overflow-y: auto;
 			height: calc(100vh - 1.08rem);
-			padding-bottom: 0.8rem;
-			dl{
+			//padding-bottom: 0.8rem;
+			.h_search_content_bg{
+				background-color: rgba(0, 0, 0, 0.7);
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				 left: 0;
+				 top: 0;
+			}
+			.h_search_complate,.h_search_hot dl{
+				position: relative;
+				z-index: 2;
+				background-color: #fff;
 				overflow: hidden;
+				padding-bottom: 0.3rem;
+				min-height: 9.3rem;
 				dt{
 					height: 0.74rem;
 					line-height: 0.74rem;
@@ -447,9 +464,17 @@
 					
 				}
 			}
+			.h_search_hot dl{
+				
+			}
 			.h_search_hot{
+				position: relative;
+				z-index: 2;
+				min-height: 9.3rem;
+				background-color: #fff;
 				dl{
 					padding-bottom: 0.3rem;
+					min-height: auto;
 					dt{
 						margin-bottom: 0.1rem;
 					}
@@ -459,9 +484,15 @@
 						background-color: #eef2f6;
 						line-height: 0.64rem;
 						height: 0.64rem;
-						padding: 0 0.3rem;
+						
 						border-radius: 0.1rem;
 						margin:0.2rem 0 0 0.3rem;
+						a{
+							padding: 0 0.3rem;
+							&:focus{
+								color: #1bbc9d;
+							}
+						}
 					}
 				}
 			}

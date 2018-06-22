@@ -684,11 +684,13 @@
 
 			//默认排序数据
 			var rankCheck = 'Recommended';
-			if(sort && sort.type=='PRICE'){
-				if(sort.reverse == true){
+			if(sort){
+				if(sort.type=='PRICE' && sort.reverse == true){
 					rankCheck = 'Price :High to Low';
-				}else{
+				}else if(sort.type=='PRICE' && sort.reverse == false){
 					rankCheck = 'Price :Low to High';
+				}else if(sort.type=='SALES'){
+					rankCheck = 'Popularity';
 				}
 			}
 
@@ -729,7 +731,7 @@
 				showFilter: false,
 
 				rankCheck: rankCheck,
-				rank:['Recommended','Price :Low to High','Price :High to Low'],
+				rank:['Recommended','Price :Low to High','Price :High to Low','Popularity'],
 				showRank:false,
 
 				isFixed:false,
@@ -907,6 +909,8 @@
 					gaLabel = 'price_up';
 				}else if(thisValue=='Price :High to Low'){
 					gaLabel = 'price_down';
+				}else if(thisValue=='Popularity'){
+					gaLabel = 'popularity';
 				};
 				this.ga('sort',gaLabel);
 				/* GA 排序统计  end */
@@ -949,6 +953,8 @@
 					jumpData.sort = JSON.stringify({"type":"PRICE","reverse":false})
 				}else if(rankCheck=='Price :High to Low'){
 					jumpData.sort = JSON.stringify({"type":"PRICE","reverse":true})
+				}else if(rankCheck=='Popularity'){
+					jumpData.sort = JSON.stringify({"type": "SALES"})
 				}
 
 				
