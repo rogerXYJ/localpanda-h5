@@ -90,6 +90,10 @@ input {
     padding-left: 10px;
 }
 
+.stopScroll{
+    overflow: hidden;
+    height: 100vh;
+}
 
 .btn{
     height: 0.9rem;

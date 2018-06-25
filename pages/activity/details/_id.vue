@@ -239,7 +239,7 @@
 			let data = this;
 			data.id!='undefined'?data.id:getUrlParams()
 			this.logIn = window.localStorage.getItem("logstate");
-			document.addEventListener("click", function(){data.isShowMeau=false});
+			document.getElementById('Mmenu').addEventListener("click", function(){data.isShowMeau=false});
 			window.addEventListener("scroll", this.scorllBar);
 
 

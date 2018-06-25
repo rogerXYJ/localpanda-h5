@@ -189,11 +189,13 @@
 								-webkit-box-orient: vertical;
 								display: -webkit-box;
 								text-overflow: ellipsis;
+								margin-bottom: 0.1rem;
 							}
+							
 							.list_tag{
 								font-size: 0.22rem;
 								color: #1bbc9d;
-								margin-top: 0.1rem;
+								margin-bottom: 0.06rem;
 								line-height: 0.29rem;
 								max-height: 0.58rem;
 								overflow:hidden;
@@ -208,13 +210,15 @@
 									display: inline-block;
 								}
 							}
-							.duration{
-								margin-top: 0.06rem;
+							.duration,.destination{
 								font-size: 0.22rem;
 								color: #353a3f;
 								b{
 									margin-right: 0.1rem;
 								}
+							}
+							.destination{
+								 width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
 							}
 							.price_box{
 								margin-top: 0.16rem;
@@ -366,7 +370,8 @@
 				.s_input_search{
 					position: absolute;
 					left: 0.15rem;
-					top: 0.06rem;
+					top: 50%;
+					-webkit-transform: translateY(-50%);
 					color:#878e95;
 				}
 				input{
@@ -416,7 +421,7 @@
 
 <template>
 	<div class="activity_list">
-		<Head :showSearch="showHeaderSearch" @searchChange="searchChange" @closeSearch="showHeaderSearch=false"></Head>
+		<Head :searchValue="keyword" :showSearch="showHeaderSearch" @searchChange="searchChange" @closeSearch="showHeaderSearch=false"></Head>
 
 		<!-- 搜索 -->
 		<div class="h_search_top">
@@ -438,8 +443,8 @@
 					<div class="filter_products" @click="hideFilter" :class="{show_products:showProducts}">
 						<checkbox-group v-model="filterCheck.category">
 							<ul class="products_list city_list">
-								<li :key="index" v-for="(item,index) in filter.category">
-									<checkbox :label="item">{{item}}</checkbox>
+								<li :key="index" v-for="(item,key,index) in aggregations[0].items">
+									<checkbox :label="key">{{key}} ( {{item}} )</checkbox>
 								</li>
 							</ul>
 						</checkbox-group>
@@ -477,8 +482,7 @@
 		<!-- 产品列表 -->
 		<div class="list_box">
 			<div class="noListData" v-show="!activityList.length">
-				<p>No activities or tours that match your interests are found.</p>
-				<p>You can try to modify your screening conditions.</p>
+				<p>No offerings that match your interests are found.You can try to modify your screening conditions.</p>
 			</div>
 			<ul class="list_ul" v-show="activityList.length">
 				<li :key="index" v-for="(item,index) in activityList">
@@ -492,6 +496,8 @@
 								<!-- <span :key="index" v-for="(item,index) in item.tourTypes">"{{item}}"</span> -->
 							</div>
 							<p class="duration"><b>Duration:</b>{{item.duration}} {{toLower(item.durationUnit)}}</p>
+							<p class="destination"><b>Destination:</b>{{item.destinations.join(' & ')}}</p>
+							
 							<div class="price_box clearfix">
 								<span class="list_price">From<b>${{item.bottomPrice}}</b>pp</span>
 								<span class="tag_private" v-if="item.groupType=='Private'">{{item.groupType}}</span>
@@ -574,7 +580,7 @@
 
 			var params = route.params;
 			//当前城市
-			var thisSlug = params.slug ? params.slug : 'china';
+			var loc = params.slug ? params.slug : 'china';
 
 			//目的地
 			var city = ['Shanghai','Beijing','Chengdu','Xi\'an','Guilin'];
@@ -589,7 +595,11 @@
 			var keyword = query.keyword ? query.keyword : '';
 
 			//如果什么条件都没有则默认北京的数据
-			let loc = (thisSlug.toLowerCase() =='china' && !options && !keyword) ? 'Beijing' : thisSlug;
+			var isAll = (loc.toLowerCase() =='china' && !options && !keyword);
+
+			if(isAll){
+				loc = 'Beijing';
+			}
 
 			if(keyword){
 				loc = keyword;
@@ -647,7 +657,6 @@
 			if(sort){
 				postData.sort = sort;
 			}
-
 
 			try{
 				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(postData), {
@@ -707,17 +716,20 @@
 			}());
 			
 
-			
+			var locNew = (loc=='Xian'?'Xi\'an':loc);
+			if(locNew.toLowerCase()=='china'){
+				locNew = '';
+			}
 
 			return {
 				listdata: data,
 				activityList: data.entities?data.entities:[],
 				apiBasePath: apiBasePath,
 				postData: postData,
-				keyword: keyword,
-				defaultKeyword: keyword,
+				keyword: keyword?keyword:locNew,
+				defaultKeyword: keyword?keyword:locNew,
 
-				cityCheck:loc=='Xian'?'Xi\'an':loc,
+				cityCheck:loc,
 				city: city,
 				showCity:false,
 
@@ -830,13 +842,13 @@
 
 				if(this.showFilter){
 					//GA统计
-					this.ga('click','filter_open');
+					this.ga('filter','filter_open');
 				}
 			},
 			filterClose(){
 				this.showFilter = false;
 				//GA统计
-				this.ga('click','filter_close');
+				this.ga('filter','filter_close');
 
 				//恢复check状态
 				this.filterCheck = JSON.parse(JSON.stringify(this.filterCheckDefault));
@@ -844,7 +856,7 @@
 			//确定选择
 			filterConfirm(){
 				//GA统计
-				this.ga('click','filter_apply');
+				this.ga('filter','filter_apply');
 				//记录加载页面后是否需要Ga统计
 				localStorage.setItem('listGa','true');
 
@@ -853,7 +865,7 @@
 			},
 			filterClear(){
 				//GA统计
-				this.ga('click','filter_clear');
+				this.ga('filter','filter_clear');
 				//清空数据
 				for(var key in this.filterCheck){
 					//只清Products地以外的数据
@@ -987,10 +999,12 @@
 
 			},
 			hideBodyScroll(){
-				document.body.style.overflowY = 'hidden';
+				document.getElementsByTagName('html')[0].style.overflowY = 'hidden';
+				document.getElementsByTagName('body')[0].style.overflowY = 'hidden';
 			},
 			showBodyScroll(){
-				document.body.style.overflowY = 'inherit';
+				document.getElementsByTagName('html')[0].style.overflowY = 'inherit';
+				document.getElementsByTagName('body')[0].style.overflowY = 'inherit';
 			},
 
 			showMore(e){
@@ -1041,14 +1055,14 @@
 				return typeStr ? typeStr : type;
 			},
 			tourTypesStr(arr){
-				var str = '';
-				if(!arr){
-					return str;
-				}
-				for(var i=0;i<arr.length;i++){
-					str += '"'+arr[i]+'"　';
-				}
-				return　str;
+				// var str = '';
+				// if(!arr){
+				// 	return str;
+				// }
+				// for(var i=0;i<arr.length;i++){
+				// 	str += '"'+arr[i]+'"　';
+				// }
+				return arr ? arr.join(' <b>·</b> ') : '';
 			},
 			infiniteHandler($state){
 				var that = this;
@@ -1116,20 +1130,24 @@
 		mounted: function() {
 			console.log(this.$data);
 
+			var self = this;
 
 			//filter统计ga   start  ///////////////////////////////////////////
 			var listGa = localStorage.getItem('listGa');
-			if(listGa){
-				for(var key in this.filterCheck){
-					var thisArr = this.filterCheck[key];
-					//check的类型有数据则统计这个类型的ga
-					if(thisArr.length){
-						this.ga('filter',key);
+			//延迟执行防止ga组件没加载完毕
+			setTimeout(function(){
+				if(listGa){
+					for(var key in self.filterCheck){
+						var thisArr = self.filterCheck[key];
+						//check的类型有数据则统计这个类型的ga
+						if(thisArr.length){
+							self.ga('filter',key);
+						}
 					}
 				}
-			}
-			//干掉ga触发，这个在点击的时候才开启触发，从新加载页面统计过后，干掉触发条件
-			localStorage.removeItem('listGa');
+				//干掉ga触发，这个在点击的时候才开启触发，从新加载页面统计过后，干掉触发条件
+				localStorage.removeItem('listGa');
+			},900);
 			//filter统计ga   end  ///////////////////////////////////////////
 			
 			

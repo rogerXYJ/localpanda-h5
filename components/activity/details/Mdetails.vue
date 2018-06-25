@@ -375,7 +375,7 @@ import photo from '~/components/activity/details/photo'
 					tourtype:[val]
 				}
 				
-				let url="/activity/list/"+this.destination+"?options="+encodeURIComponent(JSON.stringify(options))
+				let url="/activity/list/China?keyword="+encodeURIComponent(val)
 				return url
 			},
 			showTable() {
