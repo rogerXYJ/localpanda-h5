@@ -262,7 +262,7 @@
 					var thisInput = document.getElementById('h_search_input');
 					thisInput.focus();
 					thisInput.setSelectionRange(100,100);
-				},200);
+				},300);
 			},
 
 			hideDialogSearch(){
@@ -280,9 +280,16 @@
 
 			//ga公用方法
 			ga(action,label){
+				var urlPath = this.$route.path.substring(1).split('/').join('_');
+				if(/activity_list/.test(urlPath)){
+					urlPath = 'activity_list';
+				}else if(/activity_details/.test(urlPath)){
+					urlPath = 'activity_details';
+				}
+
 				ga('gtag_UA_107010673_2.send', {
 					hitType: 'event',
-					eventCategory: this.$route.path.substring(1).split('/').join('_'),
+					eventCategory: urlPath,
 					eventAction: action,
 					eventLabel: label
 				});
