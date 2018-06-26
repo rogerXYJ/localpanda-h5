@@ -58,9 +58,11 @@
 				<i class="iconfont h_search_back" @click="hideDialogSearch">&#xe615;</i>
 				<span class="btn" @click="searchFn">Search</span>
 				<div class="h_search_input_box">
-					<input type="text" id="h_search_input" @focus="autoComplate" @keyup="autoComplate" v-model="searchVal" placeholder="Attraction, Activity, Destination">
-					<i class="iconfont s_input_search">&#xe67a;</i>
-					<i class="iconfont s_input_close" v-show="searchVal" @click="searchVal=''">&#xe629;</i>
+					<input type="text" id="h_search_input" @focus="autoComplate" @keyup="autoComplate" v-model="searchVal" maxlength="60" placeholder="Attraction, Activity, Destination">
+					<span class="iconfont s_input_search">&#xe67a;</span>
+					<span class="s_input_close" @click="searchVal=''">
+						<i class="iconfont" v-show="searchVal">&#xe629;</i>
+					</span>
 				</div>
 			</div>
 			<div class="h_search_content">
@@ -385,7 +387,7 @@
 
 	.h_search_all{
 		//background-color: #fff;
-		position: absolute;
+		position: fixed;
 		left: 0;
 		top: 0;
 		z-index: -1;
@@ -436,25 +438,36 @@
 				}
 				.s_input_close{
 					position: absolute;
-					right: 0.15rem;
-					top: 0.13rem;
+					right: 0;
+					top: 0;
 					display: block;
-					width: 0.32rem;
-					height: 0.32rem;
+					width: 0.62rem;
+					height: 0.62rem;
 					box-sizing: border-box;
-					padding: 0.02rem 0 0 0.02rem;
-					line-height: 0.32rem;
-					text-align: center;
-					background-color: #dde0e0;
-					color: #fff;
-					border-radius: 50%;
-					font-size: 0.2rem;
+					
+					
+					i{
+						position: absolute;
+						left: 50%;
+						top: 50%;
+						-webkit-transform: translate(-50%,-50%);
+						width: 0.32rem;
+						height: 0.32rem;
+						line-height: 0.32rem;
+						text-align: center;
+						background-color: #dde0e0;
+						padding: 0.02rem 0 0 0.02rem;
+						box-sizing: border-box;
+						color: #fff;
+						border-radius: 50%;
+						font-size: 0.2rem;
+					}
 				}
 				input{
 					width: 100%;
 					height: 100%;
 					border: none;
-					padding-left: 0.6rem;
+					padding:0 0.6rem;
 					color: #353a3f;
 				}
 				input::-webkit-input-placeholder { color: #dde0e0; }
