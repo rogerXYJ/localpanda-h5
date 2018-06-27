@@ -143,7 +143,7 @@
 					}
 					
 				}else{
-					for(let i = 0; i < details.length; i++) {
+					for(let i = 0; i < details[details.length-1].capacity; i++) {
 						let thisD = details[i];
 						newArr.push(thisD);
 						if(i + 1 > details.length - 1) break;
@@ -161,7 +161,7 @@
 				}
 					
 				for(var k = 0; k < newArr.length; k++) {
-					newArr[k].capacity = k + 1;
+					newArr[k].capacity = k + newArr[0].capacity;
 
 				}
 				

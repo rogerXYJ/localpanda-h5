@@ -179,6 +179,8 @@
 			var consoleTimeS2 = new Date().getTime();
 			console.log('node end time:'+consoleTimeS2);
 			console.log('在node端渲染，请求接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
+
+			console.log(data.picInfo.details);
 			
 			return data;
 		},
@@ -376,7 +378,7 @@
 			border-radius: 50%;
 			box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
 			background: #fff;
-			z-index: 200;
+			z-index: 66;
 			color: #1bbc9d;
 			.iconfont{
 				font-size: 0.48rem;
