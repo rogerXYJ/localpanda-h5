@@ -179,8 +179,6 @@
 			var consoleTimeS2 = new Date().getTime();
 			console.log('node end time:'+consoleTimeS2);
 			console.log('在node端渲染，请求接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
-
-			console.log(data.picInfo.details);
 			
 			return data;
 		},

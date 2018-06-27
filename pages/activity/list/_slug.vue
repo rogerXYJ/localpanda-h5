@@ -1076,7 +1076,10 @@
 					jumpData.sort = JSON.stringify({"type": "SALES"})
 				}
 
-				
+				//人数
+				if(this.peopleNum!=2){
+					jumpData.participants = this.peopleNum;
+				}
 
 				//去掉空数据,并对跳转的数据排序，把需要的数据放在新的options里
 				var options = {};
