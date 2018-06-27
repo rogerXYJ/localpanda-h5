@@ -1,12 +1,14 @@
 <template>
 	<div id="bookDetail" class="bookDetail">
-		<div class="back"><i class="iconfont" @click="back">&#xe615;</i></div>
+		<headBack title="Booking Details" :close="back"></headBack>
+		<!-- <div class="back"><i class="iconfont" @click="back">&#xe615;</i></div> -->
 		<div class="head">
-			<h3>Booking Details</h3>
+			<!-- <h3>Booking Details</h3> -->
 			<p>{{title}}</p>
 		</div>
 		<div class="select">
 			<ul>
+				
 				<li class="clearfix" :class="{err:dateErr}">
 					<label>Date</label>
 					<div class="dateTime">
@@ -14,17 +16,22 @@
 						<input id="js_changetime" placeholder="Please Select" onfocus="blur()" v-model="dateTime" readonly type="text">
 					</div>
 				</li>
+
 				<li class="clearfix" @touchend="show()" :class="{err:peopleErr}">
-					<label>Guests</label>
-					<div v-if="adults+children<1" class="guests placeho">{{people}}</div>
+					<!-- <label>Guests</label>
+					<div v-if="adults+children<1" class="guests">{{people + (people>1?" People":" Person")}}</div>
 					<div v-if="adults+children==1" class="guests">{{adults+children}} Person</div>
-					<div v-if="adults+children>1" class="guests">{{adults+children}} People</div>
+					<div v-if="adults+children>1" class="guests">{{adults+children}} People</div> -->
+
+					<SelectPeople class="view" :people="people" :picInfo="picInfo" @call-back="setCallBack" @sureSelect="getSave"></SelectPeople>
 				</li>
+				
 				<li class="clearfix" v-if="adults+children>=1">
 					<label v-if="children==0&&adults==1">{{picInfo.symbol}}{{returnFloat(adultsPic/(adults+children))}} x {{adults+children}} Person</label>
 					
 					<label v-else>{{picInfo.symbol}}{{returnFloat(adultsPic/(adults+children))}} x {{adults+children}} People 
-					<br/><em v-if="children>0&&picInfo.childDiscount"><b style="display: inline-block;">- {{picInfo.symbol}}{{returnFloat(children*picInfo.childDiscount)}}</b> for child(ren)</em>
+					<br/>
+					<em v-if="children>0&&picInfo.childDiscount"><b style="display: inline-block;">- {{picInfo.symbol}}{{returnFloat(children*picInfo.childDiscount)}}</b> for child(ren)</em>
 					</label>
 					<span @click.stop="showPriceDetail"><i class="iconfont">&#xe659;</i>{{picInfo.symbol}}{{returnFloat(adultsPic)}}</span>
 				</li>
@@ -47,9 +54,9 @@
 		<div class="btn_next">
 			<button @click="order">Next</button>
 		</div>
-		<transition name="slideleft">
-			<SelectPeople v-show="isshow" class="view" :picInfo="picInfo" @call-back="setCallBack" @sureSelect="getSave"></SelectPeople>
-		</transition>
+		<!-- <transition name="slideleft">
+			
+		</transition> -->
 		<transition name="slideleft">
 			<PriceDetail v-show="isshowDetail" class="view" :picInfo="picInfo" @call-back-detail="setCallBackDetail"></PriceDetail>
 		</transition>
@@ -68,20 +75,23 @@
 	import { GetDateStr, addmulMonth, getPriceMark} from "~/assets/js/utils";
 	import SelectPeople from "~/components/activity/details/SelectPeople"
 	import PriceDetail from "~/components/activity/details/PriceDetail"
+	import headBack from "~/components/header/back";
 	import Vue from 'vue';
 
 	export default {
 		name: "activitiesDetail",
 		data() {
+			var people = parseInt(this.$route.query.people);
+			
 			return {
 				dateTime: '',
 				logIn: '',
-				people: "Please Select",
+				people: people?people:2,
 				picInfo: '',
 				refundTimeLimit:'',
 				options: {},
 				isshow: false,
-				adults: 0,
+				adults: people?people:2,
 				children: 0,
 				infant: 0,
 				adultsPic:'',
@@ -103,7 +113,8 @@
 		components: {
 			//flatPickr,
 			SelectPeople,
-			PriceDetail
+			PriceDetail,
+			headBack
 		},
 		methods: {
 			changeCurrency(e){
@@ -138,8 +149,10 @@
 					}
 				}
 				
+				this.detailAll = this.tableData(thisDetail);
+
 				if(this.people>0){
-					this.adultsPic = thisDetail[this.people-1].price;
+					this.adultsPic = thisDetail[this.people-thisDetail[0].capacity].price;
 				}
 			},
 			setPriceData(){
@@ -182,7 +195,7 @@
 					}
 					
 				}else{
-					for(let i = 0; i < details.length; i++) {
+					for(let i = 0; i < details[details.length-1].capacity; i++) {
 						let thisD = details[i];
 						newArr.push(thisD);
 						if(i + 1 > details.length - 1) break;
@@ -201,8 +214,7 @@
 				
 
 				for(var k = 0; k < newArr.length; k++) {
-					newArr[k].capacity = k + 1;
-
+					newArr[k].capacity = k + newArr[0].capacity;
 				}
 				
 				return newArr;
@@ -350,7 +362,7 @@
 			this.logIn = window.localStorage.getItem("logstate");
 
 			var objDetail = JSON.parse(window.localStorage.getItem("objDetail"));
-			console.log(objDetail)
+			
 			this.picInfo = objDetail.picInfo
 			this.id= objDetail.id
 			this.title= objDetail.title
@@ -367,9 +379,20 @@
 				}
 			}, function(response) {});
 
+			//console.log(this.picInfo.details);
 			this.picInfo.details = this.tableData(this.picInfo.details);
+			
 
+			//设置默认人数总价
+			var maxPeople = this.picInfo.maxParticipants;
 
+			if(this.people > maxPeople){
+				this.people = maxPeople;
+				this.adults = maxPeople;
+			}
+
+			//根据人数默认总价
+			this.adultsPic = this.picInfo.details[this.people-this.picInfo.details[0].capacity].price;
 
 			this.options = {
 				minDate: this.picInfo.earliestBookDate,
@@ -536,7 +559,13 @@
 <style lang="scss" scoped>
 	
 	.bookDetail {
-		padding: 0 0.586666rem 1.946666rem;
+		padding: 1rem 0.45rem 1.946666rem;
+		.head_back{
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+		}
 		.back {
 			padding: 0.34rem 0 0.4rem;
 		}
@@ -548,7 +577,7 @@
 			p {
 				font-size: 0.34rem;
 				line-height: 0.48rem;
-				margin-top: 0.4rem;
+				margin-top: 0.2rem;
 				font-weight: bold;
 			}
 		}
@@ -566,12 +595,18 @@
 					label {
 						float: left;
 						font-size: 0.36rem;
+						line-height: 0.8rem;
+						padding: 0.3rem 0;
 					}
 					div {
 						float: right;
 						width: 70%;
 						text-align: right;
 						font-size: 0.36rem;
+					}
+					.selectPeople{
+						clear: both;
+						width: 100%;
 					}
 					span{
 						i{
@@ -674,7 +709,7 @@
 			color:#878e95;
 		}
 		
-		.win_bg{ width:100%; height:100%; background-color:rgba(0,0,0,0.5); position: absolute; left:0; top:0;}
+		.win_bg{ width:100%; height:100%; background-color:rgba(0,0,0,0.5); position: absolute; left:0; top:0; z-index: 100;}
 		.fade-enter-active, .fade-leave-active {
 		transition: opacity .5s;
 		}

@@ -1,17 +1,17 @@
 <template>
 	<div id="selectPeople" class="selectPeople">
 		<div class="selectCont">
-			<div class="back" @click="cancle()"><i class="iconfont">&#xe615;</i></div>
+			<!-- <div class="back" @click="cancle()"><i class="iconfont">&#xe615;</i></div>
 			<div class="head">
 				<h3>How many guests</h3>
 				<p>Final headcount does not include babies.</p>
-			</div>
+			</div> -->
 			<div class="choose">
 				<ul>
 					<li class="clearfix">
 						<b>Adults</b>
 						<div class="select">
-							<em class="iconfont defult" v-if="adults<=1">&#xe64d;</em>
+							<em class="iconfont defult" v-if="adults<=0 || (children+adults)<=picInfo.minParticipants">&#xe64d;</em>
 							<em class="iconfont" @click="del(0)" v-else>&#xe64d;</em>
 							<div>{{adults}}</div>
 							<em class="iconfont defult"  v-if="(children+adults)>=picInfo.maxParticipants">&#xe64b;</em>
@@ -19,9 +19,9 @@
 						</div>
 					</li>
 					<li class="clearfix">
-						<b>Children<br/><span>{{picInfo.infantStandard}} - {{picInfo.childStandard}} years</span></b>
+						<b>Children <span>({{picInfo.infantStandard}} - {{picInfo.childStandard}} years)</span></b>
 						<div class="select">
-								<em class="iconfont" v-if="children>0" @click="del(1)">&#xe64d;</em>
+								<em class="iconfont" v-if="children>0 && (children+adults)>picInfo.minParticipants" @click="del(1)">&#xe64d;</em>
 								<em class="iconfont defult" v-else>&#xe64d;</em>
 							<div>{{children}}</div>
 							<em class="iconfont defult" v-if="(children+adults)>=picInfo.maxParticipants">&#xe64b;</em>
@@ -29,7 +29,7 @@
 							
 						</div>
 					</li>
-					<li class="clearfix">
+					<!-- <li class="clearfix">
 						<b>Babies</b>
 						<div class="select">
 							<em class="iconfont" v-if="infant>0" @click="del(2)">&#xe64d;</em>
@@ -38,23 +38,23 @@
 							<em class="iconfont" v-if="infant<picInfo.maxParticipants-1" @click="add(2)">&#xe64b;</em>
 							<em class="iconfont defult" v-else>&#xe64b;</em>
 						</div>
-					</li>
+					</li> -->
 				</ul>
 			</div>
-			<div class="save">
+			<!-- <div class="save">
 				<button @click="save">Save</button>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </template>
 
 <script>
 	export default {
-		props:["picInfo"],
+		props:["picInfo","people"],
 		name: "selectPeople",
 		data(){
 			return {
-				adults:1,
+				adults:2,
 				children:0,
 				infant:0	
 			}
@@ -69,15 +69,16 @@
 			add(id) {
 				if(id == 0) {
 					this.adults++;
-					console.log(this.picInfo)
+					
 				} else if(id == 1) {
 					this.children++;
 				} else {
 					this.infant++;
 				}
-				
+				this.save();
 			},
 			del(id) {
+				//console.log(this.picInfo.minParticipants);
 				if(id == 0) {
 					this.adults--;
 				} else if(id == 1) {
@@ -85,6 +86,7 @@
 				} else {
 					this.infant--;
 				}
+				this.save();
 			},
 			save(){
 				let select={
@@ -96,9 +98,12 @@
 				this.$emit('call-back', false);
 			}
 
-},
-mounted: function() {
-
+	},
+	mounted: function() {
+		var self = this;
+		setTimeout(function(){
+			self.adults = self.people;
+		},10);
 	},
 	watch: {
 
@@ -106,16 +111,8 @@ mounted: function() {
 };</script>
 <style lang="scss" scoped>
 	.selectPeople{
-		position: fixed;
-		left: 0;
-		top: 0;
-		width: 100%;
-		min-height: 100%;
-		z-index: 999;
-		background: #fff;
-
+		
 		.selectCont{
-			padding:0 0.586666rem;
 			.back{
 				padding: 0.34rem 0 0.4rem;
 			}
@@ -129,27 +126,28 @@ mounted: function() {
 				}
 			}
 			.choose{
-				margin-top: 0.5rem;
 				ul{
 					li{
-						margin-top: 1rem;
-						&:firt-child{
-							margin-top: 0;
+						margin-bottom: 0.4rem;
+						line-height: 0.6rem;
+						&:first-child{
+							margin-top: 0.4rem;
 						}
 						b{
 							float: left;
-							line-height: 0.773333rem;
-							font-size: 0.42rem;
-							font-weight: bold;
+							line-height: 0.6rem;
+							font-size: 0.36rem;
+							font-weight: 400;
 							 span {
-			                      font-weight: normal;
-			                      color: #878e95;
-			                      font-size: 0.32rem
-			                      
-			                    }
+									font-weight: normal;
+									color: #878e95;
+									font-size: 0.26rem
+									
+								}
 						}
 						.select{
 							float: right;
+							
 							em{
 								font-weight: bold;
 								display: inline-block;
@@ -166,9 +164,12 @@ mounted: function() {
 							}
 							div{
 								display: inline-block;
-								margin:0 0.44rem;
+								margin:0 0.15rem;
 								font-size: 0.42rem;
 								vertical-align: middle;
+								line-height: 0.6rem;
+								min-width: 0.6rem;
+								text-align: center;
 							}
 						}
 					}

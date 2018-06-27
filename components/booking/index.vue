@@ -56,7 +56,6 @@
     	mounted: function() {
     		let $this=this
     		this.codeList=this.countryCode
-    		console.log(this.countryCode)
     		
     	},
     	watch:{

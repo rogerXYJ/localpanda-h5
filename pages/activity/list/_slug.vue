@@ -340,9 +340,10 @@
 
 		.h_search_top{
 			height: 1.08rem;
-			padding: 0.22rem 1.8rem 0 0.2rem;
+			padding: 0.22rem 0.2rem 0 0.2rem;
 			background-color: #fff;
 			border-bottom: #dde0e0 solid 1px;
+			position: relative;
 			.h_search_back{
 				position: absolute;
 				left: 0;
@@ -358,6 +359,27 @@
 				line-height: 0.62rem;
 				font-size: 0.24rem;
 				box-shadow: 0rem 0.11rem 0.35rem 0rem	rgba(27, 188, 157, 0.3);
+			}
+			.select_people{
+				position: absolute;
+				right: 0.2rem;
+				top: 0.22rem;
+				border-left: #ededed solid 1px;
+				z-index: 3;
+				width: 2.7rem;
+				height: 0.62rem;
+				line-height: 0.62rem;
+				padding-left: 0.15rem;
+				font-size: 0.24rem;
+				text-align: center;
+				vertical-align: top;
+				font-size: 0.26rem;
+				i{
+					position: relative;
+					vertical-align: top;
+					font-size: 0.36rem;
+					font-weight: bold;
+				}
 			}
 			.h_search_input_box{
 				width: 100%;
@@ -393,6 +415,63 @@
 			}
 		}
 
+		.win_bg{
+			width: 100%;
+			height: 100%;
+			position: fixed;
+			left: 0;
+			top: 0;
+			background-color: rgba(0,0,0,0.6);
+			z-index: 100;
+		}
+		.people_change_box{
+			position: fixed;
+			width: 90%;
+			left: 5%;
+			top:30%;
+			z-index: 100;
+			padding: 1rem 0.4rem;
+			background-color:#fff;
+			.people_dl{
+				padding-left: 2rem;
+				dt{
+					float: left;
+					margin-left: -2rem;
+					font-size:0.32rem;
+					line-height: 0.6rem;
+				}
+				dd{
+					.number_box{
+						text-align: center;
+						span{
+							vertical-align: top;
+						}
+						.iconfont{
+							display: inline-block;
+							width: 0.6rem;
+							height: 0.6rem;
+							line-height: 0.6rem;
+							text-align: center;
+							border:#1bbc9d solid 1px;
+							color: #1bbc9d;
+							border-radius:50%;
+							margin: 0 0.2rem;
+						}
+						.people_number{
+							display: inline-block;
+							line-height: 0.6rem;
+							font-size:0.4rem;
+							min-width: 0.6rem;
+						}
+
+					}
+				}
+			}
+			.people_change_btn{
+				margin-top: 1rem;
+			}
+		}
+
 	}
 	
 
@@ -425,12 +504,15 @@
 
 		<!-- 搜索 -->
 		<div class="h_search_top">
-			<span class="btn" @click="listSearch">Search</span>
+			<!-- <span class="btn" @click="listSearch">Search</span> -->
+			
 			<div class="h_search_input_box" @click="showHeaderSearch=true">
 				<input type="text" id="h_search_input" v-model="keyword" placeholder="Attraction, Activity, Destination">
 				<i class="iconfont s_input_search">&#xe67a;</i>
 				<p></p>
 			</div>
+
+			<span class="select_people" @click="showPeopleBox=true">Guests：{{peopleNum}} People <i class="iconfont">&#xe666;</i></span>
 		</div>
 
 		<!-- 筛选 -->
@@ -486,7 +568,7 @@
 			</div>
 			<ul class="list_ul" v-show="activityList.length">
 				<li :key="index" v-for="(item,index) in activityList">
-					<a :href="'/activity/details/'+item.activityId">
+					<a :href="'/activity/details/'+item.activityId + '?participants=' + peopleNum">
 						<div class="list_img" v-lazy:background-image="item.coverPhotoUrl">
 							<p>{{item.category}}</p>
 						</div>
@@ -544,7 +626,27 @@
 			</div>
 		</div>
 
+
+		<!-- 选人数 -->
+		<div class="win_bg" v-show="showPeopleBox"></div>
+		<div class="people_change_box" v-show="showPeopleBox">
+			<dl class="people_dl">
+				<dt>Guest Number: </dt>
+				<dd>
+					<div class="number_box">
+						<span class="btn_minus iconfont" @click="peopleMinus">&#xe64d;</span>
+						<span class="people_number">{{peopleNum}}</span>
+						<span class="btn_plus iconfont" @click="peoplePlus">&#xe64b;</span>
+					</div>
+				</dd>
+			</dl>
+
+			<div class="btn people_change_btn" @click="changePeople">Submit</div>
+			
+		</div>
+
 		<Loading :loadingStatus="loadingStatus"></Loading>
+		
 	</div>
 </template>
 <script>
@@ -606,11 +708,13 @@
 			}
 
 			//默认请求接口post的数据
+			var participants = query.participants ? query.participants : 2;
 			var postData = {
 				keyword:loc=='Xian'?"Xi'an":loc,
 				pageNum:1,
 				pageSize:10,
-				sort:{"type":"SCORE"}
+				sort:{"type":"SCORE"},
+				participants: participants
 			};
 
 
@@ -657,7 +761,7 @@
 			if(sort){
 				postData.sort = sort;
 			}
-
+			
 			try{
 				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(postData), {
 					headers: {
@@ -728,6 +832,7 @@
 				postData: postData,
 				keyword: keyword?keyword:locNew,
 				defaultKeyword: keyword?keyword:locNew,
+				query: query,
 
 				cityCheck:loc,
 				city: city,
@@ -750,7 +855,9 @@
 				loadingStatus: false,
 				showClear: hasFilterCheck?true:false,
 
-				showHeaderSearch: false
+				showHeaderSearch: false,
+				peopleNum: participants,
+				showPeopleBox:false
 			}
 		},
 		computed:{
@@ -969,7 +1076,10 @@
 					jumpData.sort = JSON.stringify({"type": "SALES"})
 				}
 
-				
+				//人数
+				if(this.peopleNum!=2){
+					jumpData.participants = this.peopleNum;
+				}
 
 				//去掉空数据,并对跳转的数据排序，把需要的数据放在新的options里
 				var options = {};
@@ -982,14 +1092,7 @@
 				jumpData.options = encodeURIComponent(JSON.stringify(options));
 
 				//检测是否有某个筛选项，并对有效的筛选项做url连接
-				var urlQuery = '';
-				for(var key in jumpData){
-					//检测有效数据
-					if(JSON.stringify(jumpData[key]) != '{}' && jumpData[key] != '%7B%7D' && jumpData[key] != ''){
-						urlQuery += '&' + key + '=' + jumpData[key];
-					}
-				};
-				urlQuery = urlQuery.substring(1); //去掉第一个&
+				var urlQuery = this.getUrlQuery(jumpData);
 				
 				//有数据则跳转
 				location.href = '/activity/list/China' + (urlQuery ? ('?' + urlQuery) : '');
@@ -997,6 +1100,16 @@
 				//var hasOptions = JSON.stringify(options)!='{}';
 				//location.href = path + (hasOptions?'?options=' + optionsEncode:'') + (sort?(hasOptions?'&':'?')+'sort='+JSON.stringify(sort):'');
 
+			},
+			getUrlQuery(jumpData){
+				var urlQuery = '';
+				for(var key in jumpData){
+					//检测有效数据
+					if(JSON.stringify(jumpData[key]) != '{}' && jumpData[key] != '%7B%7D' && jumpData[key] != ''){
+						urlQuery += '&' + key + '=' + jumpData[key];
+					}
+				};
+				return urlQuery.substring(1); //去掉第一个&
 			},
 			hideBodyScroll(){
 				document.getElementsByTagName('html')[0].style.overflowY = 'hidden';
@@ -1100,7 +1213,42 @@
 			},
 			listSearch(){
 				this.jumpUrl();
+			},
+
+			//选择人数
+			peopleMinus(e){
+				this.peopleNum--;
+				var minLen = 1;
+				if(this.peopleNum <= minLen){
+					e.target.style.opacity = 0.5;
+					this.peopleNum = minLen;
+				}else{
+					e.target.parentNode.getElementsByClassName('btn_plus')[0].style.opacity = 1;
+				}
+			},
+			peoplePlus(e){
+				this.peopleNum++;
+				var maxLen = 20;
+				if(this.peopleNum >= maxLen){
+					e.target.style.opacity = 0.5;
+					this.peopleNum = maxLen;
+				}else{
+					e.target.parentNode.getElementsByClassName('btn_minus')[0].style.opacity = 1;
+				}
+			},
+			changePeople(){
+				//this.showPeopleBox=false;
+
+				var urlObj = this.$route.query;
+				urlObj.participants = this.peopleNum;
+				var urlQuery = this.getUrlQuery(urlObj);
+
+				//有数据则跳转
+				location.href = '/activity/list/China' + (urlQuery ? ('?' + urlQuery) : '');
+				this.loadingStatus = true;
+
 			}
+			
 		},
 		watch: {
 			showProducts:function(value){
@@ -1128,7 +1276,7 @@
 			}
 		},
 		mounted: function() {
-			console.log(this.$data);
+			console.log(this.$data.listdata);
 
 			var self = this;
 

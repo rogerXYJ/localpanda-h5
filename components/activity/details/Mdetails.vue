@@ -10,16 +10,26 @@
 			</div>
 
 			<div class="price">
+
+				<div class="people_change" @click="showPeopleBox=true">
+					pp for party of {{peopleNum}}
+					<span class="iconfont">&#xe666;</span>
+				</div>
+
+				<div class="picinfo">
+					<!-- <p v-if="picInfo.originalPrice">From <span class="oldpic">{{nowExchange.symbol}} {{returnFloat(picInfo.originalPrice)}}</span></p> -->
+					<p> <b>{{nowExchange.symbol}} {{detailAll.length>0 ? returnFloat(detailAll[peopleNum-detailAll[0].capacity].price/peopleNum) : ''}}</b></p>
+				</div>
+
+				
+
 				<div class="picRate">
 					<select class="currency_type" id="changeCurrency" @change="changeCurrency" v-model="defaultCurrency">
 						<option :value="item.code" v-for="item in exchange" :key="item.code">{{item.code}}</option>
 					</select>
 					<span class="iconfont">&#xe666;</span>
 				</div>
-				<div class="picinfo">
-					<p v-if="picInfo.originalPrice">From <span class="oldpic">{{nowExchange.symbol}} {{returnFloat(picInfo.originalPrice)}}</span></p>
-					<p> <b>{{nowExchange.symbol}} {{returnFloat(picInfo.bottomPrice)}}</b> pp</p>
-				</div>
+				
 			</div>
 
 			<div class="toursMessage">
@@ -208,6 +218,28 @@
 			<button class="bookBtn" @click="goBooking">Book</button>
 		</div>
 		<photo :photoList="photoList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></photo>
+
+
+		<!-- 选人数 -->
+		<div class="win_bg" v-show="showPeopleBox"></div>
+		<div class="people_change_box" v-show="showPeopleBox">
+			<dl class="people_dl">
+				<dt>Guest Number: </dt>
+				<dd>
+					<div class="number_box">
+						<span class="btn_minus iconfont" @click="peopleMinus">&#xe64d;</span>
+						<span class="people_number">{{peopleNum}}</span>
+						<span class="btn_plus iconfont" @click="peoplePlus">&#xe64b;</span>
+					</div>
+				</dd>
+			</dl>
+
+			<div class="btn people_change_btn" @click="showPeopleBox=!showPeopleBox">Submit</div>
+			
+		</div>
+
+
+
 	</div>
 	
 </template>
@@ -243,16 +275,21 @@ import photo from '~/components/activity/details/photo'
 		],
 		name: 'm-details',
 		data() {
+			var participants = parseInt(this.$route.query.participants);
 			return {
 				isShowMore: false,
 				showbtn: 0,
 				sixArr: [],
 				isShowTable: false, //价格明细
 				alertPicStatus: false,
+				detailAll:[],
 				
 				defaultCurrency : 'USD',
 				nowExchange:{},//{'rate':1,'currency':'USD','symbol':'$'}
-				exchange:[]
+				exchange:[],
+
+				peopleNum: participants ? participants : 2,
+				showPeopleBox: false
 				
 		}
 	},
@@ -309,6 +346,8 @@ import photo from '~/components/activity/details/photo'
 					}
 				}
 				
+				this.detailAll = this.tableData(thisDetail);
+
 				if(this.people>0){
 					this.adultsPic = thisDetail[this.people-1].price;
 				}
@@ -393,7 +432,7 @@ import photo from '~/components/activity/details/photo'
 				console.log(objDetail)
 				objDetail=JSON.stringify(objDetail)
 				localStorage.setItem("objDetail",objDetail)
-				location.href="/activity/check/"
+				location.href="/activity/check/?people="+this.peopleNum;
 			},
 			 returnFloat(value) {
 				value*=1;
@@ -437,7 +476,8 @@ import photo from '~/components/activity/details/photo'
 					}
 					
 				}else{
-					for(let i = 0; i < details.length; i++) {
+					
+					for(let i = 0; i < details[details.length-1].capacity; i++) {
 						let thisD = details[i];
 						newArr.push(thisD);
 						if(i + 1 > details.length - 1) break;
@@ -454,13 +494,32 @@ import photo from '~/components/activity/details/photo'
 					}
 				}
 				
-
 				for(var k = 0; k < newArr.length; k++) {
-					newArr[k].capacity = k + 1;
+					newArr[k].capacity = k + newArr[0].capacity;
 
 				}
 				
 				return newArr;
+			},
+			peopleMinus(e){
+				this.peopleNum--;
+				var minLen = this.picInfo.minParticipants;
+				if(this.peopleNum <= minLen){
+					e.target.style.opacity = 0.5;
+					this.peopleNum = minLen;
+				}else{
+					e.target.parentNode.getElementsByClassName('btn_plus')[0].style.opacity = 1;
+				}
+			},
+			peoplePlus(e){
+				this.peopleNum++;
+				var maxLen = this.picInfo.maxParticipants;
+				if(this.peopleNum >= maxLen){
+					e.target.style.opacity = 0.5;
+					this.peopleNum = maxLen;
+				}else{
+					e.target.parentNode.getElementsByClassName('btn_minus')[0].style.opacity = 1;
+				}
 			}
 		},
 		filters: {
@@ -499,8 +558,10 @@ import photo from '~/components/activity/details/photo'
 				that.picInfo.childDiscountDefault = that.picInfo.childDiscount;
 			}
 
+			
 			//设置价格详情页，渲染数据
 			that.detailAll = that.tableData(that.picInfo.details);
+			
 			if(that.tableData(that.picInfo.details).length>5){
 				that.isShowTable=true
 				that.sixArr=that.detailAll.concat().splice(0,6);
@@ -517,6 +578,11 @@ import photo from '~/components/activity/details/photo'
 			});
 			
 
+			//根据最低成团人数修改默认人数
+			if(this.picInfo.minParticipants>2 && this.peopleNum<=this.picInfo.minParticipants){
+				this.peopleNum = this.picInfo.minParticipants;
+				document.querySelectorAll('.people_change_box .btn_minus')[0].style.opacity = 0.5;
+			}
 
 			//var ua = window.navigator.userAgent.toLowerCase();
 			//that.isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
@@ -616,10 +682,11 @@ import photo from '~/components/activity/details/photo'
 	}
 
 	.price {
-		text-align: right;
+		
 	.picinfo {
-			display: inline-block;
-			
+		float: right;
+		line-height: 0.74rem;
+		margin-right: 0.4rem;
 			p {
 				font-size: 0.28rem;
 				color: #878e95;
@@ -643,7 +710,6 @@ import photo from '~/components/activity/details/photo'
 			}
 			.iconfont {
 				float: right;
-				margin-top: 0.2rem;
 				height: 0.8rem;
 				line-height: 0.8rem;
 				text-align: center;
@@ -657,7 +723,31 @@ import photo from '~/components/activity/details/photo'
 				height: 0.8rem;
 				padding: 0 0 0 0.2rem;
 				font-size: 0.28rem;
-				margin-top: 0.2rem;
+				-webkit-appearance: none;
+				-moz-appearance: none;
+				appearance: none;
+			}
+		}
+		.people_change{
+			float: right;
+			
+			font-size: 0.32rem;
+			line-height: 0.8rem;
+			.iconfont {
+				float: right;
+				height: 0.8rem;
+				line-height: 0.8rem;
+				text-align: center;
+				font-size: 0.4rem;
+				color: #666;
+			}
+			.people_length {
+				background: none;
+				color: #666;
+				border: none;
+				height: 0.8rem;
+				padding: 0 0 0 0.2rem;
+				font-size: 0.28rem;
 				-webkit-appearance: none;
 				-moz-appearance: none;
 				appearance: none;
@@ -710,6 +800,7 @@ import photo from '~/components/activity/details/photo'
 				}
 			}
 			.toursMessage {
+				margin-top: 0.3rem;
 				ul {
 					li {
 						margin-top: 0.2rem;
@@ -1075,6 +1166,63 @@ import photo from '~/components/activity/details/photo'
 		.show {
 			overflow: inherit!important;
 			height: auto!important;
+		}
+
+		.win_bg{
+			width: 100%;
+			height: 100%;
+			position: fixed;
+			left: 0;
+			top: 0;
+			background-color: rgba(0,0,0,0.6);
+			z-index: 100;
+		}
+		.people_change_box{
+			position: fixed;
+			width: 90%;
+			left: 5%;
+			top:30%;
+			z-index: 100;
+			padding: 1rem 0.4rem;
+			background-color:#fff;
+			.people_dl{
+				padding-left: 2rem;
+				dt{
+					float: left;
+					margin-left: -2rem;
+					font-size:0.32rem;
+					line-height: 0.6rem;
+				}
+				dd{
+					.number_box{
+						text-align: center;
+						span{
+							vertical-align: top;
+						}
+						.iconfont{
+							display: inline-block;
+							width: 0.6rem;
+							height: 0.6rem;
+							line-height: 0.6rem;
+							text-align: center;
+							border:#1bbc9d solid 1px;
+							color: #1bbc9d;
+							border-radius:50%;
+							margin: 0 0.2rem;
+						}
+						.people_number{
+							display: inline-block;
+							line-height: 0.6rem;
+							font-size:0.4rem;
+							min-width: 0.6rem;
+						}
+
+					}
+				}
+			}
+			.people_change_btn{
+				margin-top: 1rem;
+			}
 		}
 	}
 </style>
