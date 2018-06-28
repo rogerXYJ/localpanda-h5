@@ -191,6 +191,7 @@
 				if(details.length==1){
 					for(let i=0;i<details[0].capacity;i++){
 						var s=newObj(details[0]);
+						s.capacity = i+1;
 						newArr.push(s)
 					}
 					
