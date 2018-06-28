@@ -781,11 +781,13 @@
 			//列表页数据
 			var data = listdata.data;
 
+			//console.log(data);
+
 			//根据接口数据，生成需要筛选的类型默认数据和默认filter数据
 			var filterAll = {},
 				filterCheck = {};
 			var participantsAll = {};
-			if(data.aggregations){
+			if(data.aggregations && data.records){
 				data.aggregations.forEach(item => {
 					var thisFilter = [];
 					for(var key in item.items){
