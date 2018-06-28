@@ -570,6 +570,7 @@ import photo from '~/components/activity/details/photo'
 				}
 			}, function(response) {});
 			
+			this.picInfo.defaultCurrency = this.picInfo.currency;
 			//调整不同币种价格数据
 			that.setPriceData();
 			if(that.picInfo.childDiscount){

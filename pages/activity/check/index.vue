@@ -375,7 +375,7 @@
 
 
 			//加载币种
-			that.axios.get("https://api.localpanda.com/api/public/currency/all/"+that.picInfo.currency).then(function(response) {
+			that.axios.get("https://api.localpanda.com/api/public/currency/all/"+that.picInfo.defaultCurrency).then(function(response) {
 				// console.log(response);
 				if(response.status==200){
 					that.exchange = response.data;
