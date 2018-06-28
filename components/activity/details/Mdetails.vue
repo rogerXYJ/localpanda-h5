@@ -26,7 +26,7 @@
 
 				<div class="picinfo">
 					<!-- <p v-if="picInfo.originalPrice">From <span class="oldpic">{{nowExchange.symbol}} {{returnFloat(picInfo.originalPrice)}}</span></p> -->
-					<p> <b>{{nowExchange.symbol}} {{detailAll.length>0 ? returnFloat(detailAll[peopleNum-detailAll[0].capacity].price/(picInfo.details.length>1 ? peopleNum : 1)) : ''}}</b></p>
+					<p> <b>{{nowExchange.symbol}} {{detailAll.length>0 ? returnFloat(detailAll[peopleNum-detailAll[0].capacity].price/peopleNum) : ''}}</b></p>
 				</div>
 
 				
@@ -120,7 +120,7 @@
 							<td><span>{{nowExchange.symbol}} {{returnFloat(item.price)}} {{nowExchange.code}}</span></td>
 							<td>
 								<div v-show="item.capacity">
-									<span>{{nowExchange.symbol}} {{returnFloat(picInfo.details.length>1 ? item.price/item.capacity : item.price)}} {{nowExchange.code}}</span>
+									<span>{{nowExchange.symbol}} {{returnFloat(item.price/item.capacity)}} {{nowExchange.code}}</span>
 								</div>
 							</td>
 						</tr>

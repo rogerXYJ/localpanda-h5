@@ -531,7 +531,7 @@
 			<div class="select_people">
 				<!-- {{peopleNum}} People <i class="iconfont">&#xe666;</i> -->
 				<select v-model="peopleNum" @change="changePeople">
-					<option :value="item" :key="index" v-for="(item,index) in participantsAll.maxValue" v-if="item>=participantsAll.minValue">{{item}} People</option>
+					<option :value="item" :key="index" v-for="(item,index) in participantsAll.maxValue" v-if="item>=participantsAll.minValue">{{item}} {{item==1?'Person':'People'}}</option>
 				</select>
 				<i class="iconfont">&#xe666;</i>
 			</div>
@@ -713,12 +713,15 @@
 
 			//默认请求接口post的数据
 			var participants = query.participants ? parseInt(query.participants) : 2;
+			var gaType = query.type ? query.type : 'direct';
+
 			var postData = {
 				keyword:loc=='Xian'?"Xi'an":loc,
 				pageNum:1,
 				pageSize:10,
 				sort:{"type":"SCORE"},
-				participants: participants
+				participants: participants,
+				type: gaType
 			};
 
 
@@ -876,8 +879,7 @@
 				showHeaderSearch: false,
 
 				participantsAll:participantsAll,
-				peopleNum: participants<participantsAll.minValue?participantsAll.minValue:participants,
-				//showPeopleBox:false
+				peopleNum: participants<participantsAll.minValue?participantsAll.minValue:participants
 			}
 		},
 		computed:{
