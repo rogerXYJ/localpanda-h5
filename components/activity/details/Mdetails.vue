@@ -11,14 +11,22 @@
 
 			<div class="price">
 
-				<div class="people_change" @click="showPeopleBox=true">
+				<!-- <div class="people_change" @click="showPeopleBox=true">
 					pp for party of {{peopleNum}}
 					<span class="iconfont">&#xe666;</span>
+				</div> -->
+
+				<div class="select_people">
+					<!-- {{peopleNum}} People <i class="iconfont">&#xe666;</i> -->
+					<select v-model="peopleNum" @change="changePeople">
+						<option :value="item" :key="index" v-for="(item,index) in picInfo.maxParticipants" v-if="item>=picInfo.minParticipants">pp for party of {{item}}</option>
+					</select>
+					<i class="iconfont">&#xe666;</i>
 				</div>
 
 				<div class="picinfo">
 					<!-- <p v-if="picInfo.originalPrice">From <span class="oldpic">{{nowExchange.symbol}} {{returnFloat(picInfo.originalPrice)}}</span></p> -->
-					<p> <b>{{nowExchange.symbol}} {{detailAll.length>0 ? returnFloat(detailAll[peopleNum-detailAll[0].capacity].price/peopleNum) : ''}}</b></p>
+					<p> <b>{{nowExchange.symbol}} {{detailAll.length>0 ? returnFloat(detailAll[peopleNum-detailAll[0].capacity].price/(picInfo.details.length>1 ? peopleNum : 1)) : ''}}</b></p>
 				</div>
 
 				
@@ -112,7 +120,7 @@
 							<td><span>{{nowExchange.symbol}} {{returnFloat(item.price)}} {{nowExchange.code}}</span></td>
 							<td>
 								<div v-show="item.capacity">
-									<span>{{nowExchange.symbol}} {{returnFloat(item.price/item.capacity)}} {{nowExchange.code}}</span>
+									<span>{{nowExchange.symbol}} {{returnFloat(picInfo.details.length>1 ? item.price/item.capacity : item.price)}} {{nowExchange.code}}</span>
 								</div>
 							</td>
 						</tr>
@@ -221,8 +229,8 @@
 
 
 		<!-- 选人数 -->
-		<div class="win_bg" v-show="showPeopleBox"></div>
-		<div class="people_change_box" v-show="showPeopleBox">
+		<!-- <div class="win_bg" v-show="showPeopleBox" @touchmove="noScroll"></div>
+		<div class="people_change_box" v-show="showPeopleBox" @touchmove="noScroll">
 			<dl class="people_dl">
 				<dt>Guest Number: </dt>
 				<dd>
@@ -236,7 +244,7 @@
 
 			<div class="btn people_change_btn" @click="showPeopleBox=!showPeopleBox">Submit</div>
 			
-		</div>
+		</div> -->
 
 
 
@@ -472,6 +480,7 @@ import photo from '~/components/activity/details/photo'
 				if(details.length==1){
 					for(let i=0;i<details[0].capacity;i++){
 						var s=newObj(details[0]);
+						s.capacity = i+1;
 						newArr.push(s)
 					}
 					
@@ -498,6 +507,8 @@ import photo from '~/components/activity/details/photo'
 					newArr[k].capacity = k + newArr[0].capacity;
 
 				}
+
+				//console.log(newArr);
 				
 				return newArr;
 			},
@@ -520,6 +531,13 @@ import photo from '~/components/activity/details/photo'
 				}else{
 					e.target.parentNode.getElementsByClassName('btn_minus')[0].style.opacity = 1;
 				}
+			},
+			changePeople(e){
+				this.peopleNum = e.target.value;
+			},
+			noScroll(e){
+				e.preventDefault();
+				return false;
 			}
 		},
 		filters: {
@@ -584,6 +602,7 @@ import photo from '~/components/activity/details/photo'
 				document.querySelectorAll('.people_change_box .btn_minus')[0].style.opacity = 0.5;
 			}
 
+			//console.log(this.picInfo);
 			//var ua = window.navigator.userAgent.toLowerCase();
 			//that.isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
 		},
@@ -686,7 +705,7 @@ import photo from '~/components/activity/details/photo'
 	.picinfo {
 		float: right;
 		line-height: 0.74rem;
-		margin-right: 0.4rem;
+		margin-right: 0.3rem;
 			p {
 				font-size: 0.28rem;
 				color: #878e95;
@@ -703,7 +722,6 @@ import photo from '~/components/activity/details/photo'
 			display: inline-block;
 			color: #fff;
 			position: relative;
-			opacity: 0.5;
 			margin-right: 0.2rem;
 			span {
 				font-size: 10px;
@@ -713,44 +731,48 @@ import photo from '~/components/activity/details/photo'
 				height: 0.8rem;
 				line-height: 0.8rem;
 				text-align: center;
-				font-size: 0.4rem;
+				font-size: 0.36rem;
 				color: #666;
+				font-weight: bold;
 			}
 			.currency_type {
 				background: none;
 				color: #666;
 				border: none;
 				height: 0.8rem;
-				padding: 0 0 0 0.2rem;
 				font-size: 0.28rem;
 				-webkit-appearance: none;
 				-moz-appearance: none;
 				appearance: none;
 			}
 		}
-		.people_change{
+		.select_people{
 			float: right;
-			
+			position: relative;
 			font-size: 0.32rem;
 			line-height: 0.8rem;
-			.iconfont {
-				float: right;
+			i{
+				position: absolute;
+				right: 0;
+				top: 0;
 				height: 0.8rem;
 				line-height: 0.8rem;
-				text-align: center;
-				font-size: 0.4rem;
-				color: #666;
+				vertical-align: top;
+				font-size: 0.36rem;
+				font-weight: bold;
 			}
-			.people_length {
+			select{
+				width: 100%;
+				height: 100%;
+				line-height: 0.8rem;
+				padding: 0 0.4rem 0 0.2rem;
 				background: none;
-				color: #666;
 				border: none;
-				height: 0.8rem;
-				padding: 0 0 0 0.2rem;
-				font-size: 0.28rem;
-				-webkit-appearance: none;
-				-moz-appearance: none;
-				appearance: none;
+				appearance:none;
+				-moz-appearance:none;
+				-webkit-appearance:none;
+				position: relative;
+				z-index: 2;
 			}
 		}
 	}
@@ -770,7 +792,8 @@ import photo from '~/components/activity/details/photo'
 			.activitiyTitle {
 				margin-top: 0.1rem;
 				h3 {
-					font-size: 0.46rem;
+					font-size: 0.34rem;
+					line-height: 0.4rem;
 					font-weight: bold;
 				}
 				.types {

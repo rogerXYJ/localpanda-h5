@@ -246,7 +246,8 @@
 
 			},
 			setCallBackDetail(val){
-				this.isshowDetail=val
+				this.isshowDetail=val;
+				history.back()
 			},
 			getSave(val) {
 				this.adults = val.adults
@@ -254,6 +255,9 @@
 				this.infant = val.infant
 			},
 			showPriceDetail(){
+				history.pushState({
+					'type':'showDialog'
+				},'');
 				this.isshowDetail=true
 			},
 			cutXiaoNum(num, len) {
@@ -413,6 +417,12 @@
 			document.getElementById('win_bg').addEventListener('touchstart', function() {
 				that.showWinBg=false
 			})
+
+			window.onpopstate = function(event) {
+				if(that.isshowDetail){
+					that.isshowDetail = false;
+				}
+			};
 			
 		},
 		watch: {

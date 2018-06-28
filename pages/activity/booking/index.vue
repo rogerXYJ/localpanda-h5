@@ -169,7 +169,9 @@
 		methods: {
 			//关闭国家
 			setback(val){
-				this.isShowBook=val	
+				this.isShowBook=val;
+				//关闭后退浏览器
+				history.back()
 			},
 			//获取code
 			setCode(val){
@@ -181,7 +183,10 @@
 					this.mobileTravellCode=val.mobileCode
 					this.TravellerCode=val.code
 				}
-				this.isShowBook=val.status
+				this.isShowBook=val.status;
+
+				//关闭后退浏览器
+				history.back()
 			},
 			back(){
 				 history.back()
@@ -195,7 +200,12 @@
 					this.TravellerCodeErr=false
 					this.index=1
 				}
-				this.isShowBook=true
+				this.isShowBook=true;
+
+				//浏览器弹窗后，添加一个新页面记录。
+				history.pushState({
+					'type':'showDialog'
+				},'');
 			},
 			checkFn(id) {
 				if(id == 0) {
@@ -513,10 +523,20 @@
 			
 		},
 		mounted: function() {
+			var self= this;
+
 			this.opctions = JSON.parse(localStorage.getItem("orderInfo"))
 			this.logIn = window.localStorage.getItem("logstate")
 			/*this.goBackFn()*/
 			console.log(countryCode)
+
+			//浏览器事件处理
+			window.onpopstate = function(event) {
+				if(self.isShowBook){
+					self.isShowBook = false;
+				}
+			};
+
 		},
 		watch: {
 			isShowBook:function(val,oldVal){

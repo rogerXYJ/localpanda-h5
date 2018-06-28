@@ -366,7 +366,6 @@
 				top: 0.22rem;
 				border-left: #ededed solid 1px;
 				z-index: 3;
-				width: 2.7rem;
 				height: 0.62rem;
 				line-height: 0.62rem;
 				padding-left: 0.15rem;
@@ -375,10 +374,27 @@
 				vertical-align: top;
 				font-size: 0.26rem;
 				i{
-					position: relative;
+					position: absolute;
+					right: 0.1rem;
+					top: 0;
+					width: 0.4rem;
+					height: 0.62rem;
+					line-height: 0.62rem;
 					vertical-align: top;
 					font-size: 0.36rem;
 					font-weight: bold;
+				}
+				select{
+					width: 100%;
+					height: 100%;
+					padding: 0 0.6rem 0 0.2rem;
+					background: none;
+					border: none;
+					appearance:none;
+					-moz-appearance:none;
+					-webkit-appearance:none;
+					position: relative;
+					z-index: 2;
 				}
 			}
 			.h_search_input_box{
@@ -512,8 +528,15 @@
 				<p></p>
 			</div>
 
-			<span class="select_people" @click="showPeopleBox=true">Guests：{{peopleNum}} People <i class="iconfont">&#xe666;</i></span>
+			<div class="select_people">
+				<!-- {{peopleNum}} People <i class="iconfont">&#xe666;</i> -->
+				<select v-model="peopleNum" @change="changePeople">
+					<option :value="item" :key="index" v-for="(item,index) in participantsAll.maxValue" v-if="item>=participantsAll.minValue">{{item}} People</option>
+				</select>
+				<i class="iconfont">&#xe666;</i>
+			</div>
 		</div>
+		<!-- participantsAll -->
 
 		<!-- 筛选 -->
 		<div class="filter_box" id="filter_box">
@@ -581,7 +604,7 @@
 							<p class="destination"><b>Destination:</b>{{item.destinations.join(' & ')}}</p>
 							
 							<div class="price_box clearfix">
-								<span class="list_price">From<b>${{item.bottomPrice}}</b>pp</span>
+								<span class="list_price">From<b>${{item.perPersonPrice}}</b>pp</span>
 								<span class="tag_private" v-if="item.groupType=='Private'">{{item.groupType}}</span>
 								<span class="tag_group" v-if="item.groupType=='Group'">{{item.groupType}}</span>
 							</div>
@@ -624,25 +647,6 @@
 			<div class="filter_dialog_footer">
 				<span class="btn" @click="filterConfirm">See experiences</span>
 			</div>
-		</div>
-
-
-		<!-- 选人数 -->
-		<div class="win_bg" v-show="showPeopleBox"></div>
-		<div class="people_change_box" v-show="showPeopleBox">
-			<dl class="people_dl">
-				<dt>Guest Number: </dt>
-				<dd>
-					<div class="number_box">
-						<span class="btn_minus iconfont" @click="peopleMinus">&#xe64d;</span>
-						<span class="people_number">{{peopleNum}}</span>
-						<span class="btn_plus iconfont" @click="peoplePlus">&#xe64b;</span>
-					</div>
-				</dd>
-			</dl>
-
-			<div class="btn people_change_btn" @click="changePeople">Submit</div>
-			
 		</div>
 
 		<Loading :loadingStatus="loadingStatus"></Loading>
@@ -708,7 +712,7 @@
 			}
 
 			//默认请求接口post的数据
-			var participants = query.participants ? query.participants : 2;
+			var participants = query.participants ? parseInt(query.participants) : 2;
 			var postData = {
 				keyword:loc=='Xian'?"Xi'an":loc,
 				pageNum:1,
@@ -762,6 +766,7 @@
 				postData.sort = sort;
 			}
 			
+			//console.log(postData);
 			try{
 				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(postData), {
 					headers: {
@@ -776,6 +781,7 @@
 			//根据接口数据，生成需要筛选的类型默认数据和默认filter数据
 			var filterAll = {},
 				filterCheck = {};
+			var participantsAll = {};
 			if(data.aggregations){
 				data.aggregations.forEach(item => {
 					var thisFilter = [];
@@ -784,7 +790,16 @@
 					}
 					//当前类型
 					var thisType = item.type.toLowerCase();
-					filterAll[thisType] = thisFilter;  ////添加filter每种类型数据
+					if(item.items){
+						filterAll[thisType] = thisFilter;  ////添加filter每种类型数据
+					};
+
+					//人数选择
+					if(thisType == 'min_participants'){
+						participantsAll['minValue'] = item.value;
+					}else if(thisType == 'max_participants'){
+						participantsAll['maxValue'] = item.value;
+					}
 					
 					//检测url是否有老的筛选类型
 					if(options[oldTypeKey(thisType)]){
@@ -825,6 +840,9 @@
 				locNew = '';
 			}
 
+
+			//console.log(participantsAll);
+
 			return {
 				listdata: data,
 				activityList: data.entities?data.entities:[],
@@ -856,8 +874,10 @@
 				showClear: hasFilterCheck?true:false,
 
 				showHeaderSearch: false,
-				peopleNum: participants,
-				showPeopleBox:false
+
+				participantsAll:participantsAll,
+				peopleNum: participants<participantsAll.minValue?participantsAll.minValue:participants,
+				//showPeopleBox:false
 			}
 		},
 		computed:{
@@ -947,6 +967,11 @@
 				this.showProducts= false;
 				this.showRank = false;
 
+				//浏览器弹窗后，添加一个新页面记录。
+				history.pushState({
+					'type':'showDialog'
+				},'');
+
 				if(this.showFilter){
 					//GA统计
 					this.ga('filter','filter_open');
@@ -959,6 +984,9 @@
 
 				//恢复check状态
 				this.filterCheck = JSON.parse(JSON.stringify(this.filterCheckDefault));
+
+				//关闭后退浏览器
+				history.back()
 			},
 			//确定选择
 			filterConfirm(){
@@ -1236,9 +1264,9 @@
 					e.target.parentNode.getElementsByClassName('btn_minus')[0].style.opacity = 1;
 				}
 			},
-			changePeople(){
+			changePeople(e){
 				//this.showPeopleBox=false;
-
+				this.peopleNum = e.target.value;
 				var urlObj = this.$route.query;
 				urlObj.participants = this.peopleNum;
 				var urlQuery = this.getUrlQuery(urlObj);
@@ -1309,6 +1337,13 @@
 					this.isFixed=false
 				}
 			});
+
+			//浏览器事件处理
+			window.onpopstate = function(event) {
+				if(self.showFilter){
+					self.showFilter = false;
+				}
+			};
 			
 		},
 		head() {
