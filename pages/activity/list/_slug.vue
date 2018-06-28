@@ -621,7 +621,7 @@
 							<p class="destination"><b>Destination:</b>{{item.destinations.join(' & ')}}</p>
 							
 							<div class="price_box clearfix">
-								<span class="list_price">From<b>${{item.perPersonPrice}}</b>pp</span>
+								<span class="list_price"><b>${{item.perPersonPrice}}</b> pp for party of {{peopleNum}}</span>
 								<span class="tag_private" v-if="item.groupType=='Private'">{{item.groupType}}</span>
 								<span class="tag_group" v-if="item.groupType=='Group'">{{item.groupType}}</span>
 							</div>
@@ -1234,6 +1234,7 @@
 				
 				//修改翻页数量
 				this.postData.pageNum++;
+				
 				//请求数据
 				this.axios.post(that.apiBasePath + "search/activity", JSON.stringify(this.postData), {
 					headers: {
