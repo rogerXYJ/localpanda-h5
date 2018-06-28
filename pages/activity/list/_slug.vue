@@ -488,6 +488,23 @@
 			}
 		}
 
+		.inquire{
+			position: fixed;
+			right: 0.2rem;
+			bottom: 0.3rem;
+			z-index: 22;
+			background-color: #1bbc9d;
+			border: #1bbc9d solid 1px;
+			display: inline-block;
+			width: auto;
+			height: 0.86rem;
+			line-height: 0.86rem;
+			border-radius: 0.43rem;
+			font-size: 0.28rem;
+			font-weight: bold;
+			padding: 0 0.45rem;
+		}
+
 	}
 	
 
@@ -650,6 +667,9 @@
 		</div>
 
 		<Loading :loadingStatus="loadingStatus"></Loading>
+
+
+		<a href="/info/feedback/" class="btn inquire">Inquire</a>
 		
 	</div>
 </template>
