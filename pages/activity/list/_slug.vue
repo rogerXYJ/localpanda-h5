@@ -317,6 +317,13 @@
 						padding: 0.2rem 0.2rem 0.3rem;
 						margin-left: 0.3rem;
 					}
+					.filter_price{
+						padding: 0.4rem 0;
+						.filter_price_text{
+							margin-top: 0.2rem;
+							font-size: 0.26rem;
+						}
+					}
 				}
 				
 			}
@@ -643,9 +650,15 @@
 				<span class="filter_clear" @click="filterClear" v-show="showClear">Clear</span>
 			</Back>
 			<div class="filter_content">
-				<dl :key="index" v-for="(item,index) in aggregations" v-show="item.items && item.type !='CATEGORY'">
+				<dl :key="index" v-for="(item,index) in aggregations" v-if="item.items && item.type !='CATEGORY' || item.type =='PRICE'">
 					<dt>{{getFilterType(item.type)}}</dt>
-					<dd v-if="item.type=='DURATION'">
+					<dd v-if="item.type=='PRICE'">
+						<div class="filter_price">
+							<slider v-model="sliderValue" max="500" step="5"></slider>
+							<div class="filter_price_text">Price from ${{sliderValue[0]}} to ${{sliderValue[1]}}</div>
+						</div>
+					</dd>
+					<dd v-else-if="item.type=='DURATION'">
 						<checkbox-group v-model="filterCheck.duration">
 							<checkbox :change="filterChange" :key="index2" v-for="(itemType,key,index2) in item.items" :label="key">{{getDayStr(key)}} ( {{itemType}} )</checkbox>
 						</checkbox-group>
@@ -680,6 +693,7 @@
 	import Foot from "~/components/footer/index"
 	import {checkboxGroup,checkbox} from "~/plugins/panda/checkbox/"
 	import {radioGroup,radio} from "~/plugins/panda/radio/"
+	import slider from "~/plugins/panda/slider/"
 	import InfiniteLoading from 'vue-infinite-loading/src/components/Infiniteloading.vue'
 	import Loading from "~/components/plugin/Loading"
 
@@ -695,6 +709,7 @@
 			checkbox,
 			radioGroup,
 			radio,
+			slider,
 			InfiniteLoading,
 			Loading
 		},
@@ -765,19 +780,37 @@
 				return text;
 			};
 
-			
+			var price = [0,500];
 
+			
 			//根据url数据生成post需要的格式
 			var postFilters = [];
 			for(var key in options){
 				var keyUpper = key.toUpperCase();
-				postFilters.push({
-					type: oldType(keyUpper),//兼容老的字段
-					filterValues: options[key]
-				});
+				if(keyUpper=='PRICE'){
+					postFilters.push({
+						type: keyUpper,
+						minValue: options[key].minValue,
+						maxValue: options[key].maxValue
+					});
+					//设置默认价格区间
+					price = [options[key].minValue,options[key].maxValue];
+
+				}else{
+					postFilters.push({
+						type: oldType(keyUpper),//兼容老的字段
+						filterValues: options[key]
+					});
+				}
+				
 			};
 
 			
+			//价格区间
+			// var price = {
+			// 	minValue : options.price.minValue,
+			// 	maxValue : options.price.maxValue
+			// };
 
 			//如果有筛选数据,则在默认数据里添加上filters
 			if(options){
@@ -806,7 +839,10 @@
 			//根据接口数据，生成需要筛选的类型默认数据和默认filter数据
 			var filterAll = {},
 				filterCheck = {};
+			//人数
 			var participantsAll = {};
+			
+
 			if(data.aggregations && data.records){
 				data.aggregations.forEach(item => {
 					var thisFilter = [];
@@ -901,7 +937,10 @@
 				showHeaderSearch: false,
 
 				participantsAll:participantsAll,
-				peopleNum: participants<participantsAll.minValue?participantsAll.minValue:participants
+				peopleNum: participants<participantsAll.minValue?participantsAll.minValue:participants,
+
+				//price: price,
+				sliderValue: price
 			}
 		},
 		computed:{
@@ -928,11 +967,12 @@
 
 				//设置自定义顺序
 				var sortDefault = {
+					'PRICE':2,
 					'CATEGORY':1,
-					'GROUP_TYPE':2,
-					'ATTRACTION':3,
-					'DURATION':4,
-					'TOUR_TYPE':5
+					'GROUP_TYPE':3,
+					'ATTRACTION':4,
+					'DURATION':5,
+					'TOUR_TYPE':6
 				};
 
 				//给数据添加排序的序号
@@ -1138,8 +1178,13 @@
 				for(var key in filterCheck){
 					if(filterCheck[key].length){
 						options[key] = filterCheck[key].sort();
+					}else if(key=='price' && !Array.isArray(filterCheck[key])){
+						options[key] = filterCheck[key];
 					}
 				}
+
+				
+
 				//设置当前筛选数据，并对数据做转码操作
 				jumpData.options = encodeURIComponent(JSON.stringify(options));
 
@@ -1216,6 +1261,7 @@
 					case 'ATTRACTION': typeStr = 'Points of Interest'; break;
 					case 'CATEGORY': typeStr = 'Products'; break;
 					case 'CITY': typeStr = 'DESTINATIONS'; break;
+					case 'PRICE': typeStr = 'Price / person for party of '+this.peopleNum; break;
 				};
 				return typeStr ? typeStr : type;
 			},
@@ -1300,6 +1346,10 @@
 				location.href = '/activity/list/China' + (urlQuery ? ('?' + urlQuery) : '');
 				this.loadingStatus = true;
 
+			},
+
+			showPrice(value){
+				return value
 			}
 			
 		},
@@ -1326,10 +1376,17 @@
 				}else{
 					this.showBodyScroll();
 				}
+			},
+			sliderValue:function(value){
+				this.filterCheck.price = {
+					minValue: value[0],
+					maxValue: value[1]
+				}
 			}
 		},
 		mounted: function() {
 			console.log(this.$data.listdata);
+			console.log(this.$data.price);
 
 			var self = this;
 

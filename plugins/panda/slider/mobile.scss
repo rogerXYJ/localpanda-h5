@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+.slider_box{
+  height: 0.56rem;
+  position: relative;
+  .slider_line_bg{
+    height: 0.06rem;
+    background-color: #ebebeb;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    width: 100%;
+    p{
+      width: 0;
+      height: 100%;
+      background-color: #f4b33f;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    span{
+      display: inline-block;
+      width: 0.56rem;
+      height: 0.56rem;
+      border-radius: 50%;
+      border: #f4b33f solid 1px;
+      background-color: #fff;
+      position: absolute;
+      left: 0;
+      top: -0.28rem;
+      transform: translateX(-50%);
+      -webkit-transform: translateX(-50%);
+    }
+  }
+}

@@ -21,7 +21,7 @@ export default {
 
 		if(!this.code){
 			localStorage.setItem('wxCodeReturnLink',this.returnLink);
-			location.href = 'http://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6d8182a46738b4c1&redirect_uri=https://www.localpanda.cn/wx/getcode&response_type=code&scope=snsapi_base&state=200#wechat_redirect';
+			location.href = 'http://open.weixin.qq.com/connect/oauth2/authorize?appid=wx6d8182a46738b4c1&redirect_uri=https://www.localpanda.com/wx/getcode&response_type=code&scope=snsapi_base&state=200#wechat_redirect';
 		}else{
 			var wxCodeReturnLink = localStorage.getItem('wxCodeReturnLink');
 			location.href = wxCodeReturnLink + (/\?/.test(wxCodeReturnLink) ? '&' : '?') +'code=' + this.code;

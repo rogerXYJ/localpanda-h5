@@ -73,14 +73,14 @@
 				</div>
 				<div class="inputItem" :class="{err:TravellerphoneErr}">
 					<p>Mobile Phone(optional)</p>
-					<input :class="{err:TravellerphoneErr}"  @focus="fousphonenumb()" v-model="Travellerphone" />
+					<input :class="{err:TravellerphoneErr}" @blur="gaBlur(3)"  @focus="fousphonenumb()" v-model="Travellerphone" />
 				</div>
 			</div>
 			<div class="Comments">
 				<div class="information">
 					<h4>Other Required Information</h4>
-					<textarea v-if="opctions.category=='Private Tour'" @blur="gaBlur(3)" v-model="comments" placeholder="please provide your hotel address so the guide can pick you up." onfocus="this.placeholder=''" onblur="this.placeholder='please provide your hotel address so the guide can pick you up.'"></textarea>
-					<textarea v-else v-model="comments" @blur="gaBlur(3)"></textarea>
+					<textarea v-if="opctions.category=='Private Tour'" @blur="gaBlur(4)" v-model="comments" placeholder="please provide your hotel address so the guide can pick you up." onfocus="this.placeholder=''" onblur="this.placeholder='please provide your hotel address so the guide can pick you up.'"></textarea>
+					<textarea v-else v-model="comments" @blur="gaBlur(4)"></textarea>
 				</div>
 
 				<p>You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.</p>
