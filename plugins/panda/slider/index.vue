@@ -9,6 +9,7 @@
       <p v-once :style="defaultLine()"></p>
       <span class="slider_btn" @touchmove="btnMove" @touchstart="btnStart" @touchend="btnEnd" v-once :style="defaultBtn1()"></span>
       <span class="slider_btn" @touchmove="btnMove" @touchstart="btnStart" @touchend="btnEnd" v-once :style="defaultBtn2()" v-if="value.length==2"></span>
+      <div class="slider_tip" v-show="showTip">{{tipValue==max?maxTipValue:tipValue}}<i></i></div>
     </div>
   </div>
 </template>
@@ -20,18 +21,21 @@
       value: Array,
       min: String,
       max: String,
+      maxTipValue: String,
       step: String
     },
 		data() {
       var min = this.min?this.min:0;
       var max = this.max?this.max:100;
 			return {
-        minValue: (this.value[0]<min)?this.value[0]:min,
-        maxValue: (this.value[1]>max)?this.value[1]:max,
+        minVal: (this.value[0]<min)?this.value[0]:min,
+        maxVal: (this.value[1]>max)?this.value[1]:max,
         stepNum: this.step ? parseInt(this.step) : 1,
         oldLeft: 0,
         oldX: 0,
-        sliderWidth: 0
+        sliderWidth: 0,
+        showTip: false,
+        tipValue: 0,
 			}
     },
     computed:{
@@ -47,6 +51,23 @@
         this.sliderWidth = parent.clientWidth;
         this.thisLine = parent.getElementsByTagName('p')[0];
         this.thisBtn = parent.getElementsByTagName('span');
+        this.thisTip = parent.getElementsByTagName('div')[0];
+
+        //显示提示
+        var def = Math.round((this.maxVal-this.minVal)*(target.offsetLeft/this.sliderWidth))+parseInt(this.minVal);
+        var stepNum = this.stepNum;
+        if(stepNum>1){
+          if(def%stepNum < stepNum/2){
+            def = def - def%stepNum;
+          }else{
+            def = def - def%stepNum + stepNum;
+          };
+        }
+        this.thisTip.style.left = this.oldLeft/this.sliderWidth*100 +'%';
+        this.tipValue = def;
+        this.showTip =true;
+
+        target.style.zIndex = 3;
         //this.btnWidth = e.target.clientWidth/2;
       },
       btnMove(e){
@@ -68,6 +89,7 @@
         }
         //修改拖拽按钮的位置
         target.style.left = left/this.sliderWidth*100 +'%';
+        this.thisTip.style.left = left/this.sliderWidth*100 +'%';
 
         //获得按钮拖拽后的最大，最小值
         var btnLeft1 = this.thisBtn[0].offsetLeft,
@@ -82,8 +104,9 @@
 
         
         
-        var min = Math.round((this.maxValue-this.minValue)*(left.min/this.sliderWidth))+parseInt(this.minValue),
-          max = Math.round((this.maxValue-this.minValue)*(left.max/this.sliderWidth))+parseInt(this.minValue);
+        var min = Math.round((this.maxVal-this.minVal)*(left.min/this.sliderWidth))+parseInt(this.minVal),
+          max = Math.round((this.maxVal-this.minVal)*(left.max/this.sliderWidth))+parseInt(this.minVal),
+          def = Math.round((this.maxVal-this.minVal)*(target.offsetLeft/this.sliderWidth))+parseInt(this.minVal);
 
         var stepNum = this.stepNum;
         //拖动数值变化最小区间
@@ -98,43 +121,54 @@
           }else{
             max = max - max%stepNum + stepNum;
           };
+
+          if(def%stepNum < stepNum/2){
+            def = def - def%stepNum;
+          }else{
+            def = def - def%stepNum + stepNum;
+          };
+          
         }
 
-        if(max>this.maxValue){
-          max = this.maxValue;
+        if(max>this.maxVal){
+          max = this.maxVal;
         }
-        if(min<this.minValue){
-          min = this.minValue;
+        if(min<this.minVal){
+          min = this.minVal;
         }
+
+
+        this.tipValue = def;
 
         //多个区间
         if(this.value.length==2){
           this.$emit('input',[min,max]);
         }else{
           //显示值单个
-          var value = Math.round((this.maxValue-this.minValue)*(btnLeft1/this.sliderWidth))+parseInt(this.minValue)
+          var value = Math.round((this.maxVal-this.minVal)*(btnLeft1/this.sliderWidth))+parseInt(this.minVal);
           this.$emit('input',[value]);
         }
       },
       btnEnd(e){
-        
+        this.showTip =false;
+        e.target.style.zIndex = 0;
       },
       defaultLine(){
         var left = 0;
-        var width = this.value[0] / this.maxValue * 100;
+        var width = this.value[0] / this.maxVal * 100;
         //多个区间
         if(this.value.length==2){
-          left = (this.value[0]-this.minValue) / (this.maxValue-this.minValue) * 100;
-          width = (this.value[1] - this.value[0]) / (this.maxValue-this.minValue) * 100;
+          left = (this.value[0]-this.minVal) / (this.maxVal-this.minVal) * 100;
+          width = (this.value[1] - this.value[0]) / (this.maxVal-this.minVal) * 100;
         }
         return 'width:'+width+'%;left:'+left+'%';
       },
       defaultBtn1(){
-        var left = (this.value[0]-this.minValue) / (this.maxValue-this.minValue) * 100;
+        var left = (this.value[0]-this.minVal) / (this.maxVal-this.minVal) * 100;
         return 'left:'+left+'%';
       },
       defaultBtn2(){
-        var left = (this.value[1]-this.minValue) / (this.maxValue-this.minValue) * 100;
+        var left = (this.value[1]-this.minVal) / (this.maxVal-this.minVal) * 100;
         return 'left:'+left+'%';
       }
 		},
