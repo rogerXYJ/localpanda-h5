@@ -95,14 +95,7 @@
 					}
 				}
 			}
-			.filter_fixed{
-				position: fixed;
-				top: 0;
-				left: 0;
-				width: 100%;
-				z-index: 99;
-				border-bottom: #eee solid 1px;
-			}
+			
 		}
 
 		//条件结果
@@ -322,6 +315,9 @@
 						.filter_price_text{
 							margin-top: 0.2rem;
 							font-size: 0.26rem;
+							.price_max{
+								float: right;
+							}
 						}
 					}
 				}
@@ -337,6 +333,7 @@
 				width: 100%;
 			}
 		}
+		
 		.show_filter{
 			opacity: 1;
 			-webkit-transform: scale(1);
@@ -344,13 +341,26 @@
 			visibility: inherit;
 		}
 
-
+		.fixed_all{
+			position: relative;
+			height: 1.98rem;
+			.filter_fixed{
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				z-index: 99;
+				border-bottom: #eee solid 1px;
+			}
+		}
 		.h_search_top{
 			height: 1.08rem;
+			margin-top: -1.08rem;
 			padding: 0.22rem 0.2rem 0 0.2rem;
 			background-color: #fff;
 			border-bottom: #dde0e0 solid 1px;
 			position: relative;
+			
 			.h_search_back{
 				position: absolute;
 				left: 0;
@@ -436,6 +446,11 @@
 					z-index: 1;
 				}
 			}
+		}
+		.showSearch{
+			-webkit-transition:all 0.3s linear 0s; 
+			transition:all 0.3s linear 0s; 
+			margin-top: 0;
 		}
 
 		.win_bg{
@@ -534,6 +549,19 @@
 	.header_search_icon{
 		display: none;
 	}
+
+	.hideFilterClose{
+		.head_back{
+			.btn_back{
+				display: none;
+			}
+		}
+	}
+	.filter_price{
+		.slider_box{
+			
+		}
+	}
 	
 </style>
 
@@ -542,64 +570,68 @@
 	<div class="activity_list">
 		<Head :searchValue="keyword" :showSearch="showHeaderSearch" @searchChange="searchChange" @closeSearch="showHeaderSearch=false"></Head>
 
-		<!-- 搜索 -->
-		<div class="h_search_top">
-			<!-- <span class="btn" @click="listSearch">Search</span> -->
-			
-			<div class="h_search_input_box" @click="showHeaderSearch=true">
-				<input type="text" id="h_search_input" v-model="keyword" placeholder="Attraction, Activity, Destination">
-				<i class="iconfont s_input_search">&#xe67a;</i>
-				<p></p>
-			</div>
-
-			<div class="select_people">
-				<!-- {{peopleNum}} People <i class="iconfont">&#xe666;</i> -->
-				<select v-model="peopleNum" @change="changePeople">
-					<option :value="item" :key="index" v-for="(item,index) in participantsAll.maxValue" v-if="item>=participantsAll.minValue">{{item}} {{item==1?'Person':'People'}}</option>
-				</select>
-				<i class="iconfont">&#xe666;</i>
-			</div>
-		</div>
-		<!-- participantsAll -->
-
-		<!-- 筛选 -->
-		<div class="filter_box" id="filter_box">
-			<dl class="filter_type clearfix" :class="{filter_fixed:isFixed}">
-
-				<!-- products -->
-				<dd>
-					<span class="filter_type_btn" :class="{active:showProducts}" @click="productsFn"><i class="iconfont">&#xe679;</i>Products</span>
-					<div class="filter_products" @click="hideFilter" :class="{show_products:showProducts}">
-						<checkbox-group v-model="filterCheck.category">
-							<ul class="products_list city_list">
-								<li :key="index" v-for="(item,key,index) in aggregations[0].items">
-									<checkbox :label="key">{{key}} ( {{item}} )</checkbox>
-								</li>
-							</ul>
-						</checkbox-group>
-						<div class="products_footer">
-							<span class="btn btn_plain" @click="productsClear">Clear</span>
-							<span class="btn" @click="productsConfirm">See experiences</span>
-						</div>
+		<div class="fixed_all" id="fixed_all">
+			<div class="fixed_box" :class="{filter_fixed:isFixed}">
+				<!-- 搜索 -->
+				<div class="h_search_top" :class="{showSearch:fixedShowSearch}">
+					<!-- <span class="btn" @click="listSearch">Search</span> -->
+					
+					<div class="h_search_input_box" @click="showHeaderSearch=true">
+						<input type="text" id="h_search_input" v-model="keyword" placeholder="Attraction, Activity, Destination">
+						<i class="iconfont s_input_search">&#xe67a;</i>
+						<p></p>
 					</div>
-				</dd>
 
-				<!-- filter -->
-				<dd><span class="filter_type_btn" @click="filterFn"><i class="iconfont">&#xe668;</i>Filter</span></dd>
-
-				<!-- Rank -->
-				<dd><span class="filter_type_btn" :class="{active:showRank}" @click="rankFn"><i class="iconfont">&#xe66b;</i>Rank</span>
-					<div class="filter_products" @click="hideFilter" :class="{show_rank:showRank}">
-						<radio-group v-model="rankCheck">
-							<ul class="rank_list">
-								<li :key="index" v-for="(item,index) in rank">
-									<radio :label="item" :change="rankChange">{{item}}</radio>
-								</li>
-							</ul>
-						</radio-group>
+					<div class="select_people">
+						<!-- {{peopleNum}} People <i class="iconfont">&#xe666;</i> -->
+						<select v-model="peopleNum" @change="changePeople">
+							<option :value="item" :key="index" v-for="(item,index) in participantsAll.maxValue" v-if="item>=participantsAll.minValue">{{item}} {{item==1?'Person':'People'}}</option>
+						</select>
+						<i class="iconfont">&#xe666;</i>
 					</div>
-				</dd>
-			</dl>
+				</div>
+				<!-- participantsAll -->
+
+				<!-- 筛选 -->
+				<div class="filter_box">
+					<dl class="filter_type clearfix">
+
+						<!-- products -->
+						<dd>
+							<span class="filter_type_btn" :class="{active:showProducts}" @click="productsFn"><i class="iconfont">&#xe679;</i>Products</span>
+							<div class="filter_products" @click="hideFilter" :class="{show_products:showProducts}">
+								<checkbox-group v-model="filterCheck.category">
+									<ul class="products_list city_list">
+										<li :key="index" v-for="(item,key,index) in aggregations[0].items">
+											<checkbox :label="key">{{key}} ( {{item}} )</checkbox>
+										</li>
+									</ul>
+								</checkbox-group>
+								<div class="products_footer">
+									<span class="btn btn_plain" @click="productsClear">Clear</span>
+									<span class="btn" @click="productsConfirm">See experiences</span>
+								</div>
+							</div>
+						</dd>
+
+						<!-- filter -->
+						<dd><span class="filter_type_btn" @click="filterFn"><i class="iconfont">&#xe668;</i>Filter</span></dd>
+
+						<!-- Rank -->
+						<dd><span class="filter_type_btn" :class="{active:showRank}" @click="rankFn"><i class="iconfont">&#xe66b;</i>Rank</span>
+							<div class="filter_products" @click="hideFilter" :class="{show_rank:showRank}">
+								<radio-group v-model="rankCheck">
+									<ul class="rank_list">
+										<li :key="index" v-for="(item,index) in rank">
+											<radio :label="item" :change="rankChange">{{item}}</radio>
+										</li>
+									</ul>
+								</radio-group>
+							</div>
+						</dd>
+					</dl>
+				</div>
+			</div>
 		</div>
 
 		<!-- 筛选结果 -->
@@ -645,20 +677,23 @@
 		<Foot></Foot>
 
 		<!-- 筛选 -->
-		<div class="filter_dialog" :class="{show_filter:showFilter}">
+		<div class="filter_dialog" :class="{show_filter:showFilter,hideFilterClose:hideFilterClose}">
 			<Back title="Filter" type="close" :close="filterClose">
 				<span class="filter_clear" @click="filterClear" v-show="showClear">Clear</span>
 			</Back>
 			<div class="filter_content">
-				<dl :key="index" v-for="(item,index) in aggregations" v-if="item.items && item.type !='CATEGORY' || item.type =='PRICE'">
-					<dt>{{getFilterType(item.type)}}</dt>
-					<dd v-if="item.type=='PRICE'">
+				<dl>
+					<dt>Price / person for party of 2</dt>
+					<dd>
 						<div class="filter_price">
-							<slider v-model="sliderValue" max="500" step="5"></slider>
-							<div class="filter_price_text">Price from ${{sliderValue[0]}} to ${{sliderValue[1]}}</div>
+							<slider v-model="sliderValue" max="505" step="5"></slider>
+							<div class="filter_price_text"><span class="price_max">${{sliderValue[1]>500?'500+':sliderValue[1]}}</span> ${{sliderValue[0]}}</div>
 						</div>
 					</dd>
-					<dd v-else-if="item.type=='DURATION'">
+				</dl>
+				<dl :key="index" v-for="(item,index) in aggregations" v-if="item.items && item.type !='CATEGORY'">
+					<dt>{{getFilterType(item.type)}}</dt>
+					<dd v-if="item.type=='DURATION'">
 						<checkbox-group v-model="filterCheck.duration">
 							<checkbox :change="filterChange" :key="index2" v-for="(itemType,key,index2) in item.items" :label="key">{{getDayStr(key)}} ( {{itemType}} )</checkbox>
 						</checkbox-group>
@@ -780,7 +815,7 @@
 				return text;
 			};
 
-			var price = [0,500];
+			var price = [0,505];
 
 			
 			//根据url数据生成post需要的格式
@@ -788,11 +823,19 @@
 			for(var key in options){
 				var keyUpper = key.toUpperCase();
 				if(keyUpper=='PRICE'){
-					postFilters.push({
-						type: keyUpper,
-						minValue: options[key].minValue,
-						maxValue: options[key].maxValue
-					});
+					if(options[key].maxValue>500){
+						postFilters.push({
+							type: keyUpper,
+							minValue: options[key].minValue
+						});
+					}else{
+						postFilters.push({
+							type: keyUpper,
+							minValue: options[key].minValue,
+							maxValue: options[key].maxValue
+						});
+					}
+					
 					//设置默认价格区间
 					price = [options[key].minValue,options[key].maxValue];
 
@@ -925,12 +968,14 @@
 				filterCheckDefault: filterCheck,
 				filter: filterAll,
 				showFilter: false,
+				hideFilterClose: false,
 
 				rankCheck: rankCheck,
 				rank:['Recommended','Price :Low to High','Price :High to Low','Popularity'],
 				showRank:false,
 
 				isFixed:false,
+				fixedShowSearch:true,
 				loadingStatus: false,
 				showClear: hasFilterCheck?true:false,
 
@@ -1097,9 +1142,18 @@
 					//除了Products（category）的数据，还有数据则显示clear
 					if(filterLen){
 						that.showClear = true;
+						//隐藏关闭按钮
+						that.hideFilterClose = true;
 					}else{
-						that.showClear = false;
+						if(that.sliderValue[0] == 0 && that.sliderValue[1]==505){
+							that.showClear = false;
+						}
+						
+						//隐藏关闭按钮
+						that.hideFilterClose = false;
 					}
+
+					
 				},200);
 				
 			},
@@ -1382,11 +1436,13 @@
 					minValue: value[0],
 					maxValue: value[1]
 				}
+				this.showClear = true;
+				//隐藏关闭按钮
+				this.hideFilterClose = true;
 			}
 		},
 		mounted: function() {
 			console.log(this.$data.listdata);
-			console.log(this.$data.price);
 
 			var self = this;
 
@@ -1410,14 +1466,26 @@
 			
 			
 			//筛选悬浮
-			var filterBox = document.getElementById('filter_box'),
-				filterBoxTop = filterBox.offsetTop;
+			var filterBox = document.getElementById('fixed_all'),
+				h_search_H = document.querySelectorAll('.h_search_top')[0].clientHeight,
+				filterBoxTop = filterBox.offsetTop + h_search_H;
+			var oldY = 0;
 			window.addEventListener("scroll", (e)=>{
-				if(scrollY>filterBoxTop){
-					this.isFixed=true
-				}else{
-					this.isFixed=false
+				
+				//向上滑动
+				if(scrollY<oldY){
+					this.fixedShowSearch = true;
+					if(scrollY<filterBoxTop - h_search_H){
+						this.isFixed=false;
+					}else{
+						this.isFixed=true;
+					}
+				}else if(scrollY>filterBoxTop){
+					this.isFixed=true;
+					this.fixedShowSearch = false;
 				}
+				oldY = scrollY;
+				
 			});
 
 			//浏览器事件处理
