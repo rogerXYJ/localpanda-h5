@@ -653,7 +653,7 @@
 						</div>
 						<div class="list_content">
 							<h4>{{item.title}}</h4>
-							<div class="list_tag" v-html="tourTypesStr(item.tourTypes)">
+							<div class="list_tag" v-html="item.attractions?tourTypesStr(item.attractions):tourTypesStr(item.tourTypes)">
 								<!-- <span :key="index" v-for="(item,index) in item.tourTypes">"{{item}}"</span> -->
 							</div>
 							<p class="duration"><b>Duration:</b>{{item.duration}} {{toLower(item.durationUnit)}}</p>
@@ -947,6 +947,13 @@
 
 			//console.log(participantsAll);
 
+			//设置默认价格
+			filterCheck.price = {
+				minValue: price[0],
+				maxValue: price[1]
+			}
+
+
 			return {
 				listdata: data,
 				activityList: data.entities?data.entities:[],
@@ -1233,7 +1240,10 @@
 					if(filterCheck[key].length){
 						options[key] = filterCheck[key].sort();
 					}else if(key=='price' && !Array.isArray(filterCheck[key])){
-						options[key] = filterCheck[key];
+						if(filterCheck[key].minValue!=0 || filterCheck[key].maxValue!=505){
+							options[key] = filterCheck[key];
+						}
+						
 					}
 				}
 
@@ -1464,6 +1474,7 @@
 			},900);
 			//filter统计ga   end  ///////////////////////////////////////////
 			
+
 			
 			//筛选悬浮
 			var filterBox = document.getElementById('fixed_all'),
