@@ -448,8 +448,8 @@
 			}
 		}
 		.showSearch{
-			-webkit-transition:all 0.3s linear 0s; 
-			transition:all 0.3s linear 0s; 
+			// -webkit-transition:all 0.3s linear 0s; 
+			// transition:all 0.3s linear 0s; 
 			margin-top: 0;
 		}
 
