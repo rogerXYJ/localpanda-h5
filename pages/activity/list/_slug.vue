@@ -686,7 +686,7 @@
 					<dt>Price / person for party of {{peopleNum}}</dt>
 					<dd>
 						<div class="filter_price">
-							<slider v-model="sliderValue" max="505" step="5"></slider>
+							<slider v-model="sliderValue" max="505" maxTipValue="500+" step="5"></slider>
 							<div class="filter_price_text"><span class="price_max">${{sliderValue[1]>500?'500+':sliderValue[1]}}</span> ${{sliderValue[0]>500?'500+':sliderValue[0]}}</div>
 						</div>
 					</dd>

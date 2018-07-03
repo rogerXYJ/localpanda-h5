@@ -32,6 +32,33 @@
       top: -0.28rem;
       transform: translateX(-50%);
       -webkit-transform: translateX(-50%);
+      
+    }
+    .slider_tip{
+      position: absolute;
+      left: 50%;
+      top: -0.5rem;
+      z-index: 9;
+      transform: translate(-50%,-100%);
+      padding: 0.2rem 0.2rem;
+      background-color: rgba(0,0,0,0.6);
+      border-radius: 6px;
+      min-width: 0.8rem;
+      font-size: 0.28rem;
+      text-align: center;
+      color: #fff;
+      i{
+        border: #ddd solid 5px;
+        border-color: rgba(0,0,0,0.6) transparent transparent transparent;
+        display: block;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%,100%);
+      }
     }
   }
 }
