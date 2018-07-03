@@ -683,7 +683,7 @@
 			</Back>
 			<div class="filter_content">
 				<dl>
-					<dt>Price / person for party of 2</dt>
+					<dt>Price / person for party of {{peopleNum}}</dt>
 					<dd>
 						<div class="filter_price">
 							<slider v-model="sliderValue" max="505" step="5"></slider>
