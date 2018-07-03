@@ -657,7 +657,7 @@
 								<!-- <span :key="index" v-for="(item,index) in item.tourTypes">"{{item}}"</span> -->
 							</div>
 							<p class="duration"><b>Duration:</b>{{item.duration}} {{toLower(item.durationUnit)}}</p>
-							<p class="destination"><b>Destination:</b>{{item.destinations.join(' & ')}}</p>
+							<p class="destination"><b>{{item.destinations&&item.destinations.length>1?'Destinations':'Destination'}}:</b>{{item.destinations.join(' & ')}}</p>
 							
 							<div class="price_box clearfix">
 								<span class="list_price"><b>${{item.perPersonPrice}}</b> pp for party of {{peopleNum}}</span>
