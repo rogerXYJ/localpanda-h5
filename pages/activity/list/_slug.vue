@@ -1184,15 +1184,15 @@
 				}
 
 				
-
+				console.log(options)
 				//设置当前筛选数据，并对数据做转码操作
 				jumpData.options = encodeURIComponent(JSON.stringify(options));
-
+				
 				//检测是否有某个筛选项，并对有效的筛选项做url连接
 				var urlQuery = this.getUrlQuery(jumpData);
 				
 				//有数据则跳转
-				location.href = '/activity/list/China' + (urlQuery ? ('?' + urlQuery) : '');
+				//location.href = '/activity/list/China' + (urlQuery ? ('?' + urlQuery) : '');
 
 				//var hasOptions = JSON.stringify(options)!='{}';
 				//location.href = path + (hasOptions?'?options=' + optionsEncode:'') + (sort?(hasOptions?'&':'?')+'sort='+JSON.stringify(sort):'');
