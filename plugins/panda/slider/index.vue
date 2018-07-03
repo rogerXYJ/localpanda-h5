@@ -5,10 +5,10 @@
 
 <template>
   <div class="slider_box">
-    <div class="slider_line_bg">
-      <p v-once :style="defaultLine()"></p>
-      <span class="slider_btn" @touchmove="btnMove" @touchstart="btnStart" @touchend="btnEnd" v-once :style="defaultBtn1()"></span>
-      <span class="slider_btn" @touchmove="btnMove" @touchstart="btnStart" @touchend="btnEnd" v-once :style="defaultBtn2()" v-if="value.length==2"></span>
+    <div class="slider_line_bg" :value="value">
+      <p :style="defaultLine()"></p>
+      <span class="slider_btn" @touchmove="btnMove" @touchstart="btnStart" @touchend="btnEnd" :style="defaultBtn1()"></span>
+      <span class="slider_btn" @touchmove="btnMove" @touchstart="btnStart" @touchend="btnEnd" :style="defaultBtn2()" v-if="value.length==2"></span>
       <div class="slider_tip" v-show="showTip">{{tipValue==max?maxTipValue:tipValue}}<i></i></div>
     </div>
   </div>
@@ -170,6 +170,37 @@
       defaultBtn2(){
         var left = (this.value[1]-this.minVal) / (this.maxVal-this.minVal) * 100;
         return 'left:'+left+'%';
+      },
+      setPosition(){
+        var slider_line_bg = document.querySelectorAll('.slider_line_bg');
+        for(var i=0;i<slider_line_bg.length;i++){
+          var thisLineBox = slider_line_bg[i];
+          var value = thisLineBox.getAttribute('value');
+          var thisLine = thisLineBox.getElementsByTagName('p')[0];
+          var thisBtn = thisLineBox.querySelectorAll('.slider_btn');
+
+
+          //设置进度条
+          var lineLeft = 0;
+          var lineWidth = this.value[0] / this.maxVal * 100;
+          
+          if(this.value.length==2){
+            lineLeft = (this.value[0]-this.minVal) / (this.maxVal-this.minVal) * 100;
+            lineWidth = (this.value[1] - this.value[0]) / (this.maxVal-this.minVal) * 100;
+
+            //设置按钮2位置
+            var left2 = (this.value[1]-this.minVal) / (this.maxVal-this.minVal) * 100;
+            thisBtn[1].style = 'left:'+left2+'%';
+          }
+          thisLine.style = 'width:'+lineWidth+'%;left:'+lineLeft+'%';
+
+          //设置按钮1位置
+          var left1 = (this.value[0]-this.minVal) / (this.maxVal-this.minVal) * 100;
+          thisBtn[0].style = 'left:'+left1+'%';
+
+          
+
+        }
       }
 		},
 		mounted(){

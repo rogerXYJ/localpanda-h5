@@ -568,7 +568,7 @@
 
 <template>
 	<div class="activity_list">
-		<Head :searchValue="keyword" :showSearch="showHeaderSearch" @searchChange="searchChange" @closeSearch="showHeaderSearch=false"></Head>
+		<Head :searchValue="keyword" :people="peopleNum" :showSearch="showHeaderSearch" @searchChange="searchChange" @closeSearch="showHeaderSearch=false"></Head>
 
 		<div class="fixed_all" id="fixed_all">
 			<div class="fixed_box" :class="{filter_fixed:isFixed}">
@@ -710,7 +710,7 @@
 			</div>
 
 			<div class="filter_dialog_footer">
-				<span class="btn" @click="filterConfirm">See experiences</span>
+				<span class="btn" @click="filterConfirm">Apply</span>
 			</div>
 		</div>
 
@@ -992,6 +992,7 @@
 				peopleNum: participants<participantsAll.minValue?participantsAll.minValue:participants,
 
 				//price: price,
+				defaultPrice: price,
 				sliderValue: price
 			}
 		},
@@ -1101,6 +1102,8 @@
 				//恢复check状态
 				this.filterCheck = JSON.parse(JSON.stringify(this.filterCheckDefault));
 
+				this.sliderValue = this.defaultPrice;
+
 				//关闭后退浏览器
 				history.back()
 			},
@@ -1150,14 +1153,14 @@
 					if(filterLen){
 						that.showClear = true;
 						//隐藏关闭按钮
-						that.hideFilterClose = true;
+						//that.hideFilterClose = true;
 					}else{
 						if(that.sliderValue[0] == 0 && that.sliderValue[1]==505){
 							that.showClear = false;
 						}
 						
 						//隐藏关闭按钮
-						that.hideFilterClose = false;
+						//that.hideFilterClose = false;
 					}
 
 					
@@ -1448,7 +1451,7 @@
 				}
 				this.showClear = true;
 				//隐藏关闭按钮
-				this.hideFilterClose = true;
+				//this.hideFilterClose = true;
 			}
 		},
 		mounted: function() {

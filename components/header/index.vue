@@ -104,7 +104,7 @@
 	import FBLogin from "~/plugins/panda/FBLogin/";
 
 	export default {
-		props:["showSearch",'searchValue',"isExpats"],
+		props:["showSearch",'searchValue',"isExpats","people"],
 		name:'M-head',
 		data(){
 			var query = this.$route.query;
@@ -238,7 +238,7 @@
 				// };
 				// return '/activity/list/China' + (queryStr ? '?' : '') + queryStr.substring(1);
 
-				return '/activity/list/China?keyword=' + value + '&type=' + (type?type:'direct');
+				return '/activity/list/China?keyword=' + value + (this.people==2?'':'&participants='+this.people)+'&type=' + (type?type:'direct');
 			},
 			searchFn(){
 				if(!this.searchVal){
