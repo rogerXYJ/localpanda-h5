@@ -11,7 +11,7 @@
 					<li class="clearfix">
 						<b>Adults</b>
 						<div class="select">
-							<em class="iconfont defult" v-if="adults<=0 || (children+adults)<=picInfo.minParticipants">&#xe64d;</em>
+							<em class="iconfont defult" v-if="adults<=1 || (children+adults)<=picInfo.minParticipants">&#xe64d;</em>
 							<em class="iconfont" @click="del(0)" v-else>&#xe64d;</em>
 							<div>{{adults}}</div>
 							<em class="iconfont defult"  v-if="(children+adults)>=picInfo.maxParticipants">&#xe64b;</em>

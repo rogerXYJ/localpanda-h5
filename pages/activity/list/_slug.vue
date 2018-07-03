@@ -317,6 +317,13 @@
 						padding: 0.2rem 0.2rem 0.3rem;
 						margin-left: 0.3rem;
 					}
+					.filter_price{
+						padding: 0.4rem 0;
+						.filter_price_text{
+							margin-top: 0.2rem;
+							font-size: 0.26rem;
+						}
+					}
 				}
 				
 			}
@@ -366,7 +373,6 @@
 				top: 0.22rem;
 				border-left: #ededed solid 1px;
 				z-index: 3;
-				width: 2.7rem;
 				height: 0.62rem;
 				line-height: 0.62rem;
 				padding-left: 0.15rem;
@@ -375,10 +381,27 @@
 				vertical-align: top;
 				font-size: 0.26rem;
 				i{
-					position: relative;
+					position: absolute;
+					right: 0.1rem;
+					top: 0;
+					width: 0.4rem;
+					height: 0.62rem;
+					line-height: 0.62rem;
 					vertical-align: top;
 					font-size: 0.36rem;
 					font-weight: bold;
+				}
+				select{
+					width: 100%;
+					height: 100%;
+					padding: 0 0.6rem 0 0.2rem;
+					background: none;
+					border: none;
+					appearance:none;
+					-moz-appearance:none;
+					-webkit-appearance:none;
+					position: relative;
+					z-index: 2;
 				}
 			}
 			.h_search_input_box{
@@ -472,6 +495,23 @@
 			}
 		}
 
+		.inquire{
+			position: fixed;
+			right: 0.2rem;
+			bottom: 0.3rem;
+			z-index: 22;
+			background-color: #1bbc9d;
+			border: #1bbc9d solid 1px;
+			display: inline-block;
+			width: auto;
+			height: 0.86rem;
+			line-height: 0.86rem;
+			border-radius: 0.43rem;
+			font-size: 0.28rem;
+			font-weight: bold;
+			padding: 0 0.45rem;
+		}
+
 	}
 	
 
@@ -512,8 +552,15 @@
 				<p></p>
 			</div>
 
-			<span class="select_people" @click="showPeopleBox=true">Guests：{{peopleNum}} People <i class="iconfont">&#xe666;</i></span>
+			<div class="select_people">
+				<!-- {{peopleNum}} People <i class="iconfont">&#xe666;</i> -->
+				<select v-model="peopleNum" @change="changePeople">
+					<option :value="item" :key="index" v-for="(item,index) in participantsAll.maxValue" v-if="item>=participantsAll.minValue">{{item}} {{item==1?'Person':'People'}}</option>
+				</select>
+				<i class="iconfont">&#xe666;</i>
+			</div>
 		</div>
+		<!-- participantsAll -->
 
 		<!-- 筛选 -->
 		<div class="filter_box" id="filter_box">
@@ -581,7 +628,7 @@
 							<p class="destination"><b>Destination:</b>{{item.destinations.join(' & ')}}</p>
 							
 							<div class="price_box clearfix">
-								<span class="list_price">From<b>${{item.bottomPrice}}</b>pp</span>
+								<span class="list_price"><b>${{item.perPersonPrice}}</b> pp for party of {{peopleNum}}</span>
 								<span class="tag_private" v-if="item.groupType=='Private'">{{item.groupType}}</span>
 								<span class="tag_group" v-if="item.groupType=='Group'">{{item.groupType}}</span>
 							</div>
@@ -603,9 +650,15 @@
 				<span class="filter_clear" @click="filterClear" v-show="showClear">Clear</span>
 			</Back>
 			<div class="filter_content">
-				<dl :key="index" v-for="(item,index) in aggregations" v-show="item.items && item.type !='CATEGORY'">
+				<dl :key="index" v-for="(item,index) in aggregations" v-if="item.items && item.type !='CATEGORY' || item.type =='PRICE'">
 					<dt>{{getFilterType(item.type)}}</dt>
-					<dd v-if="item.type=='DURATION'">
+					<dd v-if="item.type=='PRICE'">
+						<div class="filter_price">
+							<slider v-model="sliderValue" max="500" step="5"></slider>
+							<div class="filter_price_text">Price from ${{sliderValue[0]}} to ${{sliderValue[1]}}</div>
+						</div>
+					</dd>
+					<dd v-else-if="item.type=='DURATION'">
 						<checkbox-group v-model="filterCheck.duration">
 							<checkbox :change="filterChange" :key="index2" v-for="(itemType,key,index2) in item.items" :label="key">{{getDayStr(key)}} ( {{itemType}} )</checkbox>
 						</checkbox-group>
@@ -626,26 +679,10 @@
 			</div>
 		</div>
 
-
-		<!-- 选人数 -->
-		<div class="win_bg" v-show="showPeopleBox"></div>
-		<div class="people_change_box" v-show="showPeopleBox">
-			<dl class="people_dl">
-				<dt>Guest Number: </dt>
-				<dd>
-					<div class="number_box">
-						<span class="btn_minus iconfont" @click="peopleMinus">&#xe64d;</span>
-						<span class="people_number">{{peopleNum}}</span>
-						<span class="btn_plus iconfont" @click="peoplePlus">&#xe64b;</span>
-					</div>
-				</dd>
-			</dl>
-
-			<div class="btn people_change_btn" @click="changePeople">Submit</div>
-			
-		</div>
-
 		<Loading :loadingStatus="loadingStatus"></Loading>
+
+
+		<a href="/info/feedback/" class="btn inquire">Inquire</a>
 		
 	</div>
 </template>
@@ -656,6 +693,7 @@
 	import Foot from "~/components/footer/index"
 	import {checkboxGroup,checkbox} from "~/plugins/panda/checkbox/"
 	import {radioGroup,radio} from "~/plugins/panda/radio/"
+	import slider from "~/plugins/panda/slider/"
 	import InfiniteLoading from 'vue-infinite-loading/src/components/Infiniteloading.vue'
 	import Loading from "~/components/plugin/Loading"
 
@@ -671,6 +709,7 @@
 			checkbox,
 			radioGroup,
 			radio,
+			slider,
 			InfiniteLoading,
 			Loading
 		},
@@ -708,13 +747,16 @@
 			}
 
 			//默认请求接口post的数据
-			var participants = query.participants ? query.participants : 2;
+			var participants = query.participants ? parseInt(query.participants) : 2;
+			var gaType = query.type ? query.type : 'direct';
+
 			var postData = {
 				keyword:loc=='Xian'?"Xi'an":loc,
 				pageNum:1,
 				pageSize:10,
 				sort:{"type":"SCORE"},
-				participants: participants
+				participants: participants,
+				type: gaType
 			};
 
 
@@ -738,19 +780,37 @@
 				return text;
 			};
 
-			
+			var price = [0,500];
 
+			
 			//根据url数据生成post需要的格式
 			var postFilters = [];
 			for(var key in options){
 				var keyUpper = key.toUpperCase();
-				postFilters.push({
-					type: oldType(keyUpper),//兼容老的字段
-					filterValues: options[key]
-				});
+				if(keyUpper=='PRICE'){
+					postFilters.push({
+						type: keyUpper,
+						minValue: options[key].minValue,
+						maxValue: options[key].maxValue
+					});
+					//设置默认价格区间
+					price = [options[key].minValue,options[key].maxValue];
+
+				}else{
+					postFilters.push({
+						type: oldType(keyUpper),//兼容老的字段
+						filterValues: options[key]
+					});
+				}
+				
 			};
 
 			
+			//价格区间
+			// var price = {
+			// 	minValue : options.price.minValue,
+			// 	maxValue : options.price.maxValue
+			// };
 
 			//如果有筛选数据,则在默认数据里添加上filters
 			if(options){
@@ -762,6 +822,7 @@
 				postData.sort = sort;
 			}
 			
+			//console.log(postData);
 			try{
 				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(postData), {
 					headers: {
@@ -773,10 +834,16 @@
 			//列表页数据
 			var data = listdata.data;
 
+			//console.log(data);
+
 			//根据接口数据，生成需要筛选的类型默认数据和默认filter数据
 			var filterAll = {},
 				filterCheck = {};
-			if(data.aggregations){
+			//人数
+			var participantsAll = {};
+			
+
+			if(data.aggregations && data.records){
 				data.aggregations.forEach(item => {
 					var thisFilter = [];
 					for(var key in item.items){
@@ -784,7 +851,16 @@
 					}
 					//当前类型
 					var thisType = item.type.toLowerCase();
-					filterAll[thisType] = thisFilter;  ////添加filter每种类型数据
+					if(item.items){
+						filterAll[thisType] = thisFilter;  ////添加filter每种类型数据
+					};
+
+					//人数选择
+					if(thisType == 'min_participants'){
+						participantsAll['minValue'] = item.value;
+					}else if(thisType == 'max_participants'){
+						participantsAll['maxValue'] = item.value;
+					}
 					
 					//检测url是否有老的筛选类型
 					if(options[oldTypeKey(thisType)]){
@@ -825,6 +901,9 @@
 				locNew = '';
 			}
 
+
+			//console.log(participantsAll);
+
 			return {
 				listdata: data,
 				activityList: data.entities?data.entities:[],
@@ -856,8 +935,12 @@
 				showClear: hasFilterCheck?true:false,
 
 				showHeaderSearch: false,
-				peopleNum: participants,
-				showPeopleBox:false
+
+				participantsAll:participantsAll,
+				peopleNum: participants<participantsAll.minValue?participantsAll.minValue:participants,
+
+				//price: price,
+				sliderValue: price
 			}
 		},
 		computed:{
@@ -884,11 +967,12 @@
 
 				//设置自定义顺序
 				var sortDefault = {
+					'PRICE':2,
 					'CATEGORY':1,
-					'GROUP_TYPE':2,
-					'ATTRACTION':3,
-					'DURATION':4,
-					'TOUR_TYPE':5
+					'GROUP_TYPE':3,
+					'ATTRACTION':4,
+					'DURATION':5,
+					'TOUR_TYPE':6
 				};
 
 				//给数据添加排序的序号
@@ -947,6 +1031,11 @@
 				this.showProducts= false;
 				this.showRank = false;
 
+				//浏览器弹窗后，添加一个新页面记录。
+				history.pushState({
+					'type':'showDialog'
+				},'');
+
 				if(this.showFilter){
 					//GA统计
 					this.ga('filter','filter_open');
@@ -959,6 +1048,9 @@
 
 				//恢复check状态
 				this.filterCheck = JSON.parse(JSON.stringify(this.filterCheckDefault));
+
+				//关闭后退浏览器
+				history.back()
 			},
 			//确定选择
 			filterConfirm(){
@@ -1086,8 +1178,13 @@
 				for(var key in filterCheck){
 					if(filterCheck[key].length){
 						options[key] = filterCheck[key].sort();
+					}else if(key=='price' && !Array.isArray(filterCheck[key])){
+						options[key] = filterCheck[key];
 					}
 				}
+
+				
+
 				//设置当前筛选数据，并对数据做转码操作
 				jumpData.options = encodeURIComponent(JSON.stringify(options));
 
@@ -1164,6 +1261,7 @@
 					case 'ATTRACTION': typeStr = 'Points of Interest'; break;
 					case 'CATEGORY': typeStr = 'Products'; break;
 					case 'CITY': typeStr = 'DESTINATIONS'; break;
+					case 'PRICE': typeStr = 'Price / person for party of '+this.peopleNum; break;
 				};
 				return typeStr ? typeStr : type;
 			},
@@ -1182,6 +1280,7 @@
 				
 				//修改翻页数量
 				this.postData.pageNum++;
+				
 				//请求数据
 				this.axios.post(that.apiBasePath + "search/activity", JSON.stringify(this.postData), {
 					headers: {
@@ -1236,9 +1335,9 @@
 					e.target.parentNode.getElementsByClassName('btn_minus')[0].style.opacity = 1;
 				}
 			},
-			changePeople(){
+			changePeople(e){
 				//this.showPeopleBox=false;
-
+				this.peopleNum = e.target.value;
 				var urlObj = this.$route.query;
 				urlObj.participants = this.peopleNum;
 				var urlQuery = this.getUrlQuery(urlObj);
@@ -1247,6 +1346,10 @@
 				location.href = '/activity/list/China' + (urlQuery ? ('?' + urlQuery) : '');
 				this.loadingStatus = true;
 
+			},
+
+			showPrice(value){
+				return value
 			}
 			
 		},
@@ -1273,10 +1376,17 @@
 				}else{
 					this.showBodyScroll();
 				}
+			},
+			sliderValue:function(value){
+				this.filterCheck.price = {
+					minValue: value[0],
+					maxValue: value[1]
+				}
 			}
 		},
 		mounted: function() {
 			console.log(this.$data.listdata);
+			console.log(this.$data.price);
 
 			var self = this;
 
@@ -1309,6 +1419,13 @@
 					this.isFixed=false
 				}
 			});
+
+			//浏览器事件处理
+			window.onpopstate = function(event) {
+				if(self.showFilter){
+					self.showFilter = false;
+				}
+			};
 			
 		},
 		head() {

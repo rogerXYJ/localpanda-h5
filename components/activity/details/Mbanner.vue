@@ -4,7 +4,7 @@
 		<div class="swiper-container" id="swiper_bannerbox">
 			<div class="swiper-wrapper">
 				<div class="swiper-slide" :key="index" v-for="(slide, index) in bannerPhotos">
-					<img v-lazy="slide"  />
+					<img v-lazy="slide" lazy="error"  />
 				</div>
 			</div>
 			<div class="swiper-pagination" id="swiper_banner_pagination"></div>
@@ -74,6 +74,9 @@ export default {
   }
   img[lazy=loading]{
     width: 1px;
+	}
+	img[lazy=error]{
+    height: 0;
   }
 
 	

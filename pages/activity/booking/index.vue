@@ -73,14 +73,14 @@
 				</div>
 				<div class="inputItem" :class="{err:TravellerphoneErr}">
 					<p>Mobile Phone(optional)</p>
-					<input :class="{err:TravellerphoneErr}"  @focus="fousphonenumb()" v-model="Travellerphone" />
+					<input :class="{err:TravellerphoneErr}" @blur="gaBlur(3)"  @focus="fousphonenumb()" v-model="Travellerphone" />
 				</div>
 			</div>
 			<div class="Comments">
 				<div class="information">
 					<h4>Other Required Information</h4>
-					<textarea v-if="opctions.category=='Private Tour'" @blur="gaBlur(3)" v-model="comments" placeholder="please provide your hotel address so the guide can pick you up." onfocus="this.placeholder=''" onblur="this.placeholder='please provide your hotel address so the guide can pick you up.'"></textarea>
-					<textarea v-else v-model="comments" @blur="gaBlur(3)"></textarea>
+					<textarea v-if="opctions.category=='Private Tour'" @blur="gaBlur(4)" v-model="comments" placeholder="please provide your hotel address so the guide can pick you up." onfocus="this.placeholder=''" onblur="this.placeholder='please provide your hotel address so the guide can pick you up.'"></textarea>
+					<textarea v-else v-model="comments" @blur="gaBlur(4)"></textarea>
 				</div>
 
 				<p>You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.</p>
@@ -169,7 +169,9 @@
 		methods: {
 			//关闭国家
 			setback(val){
-				this.isShowBook=val	
+				this.isShowBook=val;
+				//关闭后退浏览器
+				history.back()
 			},
 			//获取code
 			setCode(val){
@@ -181,7 +183,10 @@
 					this.mobileTravellCode=val.mobileCode
 					this.TravellerCode=val.code
 				}
-				this.isShowBook=val.status
+				this.isShowBook=val.status;
+
+				//关闭后退浏览器
+				history.back()
 			},
 			back(){
 				 history.back()
@@ -195,7 +200,12 @@
 					this.TravellerCodeErr=false
 					this.index=1
 				}
-				this.isShowBook=true
+				this.isShowBook=true;
+
+				//浏览器弹窗后，添加一个新页面记录。
+				history.pushState({
+					'type':'showDialog'
+				},'');
 			},
 			checkFn(id) {
 				if(id == 0) {
@@ -513,10 +523,20 @@
 			
 		},
 		mounted: function() {
+			var self= this;
+
 			this.opctions = JSON.parse(localStorage.getItem("orderInfo"))
 			this.logIn = window.localStorage.getItem("logstate")
 			/*this.goBackFn()*/
 			console.log(countryCode)
+
+			//浏览器事件处理
+			window.onpopstate = function(event) {
+				if(self.isShowBook){
+					self.isShowBook = false;
+				}
+			};
+
 		},
 		watch: {
 			isShowBook:function(val,oldVal){

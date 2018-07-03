@@ -69,7 +69,7 @@
 				<div class="h_search_content_bg" @click="hideDialogSearch"></div>
 				<dl class="h_search_complate" v-show="searchVal">
 					<dd :key="index" v-for="(item,index) in searchData">
-						<a :href="getUrl(item.value)" @click="ga('search','suggestion')">
+						<a :href="getUrl(item.value,'suggest')" @click="ga('search','suggestion')">
 							<i class="iconfont" v-if="item.type=='DESTINATION'">&#xe610;</i>
 							<i class="iconfont" v-else>&#xe609;</i>
 							<span v-html="textHighlight(item.value)"></span>
@@ -81,12 +81,12 @@
 					<dl>
 						<dt>Destination</dt>
 						<!-- <i class="iconfont">&#xe610;</i> -->
-						<dd v-for="(item,index) in recommend.destination" :key="index"><a :href="getUrl(item)" @click="ga('search','recommendation')">{{item}}</a></dd>
+						<dd v-for="(item,index) in recommend.destination" :key="index"><a :href="getUrl(item,'recommend')" @click="ga('search','recommendation')">{{item}}</a></dd>
 					</dl>
 
 					<dl>
 						<dt>popular choices</dt>
-						<dd v-for="(item,index) in recommend.hot" :key="index"><a :href="getUrl(item)" @click="ga('search','recommendation')">{{item}}</a></dd>
+						<dd v-for="(item,index) in recommend.hot" :key="index"><a :href="getUrl(item,'recommend')" @click="ga('search','recommendation')">{{item}}</a></dd>
 					</dl>
 
 				</div>
@@ -118,6 +118,7 @@
 				searchVal: query.keyword?query.keyword:this.searchValue,
 				query: query,
 				path: this.$route.path,
+				//gaType: query.type ? query.type : 'direct',
 
 				inputTimer: null,
 				//搜索默认推荐
@@ -237,7 +238,7 @@
 				// };
 				// return '/activity/list/China' + (queryStr ? '?' : '') + queryStr.substring(1);
 
-				return '/activity/list/China?keyword=' + value;
+				return '/activity/list/China?keyword=' + value + '&type=' + (type?type:'direct');
 			},
 			searchFn(){
 				if(!this.searchVal){
@@ -248,7 +249,7 @@
 				//调用ga
 				this.ga('search','search');
 				
-				location.href = this.getUrl(this.searchVal);
+				location.href = this.getUrl(this.searchVal,'direct');
 			},
 			textHighlight(value){
 				var reg = new RegExp(this.searchVal,'gi');

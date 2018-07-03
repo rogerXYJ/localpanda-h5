@@ -191,6 +191,7 @@
 				if(details.length==1){
 					for(let i=0;i<details[0].capacity;i++){
 						var s=newObj(details[0]);
+						s.capacity = i+1;
 						newArr.push(s)
 					}
 					
@@ -246,7 +247,8 @@
 
 			},
 			setCallBackDetail(val){
-				this.isshowDetail=val
+				this.isshowDetail=val;
+				history.back()
 			},
 			getSave(val) {
 				this.adults = val.adults
@@ -254,6 +256,9 @@
 				this.infant = val.infant
 			},
 			showPriceDetail(){
+				history.pushState({
+					'type':'showDialog'
+				},'');
 				this.isshowDetail=true
 			},
 			cutXiaoNum(num, len) {
@@ -371,7 +376,7 @@
 
 
 			//加载币种
-			that.axios.get("https://api.localpanda.com/api/public/currency/all/"+that.picInfo.currency).then(function(response) {
+			that.axios.get("https://api.localpanda.com/api/public/currency/all/"+that.picInfo.defaultCurrency).then(function(response) {
 				// console.log(response);
 				if(response.status==200){
 					that.exchange = response.data;
@@ -413,6 +418,12 @@
 			document.getElementById('win_bg').addEventListener('touchstart', function() {
 				that.showWinBg=false
 			})
+
+			window.onpopstate = function(event) {
+				if(that.isshowDetail){
+					that.isshowDetail = false;
+				}
+			};
 			
 		},
 		watch: {
