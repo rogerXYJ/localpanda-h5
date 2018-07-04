@@ -38,7 +38,7 @@
 				</div>
 				<div class="inputItem" :class="{err:phoneErr}">
 					<p>Mobile Phone <b>*</b></p>
-					<input :class="{err:phoneErr}"  @focus="fousPhone" v-model="phone" />
+					<input :class="{err:phoneErr}"  @focus="fousPhone" @blur="gaBlur(3)" v-model="phone" />
 				</div>
 			</div>
 			<div class="check">
@@ -196,6 +196,12 @@
 				if(index==0){
 					this.codeErr=false
 					this.index=0
+					ga('gtag_UA_107010673_2.send', {
+						hitType: 'event',
+						eventCategory: 'activity_booking',
+						eventAction: 'click',
+						eventLabel: 'country_code_open',
+					});
 				}else{
 					this.TravellerCodeErr=false
 					this.index=1
@@ -510,9 +516,10 @@
 						}
 					}
 					//console.log(that.addOder)
-					if(next==false){
-						that.gaFail()
-					}
+					
+				}
+				if(next==false){
+					that.gaFail()
 				}
 			}
 
