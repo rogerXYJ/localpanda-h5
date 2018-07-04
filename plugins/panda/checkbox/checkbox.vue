@@ -43,6 +43,9 @@
         }
         //复选组
         var changeAll = this.$parent.value;
+        if(!changeAll){
+          return false;
+        }
         for(var i=0;i<changeAll.length;i++){
           if(changeAll[i] == this.label){
             return true;

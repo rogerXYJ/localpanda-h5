@@ -540,7 +540,7 @@
 
 <template>
 	<div class="activity_list">
-		<Head :searchValue="keyword" :showSearch="showHeaderSearch" @searchChange="searchChange" @closeSearch="showHeaderSearch=false"></Head>
+		<Head :searchValue="keyword" :people="peopleNum" :showSearch="showHeaderSearch" @searchChange="searchChange" @closeSearch="showHeaderSearch=false"></Head>
 
 		<!-- 搜索 -->
 		<div class="h_search_top">
@@ -621,11 +621,11 @@
 						</div>
 						<div class="list_content">
 							<h4>{{item.title}}</h4>
-							<div class="list_tag" v-html="tourTypesStr(item.tourTypes)">
+							<div class="list_tag" v-html="item.attractions?tourTypesStr(item.attractions):tourTypesStr(item.tourTypes)">
 								<!-- <span :key="index" v-for="(item,index) in item.tourTypes">"{{item}}"</span> -->
 							</div>
 							<p class="duration"><b>Duration:</b>{{item.duration}} {{toLower(item.durationUnit)}}</p>
-							<p class="destination"><b>Destination:</b>{{item.destinations.join(' & ')}}</p>
+							<p class="destination"><b>{{item.destinations&&item.destinations.length>1?'Destinations':'Destination'}}:</b>{{item.destinations.join(' & ')}}</p>
 							
 							<div class="price_box clearfix">
 								<span class="list_price"><b>${{item.perPersonPrice}}</b> pp for party of {{peopleNum}}</span>
@@ -675,7 +675,7 @@
 			</div>
 
 			<div class="filter_dialog_footer">
-				<span class="btn" @click="filterConfirm">See experiences</span>
+				<span class="btn" @click="filterConfirm">Apply</span>
 			</div>
 		</div>
 
@@ -904,6 +904,13 @@
 
 			//console.log(participantsAll);
 
+			//设置默认价格
+			filterCheck.price = {
+				minValue: price[0],
+				maxValue: price[1]
+			}
+
+
 			return {
 				listdata: data,
 				activityList: data.entities?data.entities:[],
@@ -940,6 +947,7 @@
 				peopleNum: participants<participantsAll.minValue?participantsAll.minValue:participants,
 
 				//price: price,
+				defaultPrice: price,
 				sliderValue: price
 			}
 		},
@@ -1049,6 +1057,8 @@
 				//恢复check状态
 				this.filterCheck = JSON.parse(JSON.stringify(this.filterCheckDefault));
 
+				this.sliderValue = this.defaultPrice;
+
 				//关闭后退浏览器
 				history.back()
 			},
@@ -1097,8 +1107,16 @@
 					//除了Products（category）的数据，还有数据则显示clear
 					if(filterLen){
 						that.showClear = true;
+
+						//隐藏关闭按钮
+						//that.hideFilterClose = true;
 					}else{
-						that.showClear = false;
+						if(that.sliderValue[0] == 0 && that.sliderValue[1]==505){
+							that.showClear = false;
+						}
+						
+						//隐藏关闭按钮
+						//that.hideFilterClose = false;
 					}
 				},200);
 				
@@ -1179,7 +1197,10 @@
 					if(filterCheck[key].length){
 						options[key] = filterCheck[key].sort();
 					}else if(key=='price' && !Array.isArray(filterCheck[key])){
-						options[key] = filterCheck[key];
+						if(filterCheck[key].minValue!=0 || filterCheck[key].maxValue!=505){
+							options[key] = filterCheck[key];
+						}
+						
 					}
 				}
 
@@ -1382,6 +1403,10 @@
 					minValue: value[0],
 					maxValue: value[1]
 				}
+
+				this.showClear = true;
+				//隐藏关闭按钮
+				//this.hideFilterClose = true;
 			}
 		},
 		mounted: function() {
@@ -1408,6 +1433,7 @@
 			},900);
 			//filter统计ga   end  ///////////////////////////////////////////
 			
+
 			
 			//筛选悬浮
 			var filterBox = document.getElementById('filter_box'),
