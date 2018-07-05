@@ -1,7 +1,7 @@
 <template>
 	<div class="fillYourInfo" id="fillYourInfo">
 		
-		<div class="fillInfo">
+		<div class="fillInfo" @touchmove="hideFiexd=false">
 			<div class="back"><i class="iconfont" @click="back">&#xe615;</i></div>
 			<h3>Fill in your information</h3>
 			<div class="oderInfo">
@@ -18,7 +18,7 @@
 				
 				<div class="inputItem" :class="{err:oderFirstNameErr}">
 					<p>First Name <b>*</b></p>
-					<input :class="{err:oderFirstNameErr}"  @blur="gaBlur(0)" @focus="fousOderfisrtname"  v-model="oderFirstName" />
+					<input :class="{err:oderFirstNameErr}"  @blur="gaBlur(0,true)" @focus="fousOderfisrtname"  v-model="oderFirstName" />
 				</div>
 				<div class="inputItem" :class="{err:oderlastNameErr}">
 					<p>Last Name  <b>*</b></p>
@@ -39,7 +39,7 @@
 				</div>
 				<div class="inputItem" :class="{err:phoneErr}">
 					<p>Mobile Phone <b>*</b></p>
-					<input :class="{err:phoneErr}"  @focus="fousPhone" v-model="phone" />
+					<input :class="{err:phoneErr}" @blur="gaBlur(3)"  @focus="fousPhone" v-model="phone" />
 				</div>
 			</div>
 			<div class="check">
@@ -52,29 +52,29 @@
 				<h4>Key Traveler</h4>
 				<div class="inputItem" :class="{err:TravellerFirstNameErr}">
 					<p>First Name <b>*</b></p>
-					<input :class="{err:TravellerFirstNameErr}"  @focus="fousFirst()" v-model="TravellerFirstName" />
+					<input :class="{err:TravellerFirstNameErr}" @blur="hideFiexd=false" @focus="fousFirst" v-model="TravellerFirstName" />
 
 				</div>
 				<div class="inputItem" :class="{err:TravellerlastNameErr}">
 					<p>Last Name <b>*</b></p>
-					<input :class="{err:TravellerlastNameErr}"  @focus="fousLastName()" v-model="TravellerlastName" />
+					<input :class="{err:TravellerlastNameErr}" @blur="hideFiexd=false"  @focus="fousLastName" v-model="TravellerlastName" />
 				</div>
 			
 			
 				<div class="inputItem" :class="{err:TravelleremailAddressErr}">
 					<p>Email Address <b>*</b></p>
-					<input :class="{err:TravelleremailAddressErr}"  @focus="fousidcard" v-model="TravelleremailAddress" />
+					<input :class="{err:TravelleremailAddressErr}" @blur="hideFiexd=false"  @focus="fousidcard" v-model="TravelleremailAddress" />
 				</div>
 				<div class="inputItem" :class="{err:TravellerCodeErr}">
 					<p>Country Code </p>
 					<div class="inputbox">
-						<input :class="{err:TravellerCodeErr}" readonly="readonly" onfocus="this.blur()"  @click="showCodeFn(1)"  v-model="mobileTravellCode" />
+						<input :class="{err:TravellerCodeErr}" readonly="readonly" @blur="hideFiexd=false" onfocus="this.blur()"  @click="showCodeFn(1)"  v-model="mobileTravellCode" />
 						<i class="iconfont">&#xe60f;</i>
 					</div>
 				</div>
 				<div class="inputItem" :class="{err:TravellerphoneErr}">
 					<p>Mobile Phone(optional)</p>
-					<input :class="{err:TravellerphoneErr}" @blur="gaBlur(3)"  @focus="fousphonenumb()" v-model="Travellerphone" />
+					<input :class="{err:TravellerphoneErr}" @blur="gaBlur(3)"  @focus="fousphonenumb" v-model="Travellerphone" />
 				</div>
 			</div>
 			<div class="Comments">
@@ -87,7 +87,7 @@
 				<p>You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.</p>
 			</div>
 		</div>
-		<div class="nextBtn clearfix">
+		<div class="nextBtn clearfix" v-show="!hideFiexd">
 			<div class="fiexd_content">
 				<div class="next" @touchend="next">NEXT</div>
 				<div class="price" @click="showPrice=!showPrice"><span>Total ({{opctions.currency}}): </span><br>{{opctions.symbol}}{{opctions.amount}}<i class="iconfont">&#xe659;</i></div>
@@ -177,7 +177,8 @@
 				index:"",//区分联系人
 				isShowBook:false,
 
-				showPrice: false
+				showPrice: false,
+				hideFiexd: false
 			}
 
 		},
@@ -250,36 +251,66 @@
 			fousOderfisrtname(e) {
 				this.oderFirstNameErr = false;
 				e.target.scrollIntoViewIfNeeded();
+				
+				if(/(Android)/i.test(navigator.userAgent)){
+					this.hideFiexd = true;
+				}
 			},
 			fousoderlastName(e) {
 				this.oderlastNameErr = false;
 				e.target.scrollIntoViewIfNeeded();
+				if(/(Android)/i.test(navigator.userAgent)){
+					this.hideFiexd = true;
+				}
 			},
 			fousEmal(e) {
 				this.emailAddressErr = false;
 				e.target.scrollIntoViewIfNeeded();
+				if(/(Android)/i.test(navigator.userAgent)){
+					this.hideFiexd = true;
+				}
 			},
 			fousPhone(e) {
 				this.phoneErr = false;
 				e.target.scrollIntoViewIfNeeded();
+				if(/(Android)/i.test(navigator.userAgent)){
+					this.hideFiexd = true;
+				}
 			},
 			fousFirst(e) {
 				this.TravellerFirstNameErr = false
 				e.target.scrollIntoViewIfNeeded();
+				if(/(Android)/i.test(navigator.userAgent)){
+					this.hideFiexd = true;
+				}
 			},
+			
 			fousLastName(e) {
 				this.TravellerlastNameErr = false;
 				e.target.scrollIntoViewIfNeeded();
+				if(/(Android)/i.test(navigator.userAgent)){
+					this.hideFiexd = true;
+				}
 			},
 			fousidcard(e) {
 				this.TravelleremailAddressErr = false;
 				e.target.scrollIntoViewIfNeeded();
+				if(/(Android)/i.test(navigator.userAgent)){
+					this.hideFiexd = true;
+				}
 			},
 			fousphonenumb(e) {
 				this.TravellerphoneErr = false;
 				e.target.scrollIntoViewIfNeeded();
+				if(/(Android)/i.test(navigator.userAgent)){
+					this.hideFiexd = true;
+				}
 			},
-			gaBlur(id){
+			gaBlur(id,hideBtn){
+
+				if(/(Android)/i.test(navigator.userAgent)){
+					this.hideFiexd = false;
+				}
 				
 				if(id == 0) {
 					if(this.oderFirstName) {
@@ -556,6 +587,9 @@
 				// var fillYourInfo = document.getElementById('fillYourInfo');
 				// fillYourInfo.style = 'height:'+document.documentElement.clientHeight+'px;overflow-y:scroll;';
 				e.target.scrollIntoViewIfNeeded();
+				if(/(Android)/i.test(navigator.userAgent)){
+					this.hideFiexd = true;
+				}
 				
 			},
 			returnFloat(value) {
@@ -623,7 +657,7 @@
 			}
 			padding: 0 0.4rem 1.4rem;
 			overflow-y: scroll;
-			height: calc(100vh - 1.54rem);
+			height: 100vh;
 			h3{
 				font-size:0.6rem;
 				font-weight: bold;

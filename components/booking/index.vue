@@ -107,6 +107,7 @@
 		height: 100%;
 		background: #fff;
 		overflow: hidden;
+		z-index: 101;
 		.bookingbox{
 			position: absolute;
 			overflow: auto;
