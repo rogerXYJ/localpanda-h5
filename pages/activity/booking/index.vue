@@ -250,7 +250,7 @@
 
 			fousOderfisrtname(e) {
 				this.oderFirstNameErr = false;
-				e.target.scrollIntoViewIfNeeded();
+				e.target.scrollIntoView();
 				
 				if(/(Android)/i.test(navigator.userAgent)){
 					this.hideFiexd = true;
@@ -258,28 +258,28 @@
 			},
 			fousoderlastName(e) {
 				this.oderlastNameErr = false;
-				e.target.scrollIntoViewIfNeeded();
+				e.target.scrollIntoView();
 				if(/(Android)/i.test(navigator.userAgent)){
 					this.hideFiexd = true;
 				}
 			},
 			fousEmal(e) {
 				this.emailAddressErr = false;
-				e.target.scrollIntoViewIfNeeded();
+				e.target.scrollIntoView();
 				if(/(Android)/i.test(navigator.userAgent)){
 					this.hideFiexd = true;
 				}
 			},
 			fousPhone(e) {
 				this.phoneErr = false;
-				e.target.scrollIntoViewIfNeeded();
+				e.target.scrollIntoView();
 				if(/(Android)/i.test(navigator.userAgent)){
 					this.hideFiexd = true;
 				}
 			},
 			fousFirst(e) {
 				this.TravellerFirstNameErr = false
-				e.target.scrollIntoViewIfNeeded();
+				e.target.scrollIntoView();
 				if(/(Android)/i.test(navigator.userAgent)){
 					this.hideFiexd = true;
 				}
@@ -287,21 +287,21 @@
 			
 			fousLastName(e) {
 				this.TravellerlastNameErr = false;
-				e.target.scrollIntoViewIfNeeded();
+				e.target.scrollIntoView();
 				if(/(Android)/i.test(navigator.userAgent)){
 					this.hideFiexd = true;
 				}
 			},
 			fousidcard(e) {
 				this.TravelleremailAddressErr = false;
-				e.target.scrollIntoViewIfNeeded();
+				e.target.scrollIntoView();
 				if(/(Android)/i.test(navigator.userAgent)){
 					this.hideFiexd = true;
 				}
 			},
 			fousphonenumb(e) {
 				this.TravellerphoneErr = false;
-				e.target.scrollIntoViewIfNeeded();
+				e.target.scrollIntoView();
 				if(/(Android)/i.test(navigator.userAgent)){
 					this.hideFiexd = true;
 				}
@@ -577,7 +577,7 @@
 				setTimeout(function(){
 					var error = document.querySelectorAll('.err')[0];
 					if(error){
-						error.scrollIntoViewIfNeeded();
+						error.scrollIntoView();
 					}
 				},80);
 
@@ -586,7 +586,7 @@
 			commentFocus(e){
 				// var fillYourInfo = document.getElementById('fillYourInfo');
 				// fillYourInfo.style = 'height:'+document.documentElement.clientHeight+'px;overflow-y:scroll;';
-				e.target.scrollIntoViewIfNeeded();
+				e.target.scrollIntoView();
 				if(/(Android)/i.test(navigator.userAgent)){
 					this.hideFiexd = true;
 				}
