@@ -142,3 +142,21 @@ input {
     
 }
 
+.winBg{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: rgba(0,0,0,0.6);
+    -webkit-transition:all 0.2s linear 0s;
+    transition:all 0.2s linear 0s;
+    
+    opacity: 1;
+    z-index: 100;
+}
+.winBgHide{
+    opacity: 0;
+    z-index: -1;
+}
+

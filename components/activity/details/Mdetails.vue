@@ -600,7 +600,6 @@ import photo from '~/components/activity/details/photo'
 			//根据最低成团人数修改默认人数
 			if(this.picInfo.minParticipants>2 && this.peopleNum<=this.picInfo.minParticipants){
 				this.peopleNum = this.picInfo.minParticipants;
-				document.querySelectorAll('.people_change_box .btn_minus')[0].style.opacity = 0.5;
 			}
 
 			//console.log(this.picInfo);

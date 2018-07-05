@@ -333,7 +333,8 @@
 		            that.children > 0 && that.picInfo.childDiscount
 		              ? that.returnFloat(that.returnFloat(that.adultsPic) - that.returnFloat(that.children * that.picInfo.childDiscount))
 		              : that.returnFloat(that.adultsPic),
-		          currency: that.picInfo.currency,
+							currency: that.picInfo.currency,
+							symbol: that.picInfo.symbol,
 		          adultNum: that.adults,
 		          refundTimeLimit:that.refundTimeLimit,
 		          childrenNum: that.children,

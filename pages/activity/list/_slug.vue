@@ -213,8 +213,13 @@
 							.destination{
 								 width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
 							}
+							.sales{
+								margin-top: 0.16rem;
+								text-align: right;
+							}
 							.price_box{
 								margin-top: 0.16rem;
+								
 								.list_price{
 									float: right;
 									color: #878e95;
@@ -355,7 +360,7 @@
 		}
 		.h_search_top{
 			height: 1.08rem;
-			margin-top: -1.08rem;
+			//margin-top: -1.08rem;
 			padding: 0.22rem 0.2rem 0 0.2rem;
 			background-color: #fff;
 			border-bottom: #dde0e0 solid 1px;
@@ -450,7 +455,7 @@
 		.showSearch{
 			// -webkit-transition:all 0.3s linear 0s; 
 			// transition:all 0.3s linear 0s; 
-			margin-top: 0;
+			//margin-top: 0;
 		}
 
 		.win_bg{
@@ -573,7 +578,7 @@
 		<div class="fixed_all" id="fixed_all">
 			<div class="fixed_box" :class="{filter_fixed:isFixed}">
 				<!-- 搜索 -->
-				<div class="h_search_top" :class="{showSearch:fixedShowSearch}">
+				<div class="h_search_top">
 					<!-- <span class="btn" @click="listSearch">Search</span> -->
 					
 					<div class="h_search_input_box" @click="showHeaderSearch=true">
@@ -659,8 +664,13 @@
 							<p class="duration"><b>Duration:</b>{{item.duration}} {{toLower(item.durationUnit)}}</p>
 							<p class="destination"><b>{{item.destinations&&item.destinations.length>1?'Destinations':'Destination'}}:</b>{{item.destinations.join(' & ')}}</p>
 							
+							<!-- <div class="sales">
+								Booked by {{item.sales}} travelers (last 30 days)
+							</div> -->
 							<div class="price_box clearfix">
-								<span class="list_price"><b>${{item.perPersonPrice}}</b> pp for party of {{peopleNum}}</span>
+								<span class="list_price">
+									<b>${{item.perPersonPrice}}</b> pp for party of {{peopleNum}}
+								</span>
 								<span class="tag_private" v-if="item.groupType=='Private'">{{item.groupType}}</span>
 								<span class="tag_group" v-if="item.groupType=='Group'">{{item.groupType}}</span>
 							</div>
@@ -1480,25 +1490,35 @@
 
 			
 			//筛选悬浮
-			var filterBox = document.getElementById('fixed_all'),
-				h_search_H = document.querySelectorAll('.h_search_top')[0].clientHeight,
-				filterBoxTop = filterBox.offsetTop + h_search_H;
-			var oldY = 0;
-			window.addEventListener("scroll", (e)=>{
+			// var filterBox = document.getElementById('fixed_all'),
+			// 	h_search_H = document.querySelectorAll('.h_search_top')[0].clientHeight,
+			// 	filterBoxTop = filterBox.offsetTop + h_search_H;
+			// var oldY = 0;
+			// window.addEventListener("scroll", (e)=>{
 				
-				//向上滑动
-				if(scrollY<oldY){
-					this.fixedShowSearch = true;
-					if(scrollY<filterBoxTop - h_search_H){
-						this.isFixed=false;
-					}else{
-						this.isFixed=true;
-					}
-				}else if(scrollY>filterBoxTop){
+			// 	//向上滑动
+			// 	if(scrollY<oldY){
+			// 		this.fixedShowSearch = true;
+			// 		if(scrollY<filterBoxTop - h_search_H){
+			// 			this.isFixed=false;
+			// 		}else{
+			// 			this.isFixed=true;
+			// 		}
+			// 	}else if(scrollY>filterBoxTop){
+			// 		this.isFixed=true;
+			// 		this.fixedShowSearch = false;
+			// 	}
+			// 	oldY = scrollY;
+				
+			// });
+
+			var filterBox = document.getElementById('fixed_all');
+			window.addEventListener("scroll", (e)=>{
+				if(scrollY<filterBox.offsetTop){
+					this.isFixed=false;
+				}else{
 					this.isFixed=true;
-					this.fixedShowSearch = false;
 				}
-				oldY = scrollY;
 				
 			});
 
