@@ -298,13 +298,16 @@
 				}
 				
 			},
+			gaFail(){
+				 window.ga && ga("gtag_UA_107010673_2.send", {
+			        hitType: "event",
+			        eventCategory: "activity_detail",
+			        eventAction: "click",
+			        eventLabel: "activity_order_fail"
+			      });
+			},
 			order(){
-		      window.ga && ga("gtag_UA_107010673_2.send", {
-		        hitType: "event",
-		        eventCategory: "activity_detail",
-		        eventAction: "click",
-		        eventLabel: "activity_book"
-		      });
+		      let next=false
 		      let that = this;
 		      if (that.dateTime == "") {
 						that.dateErr=true;
@@ -323,6 +326,13 @@
 		      }else if(that.children + that.adults<1){
 		      		that.peopleErr=true
 		      }else {
+		      	next=true
+		      	window.ga && ga("gtag_UA_107010673_2.send", {
+			        hitType: "event",
+			        eventCategory: "activity_detail",
+			        eventAction: "click",
+			        eventLabel: "activity_order_succ"
+			      });
 		        that.dateErr=false
 		        that.peopleErr=false
 		        var orderInfo = {
@@ -358,7 +368,9 @@
 				location.href="/activity/booking/"
 		        //routes.push('/fillYourInfo')
 		      }
-    
+	    		if(next==false){
+	    			this.gaFail()
+	    		}
 			}
 		},
 		mounted: function() {

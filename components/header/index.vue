@@ -69,7 +69,7 @@
 				<div class="h_search_content_bg" @click="hideDialogSearch"></div>
 				<dl class="h_search_complate" v-show="searchVal">
 					<dd :key="index" v-for="(item,index) in searchData">
-						<a :href="getUrl(item.value,'suggest')" @click="ga('search','suggestion')">
+						<a :href="getUrl(item.value,'suggest')" @click="ga('search','suggestion'),ga('search','search')">
 							<i class="iconfont" v-if="item.type=='DESTINATION'">&#xe610;</i>
 							<i class="iconfont" v-else>&#xe609;</i>
 							<span v-html="textHighlight(item.value)"></span>
@@ -81,12 +81,12 @@
 					<dl>
 						<dt>Destination</dt>
 						<!-- <i class="iconfont">&#xe610;</i> -->
-						<dd v-for="(item,index) in recommend.destination" :key="index"><a :href="getUrl(item,'recommend')" @click="ga('search','recommendation')">{{item}}</a></dd>
+						<dd v-for="(item,index) in recommend.destination" :key="index"><a :href="getUrl(item,'recommend')" @click="ga('search','recommendation'),ga('search','search')">{{item}}</a></dd>
 					</dl>
 
 					<dl>
 						<dt>popular choices</dt>
-						<dd v-for="(item,index) in recommend.hot" :key="index"><a :href="getUrl(item,'recommend')" @click="ga('search','recommendation')">{{item}}</a></dd>
+						<dd v-for="(item,index) in recommend.hot" :key="index"><a :href="getUrl(item,'recommend')" @click="ga('search','recommendation'),ga('search','search')">{{item}}</a></dd>
 					</dl>
 
 				</div>
@@ -248,6 +248,7 @@
 				
 				//调用ga
 				this.ga('search','search');
+				this.ga('search','direct');
 				
 				location.href = this.getUrl(this.searchVal,'direct');
 			},

@@ -38,7 +38,7 @@
 				</div>
 				<div class="inputItem" :class="{err:phoneErr}">
 					<p>Mobile Phone <b>*</b></p>
-					<input :class="{err:phoneErr}"  @focus="fousPhone" v-model="phone" />
+					<input :class="{err:phoneErr}"  @blur="gaBlur(3)" @focus="fousPhone" v-model="phone" />
 				</div>
 			</div>
 			<div class="check">
@@ -193,9 +193,16 @@
 			},
 			//显示国家
 			showCodeFn(index){
+				ga('gtag_UA_107010673_2.send', {
+					hitType: 'event',
+					eventCategory: 'activity_booking',
+					eventAction: 'click',
+					eventLabel: 'country_code_open',
+				});
 				if(index==0){
 					this.codeErr=false
 					this.index=0
+					
 				}else{
 					this.TravellerCodeErr=false
 					this.index=1
