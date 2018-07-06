@@ -42,6 +42,17 @@
 					<input :class="{err:phoneErr}" @blur="gaBlur(3)"  @focus="fousPhone" v-model="phone" />
 				</div>
 			</div>
+
+			<div class="Comments">
+				<div class="information">
+					<h4>Other Required Information</h4>
+					<textarea v-if="opctions.category=='Private Tour'" @blur="gaBlur(4)" v-model="comments" placeholder="please provide your hotel address so the guide can pick you up." @focus="commentFocus"></textarea>
+					<textarea v-else v-model="comments" @focus="commentFocus" @blur="gaBlur(4)"></textarea>
+				</div>
+
+				
+			</div>
+
 			<div class="check">
 				<span>Check this box if the contact for the reservation does NOT match the Primary Traveler.</span>
 				<em v-if="check==0" @click="checkFn(0)" class="checkbox"></em>
@@ -77,38 +88,33 @@
 					<input :class="{err:TravellerphoneErr}" @blur="gaBlur(3)"  @focus="fousphonenumb" v-model="Travellerphone" />
 				</div>
 			</div>
-			<div class="Comments">
-				<div class="information">
-					<h4>Other Required Information</h4>
-					<textarea v-if="opctions.category=='Private Tour'" @blur="gaBlur(4)" v-model="comments" placeholder="please provide your hotel address so the guide can pick you up." @focus="commentFocus"></textarea>
-					<textarea v-else v-model="comments" @focus="commentFocus" @blur="gaBlur(4)"></textarea>
-				</div>
 
-				<p>You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.</p>
-			</div>
-		</div>
-		<div class="nextBtn clearfix" v-show="!hideFiexd">
-			<div class="fiexd_content">
-				<div class="next" @touchend="next">NEXT</div>
-				<div class="price" @click="showPrice=!showPrice"><span>Total ({{opctions.currency}}): </span><br>{{opctions.symbol}}{{opctions.amount}}<i class="iconfont">&#xe659;</i></div>
-			</div>
+			<p class="booktip">You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.</p>
 			
-			<div class="price_info" :class="{showPrice:showPrice}">
-				<div class="price_info_tit">
-					<span class="price_info_close iconfont" @click="showPrice=false">&#xe629;</span>
-					Detail:
-				</div>
-				<p><span>{{opctions.symbol}}{{opctions.adultsPic}}</span>{{opctions.symbol}}{{returnFloat(opctions.adultsPic/(opctions.adultNum+opctions.childrenNum))}} x {{opctions.adultNum+opctions.childrenNum}} People</p>
-				<p v-if="opctions.childrenNum && opctions.childDiscountP">- {{opctions.symbol}}{{returnFloat(opctions.childrenNum*opctions.childDiscountP)}} for child(ren)</p>
-				<div class="boxline"></div>
-				<p><span>{{opctions.symbol}}{{opctions.amount}}</span>Total ({{opctions.currency}})</p>
+
+			<div class="price">Total ({{opctions.currency}}): <span @click="showPrice=!showPrice">{{opctions.symbol}}{{opctions.amount}}<i class="iconfont">&#xe659;</i></span></div>
+			<div class="nextBtn clearfix" v-show="!hideFiexd" @touchmove="stopMove">
+				<div class="next" @touchend="next">NEXT</div>
 			</div>
 		</div>
+		
 		<transition name="fade">
 			<booking v-show="isShowBook" :countryCode="countryCode" @getCode="setCode" @back="setback" class="view"></booking>
 		</transition>
+		
 
-		<div class="winBg" :class="{winBgHide:!showPrice}" @click="showPrice=false"></div>
+		<div class="winBg" @touchmove="stopMove" :class="{winBgHide:!showPrice}" @click="showPrice=false"></div>
+		<div class="price_info" :class="{showPrice:showPrice}">
+			<div class="price_info_tit">
+				<span class="price_info_close iconfont" @click="showPrice=false">&#xe629;</span>
+				Detail:
+			</div>
+			<p><span>{{opctions.symbol}}{{opctions.adultsPic}}</span>{{opctions.symbol}}{{returnFloat(opctions.adultsPic/(opctions.adultNum+opctions.childrenNum))}} x {{opctions.adultNum+opctions.childrenNum}} People</p>
+			<p v-if="opctions.childrenNum && opctions.childDiscountP">- {{opctions.symbol}}{{returnFloat(opctions.childrenNum*opctions.childDiscountP)}} for child(ren)</p>
+			<div class="boxline"></div>
+			<p><span>{{opctions.symbol}}{{opctions.amount}}</span>Total ({{opctions.currency}})</p>
+		</div>
+		
 	</div>
 </template>
 
@@ -257,68 +263,48 @@
 
 			fousOderfisrtname(e) {
 				this.oderFirstNameErr = false;
-				e.target.scrollIntoView();
 				
-				if(/(Android)/i.test(navigator.userAgent)){
-					this.hideFiexd = true;
-				}
+				
+				
 			},
 			fousoderlastName(e) {
 				this.oderlastNameErr = false;
-				e.target.scrollIntoView();
-				if(/(Android)/i.test(navigator.userAgent)){
-					this.hideFiexd = true;
-				}
+				
+				
 			},
 			fousEmal(e) {
 				this.emailAddressErr = false;
-				e.target.scrollIntoView();
-				if(/(Android)/i.test(navigator.userAgent)){
-					this.hideFiexd = true;
-				}
+				
+				
 			},
 			fousPhone(e) {
 				this.phoneErr = false;
-				e.target.scrollIntoView();
-				if(/(Android)/i.test(navigator.userAgent)){
-					this.hideFiexd = true;
-				}
+				
+				
 			},
 			fousFirst(e) {
 				this.TravellerFirstNameErr = false
-				e.target.scrollIntoView();
-				if(/(Android)/i.test(navigator.userAgent)){
-					this.hideFiexd = true;
-				}
+				
+				
 			},
 			
 			fousLastName(e) {
 				this.TravellerlastNameErr = false;
-				e.target.scrollIntoView();
-				if(/(Android)/i.test(navigator.userAgent)){
-					this.hideFiexd = true;
-				}
+				
+				
 			},
 			fousidcard(e) {
 				this.TravelleremailAddressErr = false;
-				e.target.scrollIntoView();
-				if(/(Android)/i.test(navigator.userAgent)){
-					this.hideFiexd = true;
-				}
+				
+				
 			},
 			fousphonenumb(e) {
 				this.TravellerphoneErr = false;
-				e.target.scrollIntoView();
-				if(/(Android)/i.test(navigator.userAgent)){
-					this.hideFiexd = true;
-				}
+				
+				
 			},
 			gaBlur(id,hideBtn){
 
-				if(/(Android)/i.test(navigator.userAgent)){
-					this.hideFiexd = false;
-				}
-				
 				if(id == 0) {
 					if(this.oderFirstName) {
 						ga('gtag_UA_107010673_2.send', {
@@ -584,7 +570,7 @@
 				setTimeout(function(){
 					var error = document.querySelectorAll('.err')[0];
 					if(error){
-						error.scrollIntoView();
+						error.scrollIntoViewIfNeeded();
 					}
 				},80);
 
@@ -593,10 +579,8 @@
 			commentFocus(e){
 				// var fillYourInfo = document.getElementById('fillYourInfo');
 				// fillYourInfo.style = 'height:'+document.documentElement.clientHeight+'px;overflow-y:scroll;';
-				e.target.scrollIntoView();
-				if(/(Android)/i.test(navigator.userAgent)){
-					this.hideFiexd = true;
-				}
+				
+				
 				
 			},
 			returnFloat(value) {
@@ -611,6 +595,9 @@
 					return 0;
 				}
 				
+			},
+			stopMove(e){
+				e.preventDefault();
 			}
 
 		},
@@ -654,6 +641,7 @@
 		
 		
 		.fillInfo{
+			padding: 0 0.4rem 0.5rem;
 			.back {
 				line-height: 1.013333rem;
 				color: #666;
@@ -662,9 +650,7 @@
 					font-weight: bold;
 				}
 			}
-			padding: 0 0.4rem 1.4rem;
-			overflow-y: scroll;
-			height: 100vh;
+			
 			h3{
 				font-size:0.6rem;
 				font-weight: bold;
@@ -735,7 +721,7 @@
 			}
 			.check{
 				
-				margin-top: 0.5rem;
+				margin-top: 0.2rem;
 				position: relative;
 				span {
 					font-size: 0.24rem;
@@ -748,7 +734,7 @@
 					width: 0.44rem;
 					height: 0.44rem;
 					text-align: center;
-					border: 1px solid #dde0e0;
+					border: 1px solid #ccc;
 					border-radius: 50%;
 					top: 50%;
 					margin-top: -0.24rem;
@@ -764,9 +750,8 @@
 			}
 			.Comments{
 				margin-top: 0.4rem;
-				padding-bottom: 0.8rem;
 				.information{
-					padding-bottom: 0.266666rem;
+					padding-bottom: 0.22rem;
 					
 					h4{
 						font-size: 0.24rem;
@@ -790,100 +775,47 @@
 					}
 				}
 				p{
-					margin-top: 0.266666rem;
+					margin-top: 0.22rem;
 					color: red;
-					width: 90%;
 				}
 			}
-			
+			.booktip{
+				margin-top: 0.3rem;
+				color:red;
+			}
 		}
 		.nextBtn{
-			
+			margin-top: 0.4rem;
 			width: 100%;
 			background: #fff;
-			
-			position: fixed;
-			bottom: 0;
-			left: 0;
-			z-index: 101;
+			// position: fixed;
+			// bottom: 0;
+			// left: 0;
+			// z-index: 101;
 			.fiexd_content{
-				border-top:1px solid #dedede;
+				
 				width: 100%;
 				height: 100%;
 				overflow: hidden;
-				padding:0.2rem 0.4rem;
+				padding:0.1rem 0.4rem;
 				background-color: #fff;
 				position: relative;
 				z-index: 3;
 			}
 			.next{
-				float: right;
+				
 				padding: 0 1rem;
-				height:1.1rem;
+				height:1rem;
 				background-image: linear-gradient(270deg,#009efd 0%, #1bbc9d 100%);
 				font-size: 0.3rem;
 				color: #FFF;
 				text-align: center;
-				line-height: 1.1rem;
-				border-radius: 0.55rem;
+				line-height: 1rem;
+				border-radius: 0.5rem;
 
 			}
-			.price{
-				font-size:0.4rem;
-				line-height: 0.55rem;
-				float: left;
-				span{
-					font-size: 0.32rem;
-					float: left;
-				}
-				i{
-					font-size:0.42rem;
-					color: #878E95;
-					margin-left: 0.15rem;
-				}
-			}
-			.price_info{
-				-webkit-transition:all 0.2s linear 0s;
-				transition:all 0.2s linear 0s;
-				transform: translateY(100%);
-				-webkit-transform: translateY(100%);
-				padding: 0.25rem 0.4rem 0.4rem;
-				width: 100%;
-				position: absolute;
-				left: 0;
-				bottom: 100%;
-				
-				background-color: #fff;
-				.price_info_tit{
-					font-size: 0.4rem;
-					padding-bottom: 0.25rem;
-					.price_info_close{
-						font-size: 0.5rem;
-						position: absolute;
-						right: 0.1rem;
-						top: 0;
-						width: 1rem;
-						height: 0.9rem;
-						line-height: 0.9rem;
-						text-align: center;
-					}	
-				}
-				p{
-					font-size: 0.36rem;
-					padding:0.06rem 0;
-					span{
-						float: right;
-					}
-				}
-				.boxline{
-					border-top: 1px solid #ebebeb;
-					margin: 0.3rem 0;
-				}
-			}
-			.showPrice{
-				transform: translateY(0);
-				-webkit-transform: translateY(0);
-			}
+			
+			
 		}
 		.err{
 			border-color: red!important;
@@ -899,6 +831,69 @@
 		}
 		.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
 		opacity: 0;
+		}
+
+		.price_info{
+			-webkit-transition:all 0.2s linear 0s;
+			transition:all 0.2s linear 0s;
+			transform: translateY(-50%);
+			-webkit-transform: translateY(-50%);
+			padding: 0.3rem 0.4rem 0.4rem;
+			width: 94%;
+			position: fixed;
+			left: 3%;
+			top: 50%;
+			z-index: -1;
+			opacity: 0;
+			background-color: #fff;
+			.price_info_tit{
+				font-size: 0.4rem;
+				padding-bottom: 0.25rem;
+				.price_info_close{
+					font-size: 0.5rem;
+					position: absolute;
+					right: 0.1rem;
+					top: 0;
+					width: 1rem;
+					height: 0.9rem;
+					line-height: 0.9rem;
+					text-align: center;
+				}	
+			}
+			p{
+				font-size: 0.36rem;
+				padding:0.06rem 0;
+				span{
+					float: right;
+				}
+			}
+			.boxline{
+				border-top: 1px solid #ebebeb;
+				margin: 0.3rem 0;
+			}
+		}
+		.price{
+			
+			font-size: 0.36rem;
+			line-height: 0.5rem;
+			margin-top: 0.3rem;
+			span{
+				
+				font-size:0.4rem;
+				display: inline-block;
+				margin-left: 0.4rem;
+				vertical-align: top;
+				padding-right: 0.2rem;
+			}
+			i{
+				font-size:0.42rem;
+				color: #878E95;
+				margin-left: 0.15rem;
+			}
+		}
+		.showPrice{
+			z-index: 100;
+			opacity: 1;
 		}
 	}
 	

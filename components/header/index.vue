@@ -67,7 +67,7 @@
 			</div>
 			<div class="h_search_content">
 				<div class="h_search_content_bg" @click="hideDialogSearch"></div>
-				<dl class="h_search_complate" v-show="searchVal">
+				<dl class="h_search_complate" v-show="searchValTrim">
 					<dd :key="index" v-for="(item,index) in searchData">
 						<a :href="getUrl(item.value,'suggest')" @click="ga('search','suggestion'),ga('search','search')">
 							<i class="iconfont" v-if="item.type=='DESTINATION'">&#xe610;</i>
@@ -77,7 +77,7 @@
 					</dd>
 				</dl>
 
-				<div class="h_search_hot" v-show="!searchVal">
+				<div class="h_search_hot" v-show="!searchValTrim">
 					<dl>
 						<dt>Destination</dt>
 						<!-- <i class="iconfont">&#xe610;</i> -->
@@ -180,7 +180,7 @@
 
 			autoComplate(e){
 				var self = this,
-					keyword = e.target.value;
+					keyword = e.target.value.replace(/(^\s*)|(\s*$)/g,'');
 
 				if(e.keyCode == "13"){
 					this.searchFn();
@@ -238,10 +238,10 @@
 				// };
 				// return '/activity/list/China' + (queryStr ? '?' : '') + queryStr.substring(1);
 
-				return '/activity/list/China?keyword=' + value + (this.people==2?'':'&participants='+this.people)+'&type=' + (type?type:'direct');
+				return '/activity/list/China?keyword=' + value.replace(/(^\s*)|(\s*$)/g,'') + (this.people==2?'':'&participants='+this.people)+'&type=' + (type?type:'direct');
 			},
 			searchFn(){
-				if(!this.searchVal){
+				if(!this.searchVal.replace(/(^\s*)|(\s*$)/g,'')){
 					document.getElementById('h_search_input').focus();
 					return;
 				}
@@ -253,7 +253,7 @@
 				location.href = this.getUrl(this.searchVal,'direct');
 			},
 			textHighlight(value){
-				var reg = new RegExp(this.searchVal,'gi');
+				var reg = new RegExp(this.searchVal.replace(/(^\s*)|(\s*$)/g,''),'gi');
 				var textReg = value.match(reg);
 				if(textReg){
 					textReg = textReg[0];
@@ -300,7 +300,9 @@
 			}
 		},
 		computed:{
-			
+			searchValTrim(){
+				return this.searchVal?this.searchVal.replace(/(^\s*)|(\s*$)/g,''):'';
+			}
 		},
 		watch:{
 			showWinBg:function(val){
