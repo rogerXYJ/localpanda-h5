@@ -780,7 +780,7 @@
 				}
 			}
 			.booktip{
-				margin-top: 0.3rem;
+				margin-top: 0.4rem;
 				color:red;
 			}
 		}
@@ -873,10 +873,10 @@
 			}
 		}
 		.price{
-			
+			text-align: center;
 			font-size: 0.36rem;
 			line-height: 0.5rem;
-			margin-top: 0.3rem;
+			margin-top: 0.5rem;
 			span{
 				
 				font-size:0.4rem;
