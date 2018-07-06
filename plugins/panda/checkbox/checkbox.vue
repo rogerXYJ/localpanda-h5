@@ -10,7 +10,7 @@
       <input type="checkbox" @change="inputChange" :checked="getChecked" :disabled="isDisabled" :value="label">
       <i class="iconfont">&#xe654;</i>
     </span>
-    <span class="checkbox_content">
+    <span :title="label" class="checkbox_content">
       <slot>{{label}}</slot>
     </span>
     
