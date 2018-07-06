@@ -21,7 +21,7 @@ get back to you within 1 day. </p>
 			</div>
 		</div>
 		
-		<div class="btn" @click.stop="submit">Seed Us a Message</div>
+		<div class="btn" @click.stop="submit">Send Us a Message</div>
 		<Dialog @setIsShowAlert="setShowAlert" 
 				:isShowAlert="isShowAlert"
 				:alertTitle="alertTitle"
