@@ -43,7 +43,7 @@ export default {
                     }else{
                         msg = 'fail';
                     }
-                    window.location.href = "https://www.localpanda.com/payment/mobile/success?email="+query.email+"&orderId=" + query.orderId + '&amount=' + query.amount+"&succeed="+succeed+'&symbol='+query.symbol+'&currency='+query.currency+'&msg='+msg;
+                    window.location.href = "https://www.localpanda.com/activity/payment/mobile/success?email="+query.email+"&orderId=" + query.orderId + '&amount=' + query.amount+"&succeed="+succeed+'&symbol='+query.symbol+'&currency='+query.currency+'&msg='+msg;
                 }else{
                     alert('Please try again!');
                 }
