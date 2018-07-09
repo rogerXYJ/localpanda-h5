@@ -8,15 +8,15 @@ get back to you within 1 day. </p>
 		</div>
 		<div class="fillin ">
 			<div class="inputItem">
-				<p>Name</p>
+				<p>Name <span class="red">*</span></p>
 				<input v-model="name" :class="{err:nameError}" @focus="namefocus" class="inputin" />
 			</div>
 			<div class="inputItem">
-				<p>Email Address</p>
+				<p>Email Address <span class="red">*</span></p>
 				<input v-model="email" :class="{err:emailErr}" @focus="emailfocus" class="inputin"/>
 			</div>
 			<div class="inputItem">
-				<p>Message</p>
+				<p>Message <span class="red">*</span></p>
 				<textarea v-model="textInfo" @focus="textInfofocus" :class="{err:textInfoErr}"></textarea>
 			</div>
 		</div>
@@ -217,7 +217,7 @@ get back to you within 1 day. </p>
 			margin-top: 0.3rem;
 			
 			.inputItem{
-				margin-top:0.44rem;
+				margin-top:0.35rem;
 				
 				/*border-bottom: 2px solid #ebebeb;*/
 				p{
@@ -236,7 +236,7 @@ get back to you within 1 day. </p>
 					border-radius: 0.08rem;
 					padding-left: 0.24rem;
 					font-size: 0.36rem;
-					margin-top: 0.11rem;
+					margin-top: 0.1rem;
 					&:-webkit-placeholder { /* Mozilla Firefox 4 to 18 */
 						color: #878e95; 
 					}
@@ -249,7 +249,7 @@ get back to you within 1 day. </p>
 						width: 100%;
 						padding-left: 0.24rem;
 						padding-top: 0.293333rem;
-						margin-top: 0.346666rem;
+						margin-top: 0.13rem;
 						font-size: 0.346666rem;
 						&:-webkit-placeholder { /* Mozilla Firefox 4 to 18 */
     						color: #dde0e0; 
@@ -259,7 +259,7 @@ get back to you within 1 day. </p>
 		}
 
 		.btn{
-			margin-top: 0.6rem;
+			margin-top: 0.5rem;
 		}
 		
 		.win_bg{ width:100%;height: 100%; background-color:rgba(0,0,0,0.5); position:fixed; left:0; top:0;}

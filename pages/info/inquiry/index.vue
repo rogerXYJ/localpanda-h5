@@ -120,9 +120,22 @@ on a 1-1 basis.</p>
 
 				});
 		},
-       submit(){
-       		let ok=false
-       		let that = this
+    submit(){
+			let ok=false
+			let that = this;
+
+			setTimeout(function(){
+				var err = document.querySelectorAll('.err')[0];
+				if(err){
+					err.scrollIntoViewIfNeeded();
+					// var errT = err.offsetTop;
+					// var doc = document.querySelectorAll('html,body');
+					// doc[0].scrollTop = errT;
+					// doc[1].scrollTop = errT;
+				}
+			},60);
+
+
 			if(that.name == '' || regExp.isNub(that.name) || regExp.isCode(that.name)) {
 				ok=false
 				that.nameError = true
@@ -181,6 +194,8 @@ on a 1-1 basis.</p>
 
 					})
 				}
+
+				
 				
 			}
 			if(ok==false){

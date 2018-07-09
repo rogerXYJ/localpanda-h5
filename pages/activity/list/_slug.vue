@@ -686,7 +686,7 @@
 								<span class="list_price">
 									<b>${{item.perPersonPrice}}</b>pp
 								</span>
-								<p v-if="item.sales">Booked {{item.sales}} times (last 30 days)</p>
+								<p v-if="item.sales">Booked {{item.sales}} {{item.sales>1?'times':'time'}} (last 30 days)</p>
 							</div>
 						</div>
 					</a>
