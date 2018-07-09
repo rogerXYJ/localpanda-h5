@@ -118,6 +118,7 @@
 			}
 		}
 		.destination_result{
+			margin-top: 0.1rem;
 			padding: 0.1rem 0;
 			font-size: 0.26rem;
 			color: #878e95;
@@ -144,7 +145,8 @@
 					position: relative;
 					padding-left: 29%;
 					overflow: hidden;
-					border-radius: 0.1rem;
+					border-radius: 0.08rem;
+					border-bottom: 2px solid #dde0e0;
 					a{
 						.list_img{
 							position: absolute;
@@ -160,6 +162,7 @@
 								left: 0;
 								bottom: 0;
 								padding-left: 0.1rem;
+								text-align: center;
 								width: 100%;
 								font-size: 0.18rem;
 								height: 0.34rem;
@@ -183,16 +186,31 @@
 								display: -webkit-box;
 								text-overflow: ellipsis;
 								margin-bottom: 0.1rem;
+
+								.tag_private,.tag_group{
+									display: inline-block;
+									background-color: #52b589;
+									border-radius: 0.12rem;
+									color: #fff;
+									padding: 0 0.16rem;
+									height: 0.24rem;
+									line-height: 0.24rem;
+									font-size: 0.16rem;
+									
+								}
+								.tag_group{
+									background-color: #efae99;
+								}
 							}
 							
 							.list_tag{
-								font-size: 0.22rem;
+								font-size: 0.2rem;
 								color: #1bbc9d;
 								margin-bottom: 0.06rem;
 								line-height: 0.29rem;
 								max-height: 0.58rem;
 								overflow:hidden;
-								-webkit-line-clamp: 2;
+								-webkit-line-clamp: 1;
 								-webkit-box-orient: vertical;
 								display: -webkit-box;
 								text-overflow: ellipsis;
@@ -208,6 +226,7 @@
 								color: #353a3f;
 								b{
 									margin-right: 0.1rem;
+									font-weight: normal;
 								}
 							}
 							.destination{
@@ -218,7 +237,7 @@
 								text-align: right;
 							}
 							.price_box{
-								margin-top: 0.16rem;
+								margin-top: -0.14rem;
 								
 								.list_price{
 									float: right;
@@ -230,22 +249,13 @@
 										margin: 0 0.07rem;
 									}
 								}
-								.tag_private,.tag_group{
-									display: inline-block;
-									background-color: #52b589;
-									box-shadow: 0rem 0.11rem 0.35rem 0rem rgba(82, 181, 137, 0.3);
-									border-radius: 0.1rem;
-									color: #fff;
-									padding: 0 0.16rem;
-									height: 0.34rem;
-									line-height: 0.34rem;
-									font-size: 0.22rem;
-									
+								p{
+									font-size: 0.2rem;
+									clear: both;
+									color: #878e95;
+									text-align: right;
 								}
-								.tag_group{
-									background-color: #efae99;
-									box-shadow: 0rem 0.11rem 0.35rem 0rem rgba(239, 174, 153, 0.3);
-								}
+								
 							}
 							
 						}
@@ -657,22 +667,26 @@
 							<p>{{item.category}}</p>
 						</div>
 						<div class="list_content">
-							<h4>{{item.title}}</h4>
+							<h4>
+								<span class="tag_private" v-if="item.groupType=='Private'">{{item.groupType}}</span>
+								<span class="tag_group" v-if="item.groupType=='Group'">{{item.groupType}}</span>
+								{{item.title}}</h4>
 							<div class="list_tag" v-html="item.attractions?tourTypesStr(item.attractions):tourTypesStr(item.tourTypes)">
 								<!-- <span :key="index" v-for="(item,index) in item.tourTypes">"{{item}}"</span> -->
 							</div>
-							<p class="duration"><b>Duration:</b>{{item.duration}} {{toLower(item.durationUnit)}}</p>
+							
 							<p class="destination"><b>{{item.destinations&&item.destinations.length>1?'Destinations':'Destination'}}:</b>{{item.destinations.join(' & ')}}</p>
+
+							<p class="duration"><b>Duration:</b>{{item.duration}} {{toLower(item.durationUnit)}}</p>
 							
 							<!-- <div class="sales">
 								Booked by {{item.sales}} travelers (last 30 days)
 							</div> -->
 							<div class="price_box clearfix">
 								<span class="list_price">
-									<b>${{item.perPersonPrice}}</b> pp for party of {{peopleNum}}
+									<b>${{item.perPersonPrice}}</b>pp
 								</span>
-								<span class="tag_private" v-if="item.groupType=='Private'">{{item.groupType}}</span>
-								<span class="tag_group" v-if="item.groupType=='Group'">{{item.groupType}}</span>
+								<p v-if="item.sales">Booked {{item.sales}} times (last 30 days)</p>
 							</div>
 						</div>
 					</a>
