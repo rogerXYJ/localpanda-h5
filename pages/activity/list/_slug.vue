@@ -331,6 +331,7 @@
 					}
 					.filter_price{
 						padding: 0.4rem 0;
+						margin: 0 0.4rem;
 						.filter_price_text{
 							margin-top: 0.2rem;
 							font-size: 0.26rem;
@@ -566,6 +567,7 @@
 		.checkbox_content,.radio_content{
 			padding-left: 0.2rem;
 			font-size:0.26rem;
+			display: block;
 		}
 	}
 	.header_search_icon{
@@ -660,7 +662,7 @@
 		<!-- <div class="requirement_result">
 			<span :key="index" v-for="(item,index) in filterTag">{{item}}</span>
 		</div> -->
-		<div class="destination_result" v-show="activityList.length">{{listdata.records}} {{listdata.records>1?'activities':'activity'}} found .</div>
+		<div class="destination_result" v-show="activityList.length">{{listdata.records}} {{listdata.records>1?'activities':'activity'}} found </div>
 		
 
 		<!-- 产品列表 -->
@@ -727,7 +729,7 @@
 					<dt>{{getFilterType(item.type)}}</dt>
 					<dd v-if="item.type=='DURATION'">
 						<checkbox-group v-model="filterCheck.duration">
-							<checkbox :change="filterChange" :key="index2" v-for="(itemType,key,index2) in item.items" :label="key">{{getDayStr(key)}} ( {{itemType}} )</checkbox>
+							<checkbox :change="filterChange" :key="index2" v-for="(itemType,key,index2) in item.items" :label="key">{{getDayStr(key)}}( {{itemType}} )</checkbox>
 						</checkbox-group>
 						<span class="filter_more" @click="showMore" v-if="getObjLength(item.items)>6">View More</span>
 					</dd>
@@ -1057,21 +1059,28 @@
 					'GROUP_TYPE':3,
 					'ATTRACTION':4,
 					'DURATION':5,
-					'TOUR_TYPE':6
+					'TOUR_TYPE':6,
+					'CITY': 6
 				};
 
+				var newAggregations = [];
 				//给数据添加排序的序号
 				for(var i=0;i<aggregations.length;i++){
+					var thisType = aggregations[i].type;
 					var thisNum = sortDefault[aggregations[i].type];
 					aggregations[i].number = thisNum ? thisNum : 10; //没有的字段默认设置顺序为10
+
+					if(typeof sortDefault[thisType] !== 'undefined'){
+						newAggregations.push(aggregations[i]);
+					}
 				};
 
 				//排序
-				aggregations = aggregations.sort(function(a,b){
+				newAggregations = newAggregations.sort(function(a,b){
 					return a.number > b.number;
 				});
 
-				return aggregations;
+				return newAggregations;
 			}
 		},
 		methods: {
