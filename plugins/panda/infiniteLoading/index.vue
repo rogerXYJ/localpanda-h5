@@ -4,9 +4,9 @@
 </style>
 
 <template>
-  <div class="infiniteLoading">
+  <div class="infinite_loading">
 
-    <div  v-bind:class="['loaders loading',loadingStatus ? 'on' : 'off']">
+    <div  v-bind:class="['loaders loading',isLoading && loadingStatus ? 'on' : 'off']">
       <div class="spinner">
           <div class="spinner-container container1">
             <div class="circle1"></div>
@@ -36,18 +36,15 @@
 
 <script>
 	export default {
-    name: "slider",
+    name: "infiniteLoading",
     props:{
-      value: Array,
-      min: String,
-      max: String,
-      maxTipValue: String,
-      step: String
+      onInfinite: Object
     },
 		data() {
       
 			return {
-        loadingStatus:true
+        loadingStatus:false,
+        isLoading:true
 			}
     },
     computed:{
@@ -58,10 +55,39 @@
 		},
 		mounted(){
       
-      
+      window.addEventListener('scroll',()=>{
+        var loadY = this.$el.offsetTop,
+          winY = scrollY,
+          winH = document.documentElement.clientHeight;
+        if(winY+winH > loadY){
+          this.loadingStatus = true;
+        }else{
+          this.loadingStatus = false;
+        }
+      });
+
+
+      this.stateChanger = {
+        loaded: () => {
+          this.isLoading = true;
+        },
+        complete: () => {
+          this.isLoading = false;
+        }
+      };
+
     },
     watch:{
-      
+      loadingStatus:function(valNew,valOld){
+        if(valNew && valNew != valOld){
+          if(typeof onInfinite === 'function'){
+            this.onInfinite(this.stateChanger);
+          }else{
+            this.$emit('infinite',this.stateChanger);
+          }
+          
+        }
+      }
     }
 	}
 </script>

@@ -210,7 +210,7 @@
 								line-height: 0.29rem;
 								max-height: 0.58rem;
 								overflow:hidden;
-								-webkit-line-clamp: 1;
+								-webkit-line-clamp: 2;
 								-webkit-box-orient: vertical;
 								display: -webkit-box;
 								text-overflow: ellipsis;
@@ -695,10 +695,10 @@
 					</a>
 				</li>
 			</ul>
-			<infinite-loading class="list_loading" @infinite="infiniteHandler" spinner="bubbles"  ref="infiniteLoading">
+			<infiniteLoading class="list_loading" @infinite="infiniteHandler">
 				<span slot="no-more">You've reached the bottom of the page.</span>
 				<span slot="no-results" class="no-results"></span>
-			</infinite-loading>
+			</infiniteLoading>
 		</div>
 		
 		<Foot></Foot>
@@ -756,7 +756,7 @@
 	import {checkboxGroup,checkbox} from "~/plugins/panda/checkbox/"
 	import {radioGroup,radio} from "~/plugins/panda/radio/"
 	import slider from "~/plugins/panda/slider/"
-	import InfiniteLoading from 'vue-infinite-loading/src/components/Infiniteloading.vue'
+	import infiniteLoading from '~/plugins/panda/infiniteLoading/'
 	import Loading from "~/components/plugin/Loading"
 
 	import Vue from "vue";
@@ -772,7 +772,7 @@
 			radioGroup,
 			radio,
 			slider,
-			InfiniteLoading,
+			infiniteLoading,
 			Loading
 		},
 		async asyncData({
