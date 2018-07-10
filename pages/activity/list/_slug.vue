@@ -161,12 +161,11 @@
 								position: absolute;
 								left: 0;
 								bottom: 0;
-								padding-left: 0.1rem;
+								padding: 0.08rem 0.1rem;
 								text-align: center;
 								width: 100%;
 								font-size: 0.18rem;
-								height: 0.34rem;
-								line-height: 0.35rem;
+								line-height: 0.28rem;
 								overflow: hidden;
 								color: #fff;
 								background-color: rgba(0, 0, 0, 0.7);
@@ -196,7 +195,8 @@
 									height: 0.24rem;
 									line-height: 0.24rem;
 									font-size: 0.16rem;
-									
+									vertical-align: top;
+									margin-top: 0.04rem;
 								}
 								.tag_group{
 									background-color: #efae99;
@@ -540,6 +540,9 @@
 			font-size: 0.28rem;
 			font-weight: bold;
 			padding: 0 0.45rem;
+			&:focus,&:hover{
+				color: #fff;
+			}
 		}
 
 	}
