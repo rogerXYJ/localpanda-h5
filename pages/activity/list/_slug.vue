@@ -265,6 +265,10 @@
 			}
 			.list_loading{
 				margin-top: 0.2rem;
+				text-align: center;
+				span{
+					text-align: center;
+				}
 			}
 		}
 
@@ -656,7 +660,8 @@
 		<!-- <div class="requirement_result">
 			<span :key="index" v-for="(item,index) in filterTag">{{item}}</span>
 		</div> -->
-		<div class="destination_result" v-show="activityList.length">{{listdata.records}} {{listdata.records>1?'activities':'activity'}} found</div>
+		<div class="destination_result" v-show="activityList.length">{{listdata.records}} {{listdata.records>1?'activities':'activity'}} found .</div>
+		
 
 		<!-- 产品列表 -->
 		<div class="list_box">
@@ -696,8 +701,8 @@
 				</li>
 			</ul>
 			<infiniteLoading class="list_loading" @infinite="infiniteHandler">
-				<span slot="no-more">You've reached the bottom of the page.</span>
-				<span slot="no-results" class="no-results"></span>
+				<span>You've reached the bottom of the page.</span>
+				<span class="no-results"></span>
 			</infiniteLoading>
 		</div>
 		

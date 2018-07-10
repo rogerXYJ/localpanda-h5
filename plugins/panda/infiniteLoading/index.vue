@@ -5,7 +5,9 @@
 
 <template>
   <div class="infinite_loading">
-
+    <div class="infinite_content" v-if="!isLoading">
+      <slot></slot>
+    </div>
     <div  v-bind:class="['loaders loading',isLoading && loadingStatus ? 'on' : 'off']">
       <div class="spinner">
           <div class="spinner-container container1">
