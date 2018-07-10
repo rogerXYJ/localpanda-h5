@@ -535,7 +535,7 @@
 			display: inline-block;
 			width: auto;
 			height: 0.86rem;
-			line-height: 0.86rem;
+			line-height: 0.81rem;
 			border-radius: 0.43rem;
 			font-size: 0.28rem;
 			font-weight: bold;
@@ -1354,7 +1354,7 @@
 					case 'TOUR_TYPE': typeStr = 'Themes'; break;
 					case 'ATTRACTION': typeStr = 'Points of Interest'; break;
 					case 'CATEGORY': typeStr = 'Products'; break;
-					case 'CITY': typeStr = 'DESTINATIONS'; break;
+					case 'CITY': typeStr = 'DESTINATIONS COVERED'; break;
 					case 'PRICE': typeStr = 'Price / person for party of '+this.peopleNum; break;
 				};
 				return typeStr ? typeStr : type;
