@@ -534,7 +534,7 @@
 			position: fixed;
 			right: 0.2rem;
 			bottom: 0.3rem;
-			z-index: 22;
+			z-index: 6;
 			background-color: #1bbc9d;
 			border: #1bbc9d solid 1px;
 			display: inline-block;
@@ -567,6 +567,8 @@
 		.checkbox_content,.radio_content{
 			padding-left: 0.2rem;
 			font-size:0.26rem;
+		}
+		.checkbox_content{
 			display: block;
 		}
 	}
