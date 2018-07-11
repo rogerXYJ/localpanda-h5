@@ -26,7 +26,7 @@
 
 				<div class="picinfo">
 					<!-- <p v-if="picInfo.originalPrice">From <span class="oldpic">{{nowExchange.symbol}} {{returnFloat(picInfo.originalPrice)}}</span></p> -->
-					<p> <b>{{nowExchange.symbol}} {{detailAll.length>0 ? returnFloat(detailAll[peopleNum-detailAll[0].capacity].price/peopleNum) : ''}}</b></p>
+					<p> <b>{{nowExchange.symbol}} {{detailAll.length>0 ? (detailAll.length==1?returnFloat(detailAll[0].price):returnFloat(detailAll[peopleNum-detailAll[0].capacity].price/peopleNum)) : ''}}</b></p>
 				</div>
 
 				
@@ -596,9 +596,10 @@ import photo from '~/components/activity/details/photo'
 				spaceBetween:17,
 			});
 			
-
 			//根据最低成团人数修改默认人数
-			if(this.picInfo.minParticipants>2 && this.peopleNum<=this.picInfo.minParticipants){
+			if(this.picInfo.minParticipants == 1 && this.picInfo.maxParticipants == 1){
+				this.peopleNum = 1;
+			}else if(this.picInfo.minParticipants>2 && this.peopleNum<=this.picInfo.minParticipants){
 				this.peopleNum = this.picInfo.minParticipants;
 			}
 
