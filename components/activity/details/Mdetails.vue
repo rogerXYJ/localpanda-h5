@@ -1,7 +1,7 @@
 <template>
 	<div class="m-details">
 		<div class="m-details-cont">
-			<div class="toursType ">{{detail.category}}</div>
+			<div class="toursType ">{{detail.category}} <b v-if="detail.groupType">·</b> {{detail.groupType}}</div>
 			<div class="activitiyTitle">
 				<h3>{{detail.title}}</h3>
 				<div class="types">
@@ -203,28 +203,24 @@
 
 
 			<!-- 点评模块 -->
-			<div class="remark_all" v-if="remarkData.length">
+			<div class="remark_all" id="Reviews" v-if="remarkDataAll.length">
 				<div class="remark_title">
-					<span class="reviews">{{remarkData.length}} {{remarkData.length==1 ? 'Review':'Reviews'}}</span>
-					<div class="remark_star">
-						<span class="star_list"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span>
-						<span class="star_list"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span>
-						<span class="star_list"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span>
-						<span class="star_list star_h"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span>
-						<span class="star_list star_no"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span>
-					</div>
+					<span class="reviews">{{remarkDataAll.length}} {{remarkDataAll.length==1 ? 'Review':'Reviews'}}</span>
+					<div class="remark_star" v-html="remarkStarHtml(avgscore)"></div>
 				</div>
-				<div class="remark_list" v-for="(item,index) in remarkData" :key="index">
+				<div class="remark_list" v-for="(item,index) in remarkDataAll" :key="index">
 					<div class="remark_list_top">
-						<div class="remark_star">
-							<span class="star_list"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span>
-							<span class="star_list"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span>
+						{{item.score}}
+						<div class="remark_star" v-html="remarkStarHtml(item.score)">
+							<!-- <span class="star_list" v-for="itemIndex in 5" :class="{star_h:item.score%2==1&&item.score/2<itemIndex}"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span> -->
+							<!-- <span class="star_list"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span>
 							<span class="star_list"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span>
 							<span class="star_list star_h"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span>
-							<span class="star_list star_no"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span>
+							<span class="star_list star_no"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span> -->
 						</div>
-						<div class="photo">
-							<img :src="item.userPortraitPhoto?item.userPortraitPhoto.url:''" alt="">
+						<div class="remark_photo">
+							<span class="remark_photo_def" v-if="!item.userPortraitPhoto">{{item.userName.substring(0,1)}}</span>
+							<img v-else v-lazy="item.userPortraitPhoto?item.userPortraitPhoto.url:''" alt="">
 						</div>
 						<div class="remark_list_info">
 							<h5>{{item.userName}}</h5>
@@ -232,11 +228,12 @@
 							<!-- May 24,2018 -->
 						</div>
 					</div>
-					<div class="remark_list_content">{{item.content}}</div>
+					<div class="remark_list_content" :content="item.content">{{item.content.length>200?item.content.substring(0,200)+'...':item.content}} <span class="remark_text_more" v-if="item.content.length>200" @click="remarkShowMore">View More</span> </div>
 					<ul class="remark_img_s">
-						<li v-for="(itemChild,index2) in item.userCommentPhoto" @click="showBigPic(index,index2)" :key="index2"><img :src="itemChild.url" alt=""></li>
+						<li v-for="(itemChild,index2) in item.userCommentPhoto" @click="showBigPic(index,index2)" :key="index2"><img v-lazy="itemChild.url" alt=""></li>
 					</ul>
 				</div>
+				<div class="remark_more" @click="loadMoreRemark">Show more</div>
 			</div>
 
 
@@ -305,9 +302,10 @@
 		<div class="swiper-container swiper_remark" id="swiper_remark" v-show="showRemarkPic">
 			<div class="swiper-wrapper">
 				<div class="swiper-slide" :key="index" v-for="(item,index) in thisRemarkData.userCommentPhoto">
+					<!-- </div> -->
 					<div class="swiper-zoom-container">
 						<p></p>
-						<img class="image" v-lazy="item.url">
+						<img class="image" :src="item.url">
 					</div>
 				</div>					
 			</div>
@@ -351,7 +349,8 @@ import photo from '~/components/activity/details/photo'
 			"notice",
 			"photoList",
 			"destination",
-			"remarkData"
+			"remarkData",
+			"avgscore"
 		],
 		name: 'm-details',
 		data() {
@@ -363,9 +362,12 @@ import photo from '~/components/activity/details/photo'
 				isShowTable: false, //价格明细
 				alertPicStatus: false,
 				detailAll:[],
+
+				remarkDataAll:this.remarkData,
 				thisRemarkData:'',
 				showRemarkPic:false,
-				remarkIndex:0,
+				remarkIndex:1,
+				pageNum:2,
 				
 				defaultCurrency : 'USD',
 				nowExchange:{},//{'rate':1,'currency':'USD','symbol':'$'}
@@ -620,14 +622,12 @@ import photo from '~/components/activity/details/photo'
 			},
 			showBigPic(index,imgIndex){
 				var that = this;
-				this.thisRemarkData = this.remarkData[index];
+				this.thisRemarkData = this.remarkDataAll[index];
 				this.showRemarkPic = true;
 				
 				setTimeout(function(){
 					that.swiper_remark = new Swiper('#swiper_remark', {
-						lazy: {
-							loadPrevNext: true,
-						},
+						lazy: false,
 						initialSlide:imgIndex,
 						zoom:true,
 						on:{
@@ -646,6 +646,50 @@ import photo from '~/components/activity/details/photo'
 				this.swiper_remark.destroy();
 				this.thisRemarkData = '';
 				this.remarkIndex = 1;
+			},
+			remarkShowMore(e){
+				var parent = e.target.parentNode;
+				parent.innerHTML = parent.getAttribute('content');
+			},
+			loadMoreRemark(e){
+				var postData = {
+					"activityId": this.id,
+					'pageNum':this.pageNum,
+					'pageSize':3
+				};
+				var thisBtn = e.target;
+				var self = this;
+				self.axios.post("https://api.localpanda.com/api/user/comment/detail/list",JSON.stringify(postData),{
+					headers: {
+					'Content-Type': 'application/json'
+					}
+				}).then(function(response) {
+					if(response.data && response.data.length){
+						if(response.data.length<3){
+							thisBtn.style.display = 'none';
+						}else{
+							thisBtn.style.display = 'block';
+						};
+						self.remarkDataAll = self.remarkDataAll.concat(response.data);
+						self.pageNum++;
+					}else if(response.data && response.data.length==0){
+						thisBtn.style.display = 'none';
+					}
+					
+				}, function(response) {});
+			},
+			remarkStarHtml(score){
+				var thisHtml = '';
+				for(var i=0;i<5;i++){
+					if(/\./.test(score/2+'') && i == parseInt(score/2)){
+						thisHtml += '<span class="star_list star_h"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span>';
+					}else if(i>score/2-1){
+						thisHtml += '<span class="star_list star_no"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span>';
+					}else{
+						thisHtml += '<span class="star_list"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span>';
+					}
+				}
+				return thisHtml;
 			}
 		},
 		filters: {
@@ -718,7 +762,7 @@ import photo from '~/components/activity/details/photo'
 			
 			
 
-			console.log(this.detail);
+			//console.log(this.remarkDataAll);
 
 
 		},
@@ -1208,206 +1252,7 @@ import photo from '~/components/activity/details/photo'
 		}
 	}
 
-	.remark_all{
-		margin-top: 0.45rem;
-		
-		.remark_title{
-			.reviews{
-				font-size: 0.44rem;
-				font-weight: bold;
-			}
-			.remark_star{
-				margin-left: 0.5rem;
-				vertical-align: top;
-				margin-top: 0.16rem;
-			}
-		}
-		.remark_list{
-			padding: 0.4rem 0;
-			border-top: #ddd solid 1px;
-			&:nth-child(2){
-				border: none
-			}
-			
-			.remark_list_top{
-				overflow: hidden;
-				.photo{
-					float: left;
-					width: 0.8rem;
-					height: 0.8rem;
-					border-radius: 50%;
-					overflow: hidden;
-					margin-right: 0.24rem;
-					img{
-						vertical-align: top;
-					}
-				}
-				.remark_list_info{
-					float: left;
-					h5{
-						font-size: 0.28rem;
-						font-weight: bold;
-					}
-					p{
-						font-size: 0.24rem;
-					}
-				}
-				.remark_star{
-					float: right;
-					margin-top: 0.3rem;
-					.star_list{
-						width: 0.24rem;
-						height: 0.24rem;
-					}
-				}
-			}
-			.remark_list_content{
-				font-size: 0.26rem;
-				margin-top: 0.24rem;
-				word-wrap:break-word;
-			}
-			.remark_img_s{
-				margin-top: 0.15rem;
-				overflow: hidden;
-				li{
-					float: left;
-					border-radius: 0.1rem;
-					width: 31%;
-					margin-left: 2%;
-					margin-top: 0.1rem;
-					overflow: hidden;
-					&:nth-child(1){
-						margin-left: 0;
-					}
-					&:nth-child(4){
-						margin-left: 0;
-					}
-					img{
-						width: 100%;
-						vertical-align: top;
-					}
-				}
-			}
-		}
-		
-		
-	}
 
-	.star_list{
-		display: inline-block;
-		overflow: hidden;
-		position: relative;
-		vertical-align: top;
-		width: 0.32rem;
-		height: 0.32rem;
-		padding: 1px;
-		border-radius: 50%;
-		background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
-		background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
-		i{
-			display: inline-block;
-			width: 100%;
-			height: 100%;
-			background-color: #fff;
-			border-radius: 50%;
-			position: relative;
-			overflow: hidden;
-			vertical-align: top;
-			&:after{
-				content: "";
-				display: block;
-				width: 40%;
-				height: 40%;
-				border-radius: 50%;
-				overflow: hidden;
-				position: absolute;
-				left: 50%;
-				top: 50%;
-				transform: translate(-50%,-50%);
-				-webkit-transform: translate(-50%,-50%);
-				background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
-				background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
-			}
-		}
-	}
-	.remark_star{
-		display: inline-block;
-		
-		.star_half{
-			position: absolute;
-			right: 0;
-			top: 0;
-			width: 100%;
-			height: 100%;
-			overflow: hidden;
-			display: none;
-			.star_list{
-				position: absolute;
-				right: 0;
-				top: 0;
-				margin: 0!important;
-				background: #ddd;
-				i{
-					&:after{
-						background: #ddd;
-					}
-				}
-			}
-		}
-	}
-	.star_no{
-		.star_half{
-			width: 100%;
-			display: block;
-		}
-	}
-	.star_no{
-		.star_half{
-			width: 100%;
-			display: block;
-		}
-	}
-	.star_h{
-		.star_half{
-			width: 50%;
-			display: block;
-		}
-	}
-
-	.swiper_remark{
-		position: fixed;
-		left: 0;
-		top: 0;
-		width: 100%;
-		height: 100%;
-		z-index: 99;
-		background-color: rgba(0,0,0,0.8);
-		p{
-			position: absolute;
-			width: 100%;
-			height: 100%;
-		}
-		img{
-			position: relative;
-			z-index: 2;
-			max-width: 100%;
-		}
-		.remark_close{
-			position: absolute;
-			right: 0;
-			top: 0;
-			color: #fff;
-			padding: 0.3rem 0.4rem;
-			z-index: 3;
-		}
-		.remark_num{
-			position: absolute;
-			left: 10%;
-			top: 1rem;
-			color: #fff;
-			font-size: 0.32rem;
-		}
-	}
 </style>
 
 <style lang="scss">
@@ -1584,4 +1429,238 @@ import photo from '~/components/activity/details/photo'
 		color: #878e95;
 	}
 
+
+	// 点评
+	.remark_all{
+		padding-top: 0.45rem;
+		padding-bottom: 0.6rem;
+		
+		.remark_title{
+			.reviews{
+				font-size: 0.44rem;
+				font-weight: bold;
+			}
+			.remark_star{
+				margin-left: 0.5rem;
+				vertical-align: top;
+				margin-top: 0.16rem;
+			}
+		}
+		.remark_list{
+			padding: 0.4rem 0;
+			border-bottom: #ddd solid 1px;
+			// &:nth-child(2){
+			// 	border: none
+			// }
+			
+			.remark_list_top{
+				overflow: hidden;
+				.remark_photo{
+					float: left;
+					width: 0.8rem;
+					height: 0.8rem;
+					border-radius: 50%;
+					overflow: hidden;
+					margin-right: 0.24rem;
+					img{
+						vertical-align: top;
+					}
+					.remark_photo_def{
+						display: block;
+						width: 100%;
+						height: 100%;
+						line-height: 0.8rem;
+						font-size: 0.4rem;
+						color: #fff;
+						text-align: center;
+						background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
+						background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+					}
+				}
+				.remark_list_info{
+					float: left;
+					h5{
+						font-size: 0.28rem;
+						font-weight: bold;
+					}
+					p{
+						font-size: 0.24rem;
+					}
+				}
+				.remark_star{
+					float: right;
+					margin-top: 0.3rem;
+					.star_list{
+						width: 0.24rem;
+						height: 0.24rem;
+					}
+				}
+			}
+			.remark_list_content{
+				font-size: 0.26rem;
+				margin-top: 0.24rem;
+				word-wrap:break-word;
+				.remark_text_more{
+					color: #1bbc9d;
+					font-size: 0.24rem;
+				}
+			}
+			.remark_img_s{
+				margin-top: 0.15rem;
+				overflow: hidden;
+				li{
+					float: left;
+					border-radius: 0.1rem;
+					width: 31%;
+					margin-left: 2%;
+					margin-top: 0.1rem;
+					overflow: hidden;
+					&:nth-child(1){
+						margin-left: 0;
+					}
+					&:nth-child(4){
+						margin-left: 0;
+					}
+					img{
+						width: 100%;
+						vertical-align: top;
+					}
+				}
+			}
+		}
+		
+		.remark_more{
+			width: 3.2rem;
+			margin: 0.6rem auto 0;
+			height: 0.88rem;
+			line-height: 0.8rem;
+			border-radius: 0.44rem;
+			border: solid 2px #1bbc9d;
+			color: #1bbc9d;
+			text-align: center;
+			font-size: 0.28rem;
+			font-weight: bold;
+		}
+		
+	}
+
+	.star_list{
+		display: inline-block;
+		overflow: hidden;
+		position: relative;
+		vertical-align: top;
+		width: 0.32rem;
+		height: 0.32rem;
+		padding: 1px;
+		border-radius: 50%;
+		background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
+		background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+		i{
+			display: inline-block;
+			width: 100%;
+			height: 100%;
+			background-color: #fff;
+			border-radius: 50%;
+			position: relative;
+			overflow: hidden;
+			vertical-align: top;
+			&:after{
+				content: "";
+				display: block;
+				width: 40%;
+				height: 40%;
+				border-radius: 50%;
+				overflow: hidden;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%,-50%);
+				-webkit-transform: translate(-50%,-50%);
+				background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
+				background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+			}
+		}
+	}
+	.remark_star{
+		display: inline-block;
+		
+		.star_half{
+			position: absolute;
+			right: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+			display: none;
+			.star_list{
+				position: absolute;
+				right: 0;
+				top: 0;
+				margin: 0!important;
+				background: #ddd;
+				i{
+					&:after{
+						background: #ddd;
+					}
+				}
+			}
+		}
+	}
+	.star_no{
+		.star_half{
+			width: 100%;
+			display: block;
+		}
+	}
+	.star_no{
+		.star_half{
+			width: 100%;
+			display: block;
+		}
+	}
+	.star_h{
+		.star_half{
+			width: 50%;
+			display: block;
+		}
+	}
+
+	.swiper_remark{
+		position: fixed;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 99;
+		background-color: rgba(0,0,0,0.8);
+		p{
+			position: absolute;
+			width: 100%;
+			height: 100%;
+		}
+		img{
+			position: relative;
+			z-index: 2;
+			max-width: 100%;
+			// left: 50%;
+			// top:50%;
+			// transform: translate(-50%,-50%);
+			// -webkit-transform: translate(-50%,-50%);
+		}
+		.remark_close{
+			position: absolute;
+			right: 0;
+			top: 0;
+			color: #fff;
+			padding: 0.3rem 0.4rem;
+			z-index: 3;
+		}
+		.remark_num{
+			position: absolute;
+			left: 10%;
+			top: 1rem;
+			color: #fff;
+			font-size: 0.32rem;
+		}
+	}
 </style>
