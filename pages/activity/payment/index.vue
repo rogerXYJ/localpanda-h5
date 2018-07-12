@@ -406,7 +406,7 @@
 						"appId": data.appId, //公众号名称，由商户传入     
 						"timeStamp": data.timeStamp, //时间戳，自1970年以来的秒数     
 						"nonceStr": data.nonceStr, //随机串     
-						"package": "prepay_id=" + data.prepay_id,
+						"package": "prepayId=" + data.prepay_id,
 						"signType": data.signType, //微信签名方式：     
 						"paySign": data.paySign //微信签名 
 					},
@@ -447,7 +447,7 @@
 				}).then(function(response) {
 
 					//检测超时
-					if(response.return_msg == 'Read timed out') {
+					if(response.returnMsg == 'Read timed out') {
 						alert('Pay overtime,please try again!');
 						return;
 					}
@@ -479,13 +479,13 @@
 					}
 				}).then(function(response) {
 					var data = response.data;
-					if(data.return_code == 'SUCCESS') {
+					if(data.returnCode == 'SUCCESS') {
 
 						//self.showWxOpenBox = true;
 						self.loadingStatus = false;
 
 						var callUrl = 'https://www.localpanda.com/activity/payment/wxMobilePay?email=' + self.email + '&orderId=' + self.orderId + '&amount=' + self.opctions.amount + '&symbol=' + self.opctions.symbol + '&currency=' + self.opctions.currency + '&login=' + (self.logIn ? self.logIn : 0);
-						var openWxUrl = data.mweb_url + '&redirect_url=' + encodeURIComponent(callUrl);
+						var openWxUrl = data.mwebUrl + '&redirect_url=' + encodeURIComponent(callUrl);
 
 						//唤起微信a标签的href
 						self.openWxUrl = openWxUrl;
@@ -493,7 +493,7 @@
 						//window.location.href = openWxUrl;
 
 					} else {
-						alert(data.return_msg + ', Try again!')
+						alert(data.returnMsg + ', Try again!')
 					}
 					self.loadingStatus = false;
 

@@ -205,12 +205,11 @@
 			<!-- 点评模块 -->
 			<div class="remark_all" id="Reviews" v-if="remarkDataAll.length">
 				<div class="remark_title">
-					<span class="reviews">{{remarkDataAll.length}} {{remarkDataAll.length==1 ? 'Review':'Reviews'}}</span>
+					<span class="reviews">10 {{remarkDataAll.length==1 ? 'Review':'Reviews'}}</span>
 					<div class="remark_star" v-html="remarkStarHtml(avgscore)"></div>
 				</div>
 				<div class="remark_list" v-for="(item,index) in remarkDataAll" :key="index">
 					<div class="remark_list_top">
-						{{item.score}}
 						<div class="remark_star" v-html="remarkStarHtml(item.score)">
 							<!-- <span class="star_list" v-for="itemIndex in 5" :class="{star_h:item.score%2==1&&item.score/2<itemIndex}"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span> -->
 							<!-- <span class="star_list"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span>
