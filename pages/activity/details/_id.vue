@@ -185,7 +185,7 @@
 				// }
 				//点评展示
 				var remarkData = await Vue.axios.post(
-					apiBasePath+"user/comment/detail/list",JSON.stringify({"activityId": id,'pageNum':1,'pageSize':3}),{
+					apiBasePath+"user/comment/detail/list",JSON.stringify({"activityId": id,'status':1,'pageNum':1,'pageSize':3}),{
 						headers: {
 						'Content-Type': 'application/json'
 						}

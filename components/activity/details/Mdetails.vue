@@ -653,6 +653,7 @@ import photo from '~/components/activity/details/photo'
 			loadMoreRemark(e){
 				var postData = {
 					"activityId": this.id,
+					'status':1,
 					'pageNum':this.pageNum,
 					'pageSize':3
 				};
