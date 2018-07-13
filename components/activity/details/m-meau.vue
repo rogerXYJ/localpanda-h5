@@ -31,7 +31,7 @@
 				<li v-if="remark.length>0">
 					<a href="#notes">Notes</a>
 				</li>
-				<li v-if="remarkData.length>0">
+				<li v-if="remarkData.entities && remarkData.entities.length>0">
 					<a href="#Reviews">Reviews</a>
 				</li>
 				<li v-if="recommed.length>0">

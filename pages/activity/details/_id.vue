@@ -20,7 +20,6 @@
 			:photoList="photoList"
 			:destination="destination" 
 			:remarkData="remarkData" 
-			:avgscore="avgscore"
 			></Mdetails>
 		<transition name="slideleft">
             <Mmeau v-show="isShowMeau" class="Mmeau" 
@@ -99,8 +98,7 @@
 				notice:[],
 				photoList:[],
 				
-				remarkData:[],
-				avgscore:10
+				remarkData:[]
 			};
 			let response = {};
 			let apiActivityPriceRes = {};
@@ -184,20 +182,24 @@
 				// return redirect("/");
 				// }
 				//点评展示
-				var remarkData = await Vue.axios.post(
-					apiBasePath+"user/comment/detail/list",JSON.stringify({"activityId": id,'status':1,'pageNum':1,'pageSize':3}),{
-						headers: {
-						'Content-Type': 'application/json'
+				try{
+					var remarkData = await Vue.axios.post(
+						apiBasePath+"user/comment/detail/list",JSON.stringify({"activityId": id,'pageNum':1,'pageSize':3}),{
+							headers: {
+							'Content-Type': 'application/json'
+							}
 						}
-					}
-				);
+					);
+				} catch(err) {
+					console.log(err);
+					return error({
+						statusCode: 500,
+						message: JSON.stringify(err)
+					});
+				}
+				
 				if(remarkData.data){
 					data.remarkData = remarkData.data;
-				}
-
-				var avgscore = await Vue.axios.get(apiBasePath+"user/comment/avgscore/"+id);
-				if(avgscore.data){
-					data.avgscore = avgscore.data;
 				}
 				
 

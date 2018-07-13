@@ -205,7 +205,7 @@
 			<!-- 点评模块 -->
 			<div class="remark_all" id="Reviews" v-if="remarkDataAll.length">
 				<div class="remark_title">
-					<span class="reviews">10 {{remarkDataAll.length==1 ? 'Review':'Reviews'}}</span>
+					<span class="reviews">{{records}} {{remarkDataAll.length==1 ? 'Review':'Reviews'}}</span>
 					<div class="remark_star" v-html="remarkStarHtml(avgscore)"></div>
 				</div>
 				<div class="remark_list" v-for="(item,index) in remarkDataAll" :key="index">
@@ -217,9 +217,9 @@
 							<span class="star_list star_h"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span>
 							<span class="star_list star_no"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span> -->
 						</div>
-						<div class="remark_photo">
+						<div class="remark_photo" :style="'background-image:url('+(item.userPortraitPhoto?item.userPortraitPhoto.url:'')+')'">
 							<span class="remark_photo_def" v-if="!item.userPortraitPhoto">{{item.userName.substring(0,1)}}</span>
-							<img v-else v-lazy="item.userPortraitPhoto?item.userPortraitPhoto.url:''" alt="">
+							<!-- <img v-else v-lazy="item.userPortraitPhoto?item.userPortraitPhoto.url:''" alt=""> -->
 						</div>
 						<div class="remark_list_info">
 							<h5>{{item.userName}}</h5>
@@ -348,8 +348,7 @@ import photo from '~/components/activity/details/photo'
 			"notice",
 			"photoList",
 			"destination",
-			"remarkData",
-			"avgscore"
+			"remarkData"
 		],
 		name: 'm-details',
 		data() {
@@ -362,7 +361,9 @@ import photo from '~/components/activity/details/photo'
 				alertPicStatus: false,
 				detailAll:[],
 
-				remarkDataAll:this.remarkData,
+				remarkDataAll:this.remarkData.entities?this.remarkData.entities:[],
+				avgscore:this.remarkData.avgScore?this.remarkData.avgScore:10,
+				records:this.remarkData.records?this.remarkData.records:0,
 				thisRemarkData:'',
 				showRemarkPic:false,
 				remarkIndex:1,
@@ -653,30 +654,40 @@ import photo from '~/components/activity/details/photo'
 			loadMoreRemark(e){
 				var postData = {
 					"activityId": this.id,
-					'status':1,
 					'pageNum':this.pageNum,
 					'pageSize':3
 				};
 				var thisBtn = e.target;
 				var self = this;
+
+				if(self.remarkLoading){
+					return false;
+				}
+
+				self.remarkLoading = true;
 				self.axios.post("https://api.localpanda.com/api/user/comment/detail/list",JSON.stringify(postData),{
 					headers: {
 					'Content-Type': 'application/json'
 					}
 				}).then(function(response) {
-					if(response.data && response.data.length){
-						if(response.data.length<3){
+					var entities = response.data.entities;
+					if(entities && entities.length){
+						if(entities.length<3){
 							thisBtn.style.display = 'none';
 						}else{
 							thisBtn.style.display = 'block';
 						};
-						self.remarkDataAll = self.remarkDataAll.concat(response.data);
+						self.remarkDataAll = self.remarkDataAll.concat(entities);
 						self.pageNum++;
-					}else if(response.data && response.data.length==0){
+					}else if(entities && entities.length==0){
 						thisBtn.style.display = 'none';
 					}
+					//开启请求状态
+					self.remarkLoading = false;
 					
-				}, function(response) {});
+				}, function(response) {
+					self.remarkLoading = false;
+				});
 			},
 			remarkStarHtml(score){
 				var thisHtml = '';
@@ -1462,6 +1473,7 @@ import photo from '~/components/activity/details/photo'
 					border-radius: 50%;
 					overflow: hidden;
 					margin-right: 0.24rem;
+					background-size: cover;
 					img{
 						vertical-align: top;
 					}
