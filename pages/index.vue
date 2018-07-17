@@ -1,6 +1,7 @@
 
 <style lang="scss" scoped>
 .home{
+	padding-top: 1.01rem;
 	.search_banner{
 		width: 100%;
 		height: 5rem;
@@ -206,6 +207,13 @@
 		.swiper-pagination-bullet-active{
 			background-color: #999;
 		}
+	}
+}
+.home{
+	.header{
+		top:0;
+		position: fixed !important;
+		width: 100%;
 	}
 }
 </style>
