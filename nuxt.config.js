@@ -5,10 +5,10 @@ module.exports = {
     ]
   },
   build: {
-    publicPath: 'https://resource.localpanda.cn/static/js/',
-    // testGa: true,
-    //  payCode: 'pk_live_mRSdUvgwE4pZo2IVofL4cVch',
-    //publicPath: '/mobile/_nuxt/', //PC和移动共存区分用
+     publicPath: 'https://resource.localpanda.cn/static/js/',
+     testGa: true,
+     //payCode: 'pk_live_mRSdUvgwE4pZo2IVofL4cVch',
+    // publicPath: '/mobile/_nuxt/', //PC和移动共存区分用
 
 
 
