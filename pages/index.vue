@@ -1,0 +1,444 @@
+
+<style lang="scss" scoped>
+.home{
+	.search_banner{
+		width: 100%;
+		height: 5rem;
+		background: url('http://oss1kvqmf.bkt.clouddn.com/localpanda/home/search_bg.jpg') no-repeat center center;
+		background-size: cover;
+		position: relative;
+		&:before{
+			content:'';
+			font-size: 0;
+			height: 0;
+			display: block;
+			overflow: hidden;
+		}
+		h1{
+			text-align: center;
+			color: #fff;
+			font-size: 0.56rem;
+			line-height: 0.58rem;
+			margin-top: 0.8rem;
+			font-weight: bold;
+			text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+		}
+		p{
+			margin-top: 0.25rem;
+			text-align: center;
+			color: #fff;
+			font-size: 0.26rem;
+			line-height: 0.34rem;
+			text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+		}
+		.home_search{
+			height: 0.88rem;
+			line-height: 0.88rem;
+			background-color: #ffffff;
+			box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1);
+			border-radius: 0.08rem;
+			position: relative;
+			margin:0.5rem 0.36rem 0;
+			input{
+				padding: 0 0.26rem;
+				width: 100%;
+				line-height: 0.88rem;
+				background: none;
+				border: none;
+				font-size: 0.26rem;
+				color: #353a3f;
+				&::-webkit-input-placeholder {color: #a9abab;}
+			}
+			.input_bg{
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				left: 0;
+				top: 0;
+				z-index: 2;
+			}
+		}
+	}
+
+	h3{
+		font-size: 0.4rem;
+		font-weight: bold;
+		margin-top: 0.65rem;
+		margin-bottom: 0.4rem;
+		padding:0 0.3rem;
+	}
+	.highlights{
+		margin:0.14rem 0.3rem 0;
+		position: relative;
+		a{
+			display: block;
+			.highlights_info{
+				text-align: center;
+				color: #fff;
+				position: absolute; left: 0; top: 50%; width: 100%; transform: translateY(-50%);
+				h4{
+					font-size: 0.4rem;
+					line-height: 0.48rem;
+					text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+					padding: 0 0.4rem;
+				}
+				p{
+					font-size: 0.25rem; line-height: 0.3rem; margin-top: 0.36rem; padding: 0 0.4rem;
+					text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+				}
+			}
+		}
+	}
+
+	.brand_info{
+		padding: 0 0.3rem;
+		margin-top: 0.75rem;
+		dl{
+			padding-left: 0.68rem;
+			margin-top: 0.26rem;
+			dt{
+				font-size: 0.34rem; font-weight: bold; line-height: 0.5rem;
+				i{
+					float: left; margin-left: -0.68rem; width: 0.5rem; height: 0.5rem; text-align: center; line-height: 0.5rem; background-color: #f5f7f7; border-radius: 50%; font-size: 0.3rem; 
+					color: transparent;
+        	-webkit-background-clip: text;
+					background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
+    			background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+				}
+			}
+			dd{ font-size: 0.24rem; line-height: 0.34rem; margin-top: 0.1rem;}
+		}
+	}
+
+	.specialties{
+		margin: -0.14rem 0.3rem 0;
+		overflow: hidden;
+		.specialties_left,.specialties_right{
+			float: left; width: calc(50% - 0.08rem);
+		}
+		.specialties_right{ margin-left: 0.14rem;}
+		.specialties_img{
+			display: block;
+			position: relative;
+			margin-top: 0.14rem;
+			strong{
+				position: absolute; left: 0; top: 50%; width: 100%; display: block; transform: translateY(-50%); text-align: center; color: #fff; font-size: 0.3rem;
+				text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+			}
+		}
+	}
+
+	.customize{
+		margin: 0.8rem 0.3rem 0;
+		position: relative;
+		.customize_info{
+			position: absolute;
+			left: 0;
+			top: 50%;
+			width: 100%;
+			transform: translateY(-50%);
+			text-align: center;
+			color: #fff;	
+			h4{
+				font-size: 0.4rem;
+				font-weight: bold;
+				text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+			}
+			p{
+				font-size: 0.25rem;
+				line-height: 0.3rem;
+				margin-top: 0.2rem;
+				text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+			}
+			a{
+				display: inline-block;
+				width: 2.92rem;
+				height: 0.7rem;
+				line-height: 0.7rem;
+				text-align: center;
+				background-color: #fe483e;
+				font-size: 0.24rem;
+				font-weight: bold;
+				margin-top: 0.4rem;
+				color: #fff;
+			}
+		}
+	}
+
+	.guests{
+		margin-top: 0.8rem;
+		background-color: #faf9f8;
+		padding: 0.3rem 0;
+		h4{
+			color: #878e95;
+			text-align: center;
+			font-size: 0.28rem
+		}
+		.swiper-container{
+			padding-bottom: 0.4rem;
+			.swiper-slide{
+				padding: 0 0.3rem;
+				img{
+					display: block;
+					margin: 0.4rem auto 0;
+					border-radius: 50%;
+					box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+				}
+				b{ display: block; margin-top: 0.2rem; text-align: center; font-size: 0.34rem; line-height: 0.28rem;}
+				p{ margin-top: 0.15rem; text-align: center; font-size: 0.24rem;}
+			}
+			.swiper-pagination{
+				bottom: 0;
+			}
+			
+		}
+	}
+	
+}
+</style>
+<style lang="scss">
+.guests{
+	.swiper-pagination{
+		bottom: 0;
+		.swiper-pagination-bullet{
+			background-color: #aaa;
+		}
+		.swiper-pagination-bullet-active{
+			background-color: #999;
+		}
+	}
+}
+</style>
+
+
+<template>
+	<div class="home">
+		<Head :showSearch="showHeaderSearch" @closeSearch="showHeaderSearch=false" @searchChange="searchChange"></Head>
+
+		<div class="search_banner">
+			<h1>Unlock Local <br> Access to China</h1>
+			<p>Explore hundreds of unique,<br>immersive and authentic experiences</p>
+			<div class="home_search">
+				<input type="text" v-model="keyword" placeholder="Search attractions, activities or destinations">
+				<div class="input_bg" @click="showHeaderSearch=true"></div>
+			</div>
+		</div>
+
+
+		<!-- 活动亮点 -->
+		<h3>Latest Highlights</h3>
+		<div class="highlights">
+			<a href="#">
+				<img src="http://oss1kvqmf.bkt.clouddn.com/localpanda/home/ad_banner1.jpg" width="100%" alt="">
+				<div class="highlights_info">
+					<h4>Local Panda Originals is Now<br>live in Porto!</h4>
+					<p>Choose your tour, pick your guide and<br>personalize it the way you want!</p>
+				</div>
+			</a>
+		</div>
+		<div class="highlights">
+			<a href="#">
+				<img src="http://oss1kvqmf.bkt.clouddn.com/localpanda/home/ad_banner1.jpg" width="100%" alt="">
+				<div class="highlights_info">
+					<h4>Have an amazing Cooking class</h4>
+					<p>Learn to cook real local cuisine. Our hosts share their secret recipeś with you while you prepare and enjoy authentic food together.</p>
+				</div>
+			</a>
+		</div>
+
+		<!-- 品宣部分 -->
+		<div class="brand_info">
+			<dl>
+				<dt><i class="iconfont">&#xe651;</i>Bridging East and West</dt>
+				<dd>Our multicultural team understands what China has to offer and what you as a traveler are looking for</dd>
+			</dl>
+			<dl>
+				<dt><i class="iconfont">&#xe651;</i>Exceptional Trips</dt>
+				<dd>We hand-pick our offerings to ensure excellence in quality and competitive pricing</dd>
+			</dl>
+			<dl>
+				<dt><i class="iconfont">&#xe651;</i>Bridging East and West</dt>
+				<dd>We work closely with you to craft and deliver experiences that fit your personality, interests, and travel style</dd>
+			</dl>
+		</div>
+
+		<!-- Our Specialties -->
+		<h3>Our Specialties</h3>
+		<div class="specialties">
+			<div class="specialties_left">
+				<a class="specialties_img">
+					<img src="http://oss1kvqmf.bkt.clouddn.com/localpanda/home/specialties_left_1.jpg" width="100%" alt="">
+					<strong>The Great Wall</strong>
+				</a>
+				<a class="specialties_img">
+					<img src="http://oss1kvqmf.bkt.clouddn.com/localpanda/home/specialties_left_2.jpg" width="100%" alt="">
+					<strong>Foodie Experiences</strong>
+				</a>
+				<a class="specialties_img">
+					<img src="http://oss1kvqmf.bkt.clouddn.com/localpanda/home/specialties_left_3.jpg" width="100%" alt="">
+					<strong>Forbidden City</strong>
+				</a>
+				<a class="specialties_img">
+					<img src="http://oss1kvqmf.bkt.clouddn.com/localpanda/home/specialties_left_4.jpg" width="100%" alt="">
+					<strong>Expat Adventures</strong>
+				</a>
+			</div>
+			<div class="specialties_right">
+				<a class="specialties_img">
+					<img src="http://oss1kvqmf.bkt.clouddn.com/localpanda/home/specialties_right_1.jpg" width="100%" alt="">
+					<strong>Giant Pandas</strong>
+				</a>
+				<a class="specialties_img">
+					<img src="http://oss1kvqmf.bkt.clouddn.com/localpanda/home/specialties_right_2.jpg" width="100%" alt="">
+					<strong>Water Towns</strong>
+				</a>
+				<a class="specialties_img">
+					<img src="http://oss1kvqmf.bkt.clouddn.com/localpanda/home/specialties_right_3.jpg" width="100%" alt="">
+					<strong>Terracotta Warriors</strong>
+				</a>
+				<a class="specialties_img">
+					<img src="http://oss1kvqmf.bkt.clouddn.com/localpanda/home/specialties_right_4.jpg" width="100%" alt="">
+					<strong>Landmarks</strong>
+				</a>
+			</div>
+		</div>
+
+		<div class="customize">
+			<img src="http://oss1kvqmf.bkt.clouddn.com/localpanda/home/customize.jpg" width="100%" alt="">
+			<div class="customize_info">
+				<h4>BY YOU / FOR YOU</h4>
+				<p>Choose your cities, matches your dates, <br>design your bespoke journey</p>
+				<a class="btn_customize">Build Your Adventure</a>
+			</div>
+		</div>
+
+
+		<div class="guests">
+			<h4>What our guests are saying</h4>
+			<div class="swiper-container" id="swiper_guests">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<img src="https://resource.localpanda.cn/static/content/reviews/Claudia.jpg" width="34%" alt="">
+						<b>Claudia Flores</b>
+						<p>Local Panda had an incredible amount of attention and patience throughout my trip. I had a great tour that went way beyond my expectations. The sites and smells of everywhere we visited around Shanghai were fantastic as well. My guide, Jamie, was nice, intelligent, great English, everything you want in a tour guide. Thanks again!</p>
+					</div>		
+					<div class="swiper-slide">
+						<img src="https://resource.localpanda.cn/static/content/reviews/Selvarani.jpg" width="34%" alt="">
+						<b>Selvarani Saravanamuthu</b>
+						<p>I have to say a huge thank you to Local Panda for putting together this memorable trip. The tours have been par excellence, and I can't be happy enough about it. Local Panda have provided us with a wonderful and memorable experience we will cherish forever. I will not hesitate to recommend Local Panda to my friends when they plan their trip to China.</p>
+					</div>		
+					<div class="swiper-slide">
+						<img src="https://resource.localpanda.cn/static/content/reviews/Cynthia.jpg" width="34%" alt="">
+						<b>Cynthia Huang</b>
+						<p>Local Panda Exceeded our expectations in every way. Our guide Rebecca was a Hangzhou native whose local knowledge of the city was beyond anything we could have hoped for. The personalized service sets Local Panda apart. If you want to see something, or do something off of the beaten path, they will go above and beyond to accommodate you."</p>
+					</div>					
+				</div>
+				<div class="swiper-pagination" id="swiper_guests_pagination"></div>
+			</div>
+		</div>
+		
+		<Foot></Foot>
+
+
+		<a href="/info/feedback/" class="btn inquire">Inquire</a>
+		
+	</div>
+</template>
+<script>
+
+	import Head from '~/components/header/'
+	import Foot from "~/components/footer/"
+
+	import Vue from "vue";
+
+	if(process.browser) {
+		require('~/assets/js/plugin/swiper.js');
+	}
+	
+	export default {
+		name: 'activityList',
+		components: {
+			Head,
+			Foot
+		},
+		async asyncData({
+			route,
+			apiBasePath
+		}) {
+
+			var params = route.params;
+			
+			var postData = {
+				
+			};
+
+			//console.log(postData);
+
+			var getData = '';
+
+			try{
+				// listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(postData), {
+				// 	headers: {
+				// 		'Content-Type': 'application/json'
+				// 	}
+				// })
+			}catch(err){};
+
+			//列表页数据
+			var homeData = getData.data?getData.data:'';
+
+
+			return {
+				homeData:homeData,
+				showHeaderSearch: false,
+
+				keyword:''
+			}
+		},
+		computed:{
+			
+		},
+		methods: {
+			//头部搜索change回调
+			searchChange(value){
+				this.keyword = value;
+			},
+			
+		},
+		watch: {
+			
+		},
+		mounted: function() {
+			var self = this;
+
+
+			
+			new Swiper('#swiper_guests', {
+				lazy: true,
+				pagination: {
+					el: '#swiper_guests_pagination'
+				}
+			});
+
+			
+			
+		},
+		head() {
+			return {
+				title: 'home',
+				meta: [{
+						hid: "keywords",
+						name: "keywords",
+						content: 'aaaaaaa'
+					},
+					{
+						hid: "description",
+						name: "description",
+						content: 'aaaaaaa'
+					}
+				]
+			};
+		},
+	}
+</script>
+

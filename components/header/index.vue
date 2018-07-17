@@ -5,12 +5,10 @@
 		<div class="header_box">
 
 			<!-- 导航展开按钮 -->
-			<div class="header_btn" @click="showNav">
+			<div class="header_btn iconfont" @click="showNav">&#xe665;</div>
+<!-- <span></span>
 				<span></span>
-				<span></span>
-				<span></span>
-			</div>
-
+				<span></span> -->
 			<!-- 搜索 -->
 			<div class="header_search_icon iconfont" @click="showSearchDialog=true">&#xe67a;</div>
 			<!-- logo -->
@@ -362,9 +360,11 @@
 		
 		.header_btn{
 			float: right;
-			width: 1rem;
 			height: 0.99rem;
-			padding: 0.32rem 0.4rem 0.32rem 0.25rem;
+			line-height: 0.99rem;
+			padding: 0 0.3rem 0 0.25rem;
+			font-size: 0.48rem;
+			color: #1bbc9d;
 			span{
 				width: 100%;
 				height: 0.04rem;
@@ -611,8 +611,8 @@
 		visibility: inherit;
 		opacity: 1;
 		a{
-			height: 1.18rem;
-			line-height: 1.18rem;
+			height: 1.12rem;
+			line-height: 1.12rem;
 		}
 	}
 	.login_box{

@@ -207,8 +207,8 @@
 						border-bottom: 1px solid #dde0e0;
 					}
 					.name{
-						height: 1.32rem;
-						line-height: 1.32rem;
+						height: 1.12rem;
+						line-height: 1.12rem;
 						position: relative;
 						font-size: 0.3rem;
 						i{
