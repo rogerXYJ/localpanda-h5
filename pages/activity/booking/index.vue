@@ -576,6 +576,7 @@
 								"deviceType": deviceType
 							}
 							if(that.addOder == false) {
+								that.addOder = true
 								Vue.axios.put(that.apiBasePath + "activity/order/create", JSON.stringify(obj), {
 									headers: {
 										'Content-Type': 'application/json; charset=UTF-8'
