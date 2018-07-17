@@ -303,13 +303,9 @@
 			        hitType: "event",
 			        eventCategory: "activity_detail",
 			        eventAction: "click",
-<<<<<<< HEAD
 			        eventLabel: "activity_order_fail"
 			      });
-=======
-			        eventLabel: "activity_book_fail"
-			      });	
->>>>>>> dev_xuyongjie
+
 			},
 			order(){
 		      let next=false
@@ -338,11 +334,7 @@
 			        hitType: "event",
 			        eventCategory: "activity_detail",
 			        eventAction: "click",
-<<<<<<< HEAD
 			        eventLabel: "activity_order_succ"
-=======
-			        eventLabel: "activity_book_succ"
->>>>>>> dev_xuyongjie
 			      });
 		        that.dateErr=false
 		        that.peopleErr=false
@@ -380,17 +372,10 @@
 				location.href="/activity/booking/"
 		        //routes.push('/fillYourInfo')
 		      }
-<<<<<<< HEAD
 	    		if(next==false){
 	    			this.gaFail()
 	    		}
 			}
-=======
-    		if(next==false){
-    			this.gaFail()
-    		}
-		}
->>>>>>> dev_xuyongjie
 		},
 		mounted: function() {
 			

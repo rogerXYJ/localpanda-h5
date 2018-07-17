@@ -367,10 +367,6 @@
 
 		.h_search_top{
 			height: 1.08rem;
-<<<<<<< HEAD
-			//margin-top: -1.08rem;
-=======
->>>>>>> dev_xuyongjie
 			padding: 0.22rem 0.2rem 0 0.2rem;
 			background-color: #fff;
 			border-bottom: #dde0e0 solid 1px;
@@ -461,14 +457,6 @@
 				}
 			}
 		}
-<<<<<<< HEAD
-		.showSearch{
-			// -webkit-transition:all 0.3s linear 0s; 
-			// transition:all 0.3s linear 0s; 
-			//margin-top: 0;
-		}
-=======
->>>>>>> dev_xuyongjie
 
 		.win_bg{
 			width: 100%;
@@ -579,8 +567,6 @@
 <template>
 	<div class="activity_list">
 		<Head :searchValue="keyword" :people="peopleNum" :showSearch="showHeaderSearch" @searchChange="searchChange" @closeSearch="showHeaderSearch=false"></Head>
-
-<<<<<<< HEAD
 		<div class="fixed_all" id="fixed_all">
 			<div class="fixed_box" :class="{filter_fixed:isFixed}">
 				<!-- 搜索 -->
@@ -592,17 +578,6 @@
 						<i class="iconfont s_input_search">&#xe67a;</i>
 						<p></p>
 					</div>
-=======
-		<!-- 搜索 -->
-		<div class="h_search_top">
-			<!-- <span class="btn" @click="listSearch">Search</span> -->
-			
-			<div class="h_search_input_box" @click="showHeaderSearch=true">
-				<input type="text" id="h_search_input" v-model="keyword" placeholder="Attraction, Activity, Destination">
-				<i class="iconfont s_input_search">&#xe67a;</i>
-				<p></p>
-			</div>
->>>>>>> dev_xuyongjie
 
 			<div class="select_people">
 				<!-- {{peopleNum}} People <i class="iconfont">&#xe666;</i> -->
@@ -1505,7 +1480,6 @@
 
 			
 			//筛选悬浮
-<<<<<<< HEAD
 			// var filterBox = document.getElementById('fixed_all'),
 			// 	h_search_H = document.querySelectorAll('.h_search_top')[0].clientHeight,
 			// 	filterBoxTop = filterBox.offsetTop + h_search_H;
@@ -1536,16 +1510,6 @@
 					this.isFixed=true;
 				}
 				
-=======
-			var filterBox = document.getElementById('filter_box'),
-				filterBoxTop = filterBox.offsetTop;
-			window.addEventListener("scroll", (e)=>{
-				if(scrollY>filterBoxTop){
-					this.isFixed=true
-				}else{
-					this.isFixed=false
-				}
->>>>>>> dev_xuyongjie
 			});
 
 			//浏览器事件处理
