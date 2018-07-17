@@ -153,6 +153,7 @@
 			}
 			a{
 				display: inline-block;
+				border-radius: 4px;
 				width: 2.92rem;
 				height: 0.7rem;
 				line-height: 0.7rem;
