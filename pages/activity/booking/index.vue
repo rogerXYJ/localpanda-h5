@@ -38,15 +38,7 @@
 				</div>
 				<div class="inputItem" :class="{err:phoneErr}">
 					<p>Mobile Phone <b>*</b></p>
-<<<<<<< HEAD
-<<<<<<< HEAD
-					<input :class="{err:phoneErr}" @blur="gaBlur(3)"  @focus="fousPhone" v-model="phone" />
-=======
 					<input :class="{err:phoneErr}"  @focus="fousPhone" @blur="gaBlur(3)" v-model="phone" />
->>>>>>> dev_xuyongjie
-=======
-					<input :class="{err:phoneErr}" @blur="gaBlur(3)" @focus="fousPhone" v-model="phone" />
->>>>>>> test
 				</div>
 			</div>
 
@@ -312,24 +304,6 @@
 					eventAction: 'click',
 					eventLabel: 'country_code_open',
 				});
-<<<<<<< HEAD
-				if(index==0){
-					this.codeErr=false
-					this.index=0
-<<<<<<< HEAD
-					
-=======
-					ga('gtag_UA_107010673_2.send', {
-						hitType: 'event',
-						eventCategory: 'activity_booking',
-						eventAction: 'click',
-						eventLabel: 'country_code_open',
-					});
->>>>>>> dev_xuyongjie
-				}else{
-					this.TravellerCodeErr=false
-					this.index=1
-=======
 				if(index == 0) {
 					this.codeErr = false
 					this.index = 0
@@ -337,7 +311,6 @@
 				} else {
 					this.TravellerCodeErr = false
 					this.index = 1
->>>>>>> test
 				}
 				this.isShowBook = true;
 
@@ -687,18 +660,10 @@
 
 							}, function(response) {})
 						}
-					}
-					//console.log(that.addOder)
-<<<<<<< HEAD
-					
+					}	
 				}
 				if(next==false){
 					that.gaFail()
-=======
-					if(next == false) {
-						that.gaFail()
-					}
->>>>>>> test
 				}
 
 				//跳转到输入框的位置
