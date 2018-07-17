@@ -245,14 +245,9 @@
 				}
 				
 				//调用ga
-<<<<<<< HEAD
 				this.ga('search','search');
 				this.ga('search','direct');
 				
-=======
-				this.ga('search','direct');
-				this.ga('search','search')
->>>>>>> dev_xuyongjie
 				location.href = this.getUrl(this.searchVal,'direct');
 			},
 			textHighlight(value){
