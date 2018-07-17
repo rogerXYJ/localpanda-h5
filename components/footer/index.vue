@@ -210,21 +210,21 @@
 						height: 1.32rem;
 						line-height: 1.32rem;
 						position: relative;
-						font-size: 0.32rem;
+						font-size: 0.3rem;
 						i{
 							position: absolute;
 							right: 0;
-							font-size: 0.38rem;
+							font-size: 0.3rem;
 							color: #878e95;
 						}
 					}
 					.footContent{
 						padding:0 0.293333rem 0.5rem;
 						.item{
-							margin-top:0.4rem;
+							margin-top:0.36rem;
 							a{
 								display: block;
-								font-size: 0.346666rem;
+								font-size: 0.26rem;
 							}
 							&:first-child{
 								margin-top: 0;

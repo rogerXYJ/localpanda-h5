@@ -291,7 +291,7 @@
 				this.isShowBook = val.status;
 
 				//关闭后退浏览器
-				history.back()
+				//history.back()
 			},
 			back() {
 				history.back()
@@ -1010,11 +1010,11 @@
 			color: red!important;
 		}
 		.view {
-			transition: all .3s;
+
+			transition: all ease-in .2s;
 		}
-		.fade-enter-active,
-		.fade-leave-active {
-			transition: opacity .5s;
+		.fade-enter-active, .fade-leave-active {
+		transition: opacity .2s;
 		}
 		.fade-enter,
 		.fade-leave-to/* .fade-leave-active below version 2.1.8 */

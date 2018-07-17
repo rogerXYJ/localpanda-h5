@@ -161,12 +161,11 @@
 								position: absolute;
 								left: 0;
 								bottom: 0;
-								padding-left: 0.1rem;
+								padding: 0.08rem 0.1rem;
 								text-align: center;
 								width: 100%;
 								font-size: 0.18rem;
-								height: 0.34rem;
-								line-height: 0.35rem;
+								line-height: 0.28rem;
 								overflow: hidden;
 								color: #fff;
 								background-color: rgba(0, 0, 0, 0.7);
@@ -196,7 +195,8 @@
 									height: 0.24rem;
 									line-height: 0.24rem;
 									font-size: 0.16rem;
-									
+									vertical-align: top;
+									margin-top: 0.04rem;
 								}
 								.tag_group{
 									background-color: #efae99;
@@ -210,7 +210,7 @@
 								line-height: 0.29rem;
 								max-height: 0.58rem;
 								overflow:hidden;
-								-webkit-line-clamp: 1;
+								-webkit-line-clamp: 2;
 								-webkit-box-orient: vertical;
 								display: -webkit-box;
 								text-overflow: ellipsis;
@@ -265,6 +265,10 @@
 			}
 			.list_loading{
 				margin-top: 0.2rem;
+				text-align: center;
+				span{
+					text-align: center;
+				}
 			}
 		}
 
@@ -327,6 +331,7 @@
 					}
 					.filter_price{
 						padding: 0.4rem 0;
+						margin: 0 0.4rem;
 						.filter_price_text{
 							margin-top: 0.2rem;
 							font-size: 0.26rem;
@@ -529,17 +534,20 @@
 			position: fixed;
 			right: 0.2rem;
 			bottom: 0.3rem;
-			z-index: 22;
+			z-index: 6;
 			background-color: #1bbc9d;
 			border: #1bbc9d solid 1px;
 			display: inline-block;
 			width: auto;
 			height: 0.86rem;
-			line-height: 0.86rem;
+			line-height: 0.81rem;
 			border-radius: 0.43rem;
 			font-size: 0.28rem;
 			font-weight: bold;
 			padding: 0 0.45rem;
+			&:focus,&:hover{
+				color: #fff;
+			}
 		}
 
 	}
@@ -559,6 +567,9 @@
 		.checkbox_content,.radio_content{
 			padding-left: 0.2rem;
 			font-size:0.26rem;
+		}
+		.checkbox_content{
+			display: block;
 		}
 	}
 	.header_search_icon{
@@ -653,7 +664,8 @@
 		<!-- <div class="requirement_result">
 			<span :key="index" v-for="(item,index) in filterTag">{{item}}</span>
 		</div> -->
-		<div class="destination_result" v-show="activityList.length">{{listdata.records}} {{listdata.records>1?'activities':'activity'}} found</div>
+		<div class="destination_result" v-show="activityList.length">{{listdata.records}} {{listdata.records>1?'activities':'activity'}} found </div>
+		
 
 		<!-- 产品列表 -->
 		<div class="list_box">
@@ -692,10 +704,10 @@
 					</a>
 				</li>
 			</ul>
-			<infinite-loading class="list_loading" @infinite="infiniteHandler" spinner="bubbles"  ref="infiniteLoading">
-				<span slot="no-more">You've reached the bottom of the page.</span>
-				<span slot="no-results" class="no-results"></span>
-			</infinite-loading>
+			<infiniteLoading class="list_loading" @infinite="infiniteHandler">
+				<span>You've reached the bottom of the page.</span>
+				<span class="no-results"></span>
+			</infiniteLoading>
 		</div>
 		
 		<Foot></Foot>
@@ -719,7 +731,7 @@
 					<dt>{{getFilterType(item.type)}}</dt>
 					<dd v-if="item.type=='DURATION'">
 						<checkbox-group v-model="filterCheck.duration">
-							<checkbox :change="filterChange" :key="index2" v-for="(itemType,key,index2) in item.items" :label="key">{{getDayStr(key)}} ( {{itemType}} )</checkbox>
+							<checkbox :change="filterChange" :key="index2" v-for="(itemType,key,index2) in item.items" :label="key">{{getDayStr(key)}}( {{itemType}} )</checkbox>
 						</checkbox-group>
 						<span class="filter_more" @click="showMore" v-if="getObjLength(item.items)>6">View More</span>
 					</dd>
@@ -753,7 +765,7 @@
 	import {checkboxGroup,checkbox} from "~/plugins/panda/checkbox/"
 	import {radioGroup,radio} from "~/plugins/panda/radio/"
 	import slider from "~/plugins/panda/slider/"
-	import InfiniteLoading from 'vue-infinite-loading/src/components/Infiniteloading.vue'
+	import infiniteLoading from '~/plugins/panda/infiniteLoading/'
 	import Loading from "~/components/plugin/Loading"
 
 	import Vue from "vue";
@@ -769,7 +781,7 @@
 			radioGroup,
 			radio,
 			slider,
-			InfiniteLoading,
+			infiniteLoading,
 			Loading
 		},
 		async asyncData({
@@ -1049,21 +1061,28 @@
 					'GROUP_TYPE':3,
 					'ATTRACTION':4,
 					'DURATION':5,
-					'TOUR_TYPE':6
+					'TOUR_TYPE':6,
+					'CITY': 6
 				};
 
+				var newAggregations = [];
 				//给数据添加排序的序号
 				for(var i=0;i<aggregations.length;i++){
+					var thisType = aggregations[i].type;
 					var thisNum = sortDefault[aggregations[i].type];
 					aggregations[i].number = thisNum ? thisNum : 10; //没有的字段默认设置顺序为10
+
+					if(typeof sortDefault[thisType] !== 'undefined'){
+						newAggregations.push(aggregations[i]);
+					}
 				};
 
 				//排序
-				aggregations = aggregations.sort(function(a,b){
+				newAggregations = newAggregations.sort(function(a,b){
 					return a.number > b.number;
 				});
 
-				return aggregations;
+				return newAggregations;
 			}
 		},
 		methods: {
@@ -1351,7 +1370,7 @@
 					case 'TOUR_TYPE': typeStr = 'Themes'; break;
 					case 'ATTRACTION': typeStr = 'Points of Interest'; break;
 					case 'CATEGORY': typeStr = 'Products'; break;
-					case 'CITY': typeStr = 'DESTINATIONS'; break;
+					case 'CITY': typeStr = 'DESTINATIONS COVERED'; break;
 					case 'PRICE': typeStr = 'Price / person for party of '+this.peopleNum; break;
 				};
 				return typeStr ? typeStr : type;

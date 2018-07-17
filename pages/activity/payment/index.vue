@@ -145,10 +145,29 @@
 			}
 		},
 		async asyncData({
-			apiBasePath
+			apiBasePath,
+			route
 		}) {
+
+			let that = this;
+
+			let query = route.query;
+			//console.log(query.objectId);
+
+			var orderInfo = '';
+
+			try {
+				orderInfo = await Vue.axios.get(apiBasePath + "activity/order/detail/" + query.objectId)
+			} catch(err) {
+				return error({
+					statusCode: 500,
+					message: JSON.stringify(err)
+				});
+			}
+
 			return {
-				apiBasePath: apiBasePath
+				apiBasePath: apiBasePath,
+				orderInfo: orderInfo ? orderInfo.data : ''
 			}
 		},
 
@@ -202,7 +221,7 @@
 
 			},
 			selectCard(id){
-				console.log(id)
+				//console.log(id)
 				if(id==0){
 					this.id=1
 					//document.getElementById("oderdetial").scrollIntoView()
@@ -318,11 +337,12 @@
 //				})
 //			},
 			getInfo() {
-				let that = this
-				Vue.axios.get(this.apiBasePath + "activity/order/detail/" + that.orderId).then(function(res) {
-					that.opctions = res.data;
-					that.email = res.data.contactInfo.emailAddress;
-					that.refundTimeLimit = res.data.activityInfo.refundTimeLimit * 24;
+				let that = this;
+				var orderInfo = this.orderInfo;
+				//Vue.axios.get(this.apiBasePath + "activity/order/detail/" + that.orderId).then(function(res) {
+					that.opctions = orderInfo;
+					that.email = orderInfo.contactInfo.emailAddress;
+					that.refundTimeLimit = orderInfo.activityInfo.refundTimeLimit * 24;
 
 					//人民币支付
 					if(that.opctions.currency == 'CNY') {
@@ -351,7 +371,7 @@
 					//默认用来显示支付按钮，微信里面用来公众号支付数据
 					that.payData = 1;
 
-				}, function(res) {})
+				//}, function(res) {})
 			},
 //			pay() {
 //				let that = this;
@@ -406,7 +426,7 @@
 						"appId": data.appId, //公众号名称，由商户传入     
 						"timeStamp": data.timeStamp, //时间戳，自1970年以来的秒数     
 						"nonceStr": data.nonceStr, //随机串     
-						"package": "prepay_id=" + data.prepay_id,
+						"package": "prepay_id=" + data.prepayId,
 						"signType": data.signType, //微信签名方式：     
 						"paySign": data.paySign //微信签名 
 					},
@@ -447,7 +467,7 @@
 				}).then(function(response) {
 
 					//检测超时
-					if(response.return_msg == 'Read timed out') {
+					if(response.returnMsg == 'Read timed out') {
 						alert('Pay overtime,please try again!');
 						return;
 					}
@@ -479,13 +499,13 @@
 					}
 				}).then(function(response) {
 					var data = response.data;
-					if(data.return_code == 'SUCCESS') {
+					if(data.returnCode == 'SUCCESS') {
 
 						//self.showWxOpenBox = true;
 						self.loadingStatus = false;
 
 						var callUrl = 'https://www.localpanda.com/activity/payment/wxMobilePay?email=' + self.email + '&orderId=' + self.orderId + '&amount=' + self.opctions.amount + '&symbol=' + self.opctions.symbol + '&currency=' + self.opctions.currency + '&login=' + (self.logIn ? self.logIn : 0);
-						var openWxUrl = data.mweb_url + '&redirect_url=' + encodeURIComponent(callUrl);
+						var openWxUrl = data.mwebUrl + '&redirect_url=' + encodeURIComponent(callUrl);
 
 						//唤起微信a标签的href
 						self.openWxUrl = openWxUrl;
@@ -493,7 +513,7 @@
 						//window.location.href = openWxUrl;
 
 					} else {
-						alert(data.return_msg + ', Try again!')
+						alert(data.returnMsg + ', Try again!')
 					}
 					self.loadingStatus = false;
 
@@ -511,7 +531,7 @@
 				let that=this
 				
 				that.loadingStatus = true;
-				console.log(this.postData)
+				//console.log(this.postData)
 				if(that.isWx) {
 					//微信内部
 					if(that.id==1) {
@@ -552,7 +572,7 @@
 								eventLabel: 'activity_pay_succ'
 			
 							});
-					      console.log(result.token)
+					      //console.log(result.token)
 					      if(!that.isPay){
 					      	that.stripeTokenHandler(result.token,that.isPay)
 						  }
@@ -608,7 +628,7 @@
 			// 设置卡元素
 			stripeFn() {
 				this.stripe=Stripe(payCode)
-				console.log(this.stripe)
+				//console.log(this.stripe)
 				var elements = this.stripe.elements({
 					fonts: [{
 						cssSrc: 'https://fonts.googleapis.com/css?family=Quicksand',
@@ -713,12 +733,15 @@
 
 		},
 		mounted: function() {
-			this.orderId = GetQueryString("objectId")
-			this.getInfo()
-			//this.getToken()
-			this.stripeFn();
+			this.orderId = GetQueryString("objectId");
 			this.ua = window.navigator.userAgent.toLowerCase();
 			this.isWx = (this.ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
+			
+			this.getInfo();
+			//this.getToken()
+
+			this.stripeFn();
+			
 //			console.log(this.opctions.currency)
 //			if(this.opctions.currency=="CNY"){
 //				this.id=0

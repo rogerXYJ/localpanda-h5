@@ -18,10 +18,23 @@
 			:itemsIncluded="itemsIncluded" 
 			:recommed="recommed"
 			:photoList="photoList"
-			:destination="destination"
+			:destination="destination" 
+			:remarkData="remarkData" 
 			></Mdetails>
 		<transition name="slideleft">
-            <Mmeau v-show="isShowMeau" class="Mmeau" :notice="notice" :exclusions="exclusions" :picInfo="picInfo" :photoList="photoList" :id="id"></Mmeau>
+            <Mmeau v-show="isShowMeau" class="Mmeau" 
+						:detail="detail" 
+						:notice="notice" 
+						:exclusions="exclusions" 
+						:picInfo="picInfo" 
+						:photoList="photoList" 
+						:id="id" 
+						:itemsIncluded="itemsIncluded" 
+						:introduction="introduction" 
+						:remark="remark" 
+						:recommed="recommed" 
+						:remarkData="remarkData"
+						></Mmeau>
         </transition>
       	<div class="marsk" v-if="isscroll" @click.stop="showMeau">
         	<i class="iconfont">&#xe665;</i>
@@ -83,9 +96,9 @@
 				inclusions:[],
 				exclusions:[],
 				notice:[],
-				photoList:[]
+				photoList:[],
 				
-				
+				remarkData:[]
 			};
 			let response = {};
 			let apiActivityPriceRes = {};
@@ -168,6 +181,28 @@
 				// } else {
 				// return redirect("/");
 				// }
+				//点评展示
+				try{
+					var remarkData = await Vue.axios.post(
+						apiBasePath+"user/comment/detail/list",JSON.stringify({"activityId": id,'pageNum':1,'pageSize':3}),{
+							headers: {
+							'Content-Type': 'application/json'
+							}
+						}
+					);
+				} catch(err) {
+					console.log(err);
+					return error({
+						statusCode: 500,
+						message: JSON.stringify(err)
+					});
+				}
+				
+				if(remarkData.data){
+					data.remarkData = remarkData.data;
+				}
+				
+
 			} catch(err) {
 				console.log(err);
 				return error({

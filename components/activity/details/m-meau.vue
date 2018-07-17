@@ -4,7 +4,7 @@
 			
 			<ul class="clearfix">
 
-				<li>
+				<li v-if="introduction.length || detail.itineraries">
 					<a href="#journey">What You Can Expect</a>
 				</li>
 				<li v-if="photoList.length>0">
@@ -13,7 +13,7 @@
 				<li v-if="picInfo.details.length>0">
 					<a href="#picDetails">Price Details</a>
 				</li>
-				<li>
+				<li v-if="exclusions || itemsIncluded.length">
 					<a href="#provide">Inclusions & Exclusions</a>
 				</li>
 				<!-- <li v-if="exclusions">
@@ -28,10 +28,13 @@
 				<li v-if="picInfo.refundInstructions">
 					<a href="#CancellationPolicy">Rescheduling / Cancellation</a>
 				</li>
-				<li>
+				<li v-if="remark.length>0">
 					<a href="#notes">Notes</a>
 				</li>
-				<li>
+				<li v-if="remarkData.entities && remarkData.entities.length>0">
+					<a href="#Reviews">Reviews</a>
+				</li>
+				<li v-if="recommed.length>0">
 					<a href="#recommend">Similar Experiences</a>
 				</li>
 			</ul>
@@ -50,7 +53,13 @@
 			'exclusions',
 			'picInfo',
 			"photoList",
-			"id"
+			"id",
+			"itemsIncluded",
+			'detail',
+			'introduction',
+			'remark',
+			'recommed',
+			'remarkData'
 
 		],
 		name: "Mmenu",
