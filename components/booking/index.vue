@@ -35,6 +35,7 @@
     		back(){
     			this.$emit('back',false)
     			ga('gtag_UA_107010673_2.send', {
+
 					hitType: 'event',
 					eventCategory: 'activity_booking',
 					eventAction: 'input',
@@ -42,7 +43,7 @@
 
 				});
     		},
-    		selectCodeFn(country,code) {
+    		Ga(){
     			ga('gtag_UA_107010673_2.send', {
 						hitType: 'event',
 						eventCategory: 'activity_booking',
@@ -77,6 +78,7 @@
     		selectCode: function(val, oldVal) {
 				let self = this
 				if(val) {
+					
 					self.codeList = [];
 					var other = [];
 					var str = val.replace(/\(/, "\\\(").replace(/\)/, "\\\)").replace(/\+/, '\\\+')

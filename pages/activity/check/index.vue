@@ -303,8 +303,13 @@
 			        hitType: "event",
 			        eventCategory: "activity_detail",
 			        eventAction: "click",
+<<<<<<< HEAD
 			        eventLabel: "activity_order_fail"
 			      });
+=======
+			        eventLabel: "activity_book_fail"
+			      });	
+>>>>>>> dev_xuyongjie
 			},
 			order(){
 		      let next=false
@@ -317,21 +322,27 @@
 							that.flatPickr.open();
 						},100);
 						
-				
+				next=false
 				   
 		      } else if (that.children + that.adults < that.picInfo.minParticipants) {
 		      	that.peopleErr=true
 		        that.dateErrText =
 		          "*Mimimum number of travelers:" + that.picInfo.minParticipants + ".";
+		          next=false
 		      }else if(that.children + that.adults<1){
 		      		that.peopleErr=true
+		      		next=false
 		      }else {
 		      	next=true
 		      	window.ga && ga("gtag_UA_107010673_2.send", {
 			        hitType: "event",
 			        eventCategory: "activity_detail",
 			        eventAction: "click",
+<<<<<<< HEAD
 			        eventLabel: "activity_order_succ"
+=======
+			        eventLabel: "activity_book_succ"
+>>>>>>> dev_xuyongjie
 			      });
 		        that.dateErr=false
 		        that.peopleErr=false
@@ -369,10 +380,17 @@
 				location.href="/activity/booking/"
 		        //routes.push('/fillYourInfo')
 		      }
+<<<<<<< HEAD
 	    		if(next==false){
 	    			this.gaFail()
 	    		}
 			}
+=======
+    		if(next==false){
+    			this.gaFail()
+    		}
+		}
+>>>>>>> dev_xuyongjie
 		},
 		mounted: function() {
 			
