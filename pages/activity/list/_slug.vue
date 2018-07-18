@@ -536,7 +536,6 @@
 			bottom: 0.3rem;
 			z-index: 6;
 			background-color: #1bbc9d;
-			border: #1bbc9d solid 1px;
 			display: inline-block;
 			width: auto;
 			height: 0.86rem;

@@ -5,7 +5,7 @@
 	.search_banner{
 		width: 100%;
 		height: 5rem;
-		background: url('http://oss1kvqmf.bkt.clouddn.com/localpanda/home/search_bg.jpg') no-repeat center center;
+		background: url('https://resource.localpanda.cn/homepage/search_bg.jpg') no-repeat center center;
 		background-size: cover;
 		position: relative;
 		&:before{
@@ -196,6 +196,25 @@
 		}
 	}
 	
+
+	.inquire{
+		position: fixed;
+		right: 0.2rem;
+		bottom: 0.3rem;
+		z-index: 6;
+		background-color: #1bbc9d;
+		display: inline-block;
+		width: auto;
+		height: 0.86rem;
+		line-height: 0.81rem;
+		border-radius: 0.43rem;
+		font-size: 0.28rem;
+		font-weight: bold;
+		padding: 0 0.45rem;
+		&:focus,&:hover{
+			color: #fff;
+		}
+	}
 }
 </style>
 <style lang="scss">
@@ -238,7 +257,7 @@
 		<h3>Latest Highlights</h3>
 		<div class="highlights">
 			<a href="#">
-				<img src="http://oss1kvqmf.bkt.clouddn.com/localpanda/home/ad_banner1.jpg" width="100%" alt="">
+				<img src="https://resource.localpanda.cn/homepage/bund.jpg" width="100%" alt="">
 				<div class="highlights_info">
 					<h4>Local Panda Originals is Now<br>live in Porto!</h4>
 					<p>Choose your tour, pick your guide and<br>personalize it the way you want!</p>
@@ -247,7 +266,7 @@
 		</div>
 		<div class="highlights">
 			<a href="#">
-				<img src="http://oss1kvqmf.bkt.clouddn.com/localpanda/home/ad_banner1.jpg" width="100%" alt="">
+				<img src="https://resource.localpanda.cn/homepage/tibet.jpg" width="100%" alt="">
 				<div class="highlights_info">
 					<h4>Have an amazing Cooking class</h4>
 					<p>Learn to cook real local cuisine. Our hosts share their secret recipeś with you while you prepare and enjoy authentic food together.</p>
@@ -258,11 +277,11 @@
 		<!-- 品宣部分 -->
 		<div class="brand_info">
 			<dl>
-				<dt><i class="iconfont">&#xe651;</i>Bridging East and West</dt>
+				<dt><i class="iconfont">&#xe677;</i>Bridging East and West</dt>
 				<dd>Our multicultural team understands what China has to offer and what you as a traveler are looking for</dd>
 			</dl>
 			<dl>
-				<dt><i class="iconfont">&#xe651;</i>Exceptional Trips</dt>
+				<dt><i class="iconfont">&#xe678;</i>Exceptional Trips</dt>
 				<dd>We hand-pick our offerings to ensure excellence in quality and competitive pricing</dd>
 			</dl>
 			<dl>
@@ -276,48 +295,48 @@
 		<div class="specialties">
 			<div class="specialties_left">
 				<a class="specialties_img">
-					<img src="http://oss1kvqmf.bkt.clouddn.com/localpanda/home/specialties_left_1.jpg" width="100%" alt="">
+					<img src="https://resource.localpanda.cn/homepage/greatwall.jpg" width="100%" alt="">
 					<strong>The Great Wall</strong>
 				</a>
 				<a class="specialties_img">
-					<img src="http://oss1kvqmf.bkt.clouddn.com/localpanda/home/specialties_left_2.jpg" width="100%" alt="">
+					<img src="https://resource.localpanda.cn/homepage/experiences.jpg" width="100%" alt="">
 					<strong>Foodie Experiences</strong>
 				</a>
 				<a class="specialties_img">
-					<img src="http://oss1kvqmf.bkt.clouddn.com/localpanda/home/specialties_left_3.jpg" width="100%" alt="">
+					<img src="https://resource.localpanda.cn/homepage/forbiddencity.jpg" width="100%" alt="">
 					<strong>Forbidden City</strong>
 				</a>
 				<a class="specialties_img">
-					<img src="http://oss1kvqmf.bkt.clouddn.com/localpanda/home/specialties_left_4.jpg" width="100%" alt="">
+					<img src="https://resource.localpanda.cn/homepage/expatadventures.jpg" width="100%" alt="">
 					<strong>Expat Adventures</strong>
 				</a>
 			</div>
 			<div class="specialties_right">
 				<a class="specialties_img">
-					<img src="http://oss1kvqmf.bkt.clouddn.com/localpanda/home/specialties_right_1.jpg" width="100%" alt="">
+					<img src="https://resource.localpanda.cn/homepage/giantpandas.jpg" width="100%" alt="">
 					<strong>Giant Pandas</strong>
 				</a>
 				<a class="specialties_img">
-					<img src="http://oss1kvqmf.bkt.clouddn.com/localpanda/home/specialties_right_2.jpg" width="100%" alt="">
+					<img src="https://resource.localpanda.cn/homepage/watertowns.jpg" width="100%" alt="">
 					<strong>Water Towns</strong>
 				</a>
 				<a class="specialties_img">
-					<img src="http://oss1kvqmf.bkt.clouddn.com/localpanda/home/specialties_right_3.jpg" width="100%" alt="">
+					<img src="https://resource.localpanda.cn/homepage/terracottawarriors.jpg" width="100%" alt="">
 					<strong>Terracotta Warriors</strong>
 				</a>
 				<a class="specialties_img">
-					<img src="http://oss1kvqmf.bkt.clouddn.com/localpanda/home/specialties_right_4.jpg" width="100%" alt="">
+					<img src="https://resource.localpanda.cn/homepage/landmarks.jpg" width="100%" alt="">
 					<strong>Landmarks</strong>
 				</a>
 			</div>
 		</div>
 
 		<div class="customize">
-			<img src="http://oss1kvqmf.bkt.clouddn.com/localpanda/home/customize.jpg" width="100%" alt="">
+			<img src="https://resource.localpanda.cn/homepage/custom.jpg" width="100%" alt="">
 			<div class="customize_info">
 				<h4>BY YOU / FOR YOU</h4>
 				<p>Choose your cities, matches your dates, <br>design your bespoke journey</p>
-				<a class="btn_customize">Build Your Adventure</a>
+				<a class="btn_customize" href="/travel/customize/step1">Build Your Adventure</a>
 			</div>
 		</div>
 

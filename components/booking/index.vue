@@ -42,7 +42,23 @@
 					eventLabel: 'country_code_close'
 
 				});
-    		},
+				},
+				selectCodeFn(country,code) {
+    			ga('gtag_UA_107010673_2.send', {
+						hitType: 'event',
+						eventCategory: 'activity_booking',
+						eventAction: 'select',
+						eventLabel: 'country_code_select'
+	
+					});
+    			let codeDetails={
+						mobileCode:country + "(+" + code + ")",
+						code:"(+" + code + ")",
+						status:false,
+						
+					}
+    			this.$emit('getCode',codeDetails)
+				},
     		Ga(){
     			ga('gtag_UA_107010673_2.send', {
 						hitType: 'event',

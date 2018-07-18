@@ -101,7 +101,7 @@
 			</div>
 			<div class="btn_pay">
 				<a v-if="(id==1 && openWxUrl)||!isWx && id==1" :href="openWxUrl" @click="wxOpenClick">Pay</a>
-				<button @touchend="getToken()" v-else>Pay</button>
+				<button @touchend="getToken()" v-else-if="showWxPayBtn || !isWx">Pay</button>
 
 			</div>
 		</div>
@@ -205,7 +205,8 @@
 				id:0,//切换支付方式
 				payStatus:false,
 				payErrMsg:'',
-				isPay:false
+				isPay:false,
+				showWxPayBtn:false
 				
 			}
 		},
@@ -368,8 +369,7 @@
 							that.wxInit();
 						}
 					};
-					//默认用来显示支付按钮，微信里面用来公众号支付数据
-					that.payData = 1;
+					
 
 				//}, function(res) {})
 			},
@@ -416,6 +416,11 @@
 						openId: openData.openid,
 						objectType:'ACTIVITY'
 					};
+
+					//默认用来显示支付按钮，微信里面用来公众号支付数据
+					self.showWxPayBtn = true;
+
+
 				}, function(response) {});
 				
 			},
@@ -535,7 +540,10 @@
 				if(that.isWx) {
 					//微信内部
 					if(that.id==1) {
-						this.wxPay(this.payData);
+						if(this.payData){
+							this.wxPay(this.payData);
+						}
+						
 					}else{
 						this.pay()
 					}

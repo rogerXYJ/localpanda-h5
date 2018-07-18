@@ -384,6 +384,7 @@
 			overflow: hidden;
 			color: #1bbc9d;
 			float: right;
+			font-size: 0.4rem;
 			padding: 0 0.2rem 0 0.3rem;
 			
 		}
