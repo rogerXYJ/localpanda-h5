@@ -184,7 +184,7 @@
 					display: block;
 					margin: 0.4rem auto 0;
 					border-radius: 50%;
-					box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+					box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 				}
 				b{ display: block; margin-top: 0.2rem; text-align: center; font-size: 0.34rem; line-height: 0.28rem;}
 				p{ margin-top: 0.15rem; text-align: center; font-size: 0.24rem;}
@@ -294,37 +294,37 @@
 		<h3>Our Specialties</h3>
 		<div class="specialties">
 			<div class="specialties_left">
-				<a class="specialties_img">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/China?options=%7B%22attraction%22%3A%5B%22Great%20Wall%22%5D%2C%22city%22%3A%5B%22Beijing%22%5D%7D&sort={%22type%22:%22SCORE%22}&keyword=great%20wall">
 					<img src="https://resource.localpanda.cn/homepage/greatwall.jpg" width="100%" alt="">
 					<strong>The Great Wall</strong>
 				</a>
-				<a class="specialties_img">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/China?keyword=food">
 					<img src="https://resource.localpanda.cn/homepage/experiences.jpg" width="100%" alt="">
 					<strong>Foodie Experiences</strong>
 				</a>
-				<a class="specialties_img">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/China?options=%7B%22attraction%22%3A%5B%22Forbidden%20City%22%5D%7D&sort={%22type%22:%22SCORE%22}&keyword=Forbidden">
 					<img src="https://resource.localpanda.cn/homepage/forbiddencity.jpg" width="100%" alt="">
 					<strong>Forbidden City</strong>
 				</a>
-				<a class="specialties_img">
+				<a class="specialties_img" href="https://m.localpanda.com/travel/expats">
 					<img src="https://resource.localpanda.cn/homepage/expatadventures.jpg" width="100%" alt="">
 					<strong>Expat Adventures</strong>
 				</a>
 			</div>
 			<div class="specialties_right">
-				<a class="specialties_img">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/China?keyword=Panda">
 					<img src="https://resource.localpanda.cn/homepage/giantpandas.jpg" width="100%" alt="">
 					<strong>Giant Pandas</strong>
 				</a>
-				<a class="specialties_img">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/China?keyword=water%20town">
 					<img src="https://resource.localpanda.cn/homepage/watertowns.jpg" width="100%" alt="">
 					<strong>Water Towns</strong>
 				</a>
-				<a class="specialties_img">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/China?keyword=terracotta%20warriors">
 					<img src="https://resource.localpanda.cn/homepage/terracottawarriors.jpg" width="100%" alt="">
 					<strong>Terracotta Warriors</strong>
 				</a>
-				<a class="specialties_img">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/China?options=%7B%22city%22%3A%5B%22Shanghai%22%5D%7D&sort={%22type%22:%22SCORE%22}&keyword=landmarks">
 					<img src="https://resource.localpanda.cn/homepage/landmarks.jpg" width="100%" alt="">
 					<strong>Landmarks</strong>
 				</a>
