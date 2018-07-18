@@ -298,7 +298,7 @@
 					<img src="https://resource.localpanda.cn/homepage/greatwall.jpg" width="100%" alt="">
 					<strong>The Great Wall</strong>
 				</a>
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/China?keyword=food">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/food">
 					<img src="https://resource.localpanda.cn/homepage/experiences.jpg" width="100%" alt="">
 					<strong>Foodie Experiences</strong>
 				</a>
@@ -312,7 +312,7 @@
 				</a>
 			</div>
 			<div class="specialties_right">
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/China?keyword=Panda">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/panda">
 					<img src="https://resource.localpanda.cn/homepage/giantpandas.jpg" width="100%" alt="">
 					<strong>Giant Pandas</strong>
 				</a>
