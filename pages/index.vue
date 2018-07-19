@@ -8,6 +8,7 @@
 		background: url('https://resource.localpanda.cn/homepage/search_bg.jpg') no-repeat center center;
 		background-size: cover;
 		position: relative;
+		padding-top: 0.8rem;
 		&:before{
 			content:'';
 			font-size: 0;
@@ -20,7 +21,7 @@
 			color: #fff;
 			font-size: 0.56rem;
 			line-height: 0.58rem;
-			padding-top: 0.8rem;
+			
 			font-weight: bold;
 			text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
 		}
@@ -335,7 +336,7 @@
 			<img src="https://resource.localpanda.cn/homepage/custom.jpg" width="100%" alt="">
 			<div class="customize_info">
 				<h4>BY YOU / FOR YOU</h4>
-				<p>Choose your cities, matches your dates, <br>design your bespoke journey</p>
+				<p>Choose your cities, match your dates, <br>design your bespoke journey</p>
 				<a class="btn_customize" href="/travel/customize/step1">Build Your Adventure</a>
 			</div>
 		</div>

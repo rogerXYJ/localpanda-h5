@@ -63,11 +63,11 @@
 								<use xlink:href="#icon-linkedin"></use>
 						</svg>
 					</a>
-					<!-- <a href="http://www.yutobe.com/">
+					<a href="https://www.youtube.com/channel/UCvqMXh6m1becSul6bAvEvzw">
 						<svg class="icon2" aria-hidden="true">
 								<use xlink:href="#icon-yutobe-plus"></use>
 						</svg>
-					</a> -->
+					</a>
 				</div>
 				
 				<p>© 2018 Local Panda All Rights Reserved.</p>
