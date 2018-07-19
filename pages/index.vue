@@ -23,7 +23,7 @@
 			line-height: 0.58rem;
 			
 			font-weight: bold;
-			text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+			text-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
 		}
 		p{
 			margin-top: 0.25rem;
