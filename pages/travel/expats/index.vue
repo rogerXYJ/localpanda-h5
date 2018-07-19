@@ -144,7 +144,7 @@
 				font-size: 0.44rem;
 				font-weight: bold;
 				color: #fff;
-				text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.3);
+				text-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
 			}
 			.bannerDes {
 				padding: 0 1.03rem;
@@ -153,7 +153,7 @@
 				margin-top: 0.22rem;
 				line-height: 0.28rem;
 				text-align: center;
-				text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.3);
+				text-shadow: 0 0 3px rgba(0, 0, 0, 0.6);
 			}
 			.bg-shadow {
 				position: absolute;
