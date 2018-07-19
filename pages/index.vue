@@ -294,7 +294,7 @@
 		<h3>Our Specialties</h3>
 		<div class="specialties">
 			<div class="specialties_left">
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/great%20wall?options=%7B%22attraction%22%3A%5B%22Great%20Wall%22%5D%2C%22city%22%3A%5B%22Beijing%22%5D%7D&sort={%22type%22:%22SCORE%22}">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/great%20wall">
 					<img src="https://resource.localpanda.cn/homepage/greatwall.jpg" width="100%" alt="">
 					<strong>The Great Wall</strong>
 				</a>
@@ -302,7 +302,7 @@
 					<img src="https://resource.localpanda.cn/homepage/experiences.jpg" width="100%" alt="">
 					<strong>Foodie Experiences</strong>
 				</a>
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Forbidden?options=%7B%22attraction%22%3A%5B%22Forbidden%20City%22%5D%7D&sort={%22type%22:%22SCORE%22}">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/forbidden">
 					<img src="https://resource.localpanda.cn/homepage/forbiddencity.jpg" width="100%" alt="">
 					<strong>Forbidden City</strong>
 				</a>
@@ -324,7 +324,7 @@
 					<img src="https://resource.localpanda.cn/homepage/terracottawarriors.jpg" width="100%" alt="">
 					<strong>Terracotta Warriors</strong>
 				</a>
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/landmarks?options=%7B%22city%22%3A%5B%22Shanghai%22%5D%7D&sort={%22type%22:%22SCORE%22}">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/landmarks">
 					<img src="https://resource.localpanda.cn/homepage/landmarks.jpg" width="100%" alt="">
 					<strong>Landmarks</strong>
 				</a>
