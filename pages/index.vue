@@ -257,7 +257,7 @@
 		<!-- 活动亮点 -->
 		<h3>Latest Highlights</h3>
 		<div class="highlights">
-			<a href="https://www.localpanda.com/activity/list/tibet">
+			<a href="https://www.localpanda.com/activity/list/Tibet">
 				<img src="https://resource.localpanda.cn/homepage/tibet.jpg" width="100%" alt="">
 				<div class="highlights_info">
 					<h4>Experience the Majesty of Tibet</h4>
@@ -266,7 +266,7 @@
 			</a>
 		</div>
 		<div class="highlights">
-			<a href="https://www.localpanda.com/activity/list/bund">
+			<a href="https://www.localpanda.com/activity/list/Bund">
 				<img src="https://resource.localpanda.cn/homepage/bund.jpg" width="100%" alt="">
 				<div class="highlights_info">
 					<h4>The Bund - Where Future Meets Past</h4>

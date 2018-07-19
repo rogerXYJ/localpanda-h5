@@ -123,7 +123,7 @@
 				//搜索默认推荐
 				recommend:{
 					destination:["Shanghai","Beijing","Xi'an","Guilin","Chengdu"],
-					hot:["Panda","Watertown","Great Wall","Terra-Cotta Warriors","Forbidden City","Li River","Layover Tour","Day trips","Local Food","Dumplings","Landmarks","Short Excursions","Family Friendly"]
+					hot:["Panda","Watertown","Great Wall","Terra-Cotta Warriors","Forbidden City","Li River","Layover Tour","Day trips","Local Food","Dumplings","Landmarks","Short Excursions","Family Friendly","Tibet"]
 				}
 			}
 		},
