@@ -256,7 +256,7 @@
 		<!-- 活动亮点 -->
 		<h3>Latest Highlights</h3>
 		<div class="highlights">
-			<a href="#">
+			<a href="https://www.localpanda.com/activity/list/tibet">
 				<img src="https://resource.localpanda.cn/homepage/tibet.jpg" width="100%" alt="">
 				<div class="highlights_info">
 					<h4>Experience the Majesty of Tibet</h4>
@@ -265,7 +265,7 @@
 			</a>
 		</div>
 		<div class="highlights">
-			<a href="#">
+			<a href="https://www.localpanda.com/activity/list/bund">
 				<img src="https://resource.localpanda.cn/homepage/bund.jpg" width="100%" alt="">
 				<div class="highlights_info">
 					<h4>The Bund - Where Future Meets Past</h4>
@@ -302,7 +302,7 @@
 					<img src="https://resource.localpanda.cn/homepage/experiences.jpg" width="100%" alt="">
 					<strong>Foodie Experiences</strong>
 				</a>
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/forbidden">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/forbidden%20city">
 					<img src="https://resource.localpanda.cn/homepage/forbiddencity.jpg" width="100%" alt="">
 					<strong>Forbidden City</strong>
 				</a>
