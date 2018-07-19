@@ -257,19 +257,19 @@
 		<h3>Latest Highlights</h3>
 		<div class="highlights">
 			<a href="#">
-				<img src="https://resource.localpanda.cn/homepage/bund.jpg" width="100%" alt="">
+				<img src="https://resource.localpanda.cn/homepage/tibet.jpg" width="100%" alt="">
 				<div class="highlights_info">
-					<h4>Local Panda Originals is Now<br>live in Porto!</h4>
-					<p>Choose your tour, pick your guide and<br>personalize it the way you want!</p>
+					<h4>Experience the Majesty of Tibet</h4>
+					<p>Rub shoulders with pilgrims and monks, marvel at the cosmos from Mount Everest Base Camp, wander pastoral landscapes dotted with yaks.</p>
 				</div>
 			</a>
 		</div>
 		<div class="highlights">
 			<a href="#">
-				<img src="https://resource.localpanda.cn/homepage/tibet.jpg" width="100%" alt="">
+				<img src="https://resource.localpanda.cn/homepage/bund.jpg" width="100%" alt="">
 				<div class="highlights_info">
-					<h4>Have an amazing Cooking class</h4>
-					<p>Learn to cook real local cuisine. Our hosts share their secret recipeś with you while you prepare and enjoy authentic food together.</p>
+					<h4>The Bund - Where Future Meets Past</h4>
+					<p>Walk along the Huangpu river and enjoy views of the world’s most futuristic skylines from atop the banking houses of colonial-era Shanghai.</p>
 				</div>
 			</a>
 		</div>
@@ -285,7 +285,7 @@
 				<dd>We hand-pick our offerings to ensure excellence in quality and competitive pricing</dd>
 			</dl>
 			<dl>
-				<dt><i class="iconfont">&#xe651;</i>Bridging East and West</dt>
+				<dt><i class="iconfont">&#xe651;</i>Personalized Experiences</dt>
 				<dd>We work closely with you to craft and deliver experiences that fit your personality, interests, and travel style</dd>
 			</dl>
 		</div>
@@ -294,7 +294,7 @@
 		<h3>Our Specialties</h3>
 		<div class="specialties">
 			<div class="specialties_left">
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/China?options=%7B%22attraction%22%3A%5B%22Great%20Wall%22%5D%2C%22city%22%3A%5B%22Beijing%22%5D%7D&sort={%22type%22:%22SCORE%22}&keyword=great%20wall">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/great%20wall?options=%7B%22attraction%22%3A%5B%22Great%20Wall%22%5D%2C%22city%22%3A%5B%22Beijing%22%5D%7D&sort={%22type%22:%22SCORE%22}">
 					<img src="https://resource.localpanda.cn/homepage/greatwall.jpg" width="100%" alt="">
 					<strong>The Great Wall</strong>
 				</a>
@@ -302,7 +302,7 @@
 					<img src="https://resource.localpanda.cn/homepage/experiences.jpg" width="100%" alt="">
 					<strong>Foodie Experiences</strong>
 				</a>
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/China?options=%7B%22attraction%22%3A%5B%22Forbidden%20City%22%5D%7D&sort={%22type%22:%22SCORE%22}&keyword=Forbidden">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Forbidden?options=%7B%22attraction%22%3A%5B%22Forbidden%20City%22%5D%7D&sort={%22type%22:%22SCORE%22}">
 					<img src="https://resource.localpanda.cn/homepage/forbiddencity.jpg" width="100%" alt="">
 					<strong>Forbidden City</strong>
 				</a>
@@ -316,15 +316,15 @@
 					<img src="https://resource.localpanda.cn/homepage/giantpandas.jpg" width="100%" alt="">
 					<strong>Giant Pandas</strong>
 				</a>
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/China?keyword=water%20town">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/water%20town">
 					<img src="https://resource.localpanda.cn/homepage/watertowns.jpg" width="100%" alt="">
 					<strong>Water Towns</strong>
 				</a>
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/China?keyword=terracotta%20warriors">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/terracotta%20warriors">
 					<img src="https://resource.localpanda.cn/homepage/terracottawarriors.jpg" width="100%" alt="">
 					<strong>Terracotta Warriors</strong>
 				</a>
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/China?options=%7B%22city%22%3A%5B%22Shanghai%22%5D%7D&sort={%22type%22:%22SCORE%22}&keyword=landmarks">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/landmarks?options=%7B%22city%22%3A%5B%22Shanghai%22%5D%7D&sort={%22type%22:%22SCORE%22}">
 					<img src="https://resource.localpanda.cn/homepage/landmarks.jpg" width="100%" alt="">
 					<strong>Landmarks</strong>
 				</a>
@@ -453,16 +453,16 @@
 		},
 		head() {
 			return {
-				title: 'home',
+				title: 'Local Panda | The China Travel Experts.',
 				meta: [{
 						hid: "keywords",
 						name: "keywords",
-						content: 'aaaaaaa'
+						content: 'Local Panda, China, China travel, China tour, China travel company, China travel guide, China tour package'
 					},
 					{
 						hid: "description",
 						name: "description",
-						content: 'aaaaaaa'
+						content: 'China specialized travel platform, handpicked local guides, book private and personalized tours, trip planning assistance, hundreds of things to do and see in China, sightseeing day activities, car service and transportation'
 					}
 				]
 			};
