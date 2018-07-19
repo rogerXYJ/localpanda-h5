@@ -204,7 +204,7 @@
 	.footMobile{
 		margin-top: 0.8rem;
 		.footMessage{
-			padding:0 0.4rem 1.1rem;
+			padding:0 0.3rem 1.1rem;
 			ul{
 				li{
 					border-top:1px solid #dde0e0;

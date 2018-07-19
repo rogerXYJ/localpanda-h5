@@ -348,7 +348,7 @@
 		background: #fff;
 		border-bottom: #dde0e0 solid 1px;
 		.logo{
-			margin-left: 0.4rem;
+			margin-left: 0.3rem;
 			width: 2.2rem;
 			height:0.99rem;
 			overflow: hidden;

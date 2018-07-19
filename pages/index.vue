@@ -23,7 +23,7 @@
 			line-height: 0.58rem;
 			
 			font-weight: bold;
-			text-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+			text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.1);
 		}
 		p{
 			margin-top: 0.25rem;
@@ -31,7 +31,7 @@
 			color: #fff;
 			font-size: 0.26rem;
 			line-height: 0.34rem;
-			text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+			text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.1);
 		}
 		.home_search{
 			height: 0.88rem;
@@ -81,12 +81,12 @@
 				h4{
 					font-size: 0.4rem;
 					line-height: 0.48rem;
-					text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+					text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.1);
 					padding: 0 0.4rem;
 				}
 				p{
 					font-size: 0.25rem; line-height: 0.3rem; margin-top: 0.36rem; padding: 0 0.4rem;
-					text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+					text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.1);
 				}
 			}
 		}
@@ -100,12 +100,21 @@
 			margin-top: 0.26rem;
 			dt{
 				font-size: 0.34rem; font-weight: bold; line-height: 0.5rem;
-				i{
-					float: left; margin-left: -0.68rem; width: 0.5rem; height: 0.5rem; text-align: center; line-height: 0.5rem; background-color: #f5f7f7; border-radius: 50%; font-size: 0.3rem; 
-					color: transparent;
-        	-webkit-background-clip: text;
-					background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
-    			background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+				span{
+					background-color: #f5f7f7; overflow: hidden;
+					float: left; margin-left: -0.68rem; width: 0.5rem; height: 0.5rem; text-align: center; line-height: 0.5rem;  border-radius: 50%;
+					i{
+						display: block;
+						width: 100%;
+						height: 0.5rem;
+						text-align: center;
+						 font-size: 0.3rem; 
+						color: transparent;
+						-webkit-background-clip: text;
+						background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
+						background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+						
+					}
 				}
 			}
 			dd{ font-size: 0.24rem; line-height: 0.34rem; margin-top: 0.1rem;}
@@ -125,7 +134,7 @@
 			margin-top: 0.14rem;
 			strong{
 				position: absolute; left: 0; top: 50%; width: 100%; display: block; transform: translateY(-50%); text-align: center; color: #fff; font-size: 0.3rem;
-				text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+				text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.1);
 			}
 		}
 	}
@@ -144,13 +153,13 @@
 			h4{
 				font-size: 0.4rem;
 				font-weight: bold;
-				text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+				text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.1);
 			}
 			p{
 				font-size: 0.25rem;
 				line-height: 0.3rem;
 				margin-top: 0.2rem;
-				text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+				text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.1);
 			}
 			a{
 				display: inline-block;
@@ -223,10 +232,10 @@
 	.swiper-pagination{
 		bottom: 0;
 		.swiper-pagination-bullet{
-			background-color: #aaa;
+			background-color: #ebebeb;
 		}
 		.swiper-pagination-bullet-active{
-			background-color: #999;
+			background-color: #d4d6d6;
 		}
 	}
 }
@@ -260,8 +269,8 @@
 			<a href="https://www.localpanda.com/activity/list/Tibet">
 				<img src="https://resource.localpanda.cn/homepage/tibet.jpg" width="100%" alt="">
 				<div class="highlights_info">
-					<h4>Experience the Majesty of Tibet</h4>
-					<p>Rub shoulders with pilgrims and monks, marvel at the cosmos from Mount Everest Base Camp, wander pastoral landscapes dotted with yaks.</p>
+					<h4>Discover the grandeur of timeless Tibet</h4>
+					<p>Rub shoulders with pilgrims, marvel at the star-filled sky over Mount Everest, wander the tranquil pastoral landscapes dotted with sheep...</p>
 				</div>
 			</a>
 		</div>
@@ -278,15 +287,15 @@
 		<!-- 品宣部分 -->
 		<div class="brand_info">
 			<dl>
-				<dt><i class="iconfont">&#xe677;</i>Bridging East and West</dt>
+				<dt><span><i class="iconfont">&#xe677;</i></span>Bridging East and West</dt>
 				<dd>Our multicultural team understands what China has to offer and what you as a traveler are looking for</dd>
 			</dl>
 			<dl>
-				<dt><i class="iconfont">&#xe678;</i>Exceptional Trips</dt>
+				<dt><span><i class="iconfont">&#xe678;</i></span>Exceptional Trips</dt>
 				<dd>We hand-pick our offerings to ensure excellence in quality and competitive pricing</dd>
 			</dl>
 			<dl>
-				<dt><i class="iconfont">&#xe651;</i>Personalized Experiences</dt>
+				<dt><span><i class="iconfont">&#xe651;</i></span>Personalized Experiences</dt>
 				<dd>We work closely with you to craft and deliver experiences that fit your personality, interests, and travel style</dd>
 			</dl>
 		</div>
