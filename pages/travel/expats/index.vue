@@ -1,12 +1,16 @@
 <template>
 	<div class="expats">
-
+		
 		<div class="headPhoto">
-
-			<Head :isExpats="isExpats" :class="{position:scroll}"></Head>
-			<h3 class="bannerTitle">Find the Ultimate Experience</h3>
-			<p class="bannerDes">We know that you’ve come a long way and spent a lot of time and energy to be here. We help you make sure the memories are worth it.</p>
-			<div class="bg-shadow"></div>
+			
+			<div class="headPhoto_bg">
+				<Head :isExpats="isExpats" :class="{position:scroll}"></Head>
+				<h3 class="bannerTitle">Find the Ultimate Experience</h3>
+				<p class="bannerDes">We know that you’ve come a long way and spent a lot of time and energy to be here. We help you make sure the memories are worth it.</p>
+				<div class="bg-shadow"></div>
+			</div>
+			
+			
 			<div class="hotActivity page-content">
 				<h3>Seasonal Deal</h3>
 				<div class="contentBox">
@@ -114,16 +118,28 @@
 		margin: 0 0.3rem;
 	}
 	
+	
 	.expats {
+		
 		.headPhoto {
-			background: url("https://resource.localpanda.cn/content/landingpage/expats/banner.jpg") no-repeat;
-			height: 5rem;
-			background-size: cover;
-			background-position: center;
+			
 			position: relative;
 			opacity: 0.9;
+			.headPhoto_bg{
+				background: url("https://resource.localpanda.cn/content/landingpage/expats/banner.jpg") no-repeat;
+				height: 5rem;
+				background-size: cover;
+				background-position: center;
+				position: relative;
+				padding-top: 1.6rem;
+				.header{
+					position: fixed;
+					left: 0;
+					top: 0;
+					width: 100%;
+				}
+			}
 			.bannerTitle {
-				margin-top: 0.72rem;
 				text-align: center;
 				font-size: 0.44rem;
 				font-weight: bold;
@@ -148,7 +164,7 @@
 			}
 		}
 		.hotActivity {
-			margin-top: 0.62rem;
+			margin-top: -1rem;
 			background-color: #fe483e;
 			box-shadow: 0px 0.08rem 0.5rem 0px rgba(253, 72, 62, 0.06);
 			border-radius: 0.1rem;
