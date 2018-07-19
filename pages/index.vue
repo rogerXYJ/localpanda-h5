@@ -20,7 +20,7 @@
 			color: #fff;
 			font-size: 0.56rem;
 			line-height: 0.58rem;
-			margin-top: 0.8rem;
+			padding-top: 0.8rem;
 			font-weight: bold;
 			text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
 		}
@@ -294,15 +294,15 @@
 		<h3>Our Specialties</h3>
 		<div class="specialties">
 			<div class="specialties_left">
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/great%20wall">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Great%20Wall">
 					<img src="https://resource.localpanda.cn/homepage/greatwall.jpg" width="100%" alt="">
 					<strong>The Great Wall</strong>
 				</a>
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/food">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Food">
 					<img src="https://resource.localpanda.cn/homepage/experiences.jpg" width="100%" alt="">
 					<strong>Foodie Experiences</strong>
 				</a>
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/forbidden%20city">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Forbidden%20City">
 					<img src="https://resource.localpanda.cn/homepage/forbiddencity.jpg" width="100%" alt="">
 					<strong>Forbidden City</strong>
 				</a>
@@ -312,19 +312,19 @@
 				</a>
 			</div>
 			<div class="specialties_right">
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/panda">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Panda">
 					<img src="https://resource.localpanda.cn/homepage/giantpandas.jpg" width="100%" alt="">
 					<strong>Giant Pandas</strong>
 				</a>
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/water%20town">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Watertown">
 					<img src="https://resource.localpanda.cn/homepage/watertowns.jpg" width="100%" alt="">
 					<strong>Water Towns</strong>
 				</a>
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/terracotta%20warriors">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Terra-Cotta%20Warriors">
 					<img src="https://resource.localpanda.cn/homepage/terracottawarriors.jpg" width="100%" alt="">
 					<strong>Terracotta Warriors</strong>
 				</a>
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/landmarks">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Landmarks">
 					<img src="https://resource.localpanda.cn/homepage/landmarks.jpg" width="100%" alt="">
 					<strong>Landmarks</strong>
 				</a>
