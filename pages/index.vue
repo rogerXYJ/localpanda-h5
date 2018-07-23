@@ -269,8 +269,8 @@
 			<a href="https://www.localpanda.com/activity/list/Tibet">
 				<img src="https://resource.localpanda.cn/homepage/tibet.jpg" width="100%" alt="">
 				<div class="highlights_info">
-					<h4>Discover the grandeur of timeless Tibet</h4>
-					<p>Rub shoulders with pilgrims, marvel at the star-filled sky over Mount Everest, wander the tranquil pastoral landscapes dotted with sheep...</p>
+					<h4>Embark On a Pilgrimage to Discover the Grandeur of Timeless Tibet</h4>
+					<p>Hang out with living Buddhas, stargaze at the cosmos over Mt.Everest, ride on horseback to forgotten temples.</p>
 				</div>
 			</a>
 		</div>
