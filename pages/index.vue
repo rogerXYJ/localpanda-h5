@@ -278,8 +278,8 @@
 			<a href="https://www.localpanda.com/activity/list/Bund">
 				<img src="https://resource.localpanda.cn/homepage/bund.jpg" width="100%" alt="">
 				<div class="highlights_info">
-					<h4>The Bund - Where Future Meets Past</h4>
-					<p>Walk along the Huangpu river and enjoy views of the world’s most futuristic skylines from atop the banking houses of colonial-era Shanghai.</p>
+					<h4>The Skyline of the Future Meets the Legacies of Colonialism</h4>
+					<p>Walk the Bund and learn how Shanghai has transformed over the last two centuries, from an insignificant fishing town to an international banking powerhouse to the most futuristic cityscape in the world.</p>
 				</div>
 			</a>
 		</div>
