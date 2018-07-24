@@ -273,7 +273,7 @@
 			</div>
 		</div>
 		<div class="book">
-			<button><a :href="'/info/inquiry?objectId='+id" @click="gaInquire">Inquire</a></button>
+			<button><a :href="'/info/inquiry?objectId='+id+'&owner='+detail.owner" @click="gaInquire">Inquire</a></button>
 			<button class="bookBtn" @click="goBooking">Book</button>
 		</div>
 		<photo :photoList="photoList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></photo>
@@ -712,7 +712,6 @@ import photo from '~/components/activity/details/photo'
 		mounted: function() {
 			
 			let that = this;
-			
 			//加载币种
 			that.axios.get("https://api.localpanda.com/api/public/currency/all/"+that.picInfo.currency).then(function(response) {
 				// console.log(response);

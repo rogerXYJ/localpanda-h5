@@ -1,8 +1,5 @@
 module.exports = {
 	phone_countries: [{
-		"country_name": "United States",
-		"prefix": "1"
-	}, {
 		"country_name": "Afghanistan",
 		"prefix": "93"
 	}, {
@@ -13,7 +10,7 @@ module.exports = {
 		"prefix": "213"
 	}, {
 		"country_name": "American Samoa",
-		"prefix": "1"
+		"prefix": "1-684"
 	}, {
 		"country_name": "Andorra",
 		"prefix": "376"
@@ -22,10 +19,13 @@ module.exports = {
 		"prefix": "244"
 	}, {
 		"country_name": "Anguilla",
-		"prefix": "1"
+		"prefix": "1-264"
 	}, {
-		"country_name": "Antigua & Barbuda",
-		"prefix": "1"
+		"country_name": "Antarctica",
+		"prefix": "672"
+	}, {
+		"country_name": "Antigua and Barbuda",
+		"prefix": "1-268"
 	}, {
 		"country_name": "Argentina",
 		"prefix": "54"
@@ -35,9 +35,6 @@ module.exports = {
 	}, {
 		"country_name": "Aruba",
 		"prefix": "297"
-	}, {
-		"country_name": "Ascension Island",
-		"prefix": "247"
 	}, {
 		"country_name": "Australia",
 		"prefix": "61"
@@ -49,7 +46,7 @@ module.exports = {
 		"prefix": "994"
 	}, {
 		"country_name": "Bahamas",
-		"prefix": "1"
+		"prefix": "1-242"
 	}, {
 		"country_name": "Bahrain",
 		"prefix": "973"
@@ -58,7 +55,7 @@ module.exports = {
 		"prefix": "880"
 	}, {
 		"country_name": "Barbados",
-		"prefix": "1"
+		"prefix": "1-246"
 	}, {
 		"country_name": "Belarus",
 		"prefix": "375"
@@ -73,7 +70,7 @@ module.exports = {
 		"prefix": "229"
 	}, {
 		"country_name": "Bermuda",
-		"prefix": "1"
+		"prefix": "1-441"
 	}, {
 		"country_name": "Bhutan",
 		"prefix": "975"
@@ -81,7 +78,7 @@ module.exports = {
 		"country_name": "Bolivia",
 		"prefix": "591"
 	}, {
-		"country_name": "Bosnia & Herzegovina",
+		"country_name": "Bosnia and Herzegovina",
 		"prefix": "387"
 	}, {
 		"country_name": "Botswana",
@@ -94,7 +91,7 @@ module.exports = {
 		"prefix": "246"
 	}, {
 		"country_name": "British Virgin Islands",
-		"prefix": "1"
+		"prefix": "1-284"
 	}, {
 		"country_name": "Brunei",
 		"prefix": "673"
@@ -120,11 +117,8 @@ module.exports = {
 		"country_name": "Cape Verde",
 		"prefix": "238"
 	}, {
-		"country_name": "Caribbean Netherlands",
-		"prefix": "599"
-	}, {
 		"country_name": "Cayman Islands",
-		"prefix": "1"
+		"prefix": "1-345"
 	}, {
 		"country_name": "Central African Republic",
 		"prefix": "236"
@@ -138,17 +132,17 @@ module.exports = {
 		"country_name": "China",
 		"prefix": "86"
 	}, {
+		"country_name": "Christmas Island",
+		"prefix": "61"
+	}, {
+		"country_name": "Cocos Islands",
+		"prefix": "61"
+	}, {
 		"country_name": "Colombia",
 		"prefix": "57"
 	}, {
 		"country_name": "Comoros",
 		"prefix": "269"
-	}, {
-		"country_name": "Congo - Brazzaville",
-		"prefix": "242"
-	}, {
-		"country_name": "Congo - Kinshasa",
-		"prefix": "243"
 	}, {
 		"country_name": "Cook Islands",
 		"prefix": "682"
@@ -156,23 +150,23 @@ module.exports = {
 		"country_name": "Costa Rica",
 		"prefix": "506"
 	}, {
-		"country_name": "Côte d’Ivoire",
-		"prefix": "225"
-	}, {
 		"country_name": "Croatia",
 		"prefix": "385"
 	}, {
 		"country_name": "Cuba",
 		"prefix": "53"
 	}, {
-		"country_name": "Curaçao",
+		"country_name": "Curacao",
 		"prefix": "599"
 	}, {
 		"country_name": "Cyprus",
 		"prefix": "357"
 	}, {
-		"country_name": "Czechia",
+		"country_name": "Czech Republic",
 		"prefix": "420"
+	}, {
+		"country_name": "Democratic Republic of the Congo",
+		"prefix": "243"
 	}, {
 		"country_name": "Denmark",
 		"prefix": "45"
@@ -181,10 +175,13 @@ module.exports = {
 		"prefix": "253"
 	}, {
 		"country_name": "Dominica",
-		"prefix": "1"
+		"prefix": "1-767"
 	}, {
 		"country_name": "Dominican Republic",
-		"prefix": "1"
+		"prefix": "1-809, 1-829, 1-849"
+	}, {
+		"country_name": "East Timor",
+		"prefix": "670"
 	}, {
 		"country_name": "Ecuador",
 		"prefix": "593"
@@ -207,7 +204,7 @@ module.exports = {
 		"country_name": "Ethiopia",
 		"prefix": "251"
 	}, {
-		"country_name": "Falkland Islands (Islas Malvinas)",
+		"country_name": "Falkland Islands",
 		"prefix": "500"
 	}, {
 		"country_name": "Faroe Islands",
@@ -221,9 +218,6 @@ module.exports = {
 	}, {
 		"country_name": "France",
 		"prefix": "33"
-	}, {
-		"country_name": "French Guiana",
-		"prefix": "594"
 	}, {
 		"country_name": "French Polynesia",
 		"prefix": "689"
@@ -253,16 +247,16 @@ module.exports = {
 		"prefix": "299"
 	}, {
 		"country_name": "Grenada",
-		"prefix": "1"
-	}, {
-		"country_name": "Guadeloupe",
-		"prefix": "590"
+		"prefix": "1-473"
 	}, {
 		"country_name": "Guam",
-		"prefix": "1"
+		"prefix": "1-671"
 	}, {
 		"country_name": "Guatemala",
 		"prefix": "502"
+	}, {
+		"country_name": "Guernsey",
+		"prefix": "44-1481"
 	}, {
 		"country_name": "Guinea",
 		"prefix": "224"
@@ -303,17 +297,26 @@ module.exports = {
 		"country_name": "Ireland",
 		"prefix": "353"
 	}, {
+		"country_name": "Isle of Man",
+		"prefix": "44-1624"
+	}, {
 		"country_name": "Israel",
 		"prefix": "972"
 	}, {
 		"country_name": "Italy",
 		"prefix": "39"
 	}, {
+		"country_name": "Ivory Coast",
+		"prefix": "225"
+	}, {
 		"country_name": "Jamaica",
-		"prefix": "1"
+		"prefix": "1-876"
 	}, {
 		"country_name": "Japan",
 		"prefix": "81"
+	}, {
+		"country_name": "Jersey",
+		"prefix": "44-1534"
 	}, {
 		"country_name": "Jordan",
 		"prefix": "962"
@@ -366,7 +369,7 @@ module.exports = {
 		"country_name": "Macau",
 		"prefix": "853"
 	}, {
-		"country_name": "Macedonia (FYROM)",
+		"country_name": "Macedonia",
 		"prefix": "389"
 	}, {
 		"country_name": "Madagascar",
@@ -390,14 +393,14 @@ module.exports = {
 		"country_name": "Marshall Islands",
 		"prefix": "692"
 	}, {
-		"country_name": "Martinique",
-		"prefix": "596"
-	}, {
 		"country_name": "Mauritania",
 		"prefix": "222"
 	}, {
 		"country_name": "Mauritius",
 		"prefix": "230"
+	}, {
+		"country_name": "Mayotte",
+		"prefix": "262"
 	}, {
 		"country_name": "Mexico",
 		"prefix": "52"
@@ -418,7 +421,7 @@ module.exports = {
 		"prefix": "382"
 	}, {
 		"country_name": "Montserrat",
-		"prefix": "1"
+		"prefix": "1-664"
 	}, {
 		"country_name": "Morocco",
 		"prefix": "212"
@@ -426,7 +429,7 @@ module.exports = {
 		"country_name": "Mozambique",
 		"prefix": "258"
 	}, {
-		"country_name": "Myanmar (Burma)",
+		"country_name": "Myanmar",
 		"prefix": "95"
 	}, {
 		"country_name": "Namibia",
@@ -440,6 +443,9 @@ module.exports = {
 	}, {
 		"country_name": "Netherlands",
 		"prefix": "31"
+	}, {
+		"country_name": "Netherlands Antilles",
+		"prefix": "599"
 	}, {
 		"country_name": "New Caledonia",
 		"prefix": "687"
@@ -459,14 +465,11 @@ module.exports = {
 		"country_name": "Niue",
 		"prefix": "683"
 	}, {
-		"country_name": "Norfolk Island",
-		"prefix": "672"
-	}, {
 		"country_name": "North Korea",
 		"prefix": "850"
 	}, {
 		"country_name": "Northern Mariana Islands",
-		"prefix": "1"
+		"prefix": "1-670"
 	}, {
 		"country_name": "Norway",
 		"prefix": "47"
@@ -498,6 +501,9 @@ module.exports = {
 		"country_name": "Philippines",
 		"prefix": "63"
 	}, {
+		"country_name": "Pitcairn",
+		"prefix": "64"
+	}, {
 		"country_name": "Poland",
 		"prefix": "48"
 	}, {
@@ -505,12 +511,15 @@ module.exports = {
 		"prefix": "351"
 	}, {
 		"country_name": "Puerto Rico",
-		"prefix": "1"
+		"prefix": "1-787, 1-939"
 	}, {
 		"country_name": "Qatar",
 		"prefix": "974"
 	}, {
-		"country_name": "Réunion",
+		"country_name": "Republic of the Congo",
+		"prefix": "242"
+	}, {
+		"country_name": "Reunion",
 		"prefix": "262"
 	}, {
 		"country_name": "Romania",
@@ -522,13 +531,34 @@ module.exports = {
 		"country_name": "Rwanda",
 		"prefix": "250"
 	}, {
+		"country_name": "Saint Barthelemy",
+		"prefix": "590"
+	}, {
+		"country_name": "Saint Helena",
+		"prefix": "290"
+	}, {
+		"country_name": "Saint Kitts and Nevis",
+		"prefix": "1-869"
+	}, {
+		"country_name": "Saint Lucia",
+		"prefix": "1-758"
+	}, {
+		"country_name": "Saint Martin",
+		"prefix": "590"
+	}, {
+		"country_name": "Saint Pierre and Miquelon",
+		"prefix": "508"
+	}, {
+		"country_name": "Saint Vincent and the Grenadines",
+		"prefix": "1-784"
+	}, {
 		"country_name": "Samoa",
 		"prefix": "685"
 	}, {
 		"country_name": "San Marino",
 		"prefix": "378"
 	}, {
-		"country_name": "São Tomé & Príncipe",
+		"country_name": "Sao Tome and Principe",
 		"prefix": "239"
 	}, {
 		"country_name": "Saudi Arabia",
@@ -550,7 +580,7 @@ module.exports = {
 		"prefix": "65"
 	}, {
 		"country_name": "Sint Maarten",
-		"prefix": "1"
+		"prefix": "1-721"
 	}, {
 		"country_name": "Slovakia",
 		"prefix": "421"
@@ -579,32 +609,14 @@ module.exports = {
 		"country_name": "Sri Lanka",
 		"prefix": "94"
 	}, {
-		"country_name": "St. Barthélemy",
-		"prefix": "590"
-	}, {
-		"country_name": "St. Helena",
-		"prefix": "290"
-	}, {
-		"country_name": "St. Kitts & Nevis",
-		"prefix": "1"
-	}, {
-		"country_name": "St. Lucia",
-		"prefix": "1"
-	}, {
-		"country_name": "St. Martin",
-		"prefix": "590"
-	}, {
-		"country_name": "St. Pierre & Miquelon",
-		"prefix": "508"
-	}, {
-		"country_name": "St. Vincent & Grenadines",
-		"prefix": "1"
-	}, {
 		"country_name": "Sudan",
 		"prefix": "249"
 	}, {
 		"country_name": "Suriname",
 		"prefix": "597"
+	}, {
+		"country_name": "Svalbard and Jan Mayen",
+		"prefix": "47"
 	}, {
 		"country_name": "Swaziland",
 		"prefix": "268"
@@ -630,9 +642,6 @@ module.exports = {
 		"country_name": "Thailand",
 		"prefix": "66"
 	}, {
-		"country_name": "Timor-Leste",
-		"prefix": "670"
-	}, {
 		"country_name": "Togo",
 		"prefix": "228"
 	}, {
@@ -642,8 +651,8 @@ module.exports = {
 		"country_name": "Tonga",
 		"prefix": "676"
 	}, {
-		"country_name": "Trinidad & Tobago",
-		"prefix": "1"
+		"country_name": "Trinidad and Tobago",
+		"prefix": "1-868"
 	}, {
 		"country_name": "Tunisia",
 		"prefix": "216"
@@ -654,14 +663,14 @@ module.exports = {
 		"country_name": "Turkmenistan",
 		"prefix": "993"
 	}, {
-		"country_name": "Turks & Caicos Islands",
-		"prefix": "1"
+		"country_name": "Turks and Caicos Islands",
+		"prefix": "1-649"
 	}, {
 		"country_name": "Tuvalu",
 		"prefix": "688"
 	}, {
 		"country_name": "U.S. Virgin Islands",
-		"prefix": "1"
+		"prefix": "1-340"
 	}, {
 		"country_name": "Uganda",
 		"prefix": "256"
@@ -687,8 +696,8 @@ module.exports = {
 		"country_name": "Vanuatu",
 		"prefix": "678"
 	}, {
-		"country_name": "Vatican City",
-		"prefix": "39"
+		"country_name": "Vatican",
+		"prefix": "379"
 	}, {
 		"country_name": "Venezuela",
 		"prefix": "58"
@@ -696,8 +705,11 @@ module.exports = {
 		"country_name": "Vietnam",
 		"prefix": "84"
 	}, {
-		"country_name": "Wallis & Futuna",
+		"country_name": "Wallis and Futuna",
 		"prefix": "681"
+	}, {
+		"country_name": "Western Sahara",
+		"prefix": "212"
 	}, {
 		"country_name": "Yemen",
 		"prefix": "967"

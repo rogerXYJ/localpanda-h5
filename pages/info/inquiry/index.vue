@@ -66,15 +66,16 @@ on a 1-1 basis.</p>
 	
     name: 'inquiry',
     data () {
-    	let id=this.$route.query.objectId
-    	console.log(id)
+    	let id=this.$route.query.objectId,
+    		owner=this.$route.query.owner;
         return {
+        		owner:owner,
           	name:'',
           	nameError:false,
           	email: '',
-			emailErr: false,
-			textInfo: '',
-			textInfoErr: false,
+						emailErr: false,
+						textInfo: '',
+						textInfoErr: false,
 			
       		dateTime:'',
           	options:{},
@@ -169,6 +170,7 @@ on a 1-1 basis.</p>
 					objectId: that.objectId ? that.objectId : null,
 //					destinations: that.destination ? that.destination : null,
 					"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
+					owner:that.owner
 				}
 				
 				if(that.isclick==false){
