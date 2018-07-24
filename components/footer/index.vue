@@ -37,11 +37,11 @@
 				</li>
 			</ul>
 			<div class="log">
-				<div class="localpanda">
+				<!-- <div class="localpanda">
 					<svg class="icon3" aria-hidden="true">
 							<use xlink:href="#icon-logo_"></use>
 					</svg>
-				</div>	
+				</div>	 -->
 				<div class="cooperation">
 					<a href="https://www.facebook.com/LocalPandaGuides/?fref=ts">
 						<svg class="icon2" aria-hidden="true">
@@ -61,6 +61,11 @@
 					<a href="http://www.linkedin.com/company/local-panda/">
 						<svg class="icon2" aria-hidden="true">
 								<use xlink:href="#icon-linkedin"></use>
+						</svg>
+					</a>
+					<a href="https://www.youtube.com/channel/UCvqMXh6m1becSul6bAvEvzw">
+						<svg class="icon2" aria-hidden="true">
+								<use xlink:href="#icon-yutobe-plus"></use>
 						</svg>
 					</a>
 				</div>
@@ -187,7 +192,7 @@
        overflow: hidden;
     }
     .icon2{
-    	width: 0.64rem; height: 0.64rem;
+    	width: 0.6rem; height: 0.6rem;
        vertical-align:middle;
        fill: currentColor;
        
@@ -199,7 +204,7 @@
 	.footMobile{
 		margin-top: 0.8rem;
 		.footMessage{
-			padding:0 0.4rem 1rem;
+			padding:0 0.3rem 1.1rem;
 			ul{
 				li{
 					border-top:1px solid #dde0e0;
@@ -244,20 +249,19 @@
 				}
 			}
 			.log{
-				padding: 0.7rem 0 1.1rem;
+				padding: 0.6rem 0 0;
 				text-align: center;
 				.cooperation{
-					margin-top: 0.45rem;
 					a{
 						display: inline-block;
-						margin-left: 0.3rem;
+						margin-left: 0.25rem;
 						&:first-child{
 							margin-left: 0;
 						}
 					}
 				}
 				p{
-					margin-top: 0.45rem;
+					margin-top: 0.5rem;
 				}
 			}
 		}

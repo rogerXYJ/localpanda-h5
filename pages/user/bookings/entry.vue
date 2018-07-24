@@ -9,8 +9,8 @@
 			<p class="top_tip">Please enter reservee's following<br>information to view the order status</p>
 			<ul class="search_info">
 				<li class="user_name">
-					<input class="input validate" type="text" vType="enName" v-model="lastName" placeholder="First name">
-					<input class="input validate" type="text" vType="enName" v-model="firstName" placeholder="Last name">
+					<input class="input validate" type="text" vType="enName" v-model="firstName" placeholder="First name">
+					<input class="input validate" type="text" vType="enName" v-model="lastName" placeholder="Last name">
 				</li>
 				<li>
 					<input class="input validate" type="text" vType="email" v-model="email" placeholder="Email">

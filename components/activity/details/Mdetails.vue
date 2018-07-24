@@ -499,7 +499,7 @@ import photo from '~/components/activity/details/photo'
 					tourtype:[val]
 				}
 				
-				let url="/activity/list/China?keyword="+encodeURIComponent(val)
+				let url="/activity/list/"+encodeURIComponent(val);
 				return url
 			},
 			showTable() {

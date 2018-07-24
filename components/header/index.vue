@@ -118,11 +118,12 @@
 				path: this.$route.path,
 				//gaType: query.type ? query.type : 'direct',
 
+				participants: this.people || 2,
 				inputTimer: null,
 				//搜索默认推荐
 				recommend:{
-					destination:["Shanghai","Beijing","Xi'an","Guilin","Chengdu"],
-					hot:["Panda","Watertown","Great Wall","Terra-Cotta Warriors","Forbidden City","Li River","Layover Tour","Day trips","Local Food","Dumplings","Landmarks","Short Excursions","Family Friendly"]
+					destination:["Shanghai","Beijing","Xi'an","Guilin","Chengdu","Tibet"],
+					hot:["Panda","Watertown","Great Wall","Terra-Cotta Warriors","Forbidden City","Li River","Layover Tour","Day trips","Local Food","Dumplings","Landmarks","Short Excursions","Family Friendly","Lama Monks","Mt.Kailash","Everest Base Camp"]
 				}
 			}
 		},
@@ -236,7 +237,7 @@
 				// };
 				// return '/activity/list/China' + (queryStr ? '?' : '') + queryStr.substring(1);
 
-				return '/activity/list/China?keyword=' + value.replace(/(^\s*)|(\s*$)/g,'') + (this.people==2?'':'&participants='+this.people)+'&type=' + (type?type:'direct');
+				return '/activity/list/China?keyword=' + value.replace(/(^\s*)|(\s*$)/g,'') + (this.participants==2?'':'&participants='+this.participants)+'&type=' + (type?type:'direct');
 			},
 			searchFn(){
 				if(!this.searchVal.replace(/(^\s*)|(\s*$)/g,'')){
@@ -347,7 +348,7 @@
 		background: #fff;
 		border-bottom: #dde0e0 solid 1px;
 		.logo{
-			margin-left: 0.4rem;
+			margin-left: 0.3rem;
 			width: 2.2rem;
 			height:0.99rem;
 			overflow: hidden;

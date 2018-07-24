@@ -101,7 +101,7 @@
 			</div>
 			<div class="btn_pay">
 				<a v-if="(id==1 && openWxUrl)||!isWx && id==1" :href="openWxUrl" @click="wxOpenClick">Pay</a>
-				<button @touchend="getToken()" v-else-if="showWxPayBtn || !isWx">Pay</button>
+				<button @touchend="getToken()" v-else-if="showWxPayBtn || orderInfo.currency != 'CNY' || id!=1">Pay</button>
 
 			</div>
 		</div>
@@ -156,6 +156,9 @@
 
 			var orderInfo = '';
 
+			var nodetime1 = new Date().getTime();
+			console.log('node请求订单信息开始：'+nodetime1);
+
 			try {
 				orderInfo = await Vue.axios.get(apiBasePath + "activity/order/detail/" + query.objectId)
 			} catch(err) {
@@ -163,7 +166,12 @@
 					statusCode: 500,
 					message: JSON.stringify(err)
 				});
-			}
+			};
+
+			var nodetime2 = new Date().getTime();
+			console.log('node请求订单信息结束：'+nodetime2);
+			console.log('请求消耗：'+(nodetime2-nodetime1)+'ms');
+			
 
 			return {
 				apiBasePath: apiBasePath,
@@ -694,6 +702,8 @@
 			//this.getToken()
 
 			this.stripeFn();
+
+			//console.log(this.orderInfo);
 			
 //			console.log(this.opctions.currency)
 //			if(this.opctions.currency=="CNY"){

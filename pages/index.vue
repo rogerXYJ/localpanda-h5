@@ -8,6 +8,7 @@
 		background: url('https://resource.localpanda.cn/homepage/search_bg.jpg') no-repeat center center;
 		background-size: cover;
 		position: relative;
+		padding-top: 0.8rem;
 		&:before{
 			content:'';
 			font-size: 0;
@@ -20,9 +21,9 @@
 			color: #fff;
 			font-size: 0.56rem;
 			line-height: 0.58rem;
-			margin-top: 0.8rem;
+			
 			font-weight: bold;
-			text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+			text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.1);
 		}
 		p{
 			margin-top: 0.25rem;
@@ -30,7 +31,7 @@
 			color: #fff;
 			font-size: 0.26rem;
 			line-height: 0.34rem;
-			text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+			text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.1);
 		}
 		.home_search{
 			height: 0.88rem;
@@ -80,12 +81,12 @@
 				h4{
 					font-size: 0.4rem;
 					line-height: 0.48rem;
-					text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+					text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.1);
 					padding: 0 0.4rem;
 				}
 				p{
 					font-size: 0.25rem; line-height: 0.3rem; margin-top: 0.36rem; padding: 0 0.4rem;
-					text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+					text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.1);
 				}
 			}
 		}
@@ -99,12 +100,21 @@
 			margin-top: 0.26rem;
 			dt{
 				font-size: 0.34rem; font-weight: bold; line-height: 0.5rem;
-				i{
-					float: left; margin-left: -0.68rem; width: 0.5rem; height: 0.5rem; text-align: center; line-height: 0.5rem; background-color: #f5f7f7; border-radius: 50%; font-size: 0.3rem; 
-					color: transparent;
-        	-webkit-background-clip: text;
-					background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
-    			background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+				span{
+					background-color: #f5f7f7; overflow: hidden;
+					float: left; margin-left: -0.68rem; width: 0.5rem; height: 0.5rem; text-align: center; line-height: 0.5rem;  border-radius: 50%;
+					i{
+						display: block;
+						width: 100%;
+						height: 0.5rem;
+						text-align: center;
+						 font-size: 0.3rem; 
+						color: transparent;
+						-webkit-background-clip: text;
+						background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
+						background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+						
+					}
 				}
 			}
 			dd{ font-size: 0.24rem; line-height: 0.34rem; margin-top: 0.1rem;}
@@ -124,7 +134,7 @@
 			margin-top: 0.14rem;
 			strong{
 				position: absolute; left: 0; top: 50%; width: 100%; display: block; transform: translateY(-50%); text-align: center; color: #fff; font-size: 0.3rem;
-				text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+				text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.1);
 			}
 		}
 	}
@@ -143,13 +153,13 @@
 			h4{
 				font-size: 0.4rem;
 				font-weight: bold;
-				text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+				text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.1);
 			}
 			p{
 				font-size: 0.25rem;
 				line-height: 0.3rem;
 				margin-top: 0.2rem;
-				text-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+				text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.1);
 			}
 			a{
 				display: inline-block;
@@ -184,7 +194,7 @@
 					display: block;
 					margin: 0.4rem auto 0;
 					border-radius: 50%;
-					box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+					box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 				}
 				b{ display: block; margin-top: 0.2rem; text-align: center; font-size: 0.34rem; line-height: 0.28rem;}
 				p{ margin-top: 0.15rem; text-align: center; font-size: 0.24rem;}
@@ -222,10 +232,10 @@
 	.swiper-pagination{
 		bottom: 0;
 		.swiper-pagination-bullet{
-			background-color: #aaa;
+			background-color: #ebebeb;
 		}
 		.swiper-pagination-bullet-active{
-			background-color: #999;
+			background-color: #d4d6d6;
 		}
 	}
 }
@@ -256,20 +266,20 @@
 		<!-- 活动亮点 -->
 		<h3>Latest Highlights</h3>
 		<div class="highlights">
-			<a href="#">
-				<img src="https://resource.localpanda.cn/homepage/bund.jpg" width="100%" alt="">
+			<a href="https://www.localpanda.com/activity/list/Tibet">
+				<img src="https://resource.localpanda.cn/homepage/tibet.jpg" width="100%" alt="">
 				<div class="highlights_info">
-					<h4>Local Panda Originals is Now<br>live in Porto!</h4>
-					<p>Choose your tour, pick your guide and<br>personalize it the way you want!</p>
+					<h4>Embark On a Pilgrimage to Discover the Grandeur of Timeless Tibet</h4>
+					<p>Hang out with living Buddhas, stargaze at the cosmos over Mt.Everest, ride on horseback to forgotten temples.</p>
 				</div>
 			</a>
 		</div>
 		<div class="highlights">
-			<a href="#">
-				<img src="https://resource.localpanda.cn/homepage/tibet.jpg" width="100%" alt="">
+			<a href="https://www.localpanda.com/activity/list/Bund">
+				<img src="https://resource.localpanda.cn/homepage/bund.jpg" width="100%" alt="">
 				<div class="highlights_info">
-					<h4>Have an amazing Cooking class</h4>
-					<p>Learn to cook real local cuisine. Our hosts share their secret recipeś with you while you prepare and enjoy authentic food together.</p>
+					<h4>The Skyline of the Future Meets the Legacies of Colonialism</h4>
+					<p>Walk the Bund and learn how Shanghai has transformed over the last two centuries, from an insignificant fishing town to an international banking powerhouse to the most futuristic cityscape in the world.</p>
 				</div>
 			</a>
 		</div>
@@ -277,15 +287,15 @@
 		<!-- 品宣部分 -->
 		<div class="brand_info">
 			<dl>
-				<dt><i class="iconfont">&#xe677;</i>Bridging East and West</dt>
+				<dt><span><i class="iconfont">&#xe677;</i></span>Bridging East and West</dt>
 				<dd>Our multicultural team understands what China has to offer and what you as a traveler are looking for</dd>
 			</dl>
 			<dl>
-				<dt><i class="iconfont">&#xe678;</i>Exceptional Trips</dt>
+				<dt><span><i class="iconfont">&#xe678;</i></span>Exceptional Trips</dt>
 				<dd>We hand-pick our offerings to ensure excellence in quality and competitive pricing</dd>
 			</dl>
 			<dl>
-				<dt><i class="iconfont">&#xe651;</i>Bridging East and West</dt>
+				<dt><span><i class="iconfont">&#xe651;</i></span>Personalized Experiences</dt>
 				<dd>We work closely with you to craft and deliver experiences that fit your personality, interests, and travel style</dd>
 			</dl>
 		</div>
@@ -294,37 +304,37 @@
 		<h3>Our Specialties</h3>
 		<div class="specialties">
 			<div class="specialties_left">
-				<a class="specialties_img">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Great%20Wall">
 					<img src="https://resource.localpanda.cn/homepage/greatwall.jpg" width="100%" alt="">
 					<strong>The Great Wall</strong>
 				</a>
-				<a class="specialties_img">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Food">
 					<img src="https://resource.localpanda.cn/homepage/experiences.jpg" width="100%" alt="">
 					<strong>Foodie Experiences</strong>
 				</a>
-				<a class="specialties_img">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Forbidden%20City">
 					<img src="https://resource.localpanda.cn/homepage/forbiddencity.jpg" width="100%" alt="">
 					<strong>Forbidden City</strong>
 				</a>
-				<a class="specialties_img">
+				<a class="specialties_img" href="https://m.localpanda.com/travel/expats">
 					<img src="https://resource.localpanda.cn/homepage/expatadventures.jpg" width="100%" alt="">
 					<strong>Expat Adventures</strong>
 				</a>
 			</div>
 			<div class="specialties_right">
-				<a class="specialties_img">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Panda">
 					<img src="https://resource.localpanda.cn/homepage/giantpandas.jpg" width="100%" alt="">
 					<strong>Giant Pandas</strong>
 				</a>
-				<a class="specialties_img">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Watertown">
 					<img src="https://resource.localpanda.cn/homepage/watertowns.jpg" width="100%" alt="">
 					<strong>Water Towns</strong>
 				</a>
-				<a class="specialties_img">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Terra-Cotta%20Warriors">
 					<img src="https://resource.localpanda.cn/homepage/terracottawarriors.jpg" width="100%" alt="">
 					<strong>Terracotta Warriors</strong>
 				</a>
-				<a class="specialties_img">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Landmarks">
 					<img src="https://resource.localpanda.cn/homepage/landmarks.jpg" width="100%" alt="">
 					<strong>Landmarks</strong>
 				</a>
@@ -335,7 +345,7 @@
 			<img src="https://resource.localpanda.cn/homepage/custom.jpg" width="100%" alt="">
 			<div class="customize_info">
 				<h4>BY YOU / FOR YOU</h4>
-				<p>Choose your cities, matches your dates, <br>design your bespoke journey</p>
+				<p>Choose your cities, match your dates, <br>design your bespoke journey</p>
 				<a class="btn_customize" href="/travel/customize/step1">Build Your Adventure</a>
 			</div>
 		</div>
@@ -453,16 +463,16 @@
 		},
 		head() {
 			return {
-				title: 'home',
+				title: 'Local Panda | The China Travel Experts.',
 				meta: [{
 						hid: "keywords",
 						name: "keywords",
-						content: 'aaaaaaa'
+						content: 'Local Panda, China, China travel, China tour, China travel company, China travel guide, China tour package'
 					},
 					{
 						hid: "description",
 						name: "description",
-						content: 'aaaaaaa'
+						content: 'China specialized travel platform, handpicked local guides, book private and personalized tours, trip planning assistance, hundreds of things to do and see in China, sightseeing day activities, car service and transportation'
 					}
 				]
 			};
