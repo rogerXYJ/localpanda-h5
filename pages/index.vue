@@ -389,9 +389,9 @@
 
 	import Vue from "vue";
 
-	if(process.browser) {
-		require('~/assets/js/plugin/swiper.js');
-	}
+	// if(process.browser) {
+	// 	require('~/assets/js/plugin/swiper.js');
+	// }
 	
 	export default {
 		name: 'activityList',
