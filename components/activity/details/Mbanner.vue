@@ -4,7 +4,7 @@
 		<div class="swiper-container" id="swiper_bannerbox">
 			<div class="swiper-wrapper">
 				<div class="swiper-slide" :key="index" v-for="(slide, index) in bannerPhotos">
-					<img v-lazy="slide" lazy="error"  />
+					<img v-lazy="slide.url" lazy="error"  />
 				</div>
 			</div>
 			<div class="swiper-pagination" id="swiper_banner_pagination"></div>

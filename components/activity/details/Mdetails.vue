@@ -85,8 +85,8 @@
 										<h3>{{i.title}}</h3>
 										<p>{{i.description}}</p>
 									</div>
-									<div class="cont" v-if="i.photoUrl">
-										<img v-lazy="i.photoUrl" />
+									<div class="cont" v-if="i.photo">
+										<img v-lazy="i.photo.url" />
 									</div>
 								</div>
 							</li>
@@ -157,11 +157,11 @@
 					<div class="view" v-if="isShowTable" @click="showTable">View More</div>
 					<p v-if="picInfo.priceInstructions" class="picNote">{{picInfo.priceInstructions}}</p>
 				</div>
-			<div class="provide" id="provide" v-if="itemsIncluded.length">
+			<div class="provide" id="provide" v-if="inclusions.length">
 				<h3>What's Included?</h3>
-				<ul>
+				<!-- <ul>
 					<li :key="index" v-for="(item,index) in itemsIncluded">{{item}}</li>
-				</ul>
+				</ul> -->
 				<ul v-if="inclusions">
 					<li :key="index" v-for="(item,index) in inclusions">
 						<h5>{{item.title}}</h5>
@@ -169,7 +169,7 @@
 					</li>
 				</ul>
 			</div>
-			<div class="provide" v-if="exclusions" id="exclusions">
+			<div class="provide" v-if="exclusions.length" id="exclusions">
 				<h3>Exclusions</h3>
 				<ul>
 					<li :key="index" v-for="(item,index) in exclusions">
@@ -180,7 +180,7 @@
 			</div>
 			<div class="notes" v-if="notice.length>0" id="notice">
 				<h3>Additional Info</h3>
-				<p v-for="(item,index) in notice" :key="index">{{item}}</p>
+				<p v-for="(item,index) in notice" :key="index">{{item.title}}</p>
 			</div>
 			<!-- <div class="notes" v-if="picInfo.priceInstructions" id="PriceNote">
 				<h3>Price Note</h3>
@@ -665,7 +665,7 @@ import photo from '~/components/activity/details/photo'
 				}
 
 				self.remarkLoading = true;
-				self.axios.post("https://api.localpanda.com/api/user/comment/detail/list",JSON.stringify(postData),{
+				self.axios.post("https://api.localpanda.com/api/user/comment/list",JSON.stringify(postData),{
 					headers: {
 					'Content-Type': 'application/json'
 					}
