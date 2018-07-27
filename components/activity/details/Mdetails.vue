@@ -112,9 +112,9 @@
 			
 			<div class="provide" id="provide" v-if="inclusions.length">
 				<h3>What's Included?</h3>
-				<!-- <ul>
+				<ul>
 					<li :key="index" v-for="(item,index) in itemsIncluded">{{item}}</li>
-				</ul> -->
+				</ul>
 				<ul v-if="inclusions">
 					<li :key="index" v-for="(item,index) in inclusions">
 						<h5>{{item.title}}</h5>
