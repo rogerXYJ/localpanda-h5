@@ -726,7 +726,7 @@
 						</div>
 					</dd>
 				</dl>
-				<dl :key="index" v-for="(item,index) in aggregations" v-if="item.items && item.type !='CATEGORY'">
+				<dl :key="index" v-for="(item,index) in aggregations" v-if="getObjLength(item.items)>1&&item.items && item.type !='CATEGORY'">
 					<dt>{{getFilterType(item.type)}}</dt>
 					<dd v-if="item.type=='DURATION'">
 						<checkbox-group v-model="filterCheck.duration">

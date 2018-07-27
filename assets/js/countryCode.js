@@ -1,1203 +1,723 @@
-module.exports={
+module.exports = {
 	phone_countries: [{
-		"code": "AF",
-		"prefix": 93,
 		"country_name": "Afghanistan",
-		"format_excluding_country_prefix": null
+		"prefix": "93"
 	}, {
-		"code": "AX",
-		"prefix": 358,
-		"country_name": "Åland Islands",
-		"format_excluding_country_prefix": null
-	}, {
-		"code": "AL",
-		"prefix": 355,
 		"country_name": "Albania",
-		"format_excluding_country_prefix": null
+		"prefix": "355"
 	}, {
-		"code": "DZ",
-		"prefix": 213,
 		"country_name": "Algeria",
-		"format_excluding_country_prefix": null
+		"prefix": "213"
 	}, {
-		"code": "AS",
-		"prefix": 1,
 		"country_name": "American Samoa",
-		"format_excluding_country_prefix": null
+		"prefix": "1-684"
 	}, {
-		"code": "AD",
-		"prefix": 376,
 		"country_name": "Andorra",
-		"format_excluding_country_prefix": null
+		"prefix": "376"
 	}, {
-		"code": "AO",
-		"prefix": 244,
 		"country_name": "Angola",
-		"format_excluding_country_prefix": null
+		"prefix": "244"
 	}, {
-		"code": "AI",
-		"prefix": 1,
 		"country_name": "Anguilla",
-		"format_excluding_country_prefix": null
+		"prefix": "1-264"
 	}, {
-		"code": "AG",
-		"prefix": 1,
+		"country_name": "Antarctica",
+		"prefix": "672"
+	}, {
 		"country_name": "Antigua and Barbuda",
-		"format_excluding_country_prefix": null
+		"prefix": "1-268"
 	}, {
-		"code": "AR",
-		"prefix": 54,
 		"country_name": "Argentina",
-		"format_excluding_country_prefix": null
+		"prefix": "54"
 	}, {
-		"code": "AM",
-		"prefix": 374,
 		"country_name": "Armenia",
-		"format_excluding_country_prefix": null
+		"prefix": "374"
 	}, {
-		"code": "AW",
-		"prefix": 297,
 		"country_name": "Aruba",
-		"format_excluding_country_prefix": null
+		"prefix": "297"
 	}, {
-		"code": "AU",
-		"prefix": 61,
 		"country_name": "Australia",
-		"format_excluding_country_prefix": null
+		"prefix": "61"
 	}, {
-		"code": "AT",
-		"prefix": 43,
 		"country_name": "Austria",
-		"format_excluding_country_prefix": null
+		"prefix": "43"
 	}, {
-		"code": "AZ",
-		"prefix": 994,
 		"country_name": "Azerbaijan",
-		"format_excluding_country_prefix": null
+		"prefix": "994"
 	}, {
-		"code": "BS",
-		"prefix": 1,
 		"country_name": "Bahamas",
-		"format_excluding_country_prefix": null
+		"prefix": "1-242"
 	}, {
-		"code": "BH",
-		"prefix": 973,
 		"country_name": "Bahrain",
-		"format_excluding_country_prefix": null
+		"prefix": "973"
 	}, {
-		"code": "BD",
-		"prefix": 880,
 		"country_name": "Bangladesh",
-		"format_excluding_country_prefix": null
+		"prefix": "880"
 	}, {
-		"code": "BB",
-		"prefix": 1,
 		"country_name": "Barbados",
-		"format_excluding_country_prefix": null
+		"prefix": "1-246"
 	}, {
-		"code": "BY",
-		"prefix": 375,
 		"country_name": "Belarus",
-		"format_excluding_country_prefix": null
+		"prefix": "375"
 	}, {
-		"code": "BE",
-		"prefix": 32,
 		"country_name": "Belgium",
-		"format_excluding_country_prefix": null
+		"prefix": "32"
 	}, {
-		"code": "BZ",
-		"prefix": 501,
 		"country_name": "Belize",
-		"format_excluding_country_prefix": null
+		"prefix": "501"
 	}, {
-		"code": "BJ",
-		"prefix": 229,
 		"country_name": "Benin",
-		"format_excluding_country_prefix": null
+		"prefix": "229"
 	}, {
-		"code": "BM",
-		"prefix": 1,
 		"country_name": "Bermuda",
-		"format_excluding_country_prefix": null
+		"prefix": "1-441"
 	}, {
-		"code": "BT",
-		"prefix": 975,
 		"country_name": "Bhutan",
-		"format_excluding_country_prefix": null
+		"prefix": "975"
 	}, {
-		"code": "BO",
-		"prefix": 591,
 		"country_name": "Bolivia",
-		"format_excluding_country_prefix": null
+		"prefix": "591"
 	}, {
-		"code": "BA",
-		"prefix": 387,
 		"country_name": "Bosnia and Herzegovina",
-		"format_excluding_country_prefix": null
+		"prefix": "387"
 	}, {
-		"code": "BW",
-		"prefix": 267,
 		"country_name": "Botswana",
-		"format_excluding_country_prefix": null
+		"prefix": "267"
 	}, {
-		"code": "BR",
-		"prefix": 55,
 		"country_name": "Brazil",
-		"format_excluding_country_prefix": "XX-XXXX-XXXX"
+		"prefix": "55"
 	}, {
-		"code": "IO",
-		"prefix": 246,
 		"country_name": "British Indian Ocean Territory",
-		"format_excluding_country_prefix": null
+		"prefix": "246"
 	}, {
-		"code": "VG",
-		"prefix": 1,
 		"country_name": "British Virgin Islands",
-		"format_excluding_country_prefix": null
+		"prefix": "1-284"
 	}, {
-		"code": "BN",
-		"prefix": 673,
 		"country_name": "Brunei",
-		"format_excluding_country_prefix": null
+		"prefix": "673"
 	}, {
-		"code": "BG",
-		"prefix": 359,
 		"country_name": "Bulgaria",
-		"format_excluding_country_prefix": null
+		"prefix": "359"
 	}, {
-		"code": "BF",
-		"prefix": 226,
 		"country_name": "Burkina Faso",
-		"format_excluding_country_prefix": null
+		"prefix": "226"
 	}, {
-		"code": "BI",
-		"prefix": 257,
 		"country_name": "Burundi",
-		"format_excluding_country_prefix": null
+		"prefix": "257"
 	}, {
-		"code": "KH",
-		"prefix": 855,
 		"country_name": "Cambodia",
-		"format_excluding_country_prefix": null
+		"prefix": "855"
 	}, {
-		"code": "CM",
-		"prefix": 237,
 		"country_name": "Cameroon",
-		"format_excluding_country_prefix": null
+		"prefix": "237"
 	}, {
-		"code": "CA",
-		"prefix": 1,
 		"country_name": "Canada",
-		"format_excluding_country_prefix": null
+		"prefix": "1"
 	}, {
-		"code": "CV",
-		"prefix": 238,
 		"country_name": "Cape Verde",
-		"format_excluding_country_prefix": null
+		"prefix": "238"
 	}, {
-		"code": "BQ",
-		"prefix": 599,
-		"country_name": "Caribbean Netherlands",
-		"format_excluding_country_prefix": null
-	}, {
-		"code": "KY",
-		"prefix": 1,
 		"country_name": "Cayman Islands",
-		"format_excluding_country_prefix": null
+		"prefix": "1-345"
 	}, {
-		"code": "CF",
-		"prefix": 236,
 		"country_name": "Central African Republic",
-		"format_excluding_country_prefix": null
+		"prefix": "236"
 	}, {
-		"code": "TD",
-		"prefix": 235,
 		"country_name": "Chad",
-		"format_excluding_country_prefix": null
+		"prefix": "235"
 	}, {
-		"code": "CL",
-		"prefix": 56,
 		"country_name": "Chile",
-		"format_excluding_country_prefix": null
+		"prefix": "56"
 	}, {
-		"code": "CN",
-		"prefix": 86,
 		"country_name": "China",
-		"format_excluding_country_prefix": null
+		"prefix": "86"
 	}, {
-		"code": "CX",
-		"prefix": 61,
 		"country_name": "Christmas Island",
-		"format_excluding_country_prefix": null
+		"prefix": "61"
 	}, {
-		"code": "CC",
-		"prefix": 61,
-		"country_name": "Cocos [Keeling] Islands",
-		"format_excluding_country_prefix": null
+		"country_name": "Cocos Islands",
+		"prefix": "61"
 	}, {
-		"code": "CO",
-		"prefix": 57,
 		"country_name": "Colombia",
-		"format_excluding_country_prefix": null
+		"prefix": "57"
 	}, {
-		"code": "KM",
-		"prefix": 269,
 		"country_name": "Comoros",
-		"format_excluding_country_prefix": null
+		"prefix": "269"
 	}, {
-		"code": "CG",
-		"prefix": 242,
-		"country_name": "Congo",
-		"format_excluding_country_prefix": null
-	}, {
-		"code": "CK",
-		"prefix": 682,
 		"country_name": "Cook Islands",
-		"format_excluding_country_prefix": null
+		"prefix": "682"
 	}, {
-		"code": "CR",
-		"prefix": 506,
 		"country_name": "Costa Rica",
-		"format_excluding_country_prefix": null
+		"prefix": "506"
 	}, {
-		"code": "HR",
-		"prefix": 385,
 		"country_name": "Croatia",
-		"format_excluding_country_prefix": null
+		"prefix": "385"
 	}, {
-		"code": "CW",
-		"prefix": 599,
-		"country_name": "Curaçao",
-		"format_excluding_country_prefix": null
+		"country_name": "Cuba",
+		"prefix": "53"
 	}, {
-		"code": "CY",
-		"prefix": 357,
+		"country_name": "Curacao",
+		"prefix": "599"
+	}, {
 		"country_name": "Cyprus",
-		"format_excluding_country_prefix": null
+		"prefix": "357"
 	}, {
-		"code": "CZ",
-		"prefix": 420,
 		"country_name": "Czech Republic",
-		"format_excluding_country_prefix": null
+		"prefix": "420"
 	}, {
-		"code": "CD",
-		"prefix": 243,
 		"country_name": "Democratic Republic of the Congo",
-		"format_excluding_country_prefix": null
+		"prefix": "243"
 	}, {
-		"code": "DK",
-		"prefix": 45,
 		"country_name": "Denmark",
-		"format_excluding_country_prefix": null
+		"prefix": "45"
 	}, {
-		"code": "DJ",
-		"prefix": 253,
 		"country_name": "Djibouti",
-		"format_excluding_country_prefix": null
+		"prefix": "253"
 	}, {
-		"code": "DM",
-		"prefix": 1,
 		"country_name": "Dominica",
-		"format_excluding_country_prefix": null
+		"prefix": "1-767"
 	}, {
-		"code": "DO",
-		"prefix": 1,
 		"country_name": "Dominican Republic",
-		"format_excluding_country_prefix": null
+		"prefix": "1-809, 1-829, 1-849"
 	}, {
-		"code": "TL",
-		"prefix": 670,
 		"country_name": "East Timor",
-		"format_excluding_country_prefix": null
+		"prefix": "670"
 	}, {
-		"code": "EC",
-		"prefix": 593,
 		"country_name": "Ecuador",
-		"format_excluding_country_prefix": null
+		"prefix": "593"
 	}, {
-		"code": "EG",
-		"prefix": 20,
 		"country_name": "Egypt",
-		"format_excluding_country_prefix": null
+		"prefix": "20"
 	}, {
-		"code": "SV",
-		"prefix": 503,
 		"country_name": "El Salvador",
-		"format_excluding_country_prefix": null
+		"prefix": "503"
 	}, {
-		"code": "GQ",
-		"prefix": 240,
 		"country_name": "Equatorial Guinea",
-		"format_excluding_country_prefix": null
+		"prefix": "240"
 	}, {
-		"code": "ER",
-		"prefix": 291,
 		"country_name": "Eritrea",
-		"format_excluding_country_prefix": null
+		"prefix": "291"
 	}, {
-		"code": "EE",
-		"prefix": 372,
 		"country_name": "Estonia",
-		"format_excluding_country_prefix": null
+		"prefix": "372"
 	}, {
-		"code": "ET",
-		"prefix": 251,
 		"country_name": "Ethiopia",
-		"format_excluding_country_prefix": null
+		"prefix": "251"
 	}, {
-		"code": "FK",
-		"prefix": 500,
-		"country_name": "Falkland Islands [Islas Malvinas]",
-		"format_excluding_country_prefix": null
+		"country_name": "Falkland Islands",
+		"prefix": "500"
 	}, {
-		"code": "FO",
-		"prefix": 298,
 		"country_name": "Faroe Islands",
-		"format_excluding_country_prefix": null
+		"prefix": "298"
 	}, {
-		"code": "FJ",
-		"prefix": 679,
 		"country_name": "Fiji",
-		"format_excluding_country_prefix": null
+		"prefix": "679"
 	}, {
-		"code": "FI",
-		"prefix": 358,
 		"country_name": "Finland",
-		"format_excluding_country_prefix": null
+		"prefix": "358"
 	}, {
-		"code": "FR",
-		"prefix": 33,
 		"country_name": "France",
-		"format_excluding_country_prefix": null
+		"prefix": "33"
 	}, {
-		"code": "GF",
-		"prefix": 594,
-		"country_name": "French Guiana",
-		"format_excluding_country_prefix": null
-	}, {
-		"code": "PF",
-		"prefix": 689,
 		"country_name": "French Polynesia",
-		"format_excluding_country_prefix": null
+		"prefix": "689"
 	}, {
-		"code": "GA",
-		"prefix": 241,
 		"country_name": "Gabon",
-		"format_excluding_country_prefix": null
+		"prefix": "241"
 	}, {
-		"code": "GM",
-		"prefix": 220,
 		"country_name": "Gambia",
-		"format_excluding_country_prefix": null
+		"prefix": "220"
 	}, {
-		"code": "GE",
-		"prefix": 995,
 		"country_name": "Georgia",
-		"format_excluding_country_prefix": null
+		"prefix": "995"
 	}, {
-		"code": "DE",
-		"prefix": 49,
 		"country_name": "Germany",
-		"format_excluding_country_prefix": null
+		"prefix": "49"
 	}, {
-		"code": "GH",
-		"prefix": 233,
 		"country_name": "Ghana",
-		"format_excluding_country_prefix": null
+		"prefix": "233"
 	}, {
-		"code": "GI",
-		"prefix": 350,
 		"country_name": "Gibraltar",
-		"format_excluding_country_prefix": null
+		"prefix": "350"
 	}, {
-		"code": "GR",
-		"prefix": 30,
 		"country_name": "Greece",
-		"format_excluding_country_prefix": null
+		"prefix": "30"
 	}, {
-		"code": "GL",
-		"prefix": 299,
 		"country_name": "Greenland",
-		"format_excluding_country_prefix": null
+		"prefix": "299"
 	}, {
-		"code": "GD",
-		"prefix": 1,
 		"country_name": "Grenada",
-		"format_excluding_country_prefix": null
+		"prefix": "1-473"
 	}, {
-		"code": "GP",
-		"prefix": 590,
-		"country_name": "Guadeloupe",
-		"format_excluding_country_prefix": null
-	}, {
-		"code": "GU",
-		"prefix": 1,
 		"country_name": "Guam",
-		"format_excluding_country_prefix": null
+		"prefix": "1-671"
 	}, {
-		"code": "GT",
-		"prefix": 502,
 		"country_name": "Guatemala",
-		"format_excluding_country_prefix": null
+		"prefix": "502"
 	}, {
-		"code": "GG",
-		"prefix": 44,
 		"country_name": "Guernsey",
-		"format_excluding_country_prefix": null
+		"prefix": "44-1481"
 	}, {
-		"code": "GN",
-		"prefix": 224,
 		"country_name": "Guinea",
-		"format_excluding_country_prefix": null
+		"prefix": "224"
 	}, {
-		"code": "GW",
-		"prefix": 245,
 		"country_name": "Guinea-Bissau",
-		"format_excluding_country_prefix": null
+		"prefix": "245"
 	}, {
-		"code": "GY",
-		"prefix": 592,
 		"country_name": "Guyana",
-		"format_excluding_country_prefix": null
+		"prefix": "592"
 	}, {
-		"code": "HT",
-		"prefix": 509,
 		"country_name": "Haiti",
-		"format_excluding_country_prefix": null
+		"prefix": "509"
 	}, {
-		"code": "HN",
-		"prefix": 504,
 		"country_name": "Honduras",
-		"format_excluding_country_prefix": null
+		"prefix": "504"
 	}, {
-		"code": "HK",
-		"prefix": 852,
 		"country_name": "Hong Kong",
-		"format_excluding_country_prefix": null
+		"prefix": "852"
 	}, {
-		"code": "HU",
-		"prefix": 36,
 		"country_name": "Hungary",
-		"format_excluding_country_prefix": null
+		"prefix": "36"
 	}, {
-		"code": "IS",
-		"prefix": 354,
 		"country_name": "Iceland",
-		"format_excluding_country_prefix": null
+		"prefix": "354"
 	}, {
-		"code": "IN",
-		"prefix": 91,
 		"country_name": "India",
-		"format_excluding_country_prefix": null
+		"prefix": "91"
 	}, {
-		"code": "ID",
-		"prefix": 62,
 		"country_name": "Indonesia",
-		"format_excluding_country_prefix": null
+		"prefix": "62"
 	}, {
-		"code": "IQ",
-		"prefix": 964,
+		"country_name": "Iran",
+		"prefix": "98"
+	}, {
 		"country_name": "Iraq",
-		"format_excluding_country_prefix": null
+		"prefix": "964"
 	}, {
-		"code": "IE",
-		"prefix": 353,
 		"country_name": "Ireland",
-		"format_excluding_country_prefix": null
+		"prefix": "353"
 	}, {
-		"code": "IM",
-		"prefix": 44,
 		"country_name": "Isle of Man",
-		"format_excluding_country_prefix": null
+		"prefix": "44-1624"
 	}, {
-		"code": "IL",
-		"prefix": 972,
 		"country_name": "Israel",
-		"format_excluding_country_prefix": null
+		"prefix": "972"
 	}, {
-		"code": "IT",
-		"prefix": 39,
 		"country_name": "Italy",
-		"format_excluding_country_prefix": null
+		"prefix": "39"
 	}, {
-		"code": "CI",
-		"prefix": 225,
 		"country_name": "Ivory Coast",
-		"format_excluding_country_prefix": null
+		"prefix": "225"
 	}, {
-		"code": "JM",
-		"prefix": 1,
 		"country_name": "Jamaica",
-		"format_excluding_country_prefix": null
+		"prefix": "1-876"
 	}, {
-		"code": "JP",
-		"prefix": 81,
 		"country_name": "Japan",
-		"format_excluding_country_prefix": null
+		"prefix": "81"
 	}, {
-		"code": "JE",
-		"prefix": 44,
 		"country_name": "Jersey",
-		"format_excluding_country_prefix": null
+		"prefix": "44-1534"
 	}, {
-		"code": "JO",
-		"prefix": 962,
 		"country_name": "Jordan",
-		"format_excluding_country_prefix": null
+		"prefix": "962"
 	}, {
-		"code": "KZ",
-		"prefix": 7,
 		"country_name": "Kazakhstan",
-		"format_excluding_country_prefix": null
+		"prefix": "7"
 	}, {
-		"code": "KE",
-		"prefix": 254,
 		"country_name": "Kenya",
-		"format_excluding_country_prefix": null
+		"prefix": "254"
 	}, {
-		"code": "KI",
-		"prefix": 686,
 		"country_name": "Kiribati",
-		"format_excluding_country_prefix": null
+		"prefix": "686"
 	}, {
-		"code": "XK",
-		"prefix": 383,
 		"country_name": "Kosovo",
-		"format_excluding_country_prefix": null
+		"prefix": "383"
 	}, {
-		"code": "KW",
-		"prefix": 965,
 		"country_name": "Kuwait",
-		"format_excluding_country_prefix": null
+		"prefix": "965"
 	}, {
-		"code": "KG",
-		"prefix": 996,
 		"country_name": "Kyrgyzstan",
-		"format_excluding_country_prefix": null
+		"prefix": "996"
 	}, {
-		"code": "LA",
-		"prefix": 856,
 		"country_name": "Laos",
-		"format_excluding_country_prefix": null
+		"prefix": "856"
 	}, {
-		"code": "LV",
-		"prefix": 371,
 		"country_name": "Latvia",
-		"format_excluding_country_prefix": null
+		"prefix": "371"
 	}, {
-		"code": "LB",
-		"prefix": 961,
 		"country_name": "Lebanon",
-		"format_excluding_country_prefix": null
+		"prefix": "961"
 	}, {
-		"code": "LS",
-		"prefix": 266,
 		"country_name": "Lesotho",
-		"format_excluding_country_prefix": null
+		"prefix": "266"
 	}, {
-		"code": "LR",
-		"prefix": 231,
 		"country_name": "Liberia",
-		"format_excluding_country_prefix": null
+		"prefix": "231"
 	}, {
-		"code": "LY",
-		"prefix": 218,
 		"country_name": "Libya",
-		"format_excluding_country_prefix": null
+		"prefix": "218"
 	}, {
-		"code": "LI",
-		"prefix": 423,
 		"country_name": "Liechtenstein",
-		"format_excluding_country_prefix": null
+		"prefix": "423"
 	}, {
-		"code": "LT",
-		"prefix": 370,
 		"country_name": "Lithuania",
-		"format_excluding_country_prefix": null
+		"prefix": "370"
 	}, {
-		"code": "LU",
-		"prefix": 352,
 		"country_name": "Luxembourg",
-		"format_excluding_country_prefix": null
+		"prefix": "352"
 	}, {
-		"code": "MO",
-		"prefix": 853,
 		"country_name": "Macau",
-		"format_excluding_country_prefix": null
+		"prefix": "853"
 	}, {
-		"code": "MK",
-		"prefix": 389,
 		"country_name": "Macedonia",
-		"format_excluding_country_prefix": null
+		"prefix": "389"
 	}, {
-		"code": "MG",
-		"prefix": 261,
 		"country_name": "Madagascar",
-		"format_excluding_country_prefix": null
+		"prefix": "261"
 	}, {
-		"code": "MW",
-		"prefix": 265,
 		"country_name": "Malawi",
-		"format_excluding_country_prefix": null
+		"prefix": "265"
 	}, {
-		"code": "MY",
-		"prefix": 60,
 		"country_name": "Malaysia",
-		"format_excluding_country_prefix": null
+		"prefix": "60"
 	}, {
-		"code": "MV",
-		"prefix": 960,
 		"country_name": "Maldives",
-		"format_excluding_country_prefix": null
+		"prefix": "960"
 	}, {
-		"code": "ML",
-		"prefix": 223,
 		"country_name": "Mali",
-		"format_excluding_country_prefix": null
+		"prefix": "223"
 	}, {
-		"code": "MT",
-		"prefix": 356,
 		"country_name": "Malta",
-		"format_excluding_country_prefix": null
+		"prefix": "356"
 	}, {
-		"code": "MH",
-		"prefix": 692,
 		"country_name": "Marshall Islands",
-		"format_excluding_country_prefix": null
+		"prefix": "692"
 	}, {
-		"code": "MQ",
-		"prefix": 596,
-		"country_name": "Martinique",
-		"format_excluding_country_prefix": null
-	}, {
-		"code": "MR",
-		"prefix": 222,
 		"country_name": "Mauritania",
-		"format_excluding_country_prefix": null
+		"prefix": "222"
 	}, {
-		"code": "MU",
-		"prefix": 230,
 		"country_name": "Mauritius",
-		"format_excluding_country_prefix": null
+		"prefix": "230"
 	}, {
-		"code": "YT",
-		"prefix": 262,
 		"country_name": "Mayotte",
-		"format_excluding_country_prefix": null
+		"prefix": "262"
 	}, {
-		"code": "MX",
-		"prefix": 52,
 		"country_name": "Mexico",
-		"format_excluding_country_prefix": null
+		"prefix": "52"
 	}, {
-		"code": "FM",
-		"prefix": 691,
 		"country_name": "Micronesia",
-		"format_excluding_country_prefix": null
+		"prefix": "691"
 	}, {
-		"code": "MD",
-		"prefix": 373,
 		"country_name": "Moldova",
-		"format_excluding_country_prefix": null
+		"prefix": "373"
 	}, {
-		"code": "MC",
-		"prefix": 377,
 		"country_name": "Monaco",
-		"format_excluding_country_prefix": null
+		"prefix": "377"
 	}, {
-		"code": "MN",
-		"prefix": 976,
 		"country_name": "Mongolia",
-		"format_excluding_country_prefix": null
+		"prefix": "976"
 	}, {
-		"code": "ME",
-		"prefix": 382,
 		"country_name": "Montenegro",
-		"format_excluding_country_prefix": null
+		"prefix": "382"
 	}, {
-		"code": "MS",
-		"prefix": 1,
 		"country_name": "Montserrat",
-		"format_excluding_country_prefix": null
+		"prefix": "1-664"
 	}, {
-		"code": "MA",
-		"prefix": 212,
 		"country_name": "Morocco",
-		"format_excluding_country_prefix": null
+		"prefix": "212"
 	}, {
-		"code": "MZ",
-		"prefix": 258,
 		"country_name": "Mozambique",
-		"format_excluding_country_prefix": null
+		"prefix": "258"
 	}, {
-		"code": "MM",
-		"prefix": 95,
-		"country_name": "Myanmar [Burma]",
-		"format_excluding_country_prefix": null
+		"country_name": "Myanmar",
+		"prefix": "95"
 	}, {
-		"code": "NA",
-		"prefix": 264,
 		"country_name": "Namibia",
-		"format_excluding_country_prefix": null
+		"prefix": "264"
 	}, {
-		"code": "NR",
-		"prefix": 674,
 		"country_name": "Nauru",
-		"format_excluding_country_prefix": null
+		"prefix": "674"
 	}, {
-		"code": "NP",
-		"prefix": 977,
 		"country_name": "Nepal",
-		"format_excluding_country_prefix": null
+		"prefix": "977"
 	}, {
-		"code": "NL",
-		"prefix": 31,
 		"country_name": "Netherlands",
-		"format_excluding_country_prefix": null
+		"prefix": "31"
 	}, {
-		"code": "NC",
-		"prefix": 687,
+		"country_name": "Netherlands Antilles",
+		"prefix": "599"
+	}, {
 		"country_name": "New Caledonia",
-		"format_excluding_country_prefix": null
+		"prefix": "687"
 	}, {
-		"code": "NZ",
-		"prefix": 64,
 		"country_name": "New Zealand",
-		"format_excluding_country_prefix": null
+		"prefix": "64"
 	}, {
-		"code": "NI",
-		"prefix": 505,
 		"country_name": "Nicaragua",
-		"format_excluding_country_prefix": null
+		"prefix": "505"
 	}, {
-		"code": "NE",
-		"prefix": 227,
 		"country_name": "Niger",
-		"format_excluding_country_prefix": null
+		"prefix": "227"
 	}, {
-		"code": "NG",
-		"prefix": 234,
 		"country_name": "Nigeria",
-		"format_excluding_country_prefix": null
+		"prefix": "234"
 	}, {
-		"code": "NU",
-		"prefix": 683,
 		"country_name": "Niue",
-		"format_excluding_country_prefix": null
+		"prefix": "683"
 	}, {
-		"code": "NF",
-		"prefix": 672,
-		"country_name": "Norfolk Island",
-		"format_excluding_country_prefix": null
+		"country_name": "North Korea",
+		"prefix": "850"
 	}, {
-		"code": "MP",
-		"prefix": 1,
 		"country_name": "Northern Mariana Islands",
-		"format_excluding_country_prefix": null
+		"prefix": "1-670"
 	}, {
-		"code": "NO",
-		"prefix": 47,
 		"country_name": "Norway",
-		"format_excluding_country_prefix": null
+		"prefix": "47"
 	}, {
-		"code": "OM",
-		"prefix": 968,
 		"country_name": "Oman",
-		"format_excluding_country_prefix": null
+		"prefix": "968"
 	}, {
-		"code": "PK",
-		"prefix": 92,
 		"country_name": "Pakistan",
-		"format_excluding_country_prefix": null
+		"prefix": "92"
 	}, {
-		"code": "PW",
-		"prefix": 680,
 		"country_name": "Palau",
-		"format_excluding_country_prefix": null
+		"prefix": "680"
 	}, {
-		"code": "PS",
-		"prefix": 970,
-		"country_name": "Palestinian Territories",
-		"format_excluding_country_prefix": null
+		"country_name": "Palestine",
+		"prefix": "970"
 	}, {
-		"code": "PA",
-		"prefix": 507,
 		"country_name": "Panama",
-		"format_excluding_country_prefix": null
+		"prefix": "507"
 	}, {
-		"code": "PG",
-		"prefix": 675,
 		"country_name": "Papua New Guinea",
-		"format_excluding_country_prefix": null
+		"prefix": "675"
 	}, {
-		"code": "PY",
-		"prefix": 595,
 		"country_name": "Paraguay",
-		"format_excluding_country_prefix": null
+		"prefix": "595"
 	}, {
-		"code": "PE",
-		"prefix": 51,
 		"country_name": "Peru",
-		"format_excluding_country_prefix": null
+		"prefix": "51"
 	}, {
-		"code": "PH",
-		"prefix": 63,
 		"country_name": "Philippines",
-		"format_excluding_country_prefix": null
+		"prefix": "63"
 	}, {
-		"code": "PN",
-		"prefix": 64,
-		"country_name": "Pitcairn Islands",
-		"format_excluding_country_prefix": null
+		"country_name": "Pitcairn",
+		"prefix": "64"
 	}, {
-		"code": "PL",
-		"prefix": 48,
 		"country_name": "Poland",
-		"format_excluding_country_prefix": null
+		"prefix": "48"
 	}, {
-		"code": "PT",
-		"prefix": 351,
 		"country_name": "Portugal",
-		"format_excluding_country_prefix": null
+		"prefix": "351"
 	}, {
-		"code": "PR",
-		"prefix": 1,
 		"country_name": "Puerto Rico",
-		"format_excluding_country_prefix": null
+		"prefix": "1-787, 1-939"
 	}, {
-		"code": "QA",
-		"prefix": 974,
 		"country_name": "Qatar",
-		"format_excluding_country_prefix": null
+		"prefix": "974"
 	}, {
-		"code": "RE",
-		"prefix": 262,
-		"country_name": "Réunion",
-		"format_excluding_country_prefix": null
+		"country_name": "Republic of the Congo",
+		"prefix": "242"
 	}, {
-		"code": "RO",
-		"prefix": 40,
+		"country_name": "Reunion",
+		"prefix": "262"
+	}, {
 		"country_name": "Romania",
-		"format_excluding_country_prefix": null
+		"prefix": "40"
 	}, {
-		"code": "RU",
-		"prefix": 7,
 		"country_name": "Russia",
-		"format_excluding_country_prefix": null
+		"prefix": "7"
 	}, {
-		"code": "RW",
-		"prefix": 250,
 		"country_name": "Rwanda",
-		"format_excluding_country_prefix": null
+		"prefix": "250"
 	}, {
-		"code": "BL",
-		"prefix": 590,
-		"country_name": "Saint Barthélemy",
-		"format_excluding_country_prefix": null
+		"country_name": "Saint Barthelemy",
+		"prefix": "590"
 	}, {
-		"code": "SH",
-		"prefix": 290,
 		"country_name": "Saint Helena",
-		"format_excluding_country_prefix": null
+		"prefix": "290"
 	}, {
-		"code": "KN",
-		"prefix": 1,
 		"country_name": "Saint Kitts and Nevis",
-		"format_excluding_country_prefix": null
+		"prefix": "1-869"
 	}, {
-		"code": "LC",
-		"prefix": 1,
 		"country_name": "Saint Lucia",
-		"format_excluding_country_prefix": null
+		"prefix": "1-758"
 	}, {
-		"code": "MF",
-		"prefix": 590,
 		"country_name": "Saint Martin",
-		"format_excluding_country_prefix": null
+		"prefix": "590"
 	}, {
-		"code": "PM",
-		"prefix": 508,
 		"country_name": "Saint Pierre and Miquelon",
-		"format_excluding_country_prefix": null
+		"prefix": "508"
 	}, {
-		"code": "VC",
-		"prefix": 1,
 		"country_name": "Saint Vincent and the Grenadines",
-		"format_excluding_country_prefix": null
+		"prefix": "1-784"
 	}, {
-		"code": "WS",
-		"prefix": 685,
 		"country_name": "Samoa",
-		"format_excluding_country_prefix": null
+		"prefix": "685"
 	}, {
-		"code": "SM",
-		"prefix": 378,
 		"country_name": "San Marino",
-		"format_excluding_country_prefix": null
+		"prefix": "378"
 	}, {
-		"code": "ST",
-		"prefix": 239,
-		"country_name": "São Tomé and Príncipe",
-		"format_excluding_country_prefix": null
+		"country_name": "Sao Tome and Principe",
+		"prefix": "239"
 	}, {
-		"code": "SA",
-		"prefix": 966,
 		"country_name": "Saudi Arabia",
-		"format_excluding_country_prefix": null
+		"prefix": "966"
 	}, {
-		"code": "SN",
-		"prefix": 221,
 		"country_name": "Senegal",
-		"format_excluding_country_prefix": null
+		"prefix": "221"
 	}, {
-		"code": "RS",
-		"prefix": 381,
 		"country_name": "Serbia",
-		"format_excluding_country_prefix": null
+		"prefix": "381"
 	}, {
-		"code": "SC",
-		"prefix": 248,
 		"country_name": "Seychelles",
-		"format_excluding_country_prefix": null
+		"prefix": "248"
 	}, {
-		"code": "SL",
-		"prefix": 232,
 		"country_name": "Sierra Leone",
-		"format_excluding_country_prefix": null
+		"prefix": "232"
 	}, {
-		"code": "SG",
-		"prefix": 65,
 		"country_name": "Singapore",
-		"format_excluding_country_prefix": null
+		"prefix": "65"
 	}, {
-		"code": "SX",
-		"prefix": 1,
 		"country_name": "Sint Maarten",
-		"format_excluding_country_prefix": null
+		"prefix": "1-721"
 	}, {
-		"code": "SK",
-		"prefix": 421,
 		"country_name": "Slovakia",
-		"format_excluding_country_prefix": null
+		"prefix": "421"
 	}, {
-		"code": "SI",
-		"prefix": 386,
 		"country_name": "Slovenia",
-		"format_excluding_country_prefix": null
+		"prefix": "386"
 	}, {
-		"code": "SB",
-		"prefix": 677,
 		"country_name": "Solomon Islands",
-		"format_excluding_country_prefix": null
+		"prefix": "677"
 	}, {
-		"code": "SO",
-		"prefix": 252,
 		"country_name": "Somalia",
-		"format_excluding_country_prefix": null
+		"prefix": "252"
 	}, {
-		"code": "ZA",
-		"prefix": 27,
 		"country_name": "South Africa",
-		"format_excluding_country_prefix": null
+		"prefix": "27"
 	}, {
-		"code": "GS",
-		"prefix": 500,
-		"country_name": "South Georgia and the South Sandwich Islands",
-		"format_excluding_country_prefix": null
-	}, {
-		"code": "KR",
-		"prefix": 82,
 		"country_name": "South Korea",
-		"format_excluding_country_prefix": null
+		"prefix": "82"
 	}, {
-		"code": "SS",
-		"prefix": 211,
 		"country_name": "South Sudan",
-		"format_excluding_country_prefix": null
+		"prefix": "211"
 	}, {
-		"code": "ES",
-		"prefix": 34,
 		"country_name": "Spain",
-		"format_excluding_country_prefix": null
+		"prefix": "34"
 	}, {
-		"code": "LK",
-		"prefix": 94,
 		"country_name": "Sri Lanka",
-		"format_excluding_country_prefix": null
+		"prefix": "94"
 	}, {
-		"code": "SR",
-		"prefix": 597,
+		"country_name": "Sudan",
+		"prefix": "249"
+	}, {
 		"country_name": "Suriname",
-		"format_excluding_country_prefix": null
+		"prefix": "597"
 	}, {
-		"code": "SJ",
-		"prefix": 47,
 		"country_name": "Svalbard and Jan Mayen",
-		"format_excluding_country_prefix": null
+		"prefix": "47"
 	}, {
-		"code": "SZ",
-		"prefix": 268,
 		"country_name": "Swaziland",
-		"format_excluding_country_prefix": null
+		"prefix": "268"
 	}, {
-		"code": "SE",
-		"prefix": 46,
 		"country_name": "Sweden",
-		"format_excluding_country_prefix": null
+		"prefix": "46"
 	}, {
-		"code": "CH",
-		"prefix": 41,
 		"country_name": "Switzerland",
-		"format_excluding_country_prefix": null
+		"prefix": "41"
 	}, {
-		"code": "TW",
-		"prefix": 886,
+		"country_name": "Syria",
+		"prefix": "963"
+	}, {
 		"country_name": "Taiwan",
-		"format_excluding_country_prefix": null
+		"prefix": "886"
 	}, {
-		"code": "TJ",
-		"prefix": 992,
 		"country_name": "Tajikistan",
-		"format_excluding_country_prefix": null
+		"prefix": "992"
 	}, {
-		"code": "TZ",
-		"prefix": 255,
 		"country_name": "Tanzania",
-		"format_excluding_country_prefix": null
+		"prefix": "255"
 	}, {
-		"code": "TH",
-		"prefix": 66,
 		"country_name": "Thailand",
-		"format_excluding_country_prefix": null
+		"prefix": "66"
 	}, {
-		"code": "TG",
-		"prefix": 228,
 		"country_name": "Togo",
-		"format_excluding_country_prefix": null
+		"prefix": "228"
 	}, {
-		"code": "TK",
-		"prefix": 690,
 		"country_name": "Tokelau",
-		"format_excluding_country_prefix": null
+		"prefix": "690"
 	}, {
-		"code": "TO",
-		"prefix": 676,
 		"country_name": "Tonga",
-		"format_excluding_country_prefix": null
+		"prefix": "676"
 	}, {
-		"code": "TT",
-		"prefix": 1,
 		"country_name": "Trinidad and Tobago",
-		"format_excluding_country_prefix": null
+		"prefix": "1-868"
 	}, {
-		"code": "TN",
-		"prefix": 216,
 		"country_name": "Tunisia",
-		"format_excluding_country_prefix": null
+		"prefix": "216"
 	}, {
-		"code": "TR",
-		"prefix": 90,
 		"country_name": "Turkey",
-		"format_excluding_country_prefix": null
+		"prefix": "90"
 	}, {
-		"code": "TM",
-		"prefix": 993,
 		"country_name": "Turkmenistan",
-		"format_excluding_country_prefix": null
+		"prefix": "993"
 	}, {
-		"code": "TC",
-		"prefix": 1,
 		"country_name": "Turks and Caicos Islands",
-		"format_excluding_country_prefix": null
+		"prefix": "1-649"
 	}, {
-		"code": "TV",
-		"prefix": 688,
 		"country_name": "Tuvalu",
-		"format_excluding_country_prefix": null
+		"prefix": "688"
 	}, {
-		"code": "VI",
-		"prefix": 1,
 		"country_name": "U.S. Virgin Islands",
-		"format_excluding_country_prefix": null
+		"prefix": "1-340"
 	}, {
-		"code": "UG",
-		"prefix": 256,
 		"country_name": "Uganda",
-		"format_excluding_country_prefix": null
+		"prefix": "256"
 	}, {
-		"code": "UA",
-		"prefix": 380,
 		"country_name": "Ukraine",
-		"format_excluding_country_prefix": null
+		"prefix": "380"
 	}, {
-		"code": "AE",
-		"prefix": 971,
 		"country_name": "United Arab Emirates",
-		"format_excluding_country_prefix": null
+		"prefix": "971"
 	}, {
-		"code": "GB",
-		"prefix": 44,
 		"country_name": "United Kingdom",
-		"format_excluding_country_prefix": null
+		"prefix": "44"
 	}, {
-		"code": "US",
-		"prefix": 1,
 		"country_name": "United States",
-		"format_excluding_country_prefix": "(XXX) XXX-XXXX"
+		"prefix": "1"
 	}, {
-		"code": "UY",
-		"prefix": 598,
 		"country_name": "Uruguay",
-		"format_excluding_country_prefix": null
+		"prefix": "598"
 	}, {
-		"code": "UZ",
-		"prefix": 998,
 		"country_name": "Uzbekistan",
-		"format_excluding_country_prefix": null
+		"prefix": "998"
 	}, {
-		"code": "VU",
-		"prefix": 678,
 		"country_name": "Vanuatu",
-		"format_excluding_country_prefix": null
+		"prefix": "678"
 	}, {
-		"code": "VA",
-		"prefix": 379,
-		"country_name": "Vatican City",
-		"format_excluding_country_prefix": null
+		"country_name": "Vatican",
+		"prefix": "379"
 	}, {
-		"code": "VE",
-		"prefix": 58,
 		"country_name": "Venezuela",
-		"format_excluding_country_prefix": null
+		"prefix": "58"
 	}, {
-		"code": "VN",
-		"prefix": 84,
 		"country_name": "Vietnam",
-		"format_excluding_country_prefix": null
+		"prefix": "84"
 	}, {
-		"code": "WF",
-		"prefix": 681,
 		"country_name": "Wallis and Futuna",
-		"format_excluding_country_prefix": null
+		"prefix": "681"
 	}, {
-		"code": "EH",
-		"prefix": 212,
 		"country_name": "Western Sahara",
-		"format_excluding_country_prefix": null
+		"prefix": "212"
 	}, {
-		"code": "YE",
-		"prefix": 967,
 		"country_name": "Yemen",
-		"format_excluding_country_prefix": null
+		"prefix": "967"
 	}, {
-		"code": "ZM",
-		"prefix": 260,
 		"country_name": "Zambia",
-		"format_excluding_country_prefix": null
+		"prefix": "260"
 	}, {
-		"code": "ZW",
-		"prefix": 263,
 		"country_name": "Zimbabwe",
-		"format_excluding_country_prefix": null
+		"prefix": "263"
 	}]
 }

@@ -66,8 +66,8 @@ on a 1-1 basis.</p>
 	
     name: 'inquiry',
     data () {
-    	let id=this.$route.query.objectId
-    	console.log(id)
+    	let id=this.$route.query.objectId;
+    		
         return {
           	name:'',
           	nameError:false,
@@ -169,6 +169,7 @@ on a 1-1 basis.</p>
 					objectId: that.objectId ? that.objectId : null,
 //					destinations: that.destination ? that.destination : null,
 					"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
+					owner:localStorage.getItem("owner")
 				}
 				
 				if(that.isclick==false){

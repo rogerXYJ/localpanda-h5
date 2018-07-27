@@ -295,56 +295,6 @@
 					return 0;
 				}
 			},
-//			getToken() {
-//				let that = this
-//				that.stripeHandler = StripeCheckout.configure({
-//					key: payCode,
-//					image: 'https://resource.localpanda.cn/static/icon/logo.png', // 显示在支付对话框的图片，可自己指定
-//					alipay: true, // 启用支付宝支付
-//					token: function(token) { // 用户填写完资料并且 Stripe 校验成功后的回调函数
-//						// 此时应该提交 token.id 到后台，比如 http://example.com/orders/1?stripeToken={token.id}
-//						that.loadingStatus = true;
-//						let obj = {
-//							amount: that.opctions.amount * 100,
-//							currency: that.opctions.currency,
-//							objectId: that.orderId,
-//							token: token.id,
-//							email: token.email,
-//							tokenType: token.type,
-//							objectType: "ACTIVITY"
-//						}
-//
-//						//console.log(that.opctions.currency);
-//
-//						Vue.axios.post(that.apiBasePath + "payment/pay/stripe", JSON.stringify(obj), {
-//							headers: {
-//								'Content-Type': 'application/json; charset=UTF-8'
-//							}
-//						}).then(function(response) {
-//							var thisData = response.data;
-//							var msg = '';
-//							//成功
-//							if(response.status == 200) {
-//								var pageTracker = _gat._getTracker("UA-107010673-1");
-//								pageTracker._addTrans(that.orderId, "", that.opctions.amount, "", "", "", "", "");
-//								pageTracker._addItem(that.orderId, that.opctions.activityId, "", "", that.opctions.amount, "1");
-//								pageTracker._trackTrans();
-//
-//								if(!thisData.succeed && thisData.errorMessage && !/Exception/.test(thisData.errorMessage)) {
-//									msg = thisData.errorMessage;
-//								}
-//
-//							}
-//							//跳转
-//							window.location.href = "/payment/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + '&succeed=' + thisData.succeed + '&symbol=' + that.opctions.symbol + '&currency=' + that.opctions.currency + '&msg=' + msg;
-//							//
-//						}, function(response) {
-//							//请求失败跳转
-//							window.location.href = "/payment/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + '&succeed=false&symbol=' + that.opctions.symbol + '&currency=' + that.opctions.currency;
-//						})
-//					}
-//				})
-//			},
 			getInfo() {
 				let that = this;
 				var orderInfo = this.orderInfo;
@@ -362,7 +312,8 @@
 								tradeType: 'MWEB',
 								objectId: that.orderId,
 								amount: that.opctions.amount * 100, // 支付金额，单位是“分”
-								objectType: 'ACTIVITY'
+								objectType: 'ACTIVITY',
+								deviceType:that.device()
 							});
 						}else{
 							//code用过或者没有code则从新获取
@@ -381,31 +332,33 @@
 
 				//}, function(res) {})
 			},
-//			pay() {
-//				let that = this;
-//
-//				
-//
-//				//人民币支付
-//				if(this.opctions.currency == 'CNY') {
-//					//微信内部
-//					if(this.isWx) {
-//						this.wxPay(this.payData);
-//					}
-//					return;
-//				}
-//
-//				that.stripeHandler.open({
-//					name: 'Local panda', // 收款方或商家名称，比如 Beansmile
-//					description: "", // 待支付商品的描述
-//					currency: that.opctions.currency,
-//					amount: that.opctions.amount * 100, // 支付金额，单位是“分”
-//					locale: 'en_US',
-//					closed: function() {
-//
-//					}
-//				})
-//			},
+			//提交设备机型
+			device() {
+				var ua = navigator.userAgent;
+				var ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
+					isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
+					isAndroid = ua.match(/(Android)\s+([\d.]+)/),
+					isMobile = isIphone || isAndroid;
+			
+				if(isMobile) {
+					return "MOBILE";
+				} else if(ipad) {
+					return "IPAD";
+				}else{
+					return"PC"
+				}
+			},
+			//监控微信接口耗时
+			ack(){
+				var self=this;
+				self.axios.get("https://api.localpanda.com/api/activity/order/ack/"+self.orderId).then(res=>{
+						
+				},res=>{})
+			},
+			
+			
+			
+			//微信支付初始化
 			wxInit(){
 				var self = this;
 				self.axios.get("https://api.localpanda.com/api/payment/wxinfo/get?code=" + this.wxcode+'&orderId='+self.orderId, {
@@ -422,12 +375,14 @@
 						objectId: self.orderId,//1105955013
 						amount: self.opctions.amount * 100,//self.opctions.amount * 100
 						openId: openData.openid,
-						objectType:'ACTIVITY'
+						objectType:'ACTIVITY',
+						deviceType:self.device()
+						
 					};
-
+					
 					//默认用来显示支付按钮，微信里面用来公众号支付数据
 					self.showWxPayBtn = true;
-
+					self.ack()
 
 				}, function(response) {});
 				
@@ -605,7 +560,9 @@
 							objectId: that.orderId,
 							token: token.id,
 							tokenType: token.type,
-							objectType: "ACTIVITY"
+							objectType: "ACTIVITY",
+							deviceType:that.device(),
+							email:that.email
 						}
 
 						//console.log(that.opctions.currency);

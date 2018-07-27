@@ -10,10 +10,10 @@
 			<ul>
 				
 				<li class="clearfix" :class="{err:dateErr}">
-					<label>Date</label>
+					<label>Available On</label>
 					<div class="dateTime">
 						<!-- <flatPickr placeholder="Please Select" v-model="dateTime" :config="options"></flatPickr> -->
-						<input id="js_changetime" placeholder="Please Select" onfocus="blur()" v-model="dateTime" readonly type="text">
+						<input id="js_changetime" placeholder="Select Date" onfocus="blur()" v-model="dateTime" readonly type="text">
 					</div>
 				</li>
 
@@ -368,7 +368,7 @@
 		        
 		        localStorage.setItem("orderInfo", orderInfo);
 				
-				location.href="/activity/booking/"
+				location.href="/activity/booking/"+that.id
 		        //routes.push('/fillYourInfo')
 		      }
 	    		if(next==false){
@@ -626,7 +626,7 @@
 					}
 					div {
 						float: right;
-						width: 70%;
+						width:66%;
 						text-align: right;
 						font-size: 0.36rem;
 					}
