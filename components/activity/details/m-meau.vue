@@ -10,11 +10,12 @@
 				<li v-if="photoList.length>0">
 					<a href="#photoList">Moments in Travel</a>
 				</li>
-				<li v-if="picInfo.details.length>0">
-					<a href="#picDetails">Price Details</a>
-				</li>
-				<li v-if="exclusions || itemsIncluded.length">
+				
+				<li v-if="exclusions || itemsIncluded">
 					<a href="#provide">Inclusions & Exclusions</a>
+				</li>
+				<li v-if="remarkData.entities && remarkData.entities.length>0">
+					<a href="#Reviews">Reviews</a>
 				</li>
 				<!-- <li v-if="exclusions">
 					<a href="#exclusions">Exclusions</a>
@@ -28,12 +29,13 @@
 				<li v-if="picInfo.refundInstructions">
 					<a href="#CancellationPolicy">Rescheduling / Cancellation</a>
 				</li>
+				<li v-if="picInfo.details.length>0">
+					<a href="#picDetails">Price Details</a>
+				</li>
 				<li v-if="remark.length>0">
 					<a href="#notes">Notes</a>
 				</li>
-				<li v-if="remarkData.entities && remarkData.entities.length>0">
-					<a href="#Reviews">Reviews</a>
-				</li>
+				
 				<li v-if="recommed.length>0">
 					<a href="#recommend">Similar Experiences</a>
 				</li>

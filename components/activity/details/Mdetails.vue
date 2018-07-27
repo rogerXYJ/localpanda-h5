@@ -58,7 +58,8 @@
 					</li>
 					<li class="clearfix">
 						<label class="iconfont">&#xe627;</label>
-						<span>Languages: English, French, Spanish, Russian, German, Japanese, Korean</span>
+						<span v-if="detail.groupType=='Group'">Language: English</span>
+						<span v-else>Languages: English, French, Spanish, Russian, German, Japanese, Korean</span>
 					</li>
 					<li class="clearfix">
 						<label class="iconfont">&#xe652;</label>
@@ -108,56 +109,8 @@
 					</div>
 
 				</div>
-			<div class="provide" v-if="picInfo.details.length>0" id="picDetails">
-					<h3>Price Details</h3>
-					<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is  {{nowExchange.symbol}}  {{returnFloat(picInfo.childDiscount)}}  {{nowExchange.code}}  less than adults' price.</p>
-
-					<table class="price_list">
-						<tr>
-							<th>No. of people</th>
-							<th>Total cost</th>
-							<th>Price per person</th>
-						</tr>
-						<tr :key="index" v-for="(item,index) in sixArr">
-							<td>
-								<span v-if="item.capacity==1">1 person</span>
-								<span v-else>{{item.capacity}} people</span>
-							</td>
-							<td><span>{{nowExchange.symbol}} {{returnFloat(item.price)}} {{nowExchange.code}}</span></td>
-							<td>
-								<div v-show="item.capacity">
-									<span>{{nowExchange.symbol}} {{returnFloat(item.price/item.capacity)}} {{nowExchange.code}}</span>
-								</div>
-							</td>
-						</tr>
-					</table>
-
-
-
-					<!-- <el-table :data="sixArr" stripe style="width: 100%">
-						<el-table-column prop="capacity" label="No. of people"  align="center">
-							<template slot-scope="scope">
-								<span v-if="scope.row.capacity==1">1 person</span>
-								<span v-else>{{scope.row.capacity}} people</span>
-							</template>
-						</el-table-column>
-						<el-table-column prop="price" label="Total cost" align="center">
-							<template slot-scope="scope">
-								<span>{{nowExchange.symbol}} {{returnFloat(scope.row.price)}} {{nowExchange.code}}</span>
-							</template>
-						</el-table-column>
-						<el-table-column prop="childenTotal" label="Price per person"  align="center">
-							<template slot-scope="scope">
-								<div v-show="scope.row.capacity">
-									<span>{{nowExchange.symbol}} {{returnFloat(scope.row.price/scope.row.capacity)}} {{nowExchange.code}}</span>
-								</div>
-							</template>
-						</el-table-column>
-					</el-table> -->
-					<div class="view" v-if="isShowTable" @click="showTable">View More</div>
-					<p v-if="picInfo.priceInstructions" class="picNote">{{picInfo.priceInstructions}}</p>
-				</div>
-			<div class="provide" id="provide" v-if="itemsIncluded.length">
+			
+			<div class="provide" id="provide" v-if="itemsIncluded">
 				<h3>What's Included?</h3>
 				<ul>
 					<li :key="index" v-for="(item,index) in itemsIncluded">{{item}}</li>
@@ -178,30 +131,6 @@
 					</li>
 				</ul>
 			</div>
-			<div class="notes" v-if="notice.length>0" id="notice">
-				<h3>Additional Info</h3>
-				<p v-for="(item,index) in notice" :key="index">{{item}}</p>
-			</div>
-			<!-- <div class="notes" v-if="picInfo.priceInstructions" id="PriceNote">
-				<h3>Price Note</h3>
-				<p>{{picInfo.priceInstructions}}</p>
-			</div> -->
-			<div class="notes" v-if="picInfo.refundInstructions" id="CancellationPolicy">
-				<h3>Rescheduling and Cancellation Policy</h3>
-				<p v-html="picInfo.refundInstructions.replace(/\r\n/g,'<br/>')"></p >
-			</div>
-			<div class="notes" id="notes" v-if="remark.length>0">
-				<h3>Notes</h3>
-				<p v-if="remark" :key="index" v-for="(item,index) in remark">{{item}}</p>
-			</div>
-			
-			<div class="inqury" @click="goInqury">
-				Send us any questions you have here
-				<i class="iconfont">&#xe620;</i>
-			</div>
-
-
-
 			<!-- 点评模块 -->
 			<div class="remark_all" id="Reviews" v-if="remarkDataAll.length">
 				<div class="remark_title">
@@ -234,6 +163,57 @@
 				</div>
 				<div class="remark_more" @click="loadMoreRemark">Show more</div>
 			</div>
+			<div class="notes" v-if="notice.length>0" id="notice">
+				<h3>Additional Info</h3>
+				<p v-for="(item,index) in notice" :key="index">{{item}}</p>
+			</div>
+			<!-- <div class="notes" v-if="picInfo.priceInstructions" id="PriceNote">
+				<h3>Price Note</h3>
+				<p>{{picInfo.priceInstructions}}</p>
+			</div> -->
+			<div class="notes" v-if="picInfo.refundInstructions" id="CancellationPolicy">
+				<h3>Rescheduling and Cancellation Policy</h3>
+				<p v-html="picInfo.refundInstructions.replace(/\r\n/g,'<br/>')"></p >
+			</div>
+			<div class="provide" v-if="picInfo.details.length>0" id="picDetails">
+					<h3>Price Details</h3>
+					<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is  {{nowExchange.symbol}}  {{returnFloat(picInfo.childDiscount)}}  {{nowExchange.code}}  less than adults' price.</p>
+
+					<table class="price_list">
+						<tr>
+							<th>No. of people</th>
+							<th>Total cost</th>
+							<th>Price per person</th>
+						</tr>
+						<tr :key="index" v-for="(item,index) in sixArr">
+							<td>
+								<span v-if="item.capacity==1">1 person</span>
+								<span v-else>{{item.capacity}} people</span>
+							</td>
+							<td><span>{{nowExchange.symbol}} {{returnFloat(item.price)}} {{nowExchange.code}}</span></td>
+							<td>
+								<div v-show="item.capacity">
+									<span>{{nowExchange.symbol}} {{returnFloat(item.price/item.capacity)}} {{nowExchange.code}}</span>
+								</div>
+							</td>
+						</tr>
+					</table>
+					<div class="view" v-if="isShowTable" @click="showTable">View More</div>
+					<p v-if="picInfo.priceInstructions" class="picNote">{{picInfo.priceInstructions}}</p>
+				</div>
+			<div class="notes" id="notes" v-if="remark.length>0">
+				<h3>Notes</h3>
+				<p v-if="remark" :key="index" v-for="(item,index) in remark">{{item}}</p>
+			</div>
+			
+			<div class="inqury" @click="goInqury">
+				Send us any questions you have here
+				<i class="iconfont">&#xe620;</i>
+			</div>
+
+
+
+			
 
 
 
@@ -273,7 +253,7 @@
 			</div>
 		</div>
 		<div class="book">
-			<button><a :href="'/info/inquiry?objectId='+id+'&owner='+detail.owner" @click="gaInquire">Inquire</a></button>
+			<button><a :href="'/info/inquiry?objectId='+id" @click="gaInquire">Inquire</a></button>
 			<button class="bookBtn" @click="goBooking">Book</button>
 		</div>
 		<photo :photoList="photoList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></photo>
@@ -390,6 +370,7 @@ import photo from '~/components/activity/details/photo'
 						eventLabel: 'activity_inquiry',
 	
 					});
+					localStorage.setItem("owner",this.detail.owner)
 			},
 			changeCurrency(e){
 				var self = this;
@@ -517,7 +498,7 @@ import photo from '~/components/activity/details/photo'
 				console.log(objDetail)
 				objDetail=JSON.stringify(objDetail)
 				localStorage.setItem("objDetail",objDetail)
-				location.href="/activity/check/?people="+this.peopleNum;
+				location.href="/activity/check/"+this.detail.activityId+"?people="+this.peopleNum;
 			},
 			 returnFloat(value) {
 				value*=1;

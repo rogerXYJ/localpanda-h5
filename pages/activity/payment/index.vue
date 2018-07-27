@@ -348,6 +348,17 @@
 					return"PC"
 				}
 			},
+			//监控微信接口耗时
+			ack(){
+				var self=this;
+				self.axios.get("https://api.localpanda.com/api/activity/order/ack/"+self.orderId).then(res=>{
+						
+				},res=>{})
+			},
+			
+			
+			
+			//微信支付初始化
 			wxInit(){
 				var self = this;
 				self.axios.get("https://api.localpanda.com/api/payment/wxinfo/get?code=" + this.wxcode+'&orderId='+self.orderId, {
@@ -368,10 +379,10 @@
 						deviceType:self.device()
 						
 					};
-
+					
 					//默认用来显示支付按钮，微信里面用来公众号支付数据
 					self.showWxPayBtn = true;
-
+					self.ack()
 
 				}, function(response) {});
 				
@@ -550,7 +561,8 @@
 							token: token.id,
 							tokenType: token.type,
 							objectType: "ACTIVITY",
-							deviceType:that.device()
+							deviceType:that.device(),
+							email:that.email
 						}
 
 						//console.log(that.opctions.currency);
