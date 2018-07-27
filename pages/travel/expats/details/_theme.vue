@@ -91,11 +91,7 @@
 						name: "description",
 						content: this.tdk.description
 					}
-				],
-				script: [{
-					src: 'https://resource.localpanda.cn/static/js/swiper-4.2.6.min.js',
-					type: 'text/javascript'
-				}]
+				]
 			}
 		},
 		methods: {
