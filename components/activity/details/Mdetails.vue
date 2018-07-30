@@ -855,7 +855,7 @@ import photo from '~/components/activity/details/photo'
 			}
 
 			.expect-title {
-				font-size: 0.36rem;
+				font-size: 0.3rem;
 				font-weight: bold;
 				margin-top: 0.4rem;
 			}
@@ -880,7 +880,7 @@ import photo from '~/components/activity/details/photo'
 								margin-top: 0.506666rem;
 								.contTitle {
 									h3 {
-										font-size: 0.36rem;
+										font-size: 0.26rem;
 										font-weight: bold;
 									}
 									p {
@@ -916,7 +916,7 @@ import photo from '~/components/activity/details/photo'
 				padding: 0.5rem 0;
 				border-bottom: 1px solid #dde0e0;
 				h3 {
-					font-size: 0.4rem;
+					font-size: 0.3rem;
 					font-weight: bold;
 				}
 				.childDiscount{
@@ -973,7 +973,7 @@ import photo from '~/components/activity/details/photo'
 				padding: 0.44rem 0;
 				border-bottom: 1px solid #dde0e0;
 				h3 {
-					font-size: 0.4rem;
+					font-size: 0.3rem;
 					font-weight: bold;
 				}
 				p {
