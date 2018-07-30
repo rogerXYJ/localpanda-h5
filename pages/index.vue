@@ -405,31 +405,9 @@
 		}) {
 
 			var params = route.params;
-			
-			var postData = {
-				
-			};
-
-			//console.log(postData);
-
-			var getData = '';
-
-			try{
-				// listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(postData), {
-				// 	headers: {
-				// 		'Content-Type': 'application/json'
-				// 	}
-				// })
-			}catch(err){};
-
-			//列表页数据
-			var homeData = getData.data?getData.data:'';
-
 
 			return {
-				homeData:homeData,
 				showHeaderSearch: false,
-
 				keyword:''
 			}
 		},
