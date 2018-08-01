@@ -547,7 +547,8 @@
 								eventLabel: 'activity_order_succ',
 							});
 							obj = {
-								"userId": that.opctions.userId,
+								 "userId": localStorage.getItem("userid")
+		            ? localStorage.getItem("userid"): null,
 								"activityId": that.opctions.activityId,
 								"amount": that.opctions.amount,
 								"currency": that.opctions.currency,
@@ -612,7 +613,8 @@
 							eventLabel: 'activity_order_succ',
 						});
 						obj = {
-							"userId": that.opctions.userId,
+							 "userId": localStorage.getItem("userid")
+		            ? localStorage.getItem("userid"): null,
 							"activityId": that.opctions.activityId,
 							"amount": that.opctions.amount,
 							"currency": that.opctions.currency,
