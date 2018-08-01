@@ -857,7 +857,7 @@ import photo from '~/components/activity/details/photo'
 			.expect-title {
 				font-size: 0.3rem;
 				font-weight: bold;
-				margin-top: 0.4rem;
+				margin-top: 0.44rem;
 			}
 			.journey {
 				padding-top: 0.4rem;
@@ -885,7 +885,7 @@ import photo from '~/components/activity/details/photo'
 									}
 									p {
 										font-size: 0.26rem;
-										margin-top: 0.24rem;
+										margin-top: 0.15rem;
 									}
 								}
 								.cont {
@@ -913,7 +913,7 @@ import photo from '~/components/activity/details/photo'
 				}
 			}
 			.provide {
-				padding: 0.5rem 0;
+				padding: 0.44rem 0;
 				border-bottom: 1px solid #dde0e0;
 				h3 {
 					font-size: 0.3rem;
@@ -925,9 +925,9 @@ import photo from '~/components/activity/details/photo'
 				}
 				ul {
 					li {
-						padding-left: 0.266666rem;
+						padding-left: 0.22rem;
 						display: inherit;
-						margin-top: 0.266666rem;
+						margin-top: 0.1rem;
 						font-size: 0.32rem;
 						position: relative;
 						h5 {
@@ -949,7 +949,7 @@ import photo from '~/components/activity/details/photo'
 							top: 0.2rem
 						}
 						&:first-child {
-							margin-top: 0.5rem;
+							margin-top: 0.3rem;
 						}
 					}
 				}
