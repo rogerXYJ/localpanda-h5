@@ -128,7 +128,7 @@ get back to you within 1 day. </p>
 				
 				if(that.isclick==false){
 					that.isclick=true
-					that.axios.post("https://api.localpanda.com/api/user/feedback/commit", JSON.stringify(obj), {
+					that.axios.put("https://api.localpanda.com/api/user/feedback", JSON.stringify(obj), {
 						headers: {
 							'Content-Type': 'application/json; charset=UTF-8'
 						}
