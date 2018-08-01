@@ -64,7 +64,7 @@
 
 				//校验
 				if(this.validate.validate()){
-					self.axios.post("https://api.localpanda.com/api/activity/order/list", JSON.stringify(postData), {
+					self.axios.post("https://api.localpanda.com/api/order/activity/list", JSON.stringify(postData), {
 						headers: {
 							'Content-Type': 'application/json'
 						}

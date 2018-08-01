@@ -493,7 +493,7 @@ import photo from '~/components/activity/details/photo'
 					picInfo:this.picInfo,
 					title:this.detail.title,
 					category:this.detail.category,
-					refundTimeLimit:this.detail.refundTimeLimit,
+					refundTimeLimit:this.picInfo.refundTimeLimit,
 				}
 				console.log(objDetail)
 				objDetail=JSON.stringify(objDetail)

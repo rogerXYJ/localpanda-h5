@@ -49,7 +49,7 @@
 				</li>
 			</ul>
 			<p>{{dateErrText}}</p>
-			<p>You can get a 100% refund up to {{refundTimeLimit}} hours before your trip.</p>
+			<p>You can get a 100% refund up to {{refundTimeLimit*24>48?refundTimeLimit:refundTimeLimit*24}} {{refundTimeLimit*24>48?'days':'hours'}} before your trip.</p>
 		</div>
 		<div class="btn_next">
 			<button @click="order">Next</button>
@@ -387,7 +387,7 @@
 			this.id= objDetail.id
 			this.title= objDetail.title
 			this.category= objDetail.category
-			this.refundTimeLimit= objDetail.refundTimeLimit*24
+			this.refundTimeLimit= objDetail.refundTimeLimit
 
 
 			//加载币种

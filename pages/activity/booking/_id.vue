@@ -95,7 +95,7 @@
 				</div>
 			</div>
 
-			<p class="booktip">You can get a 100% refund up to {{opctions.refundTimeLimit}} hours before your trip.</p>
+			<p class="booktip">You can get a 100% refund up to {{opctions.refundTimeLimit*24>48?opctions.refundTimeLimit:opctions.refundTimeLimit*24}} {{opctions.refundTimeLimit*24>48?'days':'hours'}} before your trip.</p>
 
 			<div class="price">Total ({{opctions.currency}}): <span @click="showPrice=!showPrice">{{opctions.symbol}}{{opctions.amount}}<i class="iconfont">&#xe659;</i></span></div>
 			<div class="nextBtn clearfix" v-show="!hideFiexd" @touchmove="stopMove">
