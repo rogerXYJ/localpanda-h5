@@ -209,7 +209,7 @@
 				this.inputTimer = setTimeout(function(){
 					
 					//请求数据
-					self.axios.post("https://api.localpanda.com/api/suggest", JSON.stringify(postData), {
+					self.axios.post("https://api.localpanda.com/api/search/suggest", JSON.stringify(postData), {
 						headers: {
 							'Content-Type': 'application/json'
 						}

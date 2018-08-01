@@ -238,8 +238,9 @@
 					details = opctions.details;
 				var people = opctions.adultNum + opctions.childrenNum;
 				var price=opctions.adultsPic
-				self.loadingStatus=true
+				
 				if(self.couponCode){
+					self.loadingStatus=true
 					self.axios.get("https://api.localpanda.com/api/order/coupon/"+self.couponCode).then(res=>{
 						
 						if(res.status==200&&res.data){
@@ -577,7 +578,7 @@
 							}
 							if(that.addOder == false) {
 								that.addOder = true
-								Vue.axios.put(that.apiBasePath + "activity/order/create", JSON.stringify(obj), {
+								Vue.axios.put(that.apiBasePath + "order/activity", JSON.stringify(obj), {
 									headers: {
 										'Content-Type': 'application/json; charset=UTF-8'
 									}
@@ -637,7 +638,7 @@
 
 						if(that.addOder == false) {
 							that.addOder = true
-							Vue.axios.put(that.apiBasePath + "activity/order/create", JSON.stringify(obj), {
+							Vue.axios.put(that.apiBasePath +"order/activity", JSON.stringify(obj), {
 								headers: {
 									'Content-Type': 'application/json; charset=UTF-8'
 								}

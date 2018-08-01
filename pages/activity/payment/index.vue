@@ -160,7 +160,7 @@
 			console.log('node请求订单信息开始：'+nodetime1);
 
 			try {
-				orderInfo = await Vue.axios.get(apiBasePath + "activity/order/detail/" + query.objectId)
+				orderInfo = await Vue.axios.get(apiBasePath + "order/activity/" + query.objectId)
 			} catch(err) {
 				return error({
 					statusCode: 500,
@@ -361,7 +361,7 @@
 			//微信支付初始化
 			wxInit(){
 				var self = this;
-				self.axios.get("https://api.localpanda.com/api/payment/wxinfo/get?code=" + this.wxcode+'&orderId='+self.orderId, {
+				self.axios.get("https://api.localpanda.com/api/payment/query/openid?code=" + this.wxcode+'&orderId='+self.orderId, {
 					headers: {
 						'Content-Type': 'application/json'
 					}
@@ -670,7 +670,7 @@
 				var self = this;
 				self.loadingStatus = true;
 				//查询订单
-				this.axios.get("https://api.localpanda.com/api/payment/wechat/status?orderId=" + self.orderId + '&flag=1', {
+				this.axios.get("https://api.localpanda.com/api/payment/query/status?orderId=" + self.orderId + '&flag=1', {
 					headers: {
 						'Content-Type': 'application/json;'
 					}
