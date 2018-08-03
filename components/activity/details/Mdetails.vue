@@ -163,10 +163,15 @@
 				</div>
 				<div class="remark_more" @click="loadMoreRemark">Show more</div>
 			</div>
-			<div class="notes" v-if="detail.notice.length>0" id="notice">
+			
+			<div class="notes" v-if="detail.notice" id="notice">
+				<h3>Additional Info</h3>
+				<p>{{detail.notice}}</p>
+			</div>
+			<!-- <div class="notes" v-if="detail.notice.length>0" id="notice">
 				<h3>Additional Info</h3>
 				<p v-for="(item,index) in detail.notice" :key="index">{{item.title}}</p>
-			</div>
+			</div> -->
 			<!-- <div class="notes" v-if="picInfo.priceInstructions" id="PriceNote">
 				<h3>Price Note</h3>
 				<p>{{picInfo.priceInstructions}}</p>
