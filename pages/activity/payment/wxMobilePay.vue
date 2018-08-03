@@ -28,9 +28,12 @@ export default {
     methods: {
         confirmation(e){
             var query = this.query;
-
+			let postData={
+				orderId:query.orderId,
+				flag:1
+			}
             //查询订单
-            this.axios.get("https://api.localpanda.com/api/payment/wechat/status?orderId="+query.orderId+'&flag=1',{
+            this.axios.post("https://api.localpanda.com/api/payment/query/status",JSON.stringify(postData),{
                 headers: {
                     'Content-Type': 'application/json;'
                 }

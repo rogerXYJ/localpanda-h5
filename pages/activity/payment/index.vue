@@ -33,7 +33,7 @@
 								<p v-if="logInHide">You ordered as a guest. To view your order details, go to the homepage, click "My Bookings" at the top of the page, and type in the name and email address for your reservation.</p>
 								<!-- <p v-else>To view your order details, go to the homepage, click "My Bookings" at the top of the page.</p> -->
 
-								<p>You can get a 100% refund up to {{refundTimeLimit}} hours before your trip.</p>
+								<p>You can get a 100% refund up to {{refundTimeLimit*24>48?refundTimeLimit:refundTimeLimit*24}} {{refundTimeLimit*24>48?'days':'hours'}} before your trip.</p>
 							</div>
 						</div>
 					</div>
@@ -301,7 +301,7 @@
 				//Vue.axios.get(this.apiBasePath + "activity/order/detail/" + that.orderId).then(function(res) {
 					that.opctions = orderInfo;
 					that.email = orderInfo.contactInfo.emailAddress;
-					that.refundTimeLimit = orderInfo.activityInfo.refundTimeLimit * 24;
+					that.refundTimeLimit = orderInfo.activityPrice.refundTimeLimit;
 
 					//人民币支付
 					if(that.opctions.currency == 'CNY') {
@@ -361,7 +361,11 @@
 			//微信支付初始化
 			wxInit(){
 				var self = this;
-				self.axios.get("https://api.localpanda.com/api/payment/query/openid?code=" + this.wxcode+'&orderId='+self.orderId, {
+				let postData={
+					code:this.wxcode,
+					orderId:self.orderId
+				}
+				self.axios.post("https://api.localpanda.com/api/payment/query/openid",JSON.stringify(postData),{
 					headers: {
 						'Content-Type': 'application/json'
 					}
@@ -669,8 +673,12 @@
 				//var query = this.query;
 				var self = this;
 				self.loadingStatus = true;
+				let postData={
+					orderId:self.orderId,
+					flag:1
+				}
 				//查询订单
-				this.axios.get("https://api.localpanda.com/api/payment/query/status?orderId=" + self.orderId + '&flag=1', {
+				this.axios.post("https://api.localpanda.com/api/payment/query/status",JSON.stringify(postData), {
 					headers: {
 						'Content-Type': 'application/json;'
 					}

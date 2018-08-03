@@ -266,7 +266,7 @@
 		<!-- 活动亮点 -->
 		<h3>Latest Highlights</h3>
 		<div class="highlights">
-			<a href="https://www.localpanda.com/activity/list/Tibet">
+			<a href="/activity/list/Tibet">
 				<img src="https://resource.localpanda.cn/homepage/tibet.jpg" width="100%" alt="">
 				<div class="highlights_info">
 					<h4>Embark on a Pilgrimage to Timeless Tibet</h4>
@@ -275,7 +275,7 @@
 			</a>
 		</div>
 		<div class="highlights">
-			<a href="https://www.localpanda.com/activity/list/Bund">
+			<a href="/activity/list/Bund">
 				<img src="https://resource.localpanda.cn/homepage/bund.jpg" width="100%" alt="">
 				<div class="highlights_info">
 					<h4>The Legacy of Colonialism Meets The Skyline of the Future</h4>
@@ -304,37 +304,37 @@
 		<h3>Our Specialties</h3>
 		<div class="specialties">
 			<div class="specialties_left">
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Great%20Wall">
+				<a class="specialties_img" href="/activity/list/Great%20Wall">
 					<img src="https://resource.localpanda.cn/homepage/greatwall.jpg" width="100%" alt="">
 					<strong>The Great Wall</strong>
 				</a>
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Food">
+				<a class="specialties_img" href="/activity/list/Food">
 					<img src="https://resource.localpanda.cn/homepage/experiences.jpg" width="100%" alt="">
 					<strong>Foodie Experiences</strong>
 				</a>
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Forbidden%20City">
+				<a class="specialties_img" href="/activity/list/Forbidden%20City">
 					<img src="https://resource.localpanda.cn/homepage/forbiddencity.jpg" width="100%" alt="">
 					<strong>Forbidden City</strong>
 				</a>
-				<a class="specialties_img" href="https://m.localpanda.com/travel/expats">
+				<a class="specialties_img" href="/travel/expats">
 					<img src="https://resource.localpanda.cn/homepage/expatadventures.jpg" width="100%" alt="">
 					<strong>Expat Adventures</strong>
 				</a>
 			</div>
 			<div class="specialties_right">
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Panda">
+				<a class="specialties_img" href="/activity/list/Panda">
 					<img src="https://resource.localpanda.cn/homepage/giantpandas.jpg" width="100%" alt="">
 					<strong>Giant Pandas</strong>
 				</a>
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Watertown">
+				<a class="specialties_img" href="/activity/list/Watertown">
 					<img src="https://resource.localpanda.cn/homepage/watertowns.jpg" width="100%" alt="">
 					<strong>Water Towns</strong>
 				</a>
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Terra-Cotta%20Warriors">
+				<a class="specialties_img" href="/activity/list/Terra-Cotta%20Warriors">
 					<img src="https://resource.localpanda.cn/homepage/terracottawarriors.jpg" width="100%" alt="">
 					<strong>Terracotta Warriors</strong>
 				</a>
-				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Landmarks">
+				<a class="specialties_img" href="/activity/list/Landmarks">
 					<img src="https://resource.localpanda.cn/homepage/landmarks.jpg" width="100%" alt="">
 					<strong>Landmarks</strong>
 				</a>

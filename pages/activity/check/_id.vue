@@ -338,8 +338,7 @@
 		        that.dateErr=false
 		        that.peopleErr=false
 		        var orderInfo = {
-		          userId: localStorage.getItem("userid")
-		            ? localStorage.getItem("userid"): null,
+		         
 		          activityId: that.id,
 		          amount:
 		            that.children > 0 && that.picInfo.childDiscount
