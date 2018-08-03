@@ -5,7 +5,7 @@
 	.search_banner{
 		width: 100%;
 		height: 5rem;
-		background: url('https://resource.localpanda.cn/homepage/search_bg.jpg') no-repeat center center;
+		background: url('https://resource.localpanda.com/homepage/search_bg.jpg') no-repeat center center;
 		background-size: cover;
 		position: relative;
 		padding-top: 0.8rem;
@@ -267,7 +267,7 @@
 		<h3>Latest Highlights</h3>
 		<div class="highlights">
 			<a href="/activity/list/Tibet">
-				<img src="https://resource.localpanda.cn/homepage/tibet.jpg" width="100%" alt="">
+				<img src="https://resource.localpanda.com/homepage/tibet.jpg" width="100%" alt="">
 				<div class="highlights_info">
 					<h4>Embark on a Pilgrimage to Timeless Tibet</h4>
 					<p>Hang out with living Buddhas, stargaze the cosmos over Mt. Everest, ride on horseback to forgotten temples.</p>
@@ -276,7 +276,7 @@
 		</div>
 		<div class="highlights">
 			<a href="/activity/list/Bund">
-				<img src="https://resource.localpanda.cn/homepage/bund.jpg" width="100%" alt="">
+				<img src="https://resource.localpanda.com/homepage/bund.jpg" width="100%" alt="">
 				<div class="highlights_info">
 					<h4>The Legacy of Colonialism Meets The Skyline of the Future</h4>
 					<p>Walk the Bund and witness Shanghai's transformation from fishing town to international banking powerhouse.</p>
@@ -305,44 +305,44 @@
 		<div class="specialties">
 			<div class="specialties_left">
 				<a class="specialties_img" href="/activity/list/Great%20Wall">
-					<img src="https://resource.localpanda.cn/homepage/greatwall.jpg" width="100%" alt="">
+					<img src="https://resource.localpanda.com/homepage/greatwall.jpg" width="100%" alt="">
 					<strong>The Great Wall</strong>
 				</a>
 				<a class="specialties_img" href="/activity/list/Food">
-					<img src="https://resource.localpanda.cn/homepage/experiences.jpg" width="100%" alt="">
+					<img src="https://resource.localpanda.com/homepage/experiences.jpg" width="100%" alt="">
 					<strong>Foodie Experiences</strong>
 				</a>
 				<a class="specialties_img" href="/activity/list/Forbidden%20City">
-					<img src="https://resource.localpanda.cn/homepage/forbiddencity.jpg" width="100%" alt="">
+					<img src="https://resource.localpanda.com/homepage/forbiddencity.jpg" width="100%" alt="">
 					<strong>Forbidden City</strong>
 				</a>
 				<a class="specialties_img" href="/travel/expats">
-					<img src="https://resource.localpanda.cn/homepage/expatadventures.jpg" width="100%" alt="">
+					<img src="https://resource.localpanda.com/homepage/expatadventures.jpg" width="100%" alt="">
 					<strong>Expat Adventures</strong>
 				</a>
 			</div>
 			<div class="specialties_right">
 				<a class="specialties_img" href="/activity/list/Panda">
-					<img src="https://resource.localpanda.cn/homepage/giantpandas.jpg" width="100%" alt="">
+					<img src="https://resource.localpanda.com/homepage/giantpandas.jpg" width="100%" alt="">
 					<strong>Giant Pandas</strong>
 				</a>
 				<a class="specialties_img" href="/activity/list/Watertown">
-					<img src="https://resource.localpanda.cn/homepage/watertowns.jpg" width="100%" alt="">
+					<img src="https://resource.localpanda.com/homepage/watertowns.jpg" width="100%" alt="">
 					<strong>Water Towns</strong>
 				</a>
 				<a class="specialties_img" href="/activity/list/Terra-Cotta%20Warriors">
-					<img src="https://resource.localpanda.cn/homepage/terracottawarriors.jpg" width="100%" alt="">
+					<img src="https://resource.localpanda.com/homepage/terracottawarriors.jpg" width="100%" alt="">
 					<strong>Terracotta Warriors</strong>
 				</a>
 				<a class="specialties_img" href="/activity/list/Landmarks">
-					<img src="https://resource.localpanda.cn/homepage/landmarks.jpg" width="100%" alt="">
+					<img src="https://resource.localpanda.com/homepage/landmarks.jpg" width="100%" alt="">
 					<strong>Landmarks</strong>
 				</a>
 			</div>
 		</div>
 
 		<div class="customize">
-			<img src="https://resource.localpanda.cn/homepage/custom.jpg" width="100%" alt="">
+			<img src="https://resource.localpanda.com/homepage/custom.jpg" width="100%" alt="">
 			<div class="customize_info">
 				<h4>BY YOU / FOR YOU</h4>
 				<p>Choose your cities, match your dates, <br>design your bespoke journey</p>
@@ -356,17 +356,17 @@
 			<div class="swiper-container" id="swiper_guests">
 				<div class="swiper-wrapper">
 					<div class="swiper-slide">
-						<img src="https://resource.localpanda.cn/static/content/reviews/Claudia.jpg" width="34%" alt="">
+						<img src="https://resource.localpanda.com/static/content/reviews/Claudia.jpg" width="34%" alt="">
 						<b>Claudia Flores</b>
 						<p>Local Panda had an incredible amount of attention and patience throughout my trip. I had a great tour that went way beyond my expectations. The sites and smells of everywhere we visited around Shanghai were fantastic as well. My guide, Jamie, was nice, intelligent, great English, everything you want in a tour guide. Thanks again!</p>
 					</div>		
 					<div class="swiper-slide">
-						<img src="https://resource.localpanda.cn/static/content/reviews/Selvarani.jpg" width="34%" alt="">
+						<img src="https://resource.localpanda.com/static/content/reviews/Selvarani.jpg" width="34%" alt="">
 						<b>Selvarani Saravanamuthu</b>
 						<p>I have to say a huge thank you to Local Panda for putting together this memorable trip. The tours have been par excellence, and I can't be happy enough about it. Local Panda have provided us with a wonderful and memorable experience we will cherish forever. I will not hesitate to recommend Local Panda to my friends when they plan their trip to China.</p>
 					</div>		
 					<div class="swiper-slide">
-						<img src="https://resource.localpanda.cn/static/content/reviews/Cynthia.jpg" width="34%" alt="">
+						<img src="https://resource.localpanda.com/static/content/reviews/Cynthia.jpg" width="34%" alt="">
 						<b>Cynthia Huang</b>
 						<p>Local Panda Exceeded our expectations in every way. Our guide Rebecca was a Hangzhou native whose local knowledge of the city was beyond anything we could have hoped for. The personalized service sets Local Panda apart. If you want to see something, or do something off of the beaten path, they will go above and beyond to accommodate you."</p>
 					</div>					
