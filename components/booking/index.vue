@@ -97,21 +97,27 @@
 					
 					self.codeList = [];
 					var other = [];
-					var str = val.replace(/\(/, "\\\(").replace(/\)/, "\\\)").replace(/\+/, '\\\+')
-					console.log(str)
+					var other1=[];
+					var str = val.replace(/\(/, "\\\(").replace(/\)/, "\\\)").replace(/\+/, '\\\+').replace(/\-/,'\\\-');
 					for(let i = 0; i < this.countryCode.length; i++) {
-
-						if(new RegExp(("^" + str), "i").test(self.countryCode[i].country_name + "(" + "+" + self.countryCode[i].prefix + ")")) {
-							var json = {
-								country_name: self.countryCode[i].country_name,
-								prefix: self.countryCode[i].prefix
+						var str1=self.countryCode[i].country_name + "(+" + self.countryCode[i].prefix + ")"
+						if(new RegExp(str,"i").test(str1)) {
+							if(val[0].toLowerCase()==str1[0].toLowerCase()){
+								var json = {
+									country_name: self.countryCode[i].country_name,
+									prefix: self.countryCode[i].prefix
+								}
+								other.push(json)
+							}else{
+								var json={
+									country_name: self.countryCode[i].country_name,
+									prefix: self.countryCode[i].prefix
+								}
+								other1.push(json)
 							}
-							other.push(json)
-
 						}
 					}
-					console.log(other)
-					self.codeList = other
+					self.codeList = other.concat(other1)
 					//this.countryCode=arr
 
 					//console.log(self.codeList)

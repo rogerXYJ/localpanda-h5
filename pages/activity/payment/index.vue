@@ -30,7 +30,7 @@
 								<p v-else>{{opctions.adultNum+opctions.childrenNum}} People</p>-->
 							</div>
 							<div class="hint">
-								<p v-if="logInHide">You ordered as a guest. To view your order details, go to the homepage, click "My Bookings" at the top of the page, and type in the name and email address for your reservation.</p>
+								<!-- <p v-if="logInHide">You ordered as a guest. To view your order details, go to the homepage, click "My Bookings" at the top of the page, and type in the name and email address for your reservation.</p> -->
 								<!-- <p v-else>To view your order details, go to the homepage, click "My Bookings" at the top of the page.</p> -->
 
 								<p>You can get a 100% refund up to {{refundTimeLimit*24>48?refundTimeLimit:refundTimeLimit*24}} {{refundTimeLimit*24>48?'days':'hours'}} before your trip.</p>

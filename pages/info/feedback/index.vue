@@ -3,7 +3,7 @@
 		<div class="back"><i class="iconfont" @click="back">&#xe615;</i></div>
 		<div class="head">
 			<h3>Get in touch with us</h3>
-			<p>If you have any questions, suggestions, or just want to chat, feel free to contact us using the boxes below. We’ll 
+			<p>If you have any questions, suggestions, or just want to chat, feel free to contact us using the boxes below. We'll 
 get back to you within 1 day. </p>
 		</div>
 		<div class="fillin ">

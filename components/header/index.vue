@@ -45,7 +45,7 @@
 
 			<div class="login_content">
 				<h2>Login</h2>
-				<p>You can use your Facebook account to log into www.localpanda.com and access our platform’s services. Your login will be directed to Facebook. Local Panda does not track or own your personal information e.g. Facebook account or password. Please be assured to use our platform.</p>
+				<p>You can use your Facebook account to log into www.localpanda.com and access our platform's services. Your login will be directed to Facebook. Local Panda does not track or own your personal information e.g. Facebook account or password. Please be assured to use our platform.</p>
 				<span class="btn" @click="facebookLogin"><i class="iconfont">&#xe613;</i>Log in with Facebook</span>
 			</div>
 		</div>

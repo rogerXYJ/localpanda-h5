@@ -6,7 +6,7 @@
 			<div class="headPhoto_bg">
 				<Head :isExpats="isExpats" :class="{position:scroll}"></Head>
 				<h3 class="bannerTitle">Find the Ultimate Experience</h3>
-				<p class="bannerDes">We know that you’ve come a long way and spent a lot of time and energy to be here. We help you make sure the memories are worth it.</p>
+				<p class="bannerDes">We know that you've come a long way and spent a lot of time and energy to be here. We help you make sure the memories are worth it.</p>
 				<div class="bg-shadow"></div>
 			</div>
 			
@@ -74,7 +74,7 @@
 		head(){
 			let title="China Adventure Travel | Trips & Experiences"
 			let keywords="Adventure Travel, China Trip, China Tour, China Tour Package, Tibet, Yellow Mountain, Avatar Mountains, Xinjiang, China Nature, China Scenery"
-			let description="Discover the most stunning off-the-beaten-path destinations in China with Local Panda’s signature trips to Tibet, Xinjiang, Zhangjiajie, and more."
+			let description="Discover the most stunning off-the-beaten-path destinations in China with Local Panda's signature trips to Tibet, Xinjiang, Zhangjiajie, and more."
 			return{
 				title: title,
 				meta: [{

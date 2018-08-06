@@ -7,53 +7,53 @@
 			<div class="oderInfo">
 				<div class="oderTitle">{{opctions.title}}</div>
 				<div class="oderDetail">
-					<span>{{opctions.startDate}}</span>
+					<!--<span>{{opctions.startDate}}</span>
 					<span v-if="opctions.startTime">{{opctions.startTime}}</span>
 					<span v-if="opctions.adultNum==1&&opctions.childrenNum==0">1 Person</span>
-					<span v-else>{{opctions.adultNum+opctions.childrenNum}} People</span>
+					<span v-else>{{opctions.adultNum+opctions.childrenNum}} People</span>-->
+					<span v-if="opctions.adultNum">Number of adult(s):  {{opctions.adultNum}}</span>
+					<span v-if="opctions.childrenNum">Number of child(ren): {{opctions.childrenNum}}</span>
+					<p style="margin-top: 0.05rem;">
+						<span>Travel Date:  {{opctions.startDate}}</span>
+						<span v-if="opctions.startTime">{{opctions.startTime}}</span>
+					</p>
 				</div>
 			</div>
+			<div v-if="!logIn" class="hint">As a guest user, you can access your order details through your name and email</div>
 			<div class="orderContact">
 				<h4>Reservation Information</h4>
 
 				<div class="inputItem" :class="{err:oderFirstNameErr}">
-					<p>First Name <b>*</b></p>
+					<p>First Name <b>*</b><span class="red" v-if="oderFirstNameErr">Field is required</span></p>
 					<input :class="{err:oderFirstNameErr}" @blur="gaBlur(0,true)" @focus="fousOderfisrtname" v-model="oderFirstName" />
 				</div>
 				<div class="inputItem" :class="{err:oderlastNameErr}">
-					<p>Last Name <b>*</b></p>
+					<p>Last Name <b>*</b> <span  class="red" v-if="oderlastNameErr">Field is required</span></p>
 					<input :class="{err:oderlastNameErr}" @focus="fousoderlastName" @blur="gaBlur(1)" v-model="oderlastName" />
 				</div>
 
 				<div class="inputItem" :class="{err:emailAddressErr}">
-					<p>Email Address <b>*</b></p>
-					<input :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gaBlur(2)" v-model="emailAddress" />
+					<p>Email Address <b>*</b> <span  class="red" v-if="emailAddressErr">Field is required</span></p>
+					<input :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gaBlur(2)" v-model="emailAddress" placeholder="We'll send your confirmation here"/>
 				</div>
 				<div class="inputItem" :class="{err:codeErr}">
-					<p>Country Code <b>*</b></p>
+					<p>Country Code <b>*</b> <span  class="red" v-if="codeErr">Field is required</span></p>
 					<div class="inputbox">
 						<input :class="{err:codeErr}" readonly="readonly" onfocus="this.blur()" @click="showCodeFn(0)" v-model="mobileCode" />
 						<i class="iconfont">&#xe60f;</i>
 					</div>
 				</div>
 				<div class="inputItem" :class="{err:phoneErr}">
-					<p>Mobile Phone <b>*</b></p>
-					<input :class="{err:phoneErr}"  @focus="fousPhone" @blur="gaBlur(3)" v-model="phone" />
+					<p>Mobile Phone <b>*</b> <span class="red" v-if="phoneErr">Field is required</span></p>
+					<input :class="{err:phoneErr}"  @focus="fousPhone" @blur="gaBlur(3)" v-model="phone" placeholder="For our guide to contact you"/>
 				</div>
 			</div>
 
 			<div class="Comments">
 				<div class="information">
 					<h4>Other Required Information</h4>
-					<textarea v-if="opctions.category=='Private Tour'" @blur="gaBlur(4)" v-model="comments" placeholder="please provide your hotel address so the guide can pick you up." @focus="commentFocus"></textarea>
-					<textarea v-else v-model="comments" @focus="commentFocus" @blur="gaBlur(4)"></textarea>
+					<textarea  @blur="gaBlur(4)" v-model="comments" placeholder="Fill out your hotel address for our guide to pick you up and your preferences for us to personalize your trips" @focus="commentFocus"></textarea>
 				</div>
-			</div>
-
-			<div class="check">
-				<span>Check this box if the contact for the reservation does NOT match the Primary Traveler.</span>
-				<em v-if="check==0" @click="checkFn(0)" class="checkbox"></em>
-				<em v-if="check==1" @click="checkFn(1)" class="checkbox backgrond iconfont">&#xe61e;</em>
 			</div>
 			<div class="coupon">
 				<checkbox v-model="checkedAll" :change="changeFn">Have a Gift Card or Coupon Code? Proceed to checkout to redeem it.</checkbox>
@@ -64,37 +64,6 @@
 					<p v-if="hasCode==1" style="color: red;">The promotional code you entered is invalid. Please try again.</p>
 				</div>
 			</div>
-
-			<div class="orderContact" v-if="check==1">
-
-				<h4>Key Traveler</h4>
-				<div class="inputItem" :class="{err:TravellerFirstNameErr}">
-					<p>First Name <b>*</b></p>
-					<input :class="{err:TravellerFirstNameErr}" @blur="hideFiexd=false" @focus="fousFirst" v-model="TravellerFirstName" />
-
-				</div>
-				<div class="inputItem" :class="{err:TravellerlastNameErr}">
-					<p>Last Name <b>*</b></p>
-					<input :class="{err:TravellerlastNameErr}" @blur="hideFiexd=false" @focus="fousLastName" v-model="TravellerlastName" />
-				</div>
-
-				<div class="inputItem" :class="{err:TravelleremailAddressErr}">
-					<p>Email Address <b>*</b></p>
-					<input :class="{err:TravelleremailAddressErr}" @blur="hideFiexd=false" @focus="fousidcard" v-model="TravelleremailAddress" />
-				</div>
-				<div class="inputItem" :class="{err:TravellerCodeErr}">
-					<p>Country Code </p>
-					<div class="inputbox">
-						<input :class="{err:TravellerCodeErr}" readonly="readonly" @blur="hideFiexd=false" onfocus="this.blur()" @click="showCodeFn(1)" v-model="mobileTravellCode" />
-						<i class="iconfont">&#xe60f;</i>
-					</div>
-				</div>
-				<div class="inputItem" :class="{err:TravellerphoneErr}">
-					<p>Mobile Phone(optional)</p>
-					<input :class="{err:TravellerphoneErr}" @blur="gaBlur(3)" @focus="fousphonenumb" v-model="Travellerphone" />
-				</div>
-			</div>
-
 			<p class="booktip">You can get a 100% refund up to {{opctions.refundTimeLimit*24>48?opctions.refundTimeLimit:opctions.refundTimeLimit*24}} {{opctions.refundTimeLimit*24>48?'days':'hours'}} before your trip.</p>
 
 			<div class="price">Total ({{opctions.currency}}): <span @click="showPrice=!showPrice">{{opctions.symbol}}{{opctions.amount}}<i class="iconfont">&#xe659;</i></span></div>
@@ -163,14 +132,14 @@
 				phoneErr: false,
 
 				//出游联系人
-				TravellerFirstName: '',
-				TravellerFirstNameErr: false,
-				TravellerlastName: '',
-				TravellerlastNameErr: false,
-				TravelleremailAddress: '',
-				TravelleremailAddressErr: false,
-				Travellerphone: '',
-				TravellerphoneErr: false,
+//				TravellerFirstName: '',
+//				TravellerFirstNameErr: false,
+//				TravellerlastName: '',
+//				TravellerlastNameErr: false,
+//				TravelleremailAddress: '',
+//				TravelleremailAddressErr: false,
+//				Travellerphone: '',
+//				TravellerphoneErr: false,
 
 				comments: '', //提交意见咨询
 
@@ -521,90 +490,90 @@
 					next = false
 
 				} else {
-					if(that.check == 1) {
-						if(that.TravellerFirstName == "" || regExp.isNub(that.TravellerFirstName) || regExp.isCode(that.TravellerFirstName)) {
-							that.TravellerFirstNameErr = true
-							next = false
-
-						} else if(that.TravellerlastName == "" || regExp.isNub(that.TravellerlastName) || regExp.isCode(that.TravellerlastName)) {
-							that.TravellerlastNameErr = true
-							next = false
-
-						} else if(!regExp.isEmail(that.TravelleremailAddress)) {
-							that.TravelleremailAddressErr = true
-							next = false
-
-						} else if(!regExp.isMobil(that.Travellerphone)) {
-							that.TravellerphoneErr = true
-							next = false
-
-						} else {
-							next = true
-							ga('gtag_UA_107010673_2.send', {
-								hitType: 'event',
-								eventCategory: 'activity_booking',
-								eventAction: 'submit',
-								eventLabel: 'activity_order_succ',
-							});
-							obj = {
-								 "userId": localStorage.getItem("userid")
-		            ? localStorage.getItem("userid"): null,
-								"activityId": that.opctions.activityId,
-								"amount": that.opctions.amount,
-								"currency": that.opctions.currency,
-								"adultNum": that.opctions.adultNum,
-								"childrenNum": that.opctions.childrenNum,
-								"infantNum": that.opctions.infantNum,
-								"startDate": that.opctions.startDate,
-								"startTime": that.opctions.startTime,
-								"averagePrice": that.opctions.averagePrice,
-								"childDiscount": that.opctions.childDiscount,
-								"comments": that.comments ? that.comments : null,
-								"couponDiscount":that.couponType?that.opctions.couponDiscount:null,
-								"couponCode":that.couponType?that.couponCode:null,
-								"contactInfo": {
-									"firstName": that.oderFirstName,
-									"lastName": that.oderlastName,
-									"phoneNumber": that.code + that.phone,
-									"emailAddress": that.emailAddress
-								},
-								"travelerInfo": {
-									"firstName": that.TravellerFirstName,
-									"lastName": that.TravellerlastName,
-									"phoneNumber": that.travellCode + that.Travellerphone,
-									"emailAddress": that.TravelleremailAddress
-								},
-								"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
-								"deviceType": deviceType
-							}
-							if(that.addOder == false) {
-								that.addOder = true
-								Vue.axios.put(that.apiBasePath + "order/activity", JSON.stringify(obj), {
-									headers: {
-										'Content-Type': 'application/json; charset=UTF-8'
-									}
-								}).then(function(response) {
-									var loginState = (that.logIn ? that.logIn : 0);
-									var thisUrl = "/activity/payment/?objectId=" + response.data.response + '&login=' + loginState;
-									if(obj.currency == 'CNY') {
-										var ua = window.navigator.userAgent.toLowerCase();
-										var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
-										if(isWx) {
-											window.location.href = 'https://www.localpanda.com/relay/getWechatToken.html?url=' + encodeURIComponent('https://www.localpanda.com' + thisUrl);
-										} else {
-											window.location.href = thisUrl;
-										}
-									} else {
-										window.location.href = "/activity/payment/?objectId=" + response.data.response + '&login=' + loginState;
-									}
-
-								}, function(response) {})
-							}
-						}
-						if(next == false) {
-							that.gaFail()
-						}
-					} else {
+//					if(that.check == 1) {
+//						if(that.TravellerFirstName == "" || regExp.isNub(that.TravellerFirstName) || regExp.isCode(that.TravellerFirstName)) {
+//							that.TravellerFirstNameErr = true
+//							next = false
+//
+//						} else if(that.TravellerlastName == "" || regExp.isNub(that.TravellerlastName) || regExp.isCode(that.TravellerlastName)) {
+//							that.TravellerlastNameErr = true
+//							next = false
+//
+//						} else if(!regExp.isEmail(that.TravelleremailAddress)) {
+//							that.TravelleremailAddressErr = true
+//							next = false
+//
+//						} else if(!regExp.isMobil(that.Travellerphone)) {
+//							that.TravellerphoneErr = true
+//							next = false
+//
+//						} else {
+//							next = true
+//							ga('gtag_UA_107010673_2.send', {
+//								hitType: 'event',
+//								eventCategory: 'activity_booking',
+//								eventAction: 'submit',
+//								eventLabel: 'activity_order_succ',
+//							});
+//							obj = {
+//								 "userId": localStorage.getItem("userid")
+//		            ? localStorage.getItem("userid"): null,
+//								"activityId": that.opctions.activityId,
+//								"amount": that.opctions.amount,
+//								"currency": that.opctions.currency,
+//								"adultNum": that.opctions.adultNum,
+//								"childrenNum": that.opctions.childrenNum,
+//								"infantNum": that.opctions.infantNum,
+//								"startDate": that.opctions.startDate,
+//								"startTime": that.opctions.startTime,
+//								"averagePrice": that.opctions.averagePrice,
+//								"childDiscount": that.opctions.childDiscount,
+//								"comments": that.comments ? that.comments : null,
+//								"couponDiscount":that.couponType?that.opctions.couponDiscount:null,
+//								"couponCode":that.couponType?that.couponCode:null,
+//								"contactInfo": {
+//									"firstName": that.oderFirstName,
+//									"lastName": that.oderlastName,
+//									"phoneNumber": that.code + that.phone,
+//									"emailAddress": that.emailAddress
+//								},
+//								"travelerInfo": {
+//									"firstName": that.TravellerFirstName,
+//									"lastName": that.TravellerlastName,
+//									"phoneNumber": that.travellCode + that.Travellerphone,
+//									"emailAddress": that.TravelleremailAddress
+//								},
+//								"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
+//								"deviceType": deviceType
+//							}
+//							if(that.addOder == false) {
+//								that.addOder = true
+//								Vue.axios.put(that.apiBasePath + "order/activity", JSON.stringify(obj), {
+//									headers: {
+//										'Content-Type': 'application/json; charset=UTF-8'
+//									}
+//								}).then(function(response) {
+//									var loginState = (that.logIn ? that.logIn : 0);
+//									var thisUrl = "/activity/payment/?objectId=" + response.data.response + '&login=' + loginState;
+//									if(obj.currency == 'CNY') {
+//										var ua = window.navigator.userAgent.toLowerCase();
+//										var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
+//										if(isWx) {
+//											window.location.href = 'https://www.localpanda.com/relay/getWechatToken.html?url=' + encodeURIComponent('https://www.localpanda.com' + thisUrl);
+//										} else {
+//											window.location.href = thisUrl;
+//										}
+//									} else {
+//										window.location.href = "/activity/payment/?objectId=" + response.data.response + '&login=' + loginState;
+//									}
+//
+//								}, function(response) {})
+//							}
+//						}
+//						if(next == false) {
+//							that.gaFail()
+//						}
+//					} else {
 						next = true
 						ga('gtag_UA_107010673_2.send', {
 							hitType: 'event',
@@ -663,7 +632,7 @@
 
 							}, function(response) {})
 						}
-					}	
+					//}	
 				}
 				if(next==false){
 					that.gaFail()
@@ -867,6 +836,11 @@
 						}
 					}
 				}
+			}
+			.hint{
+				margin-top: 0.2rem;
+				padding: 0.2rem;
+				background: #faf9f8;
 			}
 			.orderContact {
 				h4 {
@@ -1084,6 +1058,11 @@
 		.showPrice {
 			z-index: 100;
 			opacity: 1;
+		}
+		.red{
+			color: red!important;
+			display: inline-block;
+			margin-left: 0.2rem;
 		}
 	}
 </style>
