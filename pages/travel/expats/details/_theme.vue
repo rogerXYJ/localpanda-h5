@@ -274,7 +274,7 @@
 			.productPic {
 				border-top-left-radius: 0.1rem;
 				border-top-right-radius: 0.1rem;
-				background: url("https://resource.localpanda.cn/content/landingpage/experts/MembersSeasonalDeal.jpg");
+				background: url("https://resource.localpanda.com/content/landingpage/experts/MembersSeasonalDeal.jpg");
 				height: 2.18rem;
 				background-repeat: no-repeat;
 				background-size: cover;
