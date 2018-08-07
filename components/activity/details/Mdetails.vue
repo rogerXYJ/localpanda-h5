@@ -45,7 +45,7 @@
 			<div class="toursMessage">
 				<ul>
 					<li class="clearfix">
-						<label class="iconfont">&#xe653;</label>
+						<label class="iconfont">&#xe684;</label>
 						<span>Mode: {{detail.trafficType}}</span>
 					</li>
 					<li class="clearfix">
