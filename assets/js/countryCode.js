@@ -129,7 +129,7 @@ module.exports = {
 		"country_name": "Chile",
 		"prefix": "56"
 	}, {
-		"country_name": "China",
+		"country_name": "China Mainland",
 		"prefix": "86"
 	}, {
 		"country_name": "Christmas Island",

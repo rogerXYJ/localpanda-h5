@@ -37,7 +37,7 @@
 					<input :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gaBlur(2)" v-model="emailAddress" placeholder="We'll send your confirmation here"/>
 				</div>
 				<div class="inputItem" :class="{err:codeErr}">
-					<p>Country Code <b>*</b> <span  class="red" v-if="codeErr">Field is required</span></p>
+					<p>Country orTerritory Code <b>*</b> <span  class="red" v-if="codeErr">Field is required</span></p>
 					<div class="inputbox">
 						<input :class="{err:codeErr}" readonly="readonly" onfocus="this.blur()" @click="showCodeFn(0)" v-model="mobileCode" />
 						<i class="iconfont">&#xe60f;</i>
@@ -51,9 +51,9 @@
 
 			<div class="Comments">
 				<div class="information">
-					<h4>Other Required Information</h4>
-					<textarea  @blur="gaBlur(4)" v-if="opctions.pickup==1" v-model="comments" placeholder="Fill out your hotel address for our guide to pick you up and your preferences for us to personalize your trips" @focus="commentFocus"></textarea>
-					<textarea  @blur="gaBlur(4)" v-else v-model="comments" @focus="commentFocus"></textarea>
+					<h4>Other Information</h4>
+					<textarea  @blur="gaBlur(4)" v-if="opctions.pickup==1" v-model="comments" placeholder="You can fill out your travel preferences here for us to personalize your trip" @focus="commentFocus"></textarea>
+					<textarea  @blur="gaBlur(4)" v-else v-model="comments" @focus="commentFocus" placeholder="You can fill out your travel preferences here for us to personalize your trip"></textarea>
 				</div>
 			</div>
 			<div class="coupon">
