@@ -97,7 +97,7 @@
 				adultsPic:'',
 				id:'',
 				title:'',
-				category:'',
+				pickup:'',
 				dateErr:false,
 				peopleErr:false,
 				dateErrText:"",
@@ -385,7 +385,7 @@
 			this.picInfo = objDetail.picInfo
 			this.id= objDetail.id
 			this.title= objDetail.title
-			this.category= objDetail.category
+			this.pickup= objDetail.pickup
 			this.refundTimeLimit= objDetail.refundTimeLimit
 
 

@@ -73,7 +73,7 @@ export default {
 html{ font-size:50px;}
 .wxMobilePay{ background-color: rgba(0,0,0,0.5); height: 100vh; color: #fff;}
 .loading_box{ text-align: center; padding-top: 30px; font-size: 15px; line-height: 20px;
-    .loading{ display: inline-block; width: 20px; height:20px; background: url('https://resource.localpanda.com/static/icon/loading.gif') center center no-repeat; background-size: 100%; vertical-align: top; margin-right: 6px;}
+    .loading{ display: inline-block; width: 20px; height:20px; background: url('https://resource.localpanda.cn/static/icon/loading.gif') center center no-repeat; background-size: 100%; vertical-align: top; margin-right: 6px;}
 }
 .confirm_box{
     position: absolute;

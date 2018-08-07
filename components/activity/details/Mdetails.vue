@@ -497,7 +497,7 @@ import photo from '~/components/activity/details/photo'
 					id:this.id,
 					picInfo:this.picInfo,
 					title:this.detail.title,
-					category:this.detail.category,
+					pickup:this.detail.pickup,
 					refundTimeLimit:this.picInfo.refundTimeLimit,
 				}
 				console.log(objDetail)

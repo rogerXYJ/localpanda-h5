@@ -52,7 +52,8 @@
 			<div class="Comments">
 				<div class="information">
 					<h4>Other Required Information</h4>
-					<textarea  @blur="gaBlur(4)" v-model="comments" placeholder="Fill out your hotel address for our guide to pick you up and your preferences for us to personalize your trips" @focus="commentFocus"></textarea>
+					<textarea  @blur="gaBlur(4)" v-if="opctions.pickup==1" v-model="comments" placeholder="Fill out your hotel address for our guide to pick you up and your preferences for us to personalize your trips" @focus="commentFocus"></textarea>
+					<textarea  @blur="gaBlur(4)" v-else v-model="comments" @focus="commentFocus"></textarea>
 				</div>
 			</div>
 			<div class="coupon">
@@ -885,6 +886,7 @@
 						/*超出部分文字以...显示*/
 						&:-webkit-placeholder {
 							/* Mozilla Firefox 4 to 18 */
+							font-size: 0.28rem;
 							color: #878e95;
 						}
 					}
@@ -940,6 +942,7 @@
 						font-family: Arial;
 						&:-webkit-placeholder {
 							/* Mozilla Firefox 4 to 18 */
+							font-size: 0.28rem;
 							color: #dde0e0;
 						}
 					}

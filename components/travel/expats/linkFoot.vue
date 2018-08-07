@@ -43,38 +43,38 @@ export default {
 			tourList:[
 				{
 					name:"Xinjiang",
-					imgUrl:'https://resource.localpanda.com/content/landingpage/expats/Xinjiang.jpg',
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/Xinjiang.jpg',
 					linkUrl:'/travel/expats/details/xinjiang'
 				},
 				{
 					name:"Tibet",
-					imgUrl:'https://resource.localpanda.com/content/landingpage/expats/Tibet.jpg',
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/Tibet.jpg',
 					linkUrl:'/travel/expats/details/tibet'
 				},
 				{
 					name:"Silk Road",
-					imgUrl:'https://resource.localpanda.com/content/landingpage/expats/SilkRoad.jpg',
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/SilkRoad.jpg',
 					linkUrl:'/travel/expats/details/silk_road'
 				},
 				{
 					name:"Seasonal Deal",
 					nameText:'Members Only',
-					imgUrl:'https://resource.localpanda.com/content/landingpage/expats/SeasonalDeal.jpg',
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/SeasonalDeal.jpg',
 					linkUrl:'/travel/expats/details/excursions'
 				},
 				{
 					name:"Zhangjiajie",
-					imgUrl:'https://resource.localpanda.com/content/landingpage/expats/Zhangjiajie.jpg',
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/Zhangjiajie.jpg',
 					linkUrl:'/travel/expats/details/zhangjiajie'
 				},
 //				{
 //					name:"Yellow Mountain",
-//					imgUrl:'https://resource.localpanda.com/content/landingpage/expats/YellowMountain.jpg',
+//					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/YellowMountain.jpg',
 //					linkUrl:'/travel/expats/details/yellow_mountain'
 //				},
 //				{
 //					name:"Inner Mongolia",
-//					imgUrl:'https://resource.localpanda.com/content/landingpage/expats/InnerMongolia.jpg',
+//					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/InnerMongolia.jpg',
 //					linkUrl:'/travel/expats/details/inner_mongolia'
 //				},
 				
@@ -82,7 +82,7 @@ export default {
 //				
 				{
 					name:"Shangri-la",
-					imgUrl:'https://resource.localpanda.com/content/landingpage/expats/Shangrila.jpg',
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/Shangrila.jpg',
 					linkUrl:'/travel/expats/details/shangrila'
 				},
 //				
@@ -90,23 +90,23 @@ export default {
 			activityList:[
 				{
 					name:"Xinjiang",
-					imgUrl:'https://resource.localpanda.com/content/landingpage/expats/Xinjiang.jpg',
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/Xinjiang.jpg',
 					linkUrl:'/travel/expats/details/xinjiang'
 				},
 				{
 					name:"Tibet",
-					imgUrl:'https://resource.localpanda.com/content/landingpage/expats/Tibet.jpg',
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/Tibet.jpg',
 					linkUrl:'/travel/expats/details/tibet'
 				},
 				{
 					name:"Silk Road",
-					imgUrl:'https://resource.localpanda.com/content/landingpage/expats/SilkRoad.jpg',
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/SilkRoad.jpg',
 					linkUrl:'/travel/expats/details/silk_road'
 				},
 				{
 					name:"Seasonal Deal",
 					nameText:'Members Only',
-					imgUrl:'https://resource.localpanda.com/content/landingpage/expats/SeasonalDeal.jpg',
+					imgUrl:'https://resource.localpanda.cn/content/landingpage/expats/SeasonalDeal.jpg',
 					linkUrl:'/travel/expats/details/excursions'
 				},
 			
