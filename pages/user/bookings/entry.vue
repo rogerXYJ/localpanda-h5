@@ -20,7 +20,7 @@
 				</li>
 			</ul>
 			
-			<p class="search_tip" v-show="showErrorText" v-html="errorText"></p>
+			<p class="search_tip" v-if="showErrorText" v-html="errorText"></p>
 
 			<div class="login_box">
 				<h2>Login</h2>

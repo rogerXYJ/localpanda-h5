@@ -696,7 +696,7 @@ import photo from '~/components/activity/details/photo'
 			}
 		},
 		mounted: function() {
-			
+			console.log(this.detail)
 			let that = this;
 			//加载币种
 			that.axios.get("https://api.localpanda.com/api/public/currency/all/"+that.picInfo.currency).then(function(response) {

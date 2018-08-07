@@ -2,8 +2,8 @@
 	<div class="bookings">
 		<div class="bookingbox">
 			<div class="head">
-				<div class="iconfont back" @touchend="back">&#xe606;</div>
-				<div class="title">Select country code</div>
+			<!--	<div class="iconfont back" @touchend="back">&#xe606;</div>-->
+				<div style="margin-top: 0.3rem;" class="title">Select country code <i class="iconfont" style="float: right;">&#xe606;</i></div>
 				<div class="select">
 					<input v-model="selectCode" @blur="Ga"/>
 				</div>
@@ -131,6 +131,11 @@
 </script>
 
 <style lang="scss" scoped>
+.back{
+	text-align: right!important;
+	height: 0.8rem;
+	line-height: 0.8rem;
+}
 .head{
 	position: fixed;
 	top: 0;
@@ -170,11 +175,15 @@
 				}
 			}
 			ul{
-				padding-top: 3.04rem;
+				padding-top: 2.74rem;
 				li{
 					margin-top: 0.58rem;
 					font-size: 0.36rem;
+					&:first-child{
+						margin-top: 0;
+					}
 				}
+				
 			}
 			.empty{
 				padding: 0.6rem;

@@ -21,7 +21,7 @@
 			</div>
 			<div v-if="!logIn" class="hint">As a guest user, you can access your order details through your name and email</div>
 			<div class="orderContact">
-				<h4>Reservation Information</h4>
+				<h4>Contact Information</h4>
 
 				<div class="inputItem" :class="{err:oderFirstNameErr}">
 					<p>First Name <b>*</b><span class="red" v-if="oderFirstNameErr">Field is required</span></p>
@@ -69,7 +69,7 @@
 
 			<div class="price">Total ({{opctions.currency}}): <span @click="showPrice=!showPrice">{{opctions.symbol}}{{opctions.amount}}<i class="iconfont">&#xe659;</i></span></div>
 			<div class="nextBtn clearfix" v-show="!hideFiexd" @touchmove="stopMove">
-				<div class="next" @touchend="placeOrder">NEXT</div>
+				<div class="next" @click="placeOrder">NEXT</div>
 			</div>
 		</div>
 
@@ -131,7 +131,6 @@
 				emailAddressErr: false,
 				phone: '',
 				phoneErr: false,
-
 				//出游联系人
 //				TravellerFirstName: '',
 //				TravellerFirstNameErr: false,
@@ -486,11 +485,12 @@
 				} else if(!that.mobileCode) {
 					that.codeErr = true
 					next = false
+					
 				} else if(that.phone == "" || !regExp.isMobil(that.phone)) {
 					that.phoneErr = true
 					next = false
 
-				} else {
+				}else {
 //					if(that.check == 1) {
 //						if(that.TravellerFirstName == "" || regExp.isNub(that.TravellerFirstName) || regExp.isCode(that.TravellerFirstName)) {
 //							that.TravellerFirstNameErr = true
@@ -575,7 +575,7 @@
 //							that.gaFail()
 //						}
 //					} else {
-						next = true
+					next = true
 						ga('gtag_UA_107010673_2.send', {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
@@ -691,6 +691,7 @@
 
 		},
 		watch: {
+			
 			couponCode(val, oldVal) {
 				this.couponType = ""
 				this.hasCode = 100
@@ -719,10 +720,10 @@
 	
 	.coupon {
 		background: #faf9f8;
-		margin-top:0.4rem;
+		margin-top:0.2rem;
 		font-size: 0.24rem;
 		box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.1);
-		padding: 0.4rem 0.1rem 0.4rem 0.2rem;
+		padding: 0.2rem;
 		a {
 			color: #1bbc9d;
 		}
@@ -850,7 +851,7 @@
 				}
 				.inputItem {
 					margin-top: 0.2rem;
-					padding-bottom: 0.28rem;
+					//padding-bottom: 0.28rem;
 					/*border-bottom: 2px solid #ebebeb;*/
 					b {
 						color: red;
@@ -920,9 +921,8 @@
 				}
 			}
 			.Comments {
-				margin-top: 0.4rem;
+				margin-top: 0.2rem;
 				.information {
-					padding-bottom: 0.22rem;
 					h4 {
 						font-size: 0.24rem;
 						span {
@@ -1075,8 +1075,9 @@
 		bottom: 2.133333rem!important;
 	}
 	
-	::-webkit-input-placeholder {
+	::-webkit-input-placeholder,::-webkit-textarea-placeholder {
 		/* WebKit browsers */
+		font-size: 0.28rem;
 		color: #878e95;
 	}
 </style>
