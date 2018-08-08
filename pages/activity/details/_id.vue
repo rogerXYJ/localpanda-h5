@@ -235,7 +235,7 @@
 					response = results[0];
 					var detailData = response.data;
 					
-					if(!detailData.valid || route.query.valid==1) {//.valid == 1
+					if(detailData.valid || route.query.valid==1) {//.valid == 1
 						
 						detailData.highlights ?
 							(data.highlights = delNullArr(detailData.highlights.split("\n"))) :
@@ -285,7 +285,7 @@
 
 					} else {
 						//同步回调
-					callback(null,error({
+						callback(null,error({
 							statusCode: 404,
 							message: "404"
 						}));
