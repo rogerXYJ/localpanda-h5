@@ -37,7 +37,7 @@
 					<input :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gaBlur(2)" v-model="emailAddress" placeholder="We'll send your confirmation here"/>
 				</div>
 				<div class="inputItem" :class="{err:codeErr}">
-					<p>Country orTerritory Code <b>*</b> <span  class="red" v-if="codeErr">Field is required</span></p>
+					<p>Country or Territory Code <b>*</b> <span  class="red" v-if="codeErr">Field is required</span></p>
 					<div class="inputbox">
 						<input :class="{err:codeErr}" readonly="readonly" onfocus="this.blur()" @click="showCodeFn(0)" v-model="mobileCode" />
 						<i class="iconfont">&#xe60f;</i>
@@ -53,13 +53,13 @@
 				<div class="information">
 					<h4>Other Information</h4>
 					<textarea  @blur="gaBlur(4)" v-if="opctions.pickup==1" v-model="comments" placeholder="You can fill out your travel preferences here for us to personalize your trip" @focus="commentFocus"></textarea>
-					<textarea  @blur="gaBlur(4)" v-else v-model="comments" @focus="commentFocus" placeholder="You can fill out your travel preferences here for us to personalize your trip"></textarea>
+					<textarea  @blur="gaBlur(4)" v-else v-model="comments" @focus="commentFocus"></textarea>
 				</div>
 			</div>
 			<div class="coupon">
 				<checkbox v-model="checkedAll" :change="changeFn">Have a Gift Card or Coupon Code? Proceed to checkout to redeem it.</checkbox>
 				<div class="couponInput" v-if="checkedAll">
-					<input placeholder="Enter a gift card or promotional code" id="coupon" @keyup.enter="validateCode" v-model="couponCode" />
+					<input placeholder="Enter a gift card or coupon code" id="coupon" @keyup.enter="validateCode" v-model="couponCode" />
 					<button @click="validateCode">Enter</button>
 					<p v-if="hasCode==0"><i class="iconfont">&#xe654;</i>- {{couponType=="RATE"?"":opctions.symbol}}{{couponType=="RATE"?couponRate*100:opctions.couponDiscount}}{{couponType=="RATE"?"%":""}} {{couponType=="RATE"?"off":""}}  (Coupon discount)</p>
 					<p v-if="hasCode==1" style="color: red;">The promotional code you entered is invalid. Please try again.</p>
@@ -701,22 +701,23 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scope>
 /** 优惠券  **/
 	.checkbox_label .checkbox_content {
-		white-space: normal!important;
-		padding-left: 0.046rem;
-	}
+			white-space: normal!important;
+			padding-left: 0.046rem;
+		}
+		
+		.checkbox_box {
+			float: left;
+			margin-left: -0.4rem;
+		}
+		
+		.checkbox_label {
+			padding-left: 0.4rem;
+		}
 	
-	.checkbox_box {
-		float: left;
-		margin-left: -0.4rem;
-		margin-top: 0.2rem;
-	}
-	
-	.checkbox_label {
-		padding-left: 0.4rem;
-	}
+
 	
 	.coupon {
 		background: #faf9f8;
@@ -1071,6 +1072,7 @@
 </style>
 
 <style lang="scss">
+	
 	#launcher {
 		bottom: 2.133333rem!important;
 	}

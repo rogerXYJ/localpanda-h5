@@ -555,39 +555,42 @@
 	
 </style>
 <style lang="scss">
-	.checkbox_label,.radio_label{
-		padding: 0.3rem 0;
-		display: block;
-		width: 100%;
-		.checkbox_box{
-			float: left;
-			margin-left: -0.34rem;
-		}
-		.checkbox_content,.radio_content{
-			padding-left: 0.2rem;
-			font-size:0.26rem;
-		}
-		.checkbox_content{
+	.activity_list{
+		.checkbox_label,.radio_label{
+			padding: 0.3rem 0;
 			display: block;
-		}
-	}
-	.header_search_icon{
-		display: none;
-	}
-
-	.hideFilterClose{
-		.head_back{
-			.btn_back{
-				display: none;
+			width: 100%;
+			.checkbox_box{
+				float: left;
+				margin-left: -0.34rem;
+				
+			}
+			.checkbox_content,.radio_content{
+				padding-left: 0.2rem;
+				font-size:0.26rem;
+			}
+			.checkbox_content{
+				display: block;
 			}
 		}
 	}
-	.filter_price{
-		.slider_box{
-			
+		.header_search_icon{
+			display: none;
 		}
-	}
 	
+		.hideFilterClose{
+			.head_back{
+				.btn_back{
+					display: none;
+				}
+			}
+		}
+		.filter_price{
+			.slider_box{
+				
+			}
+		}
+
 </style>
 
 

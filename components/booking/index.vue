@@ -3,7 +3,7 @@
 		<div class="bookingbox">
 			<div class="head">
 			<!--	<div class="iconfont back" @touchend="back">&#xe606;</div>-->
-				<div style="margin-top: 0.3rem;" class="title">Select country code <i class="iconfont" style="float: right;">&#xe606;</i></div>
+				<div style="margin-top: 0.3rem;" class="title">Select country code <i class="iconfont" style="float: right;" @touchend="back">&#xe606;</i></div>
 				<div class="select">
 					<input v-model="selectCode" @blur="Ga"/>
 				</div>
