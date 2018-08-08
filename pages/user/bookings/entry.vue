@@ -6,7 +6,7 @@
 		
 		<div class="page_main">
 			<h2>For Guest Users</h2>
-			<p class="top_tip">Please enter reservee's following<br>information to view the order status</p>
+			<!-- <p class="top_tip">Please enter reservee's following<br>information to view the order status</p> -->
 			<ul class="search_info">
 				<li class="user_name">
 					<input class="input validate" type="text" vType="enName" v-model="firstName" placeholder="First name">
@@ -24,7 +24,7 @@
 
 			<div class="login_box">
 				<h2>Login</h2>
-				<p>If you have already logged in via your <br>Facebook account and placed an order, you can login <br>through Facebook and view the status of your order</p>
+				<p>If you have already logged in via your <br>Facebook account and placed an order, you can login <br>through Facebook and view your order details</p>
 				<span class="btn" @click="facebookLogin"><i class="iconfont">&#xe613;</i>Log in with Facebook</span>
 			</div>
 
@@ -129,7 +129,7 @@
 		width: 100%;
 	}
 	.search_info{
-		margin-top: 0.08rem;
+		margin-top: 0.48rem;
 		li{
 			margin-top: 0.28rem;
 			overflow: hidden;
