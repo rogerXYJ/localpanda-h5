@@ -19,7 +19,7 @@
 						</div>
 					</li>
 					<li class="clearfix">
-						<b>Children <span>({{picInfo.infantStandard}} - {{picInfo.childStandard}} years)</span></b>
+						<b>Children <span>(≤ {{picInfo.childStandard}} years old)</span></b>
 						<div class="select">
 								<em class="iconfont" v-if="children>0 && (children+adults)>picInfo.minParticipants" @click="del(1)">&#xe64d;</em>
 								<em class="iconfont defult" v-else>&#xe64d;</em>

@@ -696,7 +696,7 @@ import photo from '~/components/activity/details/photo'
 			}
 		},
 		mounted: function() {
-			
+			console.log(this.detail)
 			let that = this;
 			//加载币种
 			that.axios.get("https://api.localpanda.com/api/public/currency/all/"+that.picInfo.currency).then(function(response) {
@@ -790,6 +790,7 @@ import photo from '~/components/activity/details/photo'
 					margin: 0.1rem 0 0.2rem;
 					font-size: 0.3rem;
 					a {
+						display: inline-block;
 						font-size: 0.26rem;
 						position: relative;
 						padding: 0 0.16rem;
@@ -806,7 +807,8 @@ import photo from '~/components/activity/details/photo'
 								background: #353a3f;
 								position: absolute;
 								left: 0px;
-								top: 0.13rem;
+								top: 50%;
+								transform: translateY(-50%)
 							}
 						}
 					}

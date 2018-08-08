@@ -21,7 +21,7 @@
 			</div>
 			<div v-if="!logIn" class="hint">As a guest user, you can access your order details through your name and email</div>
 			<div class="orderContact">
-				<h4>Reservation Information</h4>
+				<h4>Contact Information</h4>
 
 				<div class="inputItem" :class="{err:oderFirstNameErr}">
 					<p>First Name <b>*</b><span class="red" v-if="oderFirstNameErr">Field is required</span></p>
@@ -37,7 +37,7 @@
 					<input :class="{err:emailAddressErr}" @focus="fousEmal" @blur="gaBlur(2)" v-model="emailAddress" placeholder="We'll send your confirmation here"/>
 				</div>
 				<div class="inputItem" :class="{err:codeErr}">
-					<p>Country orTerritory Code <b>*</b> <span  class="red" v-if="codeErr">Field is required</span></p>
+					<p>Country or Territory Code <b>*</b> <span  class="red" v-if="codeErr">Field is required</span></p>
 					<div class="inputbox">
 						<input :class="{err:codeErr}" readonly="readonly" onfocus="this.blur()" @click="showCodeFn(0)" v-model="mobileCode" />
 						<i class="iconfont">&#xe60f;</i>
@@ -53,13 +53,13 @@
 				<div class="information">
 					<h4>Other Information</h4>
 					<textarea  @blur="gaBlur(4)" v-if="opctions.pickup==1" v-model="comments" placeholder="You can fill out your travel preferences here for us to personalize your trip" @focus="commentFocus"></textarea>
-					<textarea  @blur="gaBlur(4)" v-else v-model="comments" @focus="commentFocus" placeholder="You can fill out your travel preferences here for us to personalize your trip"></textarea>
+					<textarea  @blur="gaBlur(4)" v-else v-model="comments" @focus="commentFocus"></textarea>
 				</div>
 			</div>
 			<div class="coupon">
 				<checkbox v-model="checkedAll" :change="changeFn">Have a Gift Card or Coupon Code? Proceed to checkout to redeem it.</checkbox>
 				<div class="couponInput" v-if="checkedAll">
-					<input placeholder="Enter a gift card or promotional code" id="coupon" @keyup.enter="validateCode" v-model="couponCode" />
+					<input placeholder="Enter a gift card or coupon code" id="coupon" @keyup.enter="validateCode" v-model="couponCode" />
 					<button @click="validateCode">Enter</button>
 					<p v-if="hasCode==0"><i class="iconfont">&#xe654;</i>- {{couponType=="RATE"?"":opctions.symbol}}{{couponType=="RATE"?couponRate*100:opctions.couponDiscount}}{{couponType=="RATE"?"%":""}} {{couponType=="RATE"?"off":""}}  (Coupon discount)</p>
 					<p v-if="hasCode==1" style="color: red;">The promotional code you entered is invalid. Please try again.</p>
@@ -69,7 +69,7 @@
 
 			<div class="price">Total ({{opctions.currency}}): <span @click="showPrice=!showPrice">{{opctions.symbol}}{{opctions.amount}}<i class="iconfont">&#xe659;</i></span></div>
 			<div class="nextBtn clearfix" v-show="!hideFiexd" @touchmove="stopMove">
-				<div class="next" @touchend="placeOrder">NEXT</div>
+				<div class="next" @click="placeOrder">NEXT</div>
 			</div>
 		</div>
 
@@ -131,7 +131,6 @@
 				emailAddressErr: false,
 				phone: '',
 				phoneErr: false,
-
 				//出游联系人
 //				TravellerFirstName: '',
 //				TravellerFirstNameErr: false,
@@ -486,11 +485,12 @@
 				} else if(!that.mobileCode) {
 					that.codeErr = true
 					next = false
+					
 				} else if(that.phone == "" || !regExp.isMobil(that.phone)) {
 					that.phoneErr = true
 					next = false
 
-				} else {
+				}else {
 //					if(that.check == 1) {
 //						if(that.TravellerFirstName == "" || regExp.isNub(that.TravellerFirstName) || regExp.isCode(that.TravellerFirstName)) {
 //							that.TravellerFirstNameErr = true
@@ -575,7 +575,7 @@
 //							that.gaFail()
 //						}
 //					} else {
-						next = true
+					next = true
 						ga('gtag_UA_107010673_2.send', {
 							hitType: 'event',
 							eventCategory: 'activity_booking',
@@ -691,6 +691,7 @@
 
 		},
 		watch: {
+			
 			couponCode(val, oldVal) {
 				this.couponType = ""
 				this.hasCode = 100
@@ -700,28 +701,30 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scope>
 /** 优惠券  **/
 	.checkbox_label .checkbox_content {
-		white-space: normal!important;
-		padding-left: 0.046rem;
-	}
+			white-space: normal!important;
+			padding-left: 0.046rem;
+		}
+		
+		.checkbox_box {
+			float: left;
+			margin-left: -0.4rem;
+		}
+		
+		.checkbox_label {
+			padding-left: 0.4rem;
+		}
 	
-	.checkbox_box {
-		float: left;
-		margin-left: -0.4rem;
-		margin-top: 0.2rem;
-	}
-	
-	.checkbox_label {
-		padding-left: 0.4rem;
-	}
+
 	
 	.coupon {
 		background: #faf9f8;
+		margin-top:0.2rem;
 		font-size: 0.24rem;
 		box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.1);
-		padding: 0.4rem 0.1rem 0.4rem 0.2rem;
+		padding: 0.2rem;
 		a {
 			color: #1bbc9d;
 		}
@@ -849,7 +852,7 @@
 				}
 				.inputItem {
 					margin-top: 0.2rem;
-					padding-bottom: 0.28rem;
+					//padding-bottom: 0.28rem;
 					/*border-bottom: 2px solid #ebebeb;*/
 					b {
 						color: red;
@@ -919,9 +922,8 @@
 				}
 			}
 			.Comments {
-				margin-top: 0.4rem;
+				margin-top: 0.2rem;
 				.information {
-					padding-bottom: 0.22rem;
 					h4 {
 						font-size: 0.24rem;
 						span {
@@ -1070,12 +1072,14 @@
 </style>
 
 <style lang="scss">
+	
 	#launcher {
 		bottom: 2.133333rem!important;
 	}
 	
-	::-webkit-input-placeholder {
+	::-webkit-input-placeholder,::-webkit-textarea-placeholder {
 		/* WebKit browsers */
+		font-size: 0.28rem;
 		color: #878e95;
 	}
 </style>

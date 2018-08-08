@@ -24,7 +24,7 @@
 
 			<div class="login_box">
 				<h2>Login</h2>
-				<p>If you have already logged in via your <br>Facebook account and placed an order, you can login <br>through Facebook and view your order details</p>
+				<p>If you have already logged in via your <br>Facebook account and placed an order, you can login <br>through Facebook and  view your order details</p>
 				<span class="btn" @click="facebookLogin"><i class="iconfont">&#xe613;</i>Log in with Facebook</span>
 			</div>
 
@@ -160,7 +160,7 @@
 		line-height: 0.3rem;
 		margin-top: 0.5rem;
 	}
-
+.searchMyBooking{
 	.login_box{
 		margin-top: 0.5rem;
 		padding-top: 0.42rem;
@@ -184,6 +184,8 @@
 		}
 		
 	}
+}
+	
 </style>
 <style lang="scss" scoped>
 	

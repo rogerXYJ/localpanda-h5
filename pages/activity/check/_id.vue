@@ -355,7 +355,7 @@
 		          adultsPic: that.returnFloat(that.adultsPic),
 		          title: that.title,
 		          childDiscountP: that.picInfo.childDiscount,
-		          category: that.category,
+		          pickup: that.pickup,
 		          averagePrice: that.returnFloat(
 		            that.adultsPic / (that.adults + that.children)
 		          ),

@@ -126,7 +126,7 @@
 			position: relative;
 			opacity: 0.9;
 			.headPhoto_bg{
-				background: url("https://resource.localpanda.cn/content/landingpage/expats/banner.jpg") no-repeat;
+				background: url("https://cloud.localpanda.com/content/landingpage/expats/banner.jpg") no-repeat;
 				height: 5rem;
 				background-size: cover;
 				background-position: center;
@@ -188,7 +188,7 @@
 					width: 100%;
 					position: relative;
 					border-radius: 0.1rem;
-					background: url("https://resource.localpanda.cn/content/landingpage/expats/MembersSeasonalDeal.jpg") no-repeat;
+					background: url("https://cloud.localpanda.com/content/landingpage/expats/MembersSeasonalDeal.jpg") no-repeat;
 					background-size: cover;
 					background-position: center;
 					span {
