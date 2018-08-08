@@ -45,7 +45,7 @@
 			<div class="toursMessage">
 				<ul>
 					<li class="clearfix">
-						<label class="iconfont">&#xe684;</label>
+						<label class="iconfont fs13">&#xeb0e;</label>
 						<span>Mode: {{detail.trafficType}}</span>
 					</li>
 					<li class="clearfix">
@@ -830,6 +830,9 @@ import photo from '~/components/activity/details/photo'
 							font-size: 0.26rem;
 							float:left;
 							width: 90%;
+						}
+						.fs13{
+							font-size: 0.26rem;
 						}
 					}
 				}
