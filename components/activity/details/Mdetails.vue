@@ -237,8 +237,8 @@
 								    -webkit-box-orient:vertical;">{{i.title}}</h4>
 									<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{i.duration}} {{i.durationUnit|firstUpperCase}}</div>
 									<div class="pic">
-										<div class="old-pic" v-if="i.originalPrice">${{returnFloat(i.originalPrice)}}</div>
-										<div class="current-price">From<b>${{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
+										<div class="old-pic" v-if="i.originalPrice">{{nowExchange.symbol}}{{returnFloat(i.originalPrice)}}</div>
+										<div class="current-price">From<b>{{nowExchange.symbol}}{{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
 									</div>
 								</div>
 							</a>
@@ -426,6 +426,15 @@ import photo from '~/components/activity/details/photo'
 				if(this.people>0){
 					this.adultsPic = thisDetail[this.people-1].price;
 				}
+
+
+				//切换币种
+				//请求推荐模块
+				this.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/recommend?currency="+value).then(function(res) {
+					if(res.status==200){
+						self.$emit('currencyChange',res.data);
+					}
+				}, function(res) {});
 			},
 			setPriceData(){
 				var picInfo = this.picInfo;

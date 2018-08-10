@@ -122,8 +122,8 @@
 				inputTimer: null,
 				//搜索默认推荐
 				recommend:{
-					destination:["Shanghai","Beijing","Xi'an","Guilin","Chengdu","Tibet"],
-					hot:["Panda","Watertown","Great Wall","Terra-Cotta Warriors","Forbidden City","Li River","Layover Tour","Day trips","Local Food","Dumplings","Landmarks","Short Excursions","Family Friendly","Lama Monks","Mt.Kailash","Everest Base Camp"]
+					destination:["Shanghai","Beijing","Xi'an","Guilin","Chengdu","Tibet","Suzhou","Hangzhou"],
+					hot:["Bund","Watertown","Great Wall","Terra-Cotta Warriors","Forbidden City","Li River","Layover Tour","Day trips","Local Food","Dumplings","Landmarks","Short Excursions","Family Friendly","Panda","Everest Base Camp"]
 				}
 			}
 		},

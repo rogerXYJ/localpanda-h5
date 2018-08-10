@@ -829,6 +829,7 @@
 				pageSize:10,
 				sort:{"type":"SCORE"},
 				participants: participants,
+				currency:'USD',
 				type: gaType
 			};
 
