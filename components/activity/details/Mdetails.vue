@@ -80,7 +80,7 @@
 					<div class="introduction" :class="{'show':isShowMore}">
 						<p :key="index" v-for="(j,index) in introduction">{{j}}</p>
 						<ul>
-							<li :key="index" v-for="(i,index) in detail.itineraries">
+							<li :key="index" v-for="(i,index) in itinerary">
 								<div class="item_v clearfix">
 									<div class="contTitle">
 										<h3>{{i.title}}</h3>
@@ -92,6 +92,7 @@
 								</div>
 							</li>
 						</ul>
+						<a v-if="detail.itineraries.length>4" class="more" href="javascript:;" @click="fn">{{showMoreItinerary?'Veiw More':'Veiw Less'}}</a>	
 					</div>
 
 					<div class="itinerary_tip" v-if="detail.groupType=='Private'"><span class="red">*</span> If you want to adjust your itinerary, feel free contact us. Since the tour is private, our staff can help you make changes according to your needs.</div>
@@ -348,7 +349,11 @@ import photo from '~/components/activity/details/photo'
 				exchange:[],
 
 				peopleNum: participants ? participants : 2,
-				showPeopleBox: false
+				showPeopleBox: false,
+				
+				itinerary:[],//行程折叠
+				showMoreItinerary:false
+				
 				
 		}
 	},
@@ -356,6 +361,16 @@ import photo from '~/components/activity/details/photo'
 		photo
 	},
 		methods: {
+			//行程展开收起
+			fn(){
+				this.showMoreItinerary=!this.showMoreItinerary
+				if(this.showMoreItinerary){
+					this.itinerary=this.detail.itineraries.concat().splice(0,4)
+				}else{
+					this.itinerary=this.detail.itineraries
+				}
+
+			},
 			gaInquire(){
 				ga('gtag_UA_107010673_2.send', {
 						hitType: 'event',
@@ -685,7 +700,7 @@ import photo from '~/components/activity/details/photo'
 			}
 		},
 		mounted: function() {
-			console.log(this.detail)
+		
 			let that = this;
 			//加载币种
 			that.axios.get("https://api.localpanda.com/api/public/currency/all/"+that.picInfo.currency).then(function(response) {
@@ -714,6 +729,17 @@ import photo from '~/components/activity/details/photo'
 				that.picInfo.childDiscountDefault = that.picInfo.childDiscount;
 			}
 
+			//行程折叠
+		
+			if(this.detail.itineraries&&this.detail.itineraries.length>0){
+				if(this.detail.itineraries.length>4){
+					this.showMoreItinerary=true
+					this.itinerary=this.detail.itineraries.concat().splice(0,4)	
+				}else{
+					this.itinerary=this.detail.itineraries
+				}
+				
+			}
 			
 			//设置价格详情页，渲染数据
 			that.detailAll = that.tableData(that.picInfo.details);
@@ -873,6 +899,14 @@ import photo from '~/components/activity/details/photo'
 							&:first-child {
 								margin-top: 0;
 							}
+						}
+						.more{
+							display:inline-block;
+							
+							font-size:0.26rem;
+							color:#1bbc9d;
+							font-weight:bold;
+							margin-top:0.4rem;
 						}
 						ul {
 							li {

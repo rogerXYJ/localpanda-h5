@@ -437,36 +437,8 @@
 			},
 			//判断是否使用优惠券下单
 			placeOrder(){
-				let self = this;
-				if(self.checkedAll){
-					if(self.couponType){
-						self.next()
-					}else{
-						self.orderHasCouponRate=true
-					}
-				}else{
-					self.next()
-				}
-				
-				
-			},
-			continueFn(){
-				let self=this
-				self.orderHasCouponRate=false
-				self.next()
-			},
-			enterAgain(){
-				let self=this
-				self.orderHasCouponRate=false
-				document.querySelector("#coupon").focus();
-				self.hasCode=100
-				
-			},
-			
-			next() {
-				const that = this
-				var obj;
 				let next = false
+				let that=this
 				var deviceType = /(iPad)/i.test(navigator.userAgent) ? 'IPAD' : 'MOBILE';
 
 				//that.addOder = true
@@ -491,97 +463,55 @@
 					next = false
 
 				}else {
-//					if(that.check == 1) {
-//						if(that.TravellerFirstName == "" || regExp.isNub(that.TravellerFirstName) || regExp.isCode(that.TravellerFirstName)) {
-//							that.TravellerFirstNameErr = true
-//							next = false
-//
-//						} else if(that.TravellerlastName == "" || regExp.isNub(that.TravellerlastName) || regExp.isCode(that.TravellerlastName)) {
-//							that.TravellerlastNameErr = true
-//							next = false
-//
-//						} else if(!regExp.isEmail(that.TravelleremailAddress)) {
-//							that.TravelleremailAddressErr = true
-//							next = false
-//
-//						} else if(!regExp.isMobil(that.Travellerphone)) {
-//							that.TravellerphoneErr = true
-//							next = false
-//
-//						} else {
-//							next = true
-//							ga('gtag_UA_107010673_2.send', {
-//								hitType: 'event',
-//								eventCategory: 'activity_booking',
-//								eventAction: 'submit',
-//								eventLabel: 'activity_order_succ',
-//							});
-//							obj = {
-//								 "userId": localStorage.getItem("userid")
-//		            ? localStorage.getItem("userid"): null,
-//								"activityId": that.opctions.activityId,
-//								"amount": that.opctions.amount,
-//								"currency": that.opctions.currency,
-//								"adultNum": that.opctions.adultNum,
-//								"childrenNum": that.opctions.childrenNum,
-//								"infantNum": that.opctions.infantNum,
-//								"startDate": that.opctions.startDate,
-//								"startTime": that.opctions.startTime,
-//								"averagePrice": that.opctions.averagePrice,
-//								"childDiscount": that.opctions.childDiscount,
-//								"comments": that.comments ? that.comments : null,
-//								"couponDiscount":that.couponType?that.opctions.couponDiscount:null,
-//								"couponCode":that.couponType?that.couponCode:null,
-//								"contactInfo": {
-//									"firstName": that.oderFirstName,
-//									"lastName": that.oderlastName,
-//									"phoneNumber": that.code + that.phone,
-//									"emailAddress": that.emailAddress
-//								},
-//								"travelerInfo": {
-//									"firstName": that.TravellerFirstName,
-//									"lastName": that.TravellerlastName,
-//									"phoneNumber": that.travellCode + that.Travellerphone,
-//									"emailAddress": that.TravelleremailAddress
-//								},
-//								"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
-//								"deviceType": deviceType
-//							}
-//							if(that.addOder == false) {
-//								that.addOder = true
-//								Vue.axios.put(that.apiBasePath + "order/activity", JSON.stringify(obj), {
-//									headers: {
-//										'Content-Type': 'application/json; charset=UTF-8'
-//									}
-//								}).then(function(response) {
-//									var loginState = (that.logIn ? that.logIn : 0);
-//									var thisUrl = "/activity/payment/?objectId=" + response.data.response + '&login=' + loginState;
-//									if(obj.currency == 'CNY') {
-//										var ua = window.navigator.userAgent.toLowerCase();
-//										var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
-//										if(isWx) {
-//											window.location.href = 'https://www.localpanda.com/relay/getWechatToken.html?url=' + encodeURIComponent('https://www.localpanda.com' + thisUrl);
-//										} else {
-//											window.location.href = thisUrl;
-//										}
-//									} else {
-//										window.location.href = "/activity/payment/?objectId=" + response.data.response + '&login=' + loginState;
-//									}
-//
-//								}, function(response) {})
-//							}
-//						}
-//						if(next == false) {
-//							that.gaFail()
-//						}
-//					} else {
 					next = true
-						ga('gtag_UA_107010673_2.send', {
-							hitType: 'event',
-							eventCategory: 'activity_booking',
-							eventAction: 'submit',
-							eventLabel: 'activity_order_succ',
-						});
+					if(that.checkedAll){
+						if(that.couponType){
+							that.next()
+						}else{
+							that.orderHasCouponRate=true
+						}
+					}else{
+						that.next()
+					}
+				
+				}
+				if(next==false){
+					that.gaFail()
+				}
+
+				//跳转到输入框的位置
+				setTimeout(function() {
+					var error = document.querySelectorAll('.err')[0];
+					if(error) {
+						error.scrollIntoViewIfNeeded();
+					}
+				}, 80);
+			},
+			continueFn(){
+				let self=this
+				self.orderHasCouponRate=false
+				self.next()
+			},
+			enterAgain(){
+				let self=this
+				self.orderHasCouponRate=false
+				document.querySelector("#coupon").focus();
+				self.hasCode=100
+				
+			},
+			
+			next() {
+				var obj;
+				const that = this
+				
+
+				//that.addOder = true
+					ga('gtag_UA_107010673_2.send', {
+						hitType: 'event',
+						eventCategory: 'activity_booking',
+						eventAction: 'submit',
+						eventLabel: 'activity_order_succ',
+					});
 						obj = {
 							 "userId": localStorage.getItem("userid")
 		            ? localStorage.getItem("userid"): null,
@@ -634,18 +564,8 @@
 							}, function(response) {})
 						}
 					//}	
-				}
-				if(next==false){
-					that.gaFail()
-				}
-
-				//跳转到输入框的位置
-				setTimeout(function() {
-					var error = document.querySelectorAll('.err')[0];
-					if(error) {
-						error.scrollIntoViewIfNeeded();
-					}
-				}, 80);
+				
+				
 
 			},
 			commentFocus(e) {
