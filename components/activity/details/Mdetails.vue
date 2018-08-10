@@ -164,9 +164,10 @@
 				<div class="remark_more" @click="loadMoreRemark">Show more</div>
 			</div>
 			
-			<div class="notes" v-if="detail.notice" id="notice">
-				<h3>Additional Info</h3>
-				<p>{{detail.notice}}</p>
+			
+			<div class="notes" id="notes" v-if="remark.length>0">
+				<h3>Notes</h3>
+				<p v-if="remark" :key="index" v-for="(item,index) in remark">{{item}}</p>
 			</div>
 			<!-- <div class="notes" v-if="detail.notice.length>0" id="notice">
 				<h3>Additional Info</h3>
@@ -206,27 +207,15 @@
 					<div class="view" v-if="isShowTable" @click="showTable">View More</div>
 					<p v-if="picInfo.priceInstructions" class="picNote">{{picInfo.priceInstructions}}</p>
 				</div>
-			<div class="notes" id="notes" v-if="remark.length>0">
-				<h3>Notes</h3>
-				<p v-if="remark" :key="index" v-for="(item,index) in remark">{{item}}</p>
-			</div>
+				<div class="notes" v-if="detail.notice" id="notice">
+					<h3>Additional Info</h3>
+					<p>{{detail.notice}}</p>
+				</div>
 			
-			<div class="inqury" @click="goInqury">
-				Send us any questions you have here
-				<i class="iconfont">&#xe620;</i>
-			</div>
-
-
-
-			
-
-
-
-
-
-
-
-
+				<div class="inqury" @click="goInqury">
+					Send us any questions you have here
+					<i class="iconfont">&#xe620;</i>
+				</div>
 
 			<div class="recommend" id="recommend" v-if="recommed.length>0">
 				<h3>Similar Experiences</h3>

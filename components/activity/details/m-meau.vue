@@ -20,9 +20,10 @@
 				<!-- <li v-if="exclusions">
 					<a href="#exclusions">Exclusions</a>
 				</li> -->
-				<li v-if="detail.notice">
-					<a href="#notice">Additional Info</a>
+				<li v-if="remark.length>0">
+					<a href="#notes">Notes</a>
 				</li>
+			
 				<!--<li v-if="picInfo.priceInstructions">
 					<a href="#PriceNote">Price Note</a>
 				</li>-->
@@ -32,8 +33,8 @@
 				<li v-if="picInfo.details.length>0">
 					<a href="#picDetails">Price Details</a>
 				</li>
-				<li v-if="remark.length>0">
-					<a href="#notes">Notes</a>
+				<li v-if="detail.notice">
+					<a href="#notice">Additional Info</a>
 				</li>
 				
 				<li v-if="recommed.length>0">
