@@ -236,8 +236,8 @@
 								    -webkit-box-orient:vertical;">{{i.title}}</h4>
 									<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{i.duration}} {{i.durationUnit|firstUpperCase}}</div>
 									<div class="pic">
-										<div class="old-pic" v-if="i.originalPrice">${{returnFloat(i.originalPrice)}}</div>
-										<div class="current-price">From<b>${{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
+										<div class="old-pic" v-if="i.originalPrice">{{nowExchange.symbol}}{{returnFloat(i.originalPrice)}}</div>
+										<div class="current-price">From<b>{{nowExchange.symbol}}{{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
 									</div>
 								</div>
 							</a>
