@@ -311,7 +311,7 @@
 							that.openWxPay({
 								tradeType: 'MWEB',
 								objectId: that.orderId,
-								amount: that.opctions.amount * 100, // 支付金额，单位是“分”
+								amount: that.opctions.amount, // 支付金额，单位是“元”
 								objectType: 'ACTIVITY',
 								deviceType:that.device()
 							});
@@ -377,7 +377,7 @@
 					self.payData = {
 						tradeType: 'JSAPI',
 						objectId: self.orderId,//1105955013
-						amount: self.opctions.amount * 100,//self.opctions.amount * 100
+						amount: self.opctions.amount,
 						openId: openData.openid,
 						objectType:'ACTIVITY',
 						deviceType:self.device()
@@ -559,7 +559,7 @@
 				isPay=true
 				let that=this
 						let obj = {
-							amount: that.opctions.amount * 100,
+							amount: that.opctions.amount,
 							currency: that.opctions.currency,
 							objectId: that.orderId,
 							token: token.id,

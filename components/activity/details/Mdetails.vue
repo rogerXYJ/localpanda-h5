@@ -411,6 +411,15 @@ import photo from '~/components/activity/details/photo'
 				if(this.people>0){
 					this.adultsPic = thisDetail[this.people-1].price;
 				}
+
+
+				//切换币种
+				//请求推荐模块
+				this.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/recommend?currency="+value).then(function(res) {
+					if(res.status==200){
+						self.$emit('currencyChange',res.data);
+					}
+				}, function(res) {});
 			},
 			setPriceData(){
 				var picInfo = this.picInfo;
