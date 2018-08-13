@@ -58,9 +58,9 @@ on a 1-1 basis.</p>
 </template>
 
 <script>
-if (process.browser) {
-  require("~/assets/js/plugin/talk.js");
-}
+// if (process.browser) {
+//   require("~/assets/js/plugin/talk.js");
+// }
 
 import Dialog from "~/components/info/inquiry/Dialog";
 import { regExp, GetDateStr, addmulMonth } from "~/assets/js/utils";
@@ -266,6 +266,9 @@ export default {
 		// });
 		// window.zESettings = {
 		// 	webWidget: {
+		// 		chat : { 
+    //   suppress : true 
+    // } ,
 		// 		contactOptions : { 
 		// 			enabled : true ,
 		// 			chatLabelOnline : {'*' : 'Live Chat'} 
