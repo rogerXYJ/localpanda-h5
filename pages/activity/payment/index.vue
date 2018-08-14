@@ -33,7 +33,7 @@
 								<!-- <p v-if="logInHide">You ordered as a guest. To view your order details, go to the homepage, click "My Bookings" at the top of the page, and type in the name and email address for your reservation.</p> -->
 								<!-- <p v-else>To view your order details, go to the homepage, click "My Bookings" at the top of the page.</p> -->
 
-								<p>You can get a 100% refund up to {{refundTimeLimit*24>48?refundTimeLimit:refundTimeLimit*24}} {{refundTimeLimit*24>48?'days':'hours'}} before your trip.</p>
+								<p v-if="opctions.finalRefundPeriod">You can reschedule or cancel your trip at zero cost before {{formatDate(opctions.finalRefundPeriod)}}.</p>
 							</div>
 						</div>
 					</div>
@@ -222,6 +222,27 @@
 			Loading
 		},
 		methods: {
+			formatDate(millinSeconds){
+				var date = new Date(millinSeconds);
+				var monthArr = new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Spt","Oct","Nov","Dec");
+				var suffix = new Array("st","nd","rd","th");
+				
+				var year = date.getFullYear(); //年
+				var month = monthArr[date.getMonth()]; //月
+				var ddate = date.getDate(); //日
+				//ddate=ddate<10?"0"+ddate:ddate
+
+				if(ddate % 10 < 1 || ddate % 10 > 3) {
+					ddate = ddate + suffix[3];
+				}else if(ddate % 10 == 1) {
+					ddate = ddate + suffix[0];
+				} else if(ddate % 10 == 2) {
+					ddate = ddate + suffix[1];
+				}else {
+					ddate = ddate + suffix[2];
+				}
+				return month + " "+ ddate + ", " + year;
+			},
 			changeCurrency(e) {
 				var value = e.target.value;
 				this.opctions.currency = value;

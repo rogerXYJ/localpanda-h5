@@ -124,13 +124,14 @@
 
 				//游客图片
 				var Promise2 = new Promise(function(resolve, reject){
-					Vue.axios.get(apiBasePath+"public/photo/"+id+"/ACTIVITY_TRAVELER/list").then(function(res) {
-						// var consoleTimeS2 = new Date().getTime();
-						// 	console.log('游客图片接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
-						resolve(res);
-					}, function(res) {
-						resolve(res);
-					});
+					resolve({});
+//					Vue.axios.get(apiBasePath+"public/photo/"+id+"/ACTIVITY_TRAVELER/list").then(function(res) {
+//						// var consoleTimeS2 = new Date().getTime();
+//						// 	console.log('游客图片接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
+//						
+//					}, function(res) {
+//						resolve(res);
+//					});
 				});
 
 				//推荐信息
@@ -294,8 +295,8 @@
 					};
 
 					//游客照片
-					photoList = results[1];
-					data.photoList=photoList.data;
+//					photoList = results[1];
+//					data.photoList=photoList.data;
 
 					//推荐信息
 					apiActivityRecommendRes = results[2];

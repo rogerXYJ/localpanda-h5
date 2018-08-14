@@ -49,7 +49,7 @@
 				</li>
 			</ul>
 			<p>{{dateErrText}}</p>
-			<p>You can get a 100% refund up to {{refundTimeLimit*24>48?refundTimeLimit:refundTimeLimit*24}} {{refundTimeLimit*24>48?'days':'hours'}} before your trip.</p>
+			<p v-if="dateTime&&timeout&&picInfo.fullRefund">You can reschedule or cancel your trip at zero cost before {{formatDate(delmulDay(dateTime,picInfo.refundTimeLimit))}}.</p>
 		</div>
 		<div class="btn_next">
 			<button @click="order">Next</button>
@@ -105,7 +105,8 @@
 				isshowDetail:false, //priceDetail
 
 				nowExchange:{},//{'rate':1,'currency':'USD','symbol':'$'}
-				exchange:[]
+				exchange:[],
+				timeout:false
 				
 			}
 		},
@@ -219,6 +220,25 @@
 				}
 				
 				return newArr;
+			},
+			//退款时间计算
+			delmulDay(dtstr, n) {
+				
+				var dt = new Date(dtstr);
+				dt.setDate(dt.getDate()-n);
+				return dt.getFullYear() + "-" +parseInt(dt.getMonth()+1) + "-" + dt.getDate();
+			},
+			//国际时间转成美国时间
+			formatDate(millinSeconds){
+				var date = new Date(millinSeconds);
+				var monthArr = new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec");
+				var suffix = new Array("st","nd","rd","th");
+				
+				var year = date.getFullYear(); //年
+				var month = monthArr[date.getMonth()]; //月
+				var ddate = date.getDate(); //日
+				//ddate=ddate<10?"0"+ddate:ddate
+				return month + " "+ ddate + ", " + year;
 			},
 			back() {
 				history.back()
@@ -347,7 +367,9 @@
 							currency: that.picInfo.currency,
 							symbol: that.picInfo.symbol,
 		          adultNum: that.adults,
-		          refundTimeLimit:that.refundTimeLimit,
+		          refundTimeLimit: that.picInfo.refundTimeLimit,
+				  fullRefund:that.picInfo.fullRefund,
+				  finalRefundPeriod:that.picInfo.fullRefund&&that.timeout?that.delmulDay(that.dateTime,that.picInfo.refundTimeLimit):null,
 		          childrenNum: that.children,
 		          infantNum: that.infant,
 		          startDate: that.dateTime,
@@ -387,6 +409,9 @@
 			this.title= objDetail.title
 			this.pickup= objDetail.pickup
 			this.refundTimeLimit= objDetail.refundTimeLimit
+			
+
+
 
 
 			//加载币种
@@ -464,6 +489,16 @@
 				});
 				if(val){
 					this.dateErr=false
+					var time1=new Date(val.replace(/-/g, '/')).getTime();
+					var time2=new Date().getTime();
+					if(parseFloat((time1-time2)/1000/60/60/24)>this.refundTimeLimit){
+						this.timeout=true
+					}else{
+						this.timeout=false
+					}
+					console.log(this.timeout)
+
+
 				}
 			},
 			adults(val, odlVal) {

@@ -65,8 +65,7 @@
 					<p v-if="hasCode==1" style="color: red;">The promotional code you entered is invalid. Please try again.</p>
 				</div>
 			</div>
-			<p class="booktip">You can get a 100% refund up to {{opctions.refundTimeLimit*24>48?opctions.refundTimeLimit:opctions.refundTimeLimit*24}} {{opctions.refundTimeLimit*24>48?'days':'hours'}} before your trip.</p>
-
+			<p class="booktip" v-if="opctions.finalRefundPeriod">You can reschedule or cancel your trip at zero cost before {{formatDate(opctions.finalRefundPeriod)}}.</p>
 			<div class="price">Total ({{opctions.currency}}): <span @click="showPrice=!showPrice">{{opctions.symbol}}{{opctions.amount}}<i class="iconfont">&#xe659;</i></span></div>
 			<div class="nextBtn clearfix" v-show="!hideFiexd" @touchmove="stopMove">
 				<div class="next" @click="placeOrder">NEXT</div>
@@ -427,6 +426,29 @@
 				}
 
 			},
+			
+			//国际时间转成美国时间
+			formatDate(millinSeconds){
+				var date = new Date(millinSeconds);
+				var monthArr = new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Spt","Oct","Nov","Dec");
+				var suffix = new Array("st","nd","rd","th");
+				
+				var year = date.getFullYear(); //年
+				var month = monthArr[date.getMonth()]; //月
+				var ddate = date.getDate(); //日
+				//ddate=ddate<10?"0"+ddate:ddate
+
+				// if(ddate % 10 < 1 || ddate % 10 > 3) {
+				// 	ddate = ddate + suffix[3];
+				// }else if(ddate % 10 == 1) {
+				// 	ddate = ddate + suffix[0];
+				// } else if(ddate % 10 == 2) {
+				// 	ddate = ddate + suffix[1];
+				// }else {
+				// 	ddate = ddate + suffix[2];
+				// }
+				return month + " "+ ddate + ", " + year;
+			},
 			gaFail() {
 				ga('gtag_UA_107010673_2.send', {
 					hitType: 'event',
@@ -439,8 +461,6 @@
 			placeOrder(){
 				let next = false
 				let that=this
-				var deviceType = /(iPad)/i.test(navigator.userAgent) ? 'IPAD' : 'MOBILE';
-
 				//that.addOder = true
 				if(that.oderFirstName == "" || regExp.isNub(that.oderFirstName) || regExp.isCode(that.oderFirstName)) {
 					that.oderFirstNameErr = true
@@ -502,9 +522,8 @@
 			
 			next() {
 				var obj;
+				var deviceType = /(iPad)/i.test(navigator.userAgent) ? 'IPAD' : 'MOBILE';
 				const that = this
-				
-
 				//that.addOder = true
 					ga('gtag_UA_107010673_2.send', {
 						hitType: 'event',
@@ -528,6 +547,7 @@
 							"couponCode":that.couponType?that.couponCode:null,
 							"childDiscount": that.opctions.childDiscount,
 							"comments": that.comments ? that.comments : null,
+							"finalRefundPeriod":that.opctions.finalRefundPeriod,
 							"contactInfo": {
 								"firstName": that.oderFirstName,
 								"lastName": that.oderlastName,
