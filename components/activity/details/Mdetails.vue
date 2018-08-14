@@ -1292,6 +1292,7 @@ import photo from '~/components/activity/details/photo'
 </style>
 
 <style lang="scss">
+	.m-details{
 	.el-table__row .cell {
 		line-height: 0.56rem!important;
 		word-wrap:break-word!important;
@@ -1699,5 +1700,6 @@ import photo from '~/components/activity/details/photo'
 			color: #fff;
 			font-size: 0.32rem;
 		}
+	}
 	}
 </style>
