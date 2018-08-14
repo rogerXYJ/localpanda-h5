@@ -1,12 +1,25 @@
 <template>
-	<div class="inquiry" @click="zeFn">
+	<div class="inquiry">
 		<div class="back"><i class="iconfont" @click="back">&#xe615;</i></div>
-		<div class="head">
-			<h3>Send My Inquiry</h3>
+
+    <ul class="nav_list">
+      <li class="active" @click="showInquiry">Advise Me</li>
+      <li @click="showZendesk">Talk To Panda</li>
+    </ul>
+
+
+		<div class="head" v-show="isInquiry">
 			<p>If you have questions or needs about any specific tour, we have professional consultants to answer your questions 
 on a 1-1 basis.</p>
 		</div>
-		<div class="fillin ">
+    <div class="head" v-show="!isInquiry">
+			<p>We respond within one hour during opening hours (Mon-Sun 9 am to 10 pm Beijing time).</p><br>
+      <p>If it’s not our operating hours, please leave us your requests in the left “Advise Me” section. Our staff will send a reply to your email the next day.</p>
+		</div>
+
+
+
+		<div class="fillin" v-show="isInquiry">
 			<div class="inputItem">
 				<p>Name<span>*</span></p>
 				<input v-model="name" :class="{err:nameError}" @focus="namefocus" class="inputin" />
@@ -43,9 +56,11 @@ on a 1-1 basis.</p>
 				<p>Message<span>*</span></p>
 				<textarea v-model="textInfo" @focus="textInfofocus" :class="{err:textInfoErr}"></textarea>
 			</div>
+
+      <div class="btn" @click.stop="submit">Submit</div>
 		</div>
 		
-		<div class="btn" @click.stop="submit">Submit</div>
+		
 		<Dialog @setIsShowAlert="setShowAlert" 
 				:isShowAlert="isShowAlert"
 				:alertTitle="alertTitle"
@@ -58,13 +73,14 @@ on a 1-1 basis.</p>
 </template>
 
 <script>
-// if (process.browser) {
-//   require("~/assets/js/plugin/talk.js");
-// }
+if (process.browser) {
+  require("~/assets/js/plugin/talk.js");
+}
 
 import Dialog from "~/components/info/inquiry/Dialog";
 import { regExp, GetDateStr, addmulMonth } from "~/assets/js/utils";
 import Flatpickr from "flatpickr";
+import { clearInterval } from 'timers';
 export default {
   name: "inquiry",
   // head() {
@@ -87,6 +103,10 @@ export default {
       emailErr: false,
       textInfo: "",
       textInfoErr: false,
+
+      isInquiry:true,
+      webWidgetTimer:null,
+      webWidgetDisplay:'none',
 
       dateTime: "",
       options: {},
@@ -226,9 +246,106 @@ export default {
         this.peopleNub--;
       }
 		},
-		zeFn(){
-			//zE.show();
-		}
+    addClass(num){
+      var navLi = document.querySelectorAll('.nav_list li');
+      for(var i=0;i<navLi.length;i++){
+        var thisLi = navLi[i];
+        if(num == i){
+          thisLi.className = 'active';
+        }else{
+          thisLi.className = '';
+        };
+      };
+    },
+    getIframe(dom,className){
+      var iframe = document.getElementsByTagName('iframe');
+      for(var i=0;i<iframe.length;i++){
+        var thisData = iframe[i].getAttribute('data-test-id');
+        if(thisData=='ChatWidgetMobileWindow'){
+          return iframe[i];
+        }
+      }
+      return false;
+    },
+    showInquiry(e){
+      this.addClass(0);
+      this.isInquiry = true;
+
+      var webWidget = this.getIframe();
+      if(webWidget){
+        webWidget.style.display = 'none';
+      }
+      
+      this.webWidgetDisplay = 'none';
+    },
+    showZendesk(){
+      this.addClass(1);
+      this.isInquiry = false;
+
+      var webWidget = this.getIframe();
+      if(webWidget){
+        webWidget.style.display = 'block';
+      }
+      
+      this.webWidgetDisplay = 'block';
+      this.loadDesk();
+      
+    },
+    //得到标准时区的时间的函数
+    getLocalTime(i) {
+        //参数i为时区值数字，比如北京为东八区则输进8,西5输入-5
+        if (typeof i !== 'number') return;
+        var d = new Date();
+        //得到1970年一月一日到现在的秒数
+        var len = d.getTime();
+        //本地时间与GMT时间的时间偏移差
+        var offset = d.getTimezoneOffset() * 60000;
+        //得到现在的格林尼治时间
+        var utcTime = len + offset;
+        return new Date(utcTime + 3600000 * i);
+    },
+    isWork(){
+      //获取东八区时区
+      var nowDate = this.getLocalTime(8),
+        nowHour = nowDate.getHours();
+      if(nowHour>=9 && nowHour<20){
+        return true;
+      };
+      return false;
+    },
+    loadDesk(){
+      var that = this;
+      
+      if(!this.isWork()){
+        return;
+      }
+
+      this.webWidgetTimer = setInterval(function(){
+        var webWidget = that.getIframe();
+        if(webWidget && webWidget.contentWindow.document.querySelector('.jx_ui_Widget')){
+          
+          window.clearInterval(that.webWidgetTimer);
+
+          //设置位置
+          var nav_list = document.querySelector('.inquiry .nav_list');
+          var Top = nav_list.offsetTop + nav_list.clientHeight + 20;
+          webWidget.style = ' position: absolute;left:0;top: '+Top+'px; bottom: none; opacity: 1; display: block; width: 100%;height:calc(100vh - '+Top+'px); border: none;display:'+that.webWidgetDisplay+';';
+
+          var iframeDocument = webWidget.contentWindow.document;
+          var zenDeskHidden = iframeDocument.querySelector('.u-isHidden');
+          
+          //隐藏标题头
+          var zenHeader = iframeDocument.querySelector('.jx_ui_Widget');
+          if(zenHeader){
+            zenHeader.style.marginTop = '-50px';
+          }
+          
+          // zenDeskHidden.className = '';
+          // zenDeskHidden.style.height = '100%';
+          
+        }
+      },200);
+    }
   },
   created: function() {
     let that = this;
@@ -260,22 +377,10 @@ export default {
     });
 
 
-		///////////////
-    // zE(function() {
-    //   zE.show();
-		// });
-		// window.zESettings = {
-		// 	webWidget: {
-		// 		chat : { 
-    //   suppress : true 
-    // } ,
-		// 		contactOptions : { 
-		// 			enabled : true ,
-		// 			chatLabelOnline : {'*' : 'Live Chat'} 
-		// 		}
-		// 	}
-		// };
 
+    //在线交谈
+    this.loadDesk();
+    document.body.className = document.body.className?document.body.className+' show_zendesk': 'show_zendesk';
 
   },
   watch: {
@@ -352,41 +457,83 @@ export default {
   // color: rgba(57, 57, 57, .3)!important;
 }
 
-input::-webkit-input-placeholder,
-textarea::-webkit-input-placeholder {
-  /* WebKit browsers */
-  color: #878e95;
-}
-input:-moz-placeholder,
-textarea:-moz-placeholder {
-  /* Mozilla Firefox 4 to 18 */
-  color: #878e95;
-}
-input::-moz-placeholder,
-textarea::-moz-placeholder {
-  /* Mozilla Firefox 19+ */
-  color: #878e95;
-}
-input:-ms-input-placeholder,
-textarea:-ms-input-placeholder {
-  /* Internet Explorer 10+ */
-  color: #878e95;
-}
-
-.inputItem {
-  .flatpickr-input {
-    height: 1rem !important;
-    border: 1px solid #dde0e0;
-    border-radius: 0.08rem;
-    padding-left: 0.24rem !important;
-    font-size: 0.34rem !important;
+.show_zendesk{
+  #launcher{
+    width: 0% !important;
+    height: 0% !important;
+    left: -999px !important;
+  }
+  #webWidget{
+    // left: 0 !important;
+    // top: 200px !important;
+    // bottom: none !important;
+    // opacity: 1 !important;
+    // display: block !important;
+    // width: 100% !important;
+    // border: none !important;
   }
 }
 
-.alertTitle {
-  .box {
-    margin-left: 0 !important;
+
+
+.inquiry{
+
+  .nav_list{
+    overflow: hidden;
+    margin-bottom: 0.4rem;
+    li{
+      float: left;
+      width: 50%;
+      text-align: center;
+      font-size: 0.36rem;
+      padding-bottom: 0.24rem;
+      border-bottom: #ddd solid 2px;
+    }
+    .active{
+      color: #1bbc9d;
+      
+      border-bottom: #1bbc9d solid 2px;
+    }
   }
+  
+
+  input::-webkit-input-placeholder,
+  textarea::-webkit-input-placeholder {
+    /* WebKit browsers */
+    color: #878e95;
+  }
+  input:-moz-placeholder,
+  textarea:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: #878e95;
+  }
+  input::-moz-placeholder,
+  textarea::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: #878e95;
+  }
+  input:-ms-input-placeholder,
+  textarea:-ms-input-placeholder {
+    /* Internet Explorer 10+ */
+    color: #878e95;
+  }
+
+  .inputItem {
+    .flatpickr-input {
+      height: 1rem !important;
+      border: 1px solid #dde0e0;
+      border-radius: 0.08rem;
+      padding-left: 0.24rem !important;
+      font-size: 0.34rem !important;
+    }
+  }
+
+  .alertTitle {
+    .box {
+      margin-left: 0 !important;
+    }
+  }
+
 }
 </style> 
 <style lang="scss" scoped>
