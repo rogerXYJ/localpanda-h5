@@ -105,7 +105,7 @@
 	import Vue from 'vue'
 	import booking from '~/components/booking'
 
-	import { regExp } from '~/assets/js/utils.js'
+	import { regExp,formatDate } from '~/assets/js/utils.js'
 	import countryCode from '~/assets/js/countryCode.js'
 	import { checkboxGroup, checkbox } from "~/plugins/panda/checkbox/";
 	import Loading from "~/components/plugin/Loading"
@@ -428,27 +428,7 @@
 			},
 			
 			//国际时间转成美国时间
-			formatDate(millinSeconds){
-				var date = new Date(millinSeconds);
-				var monthArr = new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Spt","Oct","Nov","Dec");
-				var suffix = new Array("st","nd","rd","th");
-				
-				var year = date.getFullYear(); //年
-				var month = monthArr[date.getMonth()]; //月
-				var ddate = date.getDate(); //日
-				//ddate=ddate<10?"0"+ddate:ddate
-
-				// if(ddate % 10 < 1 || ddate % 10 > 3) {
-				// 	ddate = ddate + suffix[3];
-				// }else if(ddate % 10 == 1) {
-				// 	ddate = ddate + suffix[0];
-				// } else if(ddate % 10 == 2) {
-				// 	ddate = ddate + suffix[1];
-				// }else {
-				// 	ddate = ddate + suffix[2];
-				// }
-				return month + " "+ ddate + ", " + year;
-			},
+			formatDate:formatDate,
 			gaFail() {
 				ga('gtag_UA_107010673_2.send', {
 					hitType: 'event',

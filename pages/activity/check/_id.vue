@@ -72,7 +72,7 @@
 <script>
 	import Flatpickr from 'flatpickr';
 	
-	import { GetDateStr, addmulMonth, getPriceMark} from "~/assets/js/utils";
+	import { GetDateStr, addmulMonth, getPriceMark,formatDate} from "~/assets/js/utils";
 	import SelectPeople from "~/components/activity/details/SelectPeople"
 	import PriceDetail from "~/components/activity/details/PriceDetail"
 	import headBack from "~/components/header/back";
@@ -223,23 +223,12 @@
 			},
 			//退款时间计算
 			delmulDay(dtstr, n) {
-				
-				var dt = new Date(dtstr);
+				var dt = new Date(dtstr.replace(/\-/g,'/'));
 				dt.setDate(dt.getDate()-n);
 				return dt.getFullYear() + "-" +parseInt(dt.getMonth()+1) + "-" + dt.getDate();
 			},
 			//国际时间转成美国时间
-			formatDate(millinSeconds){
-				var date = new Date(millinSeconds);
-				var monthArr = new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec");
-				var suffix = new Array("st","nd","rd","th");
-				
-				var year = date.getFullYear(); //年
-				var month = monthArr[date.getMonth()]; //月
-				var ddate = date.getDate(); //日
-				//ddate=ddate<10?"0"+ddate:ddate
-				return month + " "+ ddate + ", " + year;
-			},
+			formatDate:formatDate,
 			back() {
 				history.back()
 			},

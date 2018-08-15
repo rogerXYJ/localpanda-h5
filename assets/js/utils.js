@@ -103,6 +103,14 @@ function delNullArr(array) {
 /*
  * 正则验证
  */
+var formatDate = function(millinSeconds){
+	var date = new Date(millinSeconds.replace(/\-/g,'/'));
+	var monthArr = new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec");
+	var year = date.getFullYear(); //年
+	var month = monthArr[date.getMonth()]; //月
+	var ddate = date.getDate(); //日
+	return month + " "+ ddate + ", " + year;
+}
 var regExp = (function() {
 	return {
 		isMobil: function(s) {
@@ -404,6 +412,7 @@ var getPriceMark = function(cur,str){
 //es6 模块
 //export default Utils
 export {
+	formatDate,
 	getNowFormatDate,
 	loadScript,
 	cutXiaoNum,
