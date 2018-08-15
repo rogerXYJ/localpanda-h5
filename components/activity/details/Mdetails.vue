@@ -99,7 +99,7 @@
 					
 				</div>
 			</div>
-			 <div class="notes" v-if="photoList.length>0" @click="showPhoto" id="photoList">
+			 <!--<div class="notes" v-if="photoList.length>0" @click="showPhoto" id="photoList">
 					<h3>Pictures of our travelers</h3>
 					<div class="photoCover" v-lazy:background-image="photoList.length>0?photoList[0].url:''">
 						<div class="mask"></div>
@@ -109,7 +109,7 @@
 						</div>
 					</div>
 
-				</div>
+				</div>-->
 			
 			<div class="provide" id="provide" v-if="inclusions.length">
 				<h3>What's Included?</h3>
@@ -251,7 +251,7 @@
 			<button><a :href="'/info/inquiry?objectId='+id" @click="gaInquire">Inquire</a></button>
 			<button class="bookBtn" @click="goBooking">Book</button>
 		</div>
-		<photo :photoList="photoList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></photo>
+		<!--<photo :photoList="photoList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></photo>-->
 
 
 		<!-- 选人数 -->
@@ -321,7 +321,7 @@ import photo from '~/components/activity/details/photo'
 			"inclusions",
 			"exclusions",
 			"notice",
-			"photoList",
+			//"photoList",
 			"destination",
 			"remarkData"
 		],
@@ -361,6 +361,9 @@ import photo from '~/components/activity/details/photo'
 		photo
 	},
 		methods: {
+			fnTag(){
+				
+			},
 			//行程展开收起
 			fn(){
 				this.showMoreItinerary=!this.showMoreItinerary
@@ -512,6 +515,7 @@ import photo from '~/components/activity/details/photo'
 					title:this.detail.title,
 					pickup:this.detail.pickup,
 					refundTimeLimit:this.picInfo.refundTimeLimit,
+					
 				}
 				console.log(objDetail)
 				objDetail=JSON.stringify(objDetail)
@@ -709,7 +713,6 @@ import photo from '~/components/activity/details/photo'
 			}
 		},
 		mounted: function() {
-		
 			let that = this;
 			//加载币种
 			that.axios.get("https://api.localpanda.com/api/public/currency/all/"+that.picInfo.currency).then(function(response) {
@@ -1698,5 +1701,5 @@ import photo from '~/components/activity/details/photo'
 			font-size: 0.32rem;
 		}
 	}
-}
+	}
 </style>
