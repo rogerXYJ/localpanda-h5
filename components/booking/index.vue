@@ -96,29 +96,53 @@
 				if(val) {
 					
 					self.codeList = [];
-					var other = [];
-					var other1=[];
-					var str = val.replace(/\(/, "\\\(").replace(/\)/, "\\\)").replace(/\+/, '\\\+').replace(/\-/,'\\\-');
-					for(let i = 0; i < this.countryCode.length; i++) {
-						var str1=self.countryCode[i].country_name + "(+" + self.countryCode[i].prefix + ")"
-						if(new RegExp(str,"i").test(str1)) {
-							if(val[0].toLowerCase()==str1[0].toLowerCase()){
-								var json = {
-									country_name: self.countryCode[i].country_name,
-									prefix: self.countryCode[i].prefix
-								}
-								other.push(json)
-							}else{
-								var json={
-									country_name: self.countryCode[i].country_name,
-									prefix: self.countryCode[i].prefix
-								}
-								other1.push(json)
-							}
+					// var other = [];
+					// var other1=[];
+					// var str = val.replace(/\(/, "\\\(").replace(/\)/, "\\\)").replace(/\+/, '\\\+').replace(/\-/,'\\\-');
+					// for(let i = 0; i < this.countryCode.length; i++) {
+					// 	var str1=self.countryCode[i].country_name + "(+" + self.countryCode[i].prefix + ")"
+					// 	if(new RegExp(str,"i").test(str1)) {
+					// 		if(val[0].toLowerCase()==str1[0].toLowerCase()){
+					// 			var json = {
+					// 				country_name: self.countryCode[i].country_name,
+					// 				prefix: self.countryCode[i].prefix
+					// 			}
+					// 			other.push(json)
+					// 		}else{
+					// 			var json={
+					// 				country_name: self.countryCode[i].country_name,
+					// 				prefix: self.countryCode[i].prefix
+					// 			}
+					// 			other1.push(json)
+					// 		}
+					// 	}
+					// }
+					// self.codeList = other.concat(other1)
+					//this.countryCode=arr
+
+					var newVal = val.replace('(','\\(').replace(')','\\)').replace('+','\\+').replace('-','\\-');
+					var thisKey = [],
+						otherKey = [];
+					var countryCode = this.countryCode;
+					for(var i=0;i<this.countryCode.length;i++){
+						var thisData = this.countryCode[i];
+						var regStr = thisData.country_name;
+						if(/(^-?[0-9]\d*$)/.test(newVal)){
+							regStr = thisData.prefix;
+						}
+						if((new RegExp(newVal,'i')).test(regStr)){
+							thisKey.push(thisData);
+						}else{
+							otherKey.push(thisData);
 						}
 					}
-					self.codeList = other.concat(other1)
-					//this.countryCode=arr
+					thisKey.sort(function(a,b){
+						if(/(^-?[0-9]\d*$)/.test(newVal)){
+							return a.prefix.indexOf(newVal)-b.prefix.indexOf(newVal);
+						}
+						return a.country_name.toLowerCase().indexOf(newVal)-b.country_name.toLowerCase().indexOf(newVal);
+					})
+					self.codeList = thisKey;
 
 					//console.log(self.codeList)
 				} else {

@@ -7,12 +7,15 @@
       <li @click="showZendesk">Talk To Panda</li>
     </ul>
 
+    <Loading :loadingStatus="loadingStatus"></Loading>
+
 
 		<div class="head" v-show="isInquiry">
 			<p>If you have questions or needs about any specific tour, we have professional consultants to answer your questions 
 on a 1-1 basis.</p>
 		</div>
-    <div class="head" v-show="!isInquiry">
+    
+    <div class="head" v-show="!isInquiry && !isWork()">
 			<p>We respond within one hour during opening hours (Mon-Sun 9 am to 10 pm Beijing time).</p><br>
       <p>If it’s not our operating hours, please leave us your requests in the left “Advise Me” section. Our staff will send a reply to your email the next day.</p>
 		</div>
@@ -78,6 +81,7 @@ if (process.browser) {
 }
 
 import Dialog from "~/components/info/inquiry/Dialog";
+import Loading from '~/components/plugin/Loading'
 import { regExp, GetDateStr, addmulMonth } from "~/assets/js/utils";
 import Flatpickr from "flatpickr";
 import { clearInterval } from 'timers';
@@ -120,11 +124,13 @@ export default {
       isShowAlert: false,
       alertTitle: "",
       alertMessage: "",
-      objectId: id
+      objectId: id,
+      loadingStatus:false
     };
   },
   components: {
-    Dialog
+    Dialog,
+    Loading
   },
   methods: {
     setShowAlert(val) {
@@ -285,6 +291,9 @@ export default {
       var webWidget = this.getIframe();
       if(webWidget){
         webWidget.style.display = 'block';
+        this.loadingStatus = false;
+      }else{
+        this.loadingStatus = true;
       }
       
       this.webWidgetDisplay = 'block';
@@ -323,7 +332,8 @@ export default {
       this.webWidgetTimer = setInterval(function(){
         var webWidget = that.getIframe();
         if(webWidget && webWidget.contentWindow.document.querySelector('.jx_ui_Widget')){
-          
+
+          that.loadingStatus = false;
           window.clearInterval(that.webWidgetTimer);
 
           //设置位置
@@ -378,6 +388,10 @@ export default {
 
 
 
+    //设置语言
+		zE(function() {
+			zE.setLocale('en_US');
+		});
     //在线交谈
     this.loadDesk();
     document.body.className = document.body.className?document.body.className+' show_zendesk': 'show_zendesk';
@@ -554,6 +568,14 @@ export default {
       font-size: 0.28rem;
       line-height: 0.36rem;
     }
+  }
+  .loaders{
+    width: 100%;
+    height: 30%;
+    position: relative;
+    left: auto;
+    top:auto;
+    margin-top: 2rem;
   }
   .fillin {
     margin-top: 0.3rem;
