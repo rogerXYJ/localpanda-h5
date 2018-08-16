@@ -35,14 +35,7 @@ service@localpanda.com</p>
 				<p>Message<span>*</span></p>
 				<textarea v-model="textInfo" @focus="textInfofocus" :class="{err:textInfoErr}"></textarea>
 			</div>
-			<div class="inputItem">
-				<p>Name<span>*</span></p>
-				<input v-model="name" :class="{err:nameError}" @focus="namefocus" class="inputin" />
-			</div>
-			<div class="inputItem">
-				<p>Email Address<span>*</span></p>
-				<input v-model="email" :class="{err:emailErr}" @focus="emailfocus" class="inputin"/>
-			</div>
+			
 			<div class="inputItem">
 				<p>Date of Arrival</p>
 				<input id="js_changetime" class="inputin" placeholder="Select Date" onfocus="this.blur()" v-model="dateTime" readonly type="text">
@@ -66,6 +59,16 @@ service@localpanda.com</p>
 						</div>
 					</div>
 				</div>
+			</div>
+
+
+      <div class="inputItem">
+				<p>Name<span>*</span></p>
+				<input v-model="name" :class="{err:nameError}" @focus="namefocus" class="inputin" />
+			</div>
+			<div class="inputItem">
+				<p>Email Address<span>*</span></p>
+				<input v-model="email" :class="{err:emailErr}" @focus="emailfocus" class="inputin"/>
 			</div>
 			
 
