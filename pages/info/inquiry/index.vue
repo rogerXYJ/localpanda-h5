@@ -371,7 +371,7 @@ export default {
         }
 
         allTime+=200;
-        if(allTime>15000){
+        if(allTime>=10000){
           that.loadTime = true;
           that.loadingStatus = false;
           window.clearInterval(that.webWidgetTimer);
@@ -434,63 +434,65 @@ export default {
 <style lang="scss">
 @import "~/assets/scss/plugin/flatpickr.min.css";
 
-.flatpickr-months .flatpickr-prev-month svg,
-.flatpickr-months .flatpickr-next-month svg {
-  width: 20px !important;
-  height: 20px !important;
-}
-.flatpickr-calendar {
-  padding: 10px 0;
-  width: 90%;
-  max-width: 500px;
-  left: 50% !important;
-  top: 50% !important;
-  right: auto !important;
-  transform: translate(-50%, -50%);
-  opacity: 1;
-  visibility: initial;
-  position: fixed;
-  &.animate.open {
-    animation: all 0 cubic-bezier(0.23, 1, 0.32, 1);
-    z-index: 999;
+body{
+  .flatpickr-months .flatpickr-prev-month svg,
+  .flatpickr-months .flatpickr-next-month svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+  .flatpickr-calendar {
+    padding: 10px 0;
+    width: 90%;
+    max-width: 500px;
+    left: 50% !important;
+    top: 50% !important;
+    right: auto !important;
+    transform: translate(-50%, -50%);
     opacity: 1;
+    visibility: initial;
+    position: fixed;
+    &.animate.open {
+      animation: all 0 cubic-bezier(0.23, 1, 0.32, 1);
+      z-index: 999;
+      opacity: 1;
+    }
+    .flatpickr-next-month,
+    .flatpickr-prev-month {
+      top: 5px;
+    }
+    .flatpickr-month {
+      height: 40px;
+    }
+    .flatpickr-day.disabled,
+    .flatpickr-day.disabled:hover {
+      color: rgba(57, 57, 57, 0.3);
+    }
+    .flatpickr-days,
+    .flatpickr-weekdays,
+    .flatpickr-rContainer,
+    .dayContainer {
+      width: 100%;
+      max-width: none;
+    }
+    .flatpickr-day {
+      max-width: none;
+      height: 7vh;
+      max-height: 45px;
+    }
   }
-  .flatpickr-next-month,
-  .flatpickr-prev-month {
-    top: 5px;
+  .flatpickr-calendar.open:before,
+  .flatpickr-calendar.open:after {
+    display: none;
   }
-  .flatpickr-month {
-    height: 40px;
-  }
-  .flatpickr-day.disabled,
-  .flatpickr-day.disabled:hover {
-    color: rgba(57, 57, 57, 0.3);
-  }
-  .flatpickr-days,
-  .flatpickr-weekdays,
-  .flatpickr-rContainer,
-  .dayContainer {
-    width: 100%;
-    max-width: none;
+  .flatpickr-day.nextMonthDay {
+    color: #393939 !important;
   }
   .flatpickr-day {
-    max-width: none;
-    height: 7vh;
-    max-height: 45px;
+    // color: #393939!important;
   }
-}
-.flatpickr-calendar.open:before,
-.flatpickr-calendar.open:after {
-  display: none;
-}
-.flatpickr-day.nextMonthDay {
-  color: #393939 !important;
-}
-.flatpickr-day {
-  // color: #393939!important;
-}
-.flatpickr-day.disabled {
-  // color: rgba(57, 57, 57, .3)!important;
+  .flatpickr-day.disabled {
+    // color: rgba(57, 57, 57, .3)!important;
+  }
 }
 
 .show_zendesk{
