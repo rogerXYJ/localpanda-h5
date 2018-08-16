@@ -19,7 +19,14 @@ on a 1-1 basis.</p>
 			<p>We respond within one hour during opening hours (Mon-Sun 9 am to 10 pm Beijing time).</p><br>
       <p>If it’s not our operating hours, please leave us your requests in the left “Advise Me” section. Our staff will send a reply to your email the next day.</p>
 		</div>
-
+    
+    <div class="head" v-if="loadTime && !isInquiry && isWork()">
+      <p>Due to internet connection problems, Online Chat is currently offline.<br><br>
+You can contact us in the following ways:<br>
++86 (21) 8018-2090<br>
++1 (888) 930-8849 (US toll-free)<br>
+service@localpanda.com</p>
+    </div>
 
 
 		<div class="fillin" v-show="isInquiry">
@@ -125,7 +132,8 @@ export default {
       alertTitle: "",
       alertMessage: "",
       objectId: id,
-      loadingStatus:false
+      loadingStatus:false,
+      loadTime:false
     };
   },
   components: {
@@ -292,7 +300,7 @@ export default {
       if(webWidget){
         webWidget.style.display = 'block';
         this.loadingStatus = false;
-      }else{
+      }else if(this.isWork()){
         this.loadingStatus = true;
       }
       
@@ -329,7 +337,12 @@ export default {
         return;
       }
 
-      this.webWidgetTimer = setInterval(function(){
+      var allTime = 0;
+      that.loadTime = false;
+
+      window.clearInterval(that.webWidgetTimer);
+
+      that.webWidgetTimer = setInterval(function(){
         var webWidget = that.getIframe();
         if(webWidget && webWidget.contentWindow.document.querySelector('.jx_ui_Widget')){
 
@@ -353,6 +366,13 @@ export default {
           // zenDeskHidden.className = '';
           // zenDeskHidden.style.height = '100%';
           
+        }
+
+        allTime+=200;
+        if(allTime>15000){
+          that.loadTime = true;
+          that.loadingStatus = false;
+          window.clearInterval(that.webWidgetTimer);
         }
       },200);
     }
