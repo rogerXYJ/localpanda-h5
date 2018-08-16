@@ -105,7 +105,7 @@ function delNullArr(array) {
  */
 var formatDate = function(millinSeconds){
 	var date = new Date(millinSeconds.replace(/\-/g,'/'));
-	var monthArr = new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec");
+	var monthArr = new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
 	var year = date.getFullYear(); //年
 	var month = monthArr[date.getMonth()]; //月
 	var ddate = date.getDate(); //日

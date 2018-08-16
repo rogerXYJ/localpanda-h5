@@ -20,6 +20,8 @@
 			:photoList="photoList"
 			:destination="destination" 
 			:remarkData="remarkData" 
+			:userABtestID="userABtestID" 
+			:ABtest="ABtest" 
 			@currencyChange="currencyChangeFn"
 			></Mdetails>
 		<transition name="slideleft">
@@ -34,7 +36,9 @@
 						:introduction="introduction" 
 						:remark="remark" 
 						:recommed="recommed" 
-						:remarkData="remarkData"
+						:remarkData="remarkData" 
+						:userABtestID="userABtestID" 
+						:ABtest="ABtest" 
 						></Mmeau>
         </transition>
       	<div class="marsk" v-if="isscroll" @click.stop="showMeau">
@@ -71,8 +75,25 @@
 			store,
 			error,
 			apiBasePath,
-			redirect
+			redirect,
+			req
 		},callback) {
+			
+			//获取页面cookie
+			var userCookie = {};
+			if(req){
+				var cookie = req.headers.cookie;
+				if(cookie){
+					var cookieArr = cookie.split(';');
+					for(var i=0;i<cookieArr.length;i++){
+						var thisCookie = cookieArr[i].split('=');
+						userCookie[thisCookie[0].trim()] = (thisCookie[1]||'').trim();
+					}
+				}
+			};
+
+			//console.log(userCookie.currency);
+
 
 			//callback(null, { title: res.data.title });
 
@@ -101,12 +122,21 @@
 				notice:[],
 				photoList:[],
 				recommed:[],
-				remarkData:[]
+				remarkData:[],
+				userABtestID:'',
+				ABtest: false
 			};
 			var response = {};
 			let apiActivityPriceRes = {};
 			let apiActivityRecommendRes = {};
 			let photoList={};
+
+
+
+			//ABtest 点评
+			if(id == '11280' || id =='11068'){
+				data.ABtest = true;
+			}
 			
 			try {
 				//基本信息
@@ -412,6 +442,15 @@
 					}
 				});
 			},1000);
+
+
+			
+			setTimeout(function(){
+				//获取ABtestID
+				var userABtestID = Cookie.get('userABtestID');
+				self.userABtestID = userABtestID?userABtestID:'';
+			},100);
+
 
 		},
 		watch: {

@@ -27,7 +27,8 @@ module.exports = {
     { src: '~/plugins/axios.js'},
     { src: '~/plugins/vue-lazyload.js', ssr: false },
     { src: '~/assets/js/plugin/swiper-4.2.6.min.js', ssr: false },
-    { src: '~/plugins/ga.js', ssr: false }
+    { src: '~/plugins/ga.js', ssr: false },
+    { src: '~/plugins/main.js', ssr: false }
   ],
   css: [
     '~/assets/scss/plugin/swiper.min.css',

@@ -133,7 +133,7 @@
 				</ul>
 			</div>
 			<!-- 点评模块 -->
-			<div class="remark_all" id="Reviews" v-if="remarkDataAll.length">
+			<div class="remark_all" id="Reviews" v-if="remarkDataAll.length && !ABtest || remarkDataAll.length && ABtest && userABtestID%2==0">
 				<div class="remark_title">
 					<span class="reviews">{{records}} {{remarkDataAll.length==1 ? 'Review':'Reviews'}}</span>
 					<div class="remark_star" v-html="remarkStarHtml(avgscore)"></div>
@@ -323,7 +323,9 @@ import photo from '~/components/activity/details/photo'
 			"notice",
 			//"photoList",
 			"destination",
-			"remarkData"
+			"remarkData",
+			"userABtestID",
+			"ABtest"
 		],
 		name: 'm-details',
 		data() {
