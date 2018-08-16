@@ -180,7 +180,7 @@
 			</div> -->
 			<div class="notes" v-if="picInfo.refundInstructions" id="CancellationPolicy">
 				<h3>Rescheduling and Cancellation Policy</h3>
-				<p v-html="picInfo.refundInstructions.replace(/\r\n/g,'<br/>')"></p >
+				<p v-html="picInfo.refundInstructions.replace(/\r\n/g,'<br>').replace(/\n/g,'<br>')"></p >
 			</div>
 			<div class="provide" v-if="picInfo.details.length>0" id="picDetails">
 					<h3>Price Details</h3>
