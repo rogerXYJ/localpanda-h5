@@ -30,6 +30,11 @@ service@localpanda.com</p>
 
 
 		<div class="fillin" v-show="isInquiry">
+
+      <div class="inputItem">
+				<p>Message<span>*</span></p>
+				<textarea v-model="textInfo" @focus="textInfofocus" :class="{err:textInfoErr}"></textarea>
+			</div>
 			<div class="inputItem">
 				<p>Name<span>*</span></p>
 				<input v-model="name" :class="{err:nameError}" @focus="namefocus" class="inputin" />
@@ -43,7 +48,7 @@ service@localpanda.com</p>
 				<input id="js_changetime" class="inputin" placeholder="Select Date" onfocus="this.blur()" v-model="dateTime" readonly type="text">
 			</div>
 			<div class="inputItem">
-				<p>Number of People<span>*</span></p>
+				<p>Number of People</p>
 				<div class="peopleN">
 					<div class="peopleshow" :class="peopleNub==0?'color8':''"  @click.stop="showchoose">
 						<span v-if="peopleNub==0">Select People</span>
@@ -62,10 +67,7 @@ service@localpanda.com</p>
 					</div>
 				</div>
 			</div>
-			<div class="inputItem">
-				<p>Message<span>*</span></p>
-				<textarea v-model="textInfo" @focus="textInfofocus" :class="{err:textInfoErr}"></textarea>
-			</div>
+			
 
       <div class="btn" @click.stop="submit">Submit</div>
 		</div>
@@ -179,7 +181,10 @@ export default {
         }
       }, 60);
 
-      if (
+      if (that.textInfo == "") {
+        that.textInfoErr = true;
+        ok = false;
+      }else if (
         that.name == "" ||
         regExp.isNub(that.name) ||
         regExp.isCode(that.name)
@@ -188,12 +193,6 @@ export default {
         that.nameError = true;
       } else if (!regExp.isEmail(that.email)) {
         that.emailErr = true;
-        ok = false;
-      } else if (that.peopleNub == 0) {
-        ok = false;
-        that.isshowchoose = true;
-      } else if (that.textInfo == "") {
-        that.textInfoErr = true;
         ok = false;
       } else {
         ok = true;
@@ -284,7 +283,7 @@ export default {
     showInquiry(e){
       this.addClass(0);
       this.isInquiry = true;
-
+      this.loadingStatus = false;
       var webWidget = this.getIframe();
       if(webWidget){
         webWidget.style.display = 'none';
