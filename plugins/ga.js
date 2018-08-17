@@ -11,6 +11,7 @@ export default ({ app }) => {
   //测试和线上key
   window.payCode = buildData.payCode ? buildData.payCode : 'pk_test_ymxnY3KoqRcjCEElfvFxPy1G';
   //判断是否禁用ga
+  window.gaSend = '';
   if(!buildData.testGa){
     //防止ga报错，默认添加ga方法
     window.ga = function(){
@@ -40,5 +41,6 @@ export default ({ app }) => {
     function gtag(){dataLayer.push(arguments)};
     gtag('js', new Date());
     gtag('config', 'UA-107010673-2');
+    window.gaSend = 'gtag_UA_107010673_2.send';
   }
 }

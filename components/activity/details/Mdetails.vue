@@ -162,7 +162,7 @@
 						<li v-for="(itemChild,index2) in item.userCommentPhoto" @click="showBigPic(index,index2)" :key="index2"><img v-lazy="itemChild.url" alt=""></li>
 					</ul>
 				</div>
-				<div class="remark_more" @click="loadMoreRemark">Show more</div>
+				<div class="remark_more" @click="loadMoreRemark" v-if="records>3">Show more</div>
 			</div>
 			
 			
