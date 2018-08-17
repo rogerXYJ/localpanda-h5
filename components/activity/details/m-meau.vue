@@ -14,7 +14,7 @@
 				<li v-if="exclusions || itemsIncluded">
 					<a href="#provide">Inclusions & Exclusions</a>
 				</li>
-				<li v-if="remarkData.entities && remarkData.entities.length>0 && !ABtest || remarkData.entities.length && ABtest && userABtestID%2==0">
+				<li v-if="remarkData.entities && remarkData.entities.length>0 && !ABtest || remarkData.entities && remarkData.entities.length && ABtest && userABtestID%2==0">
 					<a href="#Reviews">Reviews</a>
 				</li>
 				<!-- <li v-if="exclusions">

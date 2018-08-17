@@ -22,6 +22,7 @@
 			:remarkData="remarkData" 
 			:userABtestID="userABtestID" 
 			:ABtest="ABtest" 
+			:isABtestShow="isABtestShow" 
 			@currencyChange="currencyChangeFn"
 			></Mdetails>
 		<transition name="slideleft">
@@ -124,7 +125,8 @@
 				recommed:[],
 				remarkData:[],
 				userABtestID:'',
-				ABtest: false
+				ABtest: false,
+				isABtestShow:false
 			};
 			var response = {};
 			let apiActivityPriceRes = {};
@@ -449,6 +451,17 @@
 				//获取ABtestID
 				var userABtestID = Cookie.get('userABtestID');
 				self.userABtestID = userABtestID?userABtestID:'';
+				//GA统计
+				self.isABtestShow = self.remarkData.entities && self.remarkData.entities.length && self.ABtest && self.userABtestID%2==0;
+				if(self.isABtestShow){
+					ga(gaSend, {
+						hitType: 'event',
+						eventCategory: 'activity_detail',
+						eventAction: 'abtest_comment',
+						eventLabel: 'load',
+					});
+					//console.log('ABtest产品，加载到了点评！');
+				}
 			},100);
 
 

@@ -325,7 +325,8 @@ import photo from '~/components/activity/details/photo'
 			"destination",
 			"remarkData",
 			"userABtestID",
-			"ABtest"
+			"ABtest",
+			"isABtestShow"
 		],
 		name: 'm-details',
 		data() {
@@ -511,6 +512,17 @@ import photo from '~/components/activity/details/photo'
 				this.sixArr=this.tableData(this.picInfo.details)
 			},
 			goBooking(){
+				
+				if(this.isABtestShow){
+					ga(gaSend, {
+						hitType: 'event',
+						eventCategory: 'activity_detail',
+						eventAction: 'abtest_comment',
+						eventLabel: 'book',
+					});
+				}
+
+
 				let objDetail={
 					id:this.id,
 					picInfo:this.picInfo,
@@ -788,7 +800,7 @@ import photo from '~/components/activity/details/photo'
 			
 
 			//console.log(this.remarkDataAll);
-
+			
 
 		},
 		watch:{
