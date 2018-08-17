@@ -101,7 +101,7 @@
 			</div>
 			<div class="btn_pay">
 				<a v-if="(id==1 && openWxUrl)||!isWx && id==1" :href="openWxUrl" @click="wxOpenClick">Pay</a>
-				<button @touchend="getToken" v-else-if="showWxPayBtn || orderInfo.currency != 'CNY' || id!=1">Pay</button>
+				<button @click="getToken" v-else-if="showWxPayBtn || orderInfo.currency != 'CNY' || id!=1">Pay</button>
 
 			</div>
 		</div>
