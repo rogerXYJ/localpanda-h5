@@ -16,8 +16,8 @@ on a 1-1 basis.</p>
 		</div>
     
     <div class="head" v-show="!isInquiry && !isWork()">
-			<p>We respond within one hour during opening hours (Mon-Sun 9 am to 10 pm Beijing time).</p><br>
-      <p>If it’s not our operating hours, please leave us your requests in the left “Advise Me” section. Our staff will send a reply to your email the next day.</p>
+			<p>We respond within one hour during opening hours (Mon-Sun 9 am to 10 pm Beijing time). </p><br>
+      <p>If it’s not our operating hours, please leave us your requests in the left “Advise Me” section. Our staff will reply ASAP.</p>
 		</div>
     
     <div class="head" v-if="loadTime && !isInquiry && isWork()">
@@ -327,7 +327,7 @@ export default {
       //获取东八区时区
       var nowDate = this.getLocalTime(8),
         nowHour = nowDate.getHours();
-      if(nowHour>=9 && nowHour<20){
+      if(nowHour>=9 && nowHour<22){
         return true;
       };
       return false;
