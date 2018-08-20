@@ -92,7 +92,7 @@
 								</div>
 							</li>
 						</ul>
-						<a v-if="detail.itineraries.length>4" class="more" href="javascript:;" @click="fn">{{showMoreItinerary?'Veiw More':'Veiw Less'}}</a>	
+						<a v-if="detail.itineraries.length>3" class="more" href="javascript:;" @click="fn">{{showMoreItinerary?'Veiw More':'Veiw Less'}}</a>	
 					</div>
 
 					<div class="itinerary_tip" v-if="detail.groupType=='Private'"><span class="red">*</span> If you want to adjust your itinerary, feel free contact us. Since the tour is private, our staff can help you make changes according to your needs.</div>
@@ -761,9 +761,9 @@ import photo from '~/components/activity/details/photo'
 			//行程折叠
 		
 			if(this.detail.itineraries&&this.detail.itineraries.length>0){
-				if(this.detail.itineraries.length>4){
+				if(this.detail.itineraries.length>3){
 					this.showMoreItinerary=true
-					this.itinerary=this.detail.itineraries.concat().splice(0,4)	
+					this.itinerary=this.detail.itineraries.concat().splice(0,3)	
 				}else{
 					this.itinerary=this.detail.itineraries
 				}
