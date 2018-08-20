@@ -32,7 +32,7 @@
 				
 
 				<div class="picRate">
-					<select class="currency_type" id="changeCurrency" @change="changeCurrency" v-model="defaultCurrency">
+					<select class="currency_type" id="changeCurrency" @change="changeCurrency" v-model="picInfo.currency">
 						<option :value="item.code" v-for="item in exchange" :key="item.code">{{item.code}}</option>
 					</select>
 					<span class="iconfont">&#xe666;</span>
@@ -326,7 +326,8 @@ import photo from '~/components/activity/details/photo'
 			"remarkData",
 			"userABtestID",
 			"ABtest",
-			"isABtestShow"
+			"isABtestShow",
+			'value'
 		],
 		name: 'm-details',
 		data() {
@@ -347,7 +348,7 @@ import photo from '~/components/activity/details/photo'
 				remarkIndex:1,
 				pageNum:2,
 				
-				defaultCurrency : 'USD',
+				//defaultCurrency : 'USD',
 				nowExchange:{},//{'rate':1,'currency':'USD','symbol':'$'}
 				exchange:[],
 
@@ -435,6 +436,8 @@ import photo from '~/components/activity/details/photo'
 
 
 				//切换币种
+				self.$emit('input',this.nowExchange);
+
 				//请求推荐模块
 				this.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/recommend?currency="+value).then(function(res) {
 					if(res.status==200){
@@ -741,7 +744,7 @@ import photo from '~/components/activity/details/photo'
 					var ua = window.navigator.userAgent.toLowerCase();
 					var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
 					if(isWx||that.picInfo.currency=="CNY"){
-						that.defaultCurrency = 'CNY';
+						//that.defaultCurrency = 'CNY';
 						that.changeCurrency('CNY');
 					}
 					
@@ -804,7 +807,13 @@ import photo from '~/components/activity/details/photo'
 
 		},
 		watch:{
-			
+
+			//监听币种变化
+			value:function(val){
+				this.nowExchange = val;
+				this.changeCurrency(val.code);
+				//this.defaultCurrency = val.code;
+			}
 		}
 	}
 </script>

@@ -1,6 +1,6 @@
 <template>
 	<div id="activitiesDetail">
-		<Head></Head>
+		<Head :nowCurrency="currency" @headCurrency="headCurrencyFn"></Head>
 		<Mbanner :bannerPhotos="detail.bannerPhotos" :destination="destination"></Mbanner>
 		<Mdetails
 			:remark="remark" 
@@ -23,7 +23,8 @@
 			:userABtestID="userABtestID" 
 			:ABtest="ABtest" 
 			:isABtestShow="isABtestShow" 
-			@currencyChange="currencyChangeFn"
+			@currencyChange="currencyChangeFn" 
+			v-model="currency"
 			></Mdetails>
 		<transition name="slideleft">
             <Mmeau v-show="isShowMeau" class="Mmeau" 
@@ -126,14 +127,17 @@
 				remarkData:[],
 				userABtestID:'',
 				ABtest: false,
-				isABtestShow:false
+				isABtestShow:false,
+				currency:{code: "USD", symbol: "$", exchangeRate: 1}
 			};
 			var response = {};
 			let apiActivityPriceRes = {};
 			let apiActivityRecommendRes = {};
 			let photoList={};
 
-
+			if(userCookie.currency){
+				data.currency = JSON.parse(decodeURIComponent(userCookie.currency));
+			}
 
 			//ABtest 点评
 			if(id == '11280' || id =='11068'){
@@ -168,7 +172,7 @@
 
 				//推荐信息
 				var Promise3 = new Promise(function(resolve, reject){
-					Vue.axios.get(apiBasePath + "product/activity/"+id+"/recommend?currency=USD").then(function(res) {
+					Vue.axios.get(apiBasePath + "product/activity/"+id+"/recommend?currency="+data.currency.code).then(function(res) {
 						// var consoleTimeS2 = new Date().getTime();
 						// 	console.log('推荐接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
 						resolve(res);
@@ -179,7 +183,7 @@
 
 				//价格信息
 				var Promise4 = new Promise(function(resolve, reject){
-					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price?currency=USD").then(function(res) {
+					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price?currency="+data.currency.code).then(function(res) {
 						// var consoleTimeS2 = new Date().getTime();
 						// 	console.log('价格接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
 						resolve(res);
@@ -190,7 +194,7 @@
 
 				//价格明细
 				var Promise7 = new Promise(function(resolve, reject){
-					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price/detail?currency=USD").then(function(res) {
+					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price/detail?currency="+data.currency.code).then(function(res) {
 						// var consoleTimeS2 = new Date().getTime();
 						// 	console.log('价格接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
 						resolve(res);
@@ -416,6 +420,9 @@
 			},
 			currencyChangeFn(data){
 				this.recommed = data;
+			},
+			headCurrencyFn(currency){
+				this.currency = currency;
 			}
 		},
 		mounted: function() {

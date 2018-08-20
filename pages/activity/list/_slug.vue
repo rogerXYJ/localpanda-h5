@@ -596,7 +596,7 @@
 
 <template>
 	<div class="activity_list">
-		<Head :searchValue="keyword" :people="peopleNum" :showSearch="showHeaderSearch" @searchChange="searchChange" @closeSearch="showHeaderSearch=false"></Head>
+		<Head :searchValue="keyword" :people="peopleNum" :showSearch="showHeaderSearch" @searchChange="searchChange" @closeSearch="showHeaderSearch=false"  :nowCurrency="currency" @headCurrency="headCurrencyFn"></Head>
 
 		<div class="fixed_all" id="fixed_all">
 			<div class="fixed_box" :class="{filter_fixed:isFixed}">
@@ -698,7 +698,7 @@
 							</div> -->
 							<div class="price_box clearfix">
 								<span class="list_price">
-									<b>${{item.perPersonPrice}}</b>pp
+									<b>{{currency.symbol}}{{item.perPersonPrice}}</b>pp
 								</span>
 								<p v-if="item.sales">Booked {{item.sales}} {{item.sales>1?'times':'time'}} (last 30 days)</p>
 							</div>
@@ -723,7 +723,15 @@
 				<dl>
 					<dt>Price / person for party of {{peopleNum}}</dt>
 					<dd>
-						<div class="filter_price">
+						<div class="filter_price" v-if="currency.code=='CNY'">
+							<slider v-model="sliderValue" max="3030" maxTipValue="3000+" step="30"></slider>
+							<div class="filter_price_text"><span class="price_max">${{sliderValue[1]>3000?'3000+':sliderValue[1]}}</span> ${{sliderValue[0]>3000?'3000+':sliderValue[0]}}</div>
+						</div>
+						<div class="filter_price" v-else-if="currency.code=='JPY'">
+							<slider v-model="sliderValue" max="50500" maxTipValue="50000+" step="500"></slider>
+							<div class="filter_price_text"><span class="price_max">${{sliderValue[1]>50000?'50000+':sliderValue[1]}}</span> ${{sliderValue[0]>50000?'50000+':sliderValue[0]}}</div>
+						</div>
+						<div class="filter_price" v-else>
 							<slider v-model="sliderValue" max="505" maxTipValue="500+" step="5"></slider>
 							<div class="filter_price_text"><span class="price_max">${{sliderValue[1]>500?'500+':sliderValue[1]}}</span> ${{sliderValue[0]>500?'500+':sliderValue[0]}}</div>
 						</div>
@@ -789,7 +797,8 @@
 		async asyncData({
 			route,
 			router,
-			apiBasePath
+			apiBasePath,
+			req
 		}) {
 
 			var params = route.params;
@@ -844,6 +853,26 @@
 				return text;
 			};
 
+
+			//获取页面cookie
+			var userCookie = {};
+			if(req){
+				var cookie = req.headers.cookie;
+				if(cookie){
+					var cookieArr = cookie.split(';');
+					for(var i=0;i<cookieArr.length;i++){
+						var thisCookie = cookieArr[i].split('=');
+						userCookie[thisCookie[0].trim()] = (thisCookie[1]||'').trim();
+					}
+				}
+			};
+
+			var currency = {code: "USD", symbol: "$", exchangeRate: 1};
+			if(userCookie.currency){
+				currency = JSON.parse(decodeURIComponent(userCookie.currency));
+				postData.currency = currency.code;
+			}
+
 			//兼容老的key，新key转为老key
 			var oldTypeKey = function(text){
 				if(text=='tour_type'){
@@ -855,6 +884,12 @@
 			};
 
 			var price = [0,505];
+
+			if(currency.code=='CNY'){
+				price = [0,3030];
+			}else if(currency.code=='JPY'){
+				price = [0,50500];
+			}
 
 			
 			//根据url数据生成post需要的格式
@@ -1001,6 +1036,9 @@
 				keyword: keyword?keyword:locNew,
 				defaultKeyword: keyword?keyword:locNew,
 				query: query,
+
+				//切换币种
+				currency:currency,
 
 				cityCheck:loc,
 				city: city,
@@ -1463,6 +1501,40 @@
 
 			showPrice(value){
 				return value
+			},
+			headCurrencyFn(currency){
+				
+				var that = this;
+				
+				//修改翻页数量
+				//this.postData.pageNum = 1;
+				//this.postData.currency = currency.code;
+
+				this.jumpUrl();
+				
+				//请求数据
+				// this.axios.post(that.apiBasePath + "search/activity", JSON.stringify(this.postData), {
+				// 	headers: {
+				// 		'Content-Type': 'application/json; charset=UTF-8'
+				// 	}
+				// }).then(function(response) {
+				// 	if(response.data.entities&&response.data.entities.length) {
+				// 		that.currency = currency;
+				// 		that.activityList= response.data.entities;
+
+				// 		var price = [0,505];
+				// 		if(currency.code=='CNY'){
+				// 			price = [0,3030];
+				// 		}else if(currency.code=='JPY'){
+				// 			price = [0,50500];
+				// 		}
+				// 		that.sliderValue = price;
+				// 	}else{
+						 
+				// 	}
+				// }, function(response) {
+					
+				// })
 			}
 			
 		},

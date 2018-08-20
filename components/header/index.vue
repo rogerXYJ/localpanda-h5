@@ -9,8 +9,20 @@
 <!-- <span></span>
 				<span></span>
 				<span></span> -->
+
+			
+
 			<!-- 搜索 -->
 			<div class="header_search_icon iconfont" @click="showSearchDialog=true">&#xe67a;</div>
+
+			<!-- 币种 -->
+			<div class="selectCurrey_box">
+				<select class="selectCurrey" v-model="currency">
+					<option v-for="(item,index) in exchange" :value="item.code">{{item.code}} ( {{item.symbol}} )</option>
+				</select>
+				<span class="iconfont selectCurreyIcon">&#xe666;</span>
+			</div>
+			
 			<!-- logo -->
 			<div class="logo" v-if="isExpats">
 				<svg aria-hidden="true" @click="goHome">
@@ -92,7 +104,6 @@
 			</div>
 		</div>
 
-		
 
 	</div>
 </template>
@@ -102,7 +113,7 @@
 	import FBLogin from "~/plugins/panda/FBLogin/";
 
 	export default {
-		props:["showSearch",'searchValue',"isExpats","people"],
+		props:["showSearch",'searchValue',"isExpats","people",'nowCurrency'],
 		name:'M-head',
 		data(){
 			var query = this.$route.query;
@@ -124,7 +135,11 @@
 				recommend:{
 					destination:["Shanghai","Beijing","Xi'an","Guilin","Chengdu","Tibet","Suzhou","Hangzhou"],
 					hot:["Bund","Watertown","Great Wall","Terra-Cotta Warriors","Forbidden City","Li River","Layover Tour","Day trips","Local Food","Dumplings","Landmarks","Short Excursions","Family Friendly","Panda","Everest Base Camp"]
-				}
+				},
+
+				currency: 'USD',
+				exchange:[],
+				showCurrency: true
 			}
 		},
 		components: {
@@ -323,7 +338,29 @@
 			},
 			searchVal:function(val){
 				this.$emit('searchChange',val);
-			}
+			},
+			currency:function(val){
+				var thisCurrency = '',
+					exchange = this.exchange;
+				for(var i=0;i<exchange.length;i++){
+					var thisData = exchange[i];
+					if(thisData.code==val){
+						thisCurrency = thisData;
+					}
+				}
+
+				if(thisCurrency){
+					Cookie.set('currency',JSON.stringify({
+						code: thisCurrency.code,
+						symbol: thisCurrency.symbol
+					}),{path:'/','expires':30});
+					
+					this.$emit('headCurrency',thisCurrency);
+				}
+			},
+			nowCurrency:function(val){
+				this.currency= val.code;
+			},
 		},
 		mounted: function() {
 			this.showSearchDialog = this.showSearch;
@@ -331,6 +368,19 @@
 			var logstate = localStorage.getItem("logstate");
 			this.islogIn = logstate?true:false;
 			
+			//获取币种
+			var self = this;
+			window.currencyCallbackHeader = function(data){
+				self.exchange = data;
+			};
+			
+			//读取币种
+			var nowCurrency = JSON.parse(Cookie.get('currency'));
+			if(nowCurrency){
+				this.currency = nowCurrency.code;
+			}
+
+
 		}
 	}
 </script>
@@ -378,6 +428,29 @@
 			}
 		}
 
+		.selectCurrey_box{
+			float: right;
+			position: relative;
+			margin-right: 0.15rem;
+			.selectCurrey{
+				-webkit-appearance: none;
+				-moz-appearance: none;
+				appearance: none;
+				background-color: transparent;
+				border: none;
+				height: 0.98rem;
+				line-height: 0.98rem;
+				padding-right: 0.4rem;
+				position: relative;
+				z-index: 2;
+			}
+			span.iconfont{
+				position: absolute; right: 0; top: 0; line-height: 0.99rem;
+				font-size: 0.4rem;
+			}
+		}
+		
+
 
 		.header_search_icon{
 			height: 0.98rem;
@@ -386,7 +459,7 @@
 			color: #1bbc9d;
 			float: right;
 			font-size: 0.4rem;
-			padding: 0 0.2rem 0 0.3rem;
+			padding: 0 0.2rem 0 0.25rem;
 			
 		}
 	}
@@ -605,6 +678,11 @@
 				margin-bottom: 0;
 			}
 			&:focus{
+				color: #1bbc9d;
+			}
+			.fr_currency{
+				float: right;
+				font-size: 0.26rem;
 				color: #1bbc9d;
 			}
 		}

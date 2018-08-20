@@ -155,6 +155,9 @@
 				if(this.people>0){
 					this.adultsPic = thisDetail[this.people-thisDetail[0].capacity].price;
 				}
+
+				//修改全站默认币种
+				Cookie.set('currency',JSON.stringify(this.nowExchange),{path:'/','expires':30});
 			},
 			setPriceData(){
 				var picInfo = this.picInfo;
