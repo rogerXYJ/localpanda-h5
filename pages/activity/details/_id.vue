@@ -72,6 +72,11 @@
 
 	export default {
 		name: "activitiesDetail",
+
+
+
+
+
 		async asyncData({
 			route,
 			store,
@@ -137,6 +142,7 @@
 
 			if(userCookie.currency){
 				data.currency = JSON.parse(decodeURIComponent(userCookie.currency));
+				console.log(JSON.parse(decodeURIComponent(userCookie.currency)))
 			}
 
 			//ABtest 点评
@@ -432,8 +438,16 @@
 			this.logIn = window.localStorage.getItem("logstate");
 			document.getElementById('Mmenu').addEventListener("click", function(){self.isShowMeau=false});
 			window.addEventListener("scroll", this.scorllBar);
-
-
+			//  if(window.name != "bencalie"){
+			// 	location.reload();
+			// 	window.name = "bencalie";
+			// }else{
+			// 	window.name = "";
+			// }
+			 var currency=JSON.parse(Cookie.get('currency'))?JSON.parse(Cookie.get('currency')):{code:'USD',symbol:'$'}
+				if(this.currency!=currency){
+					this.currency=currency
+				}
 			console.log(this.$data);
 
 			//等待渲染完毕后调用

@@ -44,7 +44,7 @@
 			<a href="javascript:;" @click="showLoginPage" v-if="!islogIn">Log in</a>
 			<a href="/user/profile?menu=1&flag=1" v-else>My Profile</a>
 			<a :href="islogIn?'/user/myBookings?menu=0&flag=1':'/user/bookings/entry'">My Bookings</a>
-			<a href="/travel/customize/step1">Customize Your Trip</a>
+			<!-- <a href="/travel/customize/step1">Customize Your Trip</a> -->
 			<a href="/info/feedback/">Contact Us</a>
 			<a href="/info/about-us">About Us</a>
 			<a href="javascript:;" @click="logout" v-if="islogIn">Log Out</a>
@@ -191,7 +191,9 @@
 					logout:true
 				});
 			},
-
+			changeFn(){
+				location.reload();
+			},
 			autoComplate(e){
 				var self = this,
 					keyword = e.target.value.replace(/(^\s*)|(\s*$)/g,'');
@@ -266,6 +268,7 @@
 				
 				location.href = this.getUrl(this.searchVal,'direct');
 			},
+		
 			textHighlight(value){
 				var reg = new RegExp(this.searchVal.replace(/(^\s*)|(\s*$)/g,''),'gi');
 				var textReg = value.match(reg);
@@ -340,6 +343,7 @@
 				this.$emit('searchChange',val);
 			},
 			currency:function(val){
+				
 				var thisCurrency = '',
 					exchange = this.exchange;
 				for(var i=0;i<exchange.length;i++){
@@ -350,14 +354,15 @@
 				}
 
 				if(thisCurrency){
+					
 					Cookie.set('currency',JSON.stringify({
 						code: thisCurrency.code,
 						symbol: thisCurrency.symbol
 					}),{path:'/','expires':30});
-					
+					console.log(Cookie.get('currency'))
 					this.$emit('headCurrency',thisCurrency);
 				}
-			},
+			},			
 			nowCurrency:function(val){
 				this.currency= val.code;
 			},

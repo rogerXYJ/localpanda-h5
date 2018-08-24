@@ -573,11 +573,9 @@
 				display: block;
 			}
 		}
-	}
 		.header_search_icon{
 			display: none;
 		}
-	
 		.hideFilterClose{
 			.head_back{
 				.btn_back{
@@ -590,6 +588,10 @@
 				
 			}
 		}
+	}
+		
+	
+	
 
 </style>
 
@@ -698,7 +700,7 @@
 							</div> -->
 							<div class="price_box clearfix">
 								<span class="list_price">
-									<b>{{currency.symbol}}{{item.perPersonPrice}}</b>pp
+									{{currency.code}}<b>{{currency.symbol}}{{item.perPersonPrice}}</b>pp
 								</span>
 								<p v-if="item.sales">Booked {{item.sales}} {{item.sales>1?'times':'time'}} (last 30 days)</p>
 							</div>
@@ -725,15 +727,15 @@
 					<dd>
 						<div class="filter_price" v-if="currency.code=='CNY'">
 							<slider v-model="sliderValue" max="3030" maxTipValue="3000+" step="30"></slider>
-							<div class="filter_price_text"><span class="price_max">${{sliderValue[1]>3000?'3000+':sliderValue[1]}}</span> ${{sliderValue[0]>3000?'3000+':sliderValue[0]}}</div>
+							<div class="filter_price_text"><span class="price_max">{{currency.symbol}}{{sliderValue[1]>3000?'3000+':sliderValue[1]}}</span>{{currency.symbol}}{{sliderValue[0]>3000?'3000+':sliderValue[0]}}</div>
 						</div>
 						<div class="filter_price" v-else-if="currency.code=='JPY'">
 							<slider v-model="sliderValue" max="50500" maxTipValue="50000+" step="500"></slider>
-							<div class="filter_price_text"><span class="price_max">${{sliderValue[1]>50000?'50000+':sliderValue[1]}}</span> ${{sliderValue[0]>50000?'50000+':sliderValue[0]}}</div>
+							<div class="filter_price_text"><span class="price_max">{{currency.symbol}}{{sliderValue[1]>50000?'50000+':sliderValue[1]}}</span> {{currency.symbol}}{{sliderValue[0]>50000?'50000+':sliderValue[0]}}</div>
 						</div>
 						<div class="filter_price" v-else>
 							<slider v-model="sliderValue" max="505" maxTipValue="500+" step="5"></slider>
-							<div class="filter_price_text"><span class="price_max">${{sliderValue[1]>500?'500+':sliderValue[1]}}</span> ${{sliderValue[0]>500?'500+':sliderValue[0]}}</div>
+							<div class="filter_price_text"><span class="price_max">{{currency.symbol}}{{sliderValue[1]>500?'500+':sliderValue[1]}}</span>{{currency.symbol}}{{sliderValue[0]>500?'500+':sliderValue[0]}}</div>
 						</div>
 					</dd>
 				</dl>
@@ -872,7 +874,7 @@
 				currency = JSON.parse(decodeURIComponent(userCookie.currency));
 				postData.currency = currency.code;
 			}
-
+			
 			//兼容老的key，新key转为老key
 			var oldTypeKey = function(text){
 				if(text=='tour_type'){
@@ -938,7 +940,7 @@
 			if(sort){
 				postData.sort = sort;
 			}
-			
+			console.log(postData)
 			//console.log(postData);
 			try{
 				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(postData), {
@@ -1341,7 +1343,7 @@
 
 				//检测是否有某个筛选项，并对有效的筛选项做url连接
 				var urlQuery = this.getUrlQuery(jumpData);
-				
+				window.name = "aa";
 				//有数据则跳转
 				location.href = '/activity/list/China' + (urlQuery ? ('?' + urlQuery) : '');
 
@@ -1573,8 +1575,13 @@
 			}
 		},
 		mounted: function() {
-			console.log(this.$data.listdata);
-
+			console.log(window.name)
+			if(window.name != "aa"){
+				window.name = "aa";
+				location.reload();
+			}else{
+				window.name = "";
+			}
 			var self = this;
 
 			//filter统计ga   start  ///////////////////////////////////////////

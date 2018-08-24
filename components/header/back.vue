@@ -35,7 +35,8 @@
 		},
 		methods: {
 			pageBack(){
-				history.back()
+				history.go(-1);
+				
 			}
 		},
 		mounted: function() {

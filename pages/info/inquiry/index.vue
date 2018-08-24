@@ -4,7 +4,7 @@
 
     <ul class="nav_list">
       <li class="active" @click="showInquiry">Advise Me</li>
-      <li @click="showZendesk">Talk To Panda</li>
+      <li @click="showZendesk">Chat with Panda</li>
     </ul>
 
     <Loading :loadingStatus="loadingStatus"></Loading>
@@ -16,7 +16,7 @@ on a 1-1 basis.</p>
 		</div>
     
     <div class="head" v-show="!isInquiry && !isWork()">
-			<p>We respond within one hour during opening hours (Mon-Sun 9 am to 10 pm Beijing time). </p><br>
+			<p>We respond within one hour during opening hours (Mon-Sun 9 am to 8 pm Beijing time). </p><br>
       <p>If it’s not our operating hours, please leave us your requests in the left “Advise Me” section. Our staff will reply ASAP.</p>
 		</div>
     
@@ -327,7 +327,7 @@ export default {
       //获取东八区时区
       var nowDate = this.getLocalTime(8),
         nowHour = nowDate.getHours();
-      if(nowHour>=9 && nowHour<22){
+      if(nowHour>=9 && nowHour<20){
         return true;
       };
       return false;

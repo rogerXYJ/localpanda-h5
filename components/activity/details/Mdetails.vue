@@ -9,7 +9,7 @@
 				</div>
 			</div>
 
-			<div class="price">
+			<div class="price clearfix">
 
 				<!-- <div class="people_change" @click="showPeopleBox=true">
 					pp for party of {{peopleNum}}
@@ -26,17 +26,17 @@
 
 				<div class="picinfo">
 					<!-- <p v-if="picInfo.originalPrice">From <span class="oldpic">{{nowExchange.symbol}} {{returnFloat(picInfo.originalPrice)}}</span></p> -->
-					<p> <b>{{nowExchange.symbol}} {{detailAll.length>0 ? (detailAll.length==1?returnFloat(detailAll[0].price):returnFloat(detailAll[peopleNum-detailAll[0].capacity].price/peopleNum)) : ''}}</b></p>
+					<p>{{nowExchange.code}} <b>{{nowExchange.symbol}} {{returnFloat(picInfo.details[peopleNum-1].price/peopleNum)}}</b></p>
 				</div>
 
 				
 
-				<div class="picRate">
+				<!-- <div class="picRate">
 					<select class="currency_type" id="changeCurrency" @change="changeCurrency" v-model="picInfo.currency">
 						<option :value="item.code" v-for="item in exchange" :key="item.code">{{item.code}}</option>
 					</select>
 					<span class="iconfont">&#xe666;</span>
-				</div>
+				</div> -->
 
 				<div class="sales" v-if="detail.sales"> Booked {{detail.sales}} {{detail.sales==1?'time':'times'}} (last 30 days)</div>
 				
@@ -92,7 +92,7 @@
 								</div>
 							</li>
 						</ul>
-						<a v-if="detail.itineraries.length>3" class="more" href="javascript:;" @click="fn">{{showMoreItinerary?'Veiw More':'Veiw Less'}}</a>	
+						<a v-if="detail.itineraries.length>3" class="more" href="javascript:;" @click="fn">{{showMoreItinerary?'View More':'View Less'}}</a>	
 					</div>
 
 					<div class="itinerary_tip" v-if="detail.groupType=='Private'"><span class="red">*</span> If you want to adjust your itinerary, feel free contact us. Since the tour is private, our staff can help you make changes according to your needs.</div>
@@ -238,7 +238,7 @@
 									<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{i.duration}} {{i.durationUnit|firstUpperCase}}</div>
 									<div class="pic">
 										<div class="old-pic" v-if="i.originalPrice">{{nowExchange.symbol}}{{returnFloat(i.originalPrice)}}</div>
-										<div class="current-price">From<b>{{nowExchange.symbol}}{{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
+										<div class="current-price">From {{nowExchange.code}} <b>{{nowExchange.symbol}}{{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
 									</div>
 								</div>
 							</a>
@@ -248,7 +248,7 @@
 			</div>
 		</div>
 		<div class="book">
-			<button><a :href="'/info/inquiry?objectId='+id" @click="gaInquire">Inquire</a></button>
+			<button @click="gaInquire">Inquire</button>
 			<button class="bookBtn" @click="goBooking">Book</button>
 		</div>
 		<!--<photo :photoList="photoList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></photo>-->
@@ -372,7 +372,7 @@ import photo from '~/components/activity/details/photo'
 			fn(){
 				this.showMoreItinerary=!this.showMoreItinerary
 				if(this.showMoreItinerary){
-					this.itinerary=this.detail.itineraries.concat().splice(0,4)
+					this.itinerary=this.detail.itineraries.concat().splice(0,3)
 				}else{
 					this.itinerary=this.detail.itineraries
 				}
@@ -387,53 +387,45 @@ import photo from '~/components/activity/details/photo'
 	
 					});
 					localStorage.setItem("owner",this.detail.owner)
+					location.href='/info/inquiry?objectId='+this.id
 			},
 			changeCurrency(e){
 				var self = this;
 				var value = e.target ? e.target.value : e;
-				var picInfo = this.picInfo;
+				var picInfo = self.picInfo;
 				var thisDetail = picInfo.details;
 
 				
 				//换算折扣价
 				var exchange = this.exchange;
-				for(var i=0;i<exchange.length;i++){
-					var thisEx = exchange[i];
-					//检测当前货币类型
-					if(thisEx.code==value){
-						//设置当前币种
-						this.nowExchange = thisEx;
-						//切换折扣价币种
-						picInfo.currency = value;
-						picInfo.symbol = thisEx.symbol;
-						picInfo.bottomPrice = picInfo.defaultPrice.bottomPrice * thisEx.exchangeRate;
-						picInfo.originalPrice = picInfo.defaultPrice.originalPrice * thisEx.exchangeRate;
-						if(picInfo.defaultPrice.childDiscount){
-							//之所以在这里加returnFloat，是为了让儿童优惠后的总价格，不会超过总价-儿童优惠价
-							picInfo.childDiscount = picInfo.defaultPrice.childDiscount * thisEx.exchangeRate;
-						}
-						//切换价格详情币种
-						for(var i=0;i<thisDetail.length;i++){
-							thisDetail[i].price = thisDetail[i].defaultPrice * thisEx.exchangeRate;
-						}
-
-						//切换详情币种
-						var sixArr = this.sixArr;
-						for(var i=0;i<sixArr.length;i++){
-							//之所以在这里加returnFloat，是为了让儿童优惠后的总价格，不会超过总价-儿童优惠价
-							sixArr[i].price = sixArr[i].defaultPrice * thisEx.exchangeRate;
-						}
+				self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price?currency="+value).then(function(res) {
+							if(self.picInfo.childDiscount){
+								self.picInfo.childDiscount=res.data.childDiscount
+							}
+							
+							self.picInfo.currency=res.data.currency
+							
+							
+					}, function(res) {
 						
-						break;
-					}
-				}
-				
-				this.detailAll = this.tableData(thisDetail);
-
-				if(this.people>0){
-					this.adultsPic = thisDetail[this.people-1].price;
-				}
-
+					});
+					
+					self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price/detail?currency="+value).then(function(res) {
+							self.picInfo.details=res.data
+						
+							self.sixArr=res.data
+							if(self.peopleNum>0){
+								self.adultsPic =thisDetail[self.peopleNum-1].price;	
+							}
+							if(res.data.length>6){
+								self.isShowTable=true
+								self.sixArr=res.data.concat().splice(0,6);
+							}else{
+								self.sixArr=res.data;
+							}
+					}, function(res) {
+						
+					});
 
 				//切换币种
 				self.$emit('input',this.nowExchange);
@@ -445,24 +437,24 @@ import photo from '~/components/activity/details/photo'
 					}
 				}, function(res) {});
 			},
-			setPriceData(){
-				var picInfo = this.picInfo;
-				var thisDetail = picInfo.details;
-				//设置默认价格和折扣价
-				picInfo.defaultPrice = {
-					bottomPrice: picInfo.bottomPrice,
-					originalPrice: picInfo.originalPrice
-				};
-				//儿童折扣
-				if(picInfo.childDiscount){
-					picInfo.defaultPrice.childDiscount = picInfo.childDiscount;
-				}
-				//设置人数列表价格
-				for(var i=0; i<thisDetail.length; i++){
-					var thisPrice = thisDetail[i].price;
-					thisDetail[i].defaultPrice = thisPrice;
-				}
-			},
+			// setPriceData(){
+			// 	var picInfo = this.picInfo;
+			// 	var thisDetail = picInfo.details;
+			// 	//设置默认价格和折扣价
+			// 	picInfo.defaultPrice = {
+			// 		bottomPrice: picInfo.bottomPrice,
+			// 		originalPrice: picInfo.originalPrice
+			// 	};
+			// 	//儿童折扣
+			// 	if(picInfo.childDiscount){
+			// 		picInfo.defaultPrice.childDiscount = picInfo.childDiscount;
+			// 	}
+			// 	//设置人数列表价格
+			// 	for(var i=0; i<thisDetail.length; i++){
+			// 		var thisPrice = thisDetail[i].price;
+			// 		thisDetail[i].defaultPrice = thisPrice;
+			// 	}
+			// },
 			goInqury(){
 				location.href="/info/inquiry?objectId="+this.id
 			},
@@ -512,7 +504,7 @@ import photo from '~/components/activity/details/photo'
 			},
 			showTable() {
 				this.isShowTable = false
-				this.sixArr=this.tableData(this.picInfo.details)
+				this.sixArr=this.picInfo.details
 			},
 			goBooking(){
 				
@@ -537,6 +529,7 @@ import photo from '~/components/activity/details/photo'
 				console.log(objDetail)
 				objDetail=JSON.stringify(objDetail)
 				localStorage.setItem("objDetail",objDetail)
+				
 				location.href="/activity/check/"+this.detail.activityId+"?people="+this.peopleNum;
 			},
 			 returnFloat(value) {
@@ -559,56 +552,56 @@ import photo from '~/components/activity/details/photo'
 			setCallBack(val) {
 				this.alertPicStatus = val
 			},
-			tableData(details) {
+			// tableData(details) {
 				
-				var newObj = function(obj) {
-					var o = {};
-					for(var key in obj) {
-						o[key] = obj[key];
-					}
-					return o;
-				}
+			// 	var newObj = function(obj) {
+			// 		var o = {};
+			// 		for(var key in obj) {
+			// 			o[key] = obj[key];
+			// 		}
+			// 		return o;
+			// 	}
 
-				let newArr = [],
-					tableD = [];
+			// 	let newArr = [],
+			// 		tableD = [];
 
 
 
-				if(details.length==1){
-					for(let i=0;i<details[0].capacity;i++){
-						var s=newObj(details[0]);
-						s.capacity = i+1;
-						newArr.push(s)
-					}
+			// 	if(details.length==1){
+			// 		for(let i=0;i<details[0].capacity;i++){
+			// 			var s=newObj(details[0]);
+			// 			s.capacity = i+1;
+			// 			newArr.push(s)
+			// 		}
 					
-				}else{
+			// 	}else{
 					
-					for(let i = 0; i < details[details.length-1].capacity; i++) {
-						let thisD = details[i];
-						newArr.push(thisD);
-						if(i + 1 > details.length - 1) break;
+			// 		for(let i = 0; i < details[details.length-1].capacity; i++) {
+			// 			let thisD = details[i];
+			// 			newArr.push(thisD);
+			// 			if(i + 1 > details.length - 1) break;
 
-						var thisC = thisD.capacity;
-						var nextC = details[i + 1].capacity;
-						var forLen = nextC - thisC - 1;
-						for(let j = 0; j < forLen; j++) {
-							var midArr = newObj(details[i+1]);
-							//console.log(midArr)
-							newArr.push(midArr);
-						}
-						//console.log(newArr)
-					}
-				}
+			// 			var thisC = thisD.capacity;
+			// 			var nextC = details[i + 1].capacity;
+			// 			var forLen = nextC - thisC - 1;
+			// 			for(let j = 0; j < forLen; j++) {
+			// 				var midArr = newObj(details[i+1]);
+			// 				//console.log(midArr)
+			// 				newArr.push(midArr);
+			// 			}
+			// 			//console.log(newArr)
+			// 		}
+			// 	}
 				
-				for(var k = 0; k < newArr.length; k++) {
-					newArr[k].capacity = k + newArr[0].capacity;
+			// 	for(var k = 0; k < newArr.length; k++) {
+			// 		newArr[k].capacity = k + newArr[0].capacity;
 
-				}
+			// 	}
 
-				//console.log(newArr);
+			// 	//console.log(newArr);
 				
-				return newArr;
-			},
+			// 	return newArr;
+			// },
 			peopleMinus(e){
 				this.peopleNum--;
 				var minLen = this.picInfo.minParticipants;
@@ -730,30 +723,24 @@ import photo from '~/components/activity/details/photo'
 			}
 		},
 		mounted: function() {
-			let that = this;
-			//加载币种
-			that.axios.get("https://api.localpanda.com/api/public/currency/all/"+that.picInfo.currency).then(function(response) {
-				// console.log(response);
-				if(response.status==200){
-					that.exchange = response.data;
-					that.nowExchange = that.exchange[0];
-					//设置当前货币符号
-					that.picInfo.symbol = that.nowExchange.symbol;
-					
-					//设置币种
-					var ua = window.navigator.userAgent.toLowerCase();
-					var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
-					if(isWx||that.picInfo.currency=="CNY"){
-						//that.defaultCurrency = 'CNY';
-						that.changeCurrency('CNY');
-					}
-					
-				}
-			}, function(response) {});
 			
-			this.picInfo.defaultCurrency = this.picInfo.currency;
+			let that = this;
+			that.adultsPic=that.picInfo.details[that.peopleNum-1].price;
+			
+			var currency= JSON.parse(Cookie.get('currency'))?JSON.parse(Cookie.get('currency')):{'code':'USD','symbol':'$'};
+			console.log(currency)
+			that.nowExchange=currency
+			//that.picInfo.symbol = that.nowExchange.symbol;
+			var ua = window.navigator.userAgent.toLowerCase();
+			var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
+			if(isWx||that.picInfo.currency=="CNY"){
+				//that.defaultCurrency = 'CNY';
+				that.changeCurrency('CNY');
+			}
+			//this.picInfo.currency=currency.code
+			//this.picInfo.defaultCurrency = this.picInfo.currency;
 			//调整不同币种价格数据
-			that.setPriceData();
+			//that.setPriceData();
 			if(that.picInfo.childDiscount){
 				that.picInfo.childDiscountDefault = that.picInfo.childDiscount;
 			}
@@ -771,13 +758,13 @@ import photo from '~/components/activity/details/photo'
 			}
 			
 			//设置价格详情页，渲染数据
-			that.detailAll = that.tableData(that.picInfo.details);
+			//that.detailAll = that.tableData(that.picInfo.details);
 			
-			if(that.tableData(that.picInfo.details).length>5){
+			if(that.picInfo.details.length>6){
 				that.isShowTable=true
-				that.sixArr=that.detailAll.concat().splice(0,6);
+				that.sixArr=that.picInfo.details.concat().splice(0,6);
 			}else{
-				that.sixArr=that.detailAll;
+				that.sixArr=that.picInfo.details;
 			}
 
 
@@ -795,7 +782,7 @@ import photo from '~/components/activity/details/photo'
 				this.peopleNum = this.picInfo.minParticipants;
 			}
 
-			//console.log(this.picInfo);
+			console.log(this.picInfo);
 			//var ua = window.navigator.userAgent.toLowerCase();
 			//that.isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
 
@@ -1234,11 +1221,8 @@ import photo from '~/components/activity/details/photo'
 				&:first-child{
 					border: solid 1px #1bbc9d;
 					background: #fff;
-					a{
-						display: block;
-						color: #1bbc9d;
-						font-size:0.36rem;
-					}
+					color: #1bbc9d;
+					font-size:0.36rem;
 				}
 				
 			}
