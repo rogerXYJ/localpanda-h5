@@ -35,7 +35,7 @@
 		},
 		methods: {
 			pageBack(){
-				history.go(-1);
+				history.back()
 				
 			}
 		},

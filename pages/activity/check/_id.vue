@@ -49,7 +49,7 @@
 				</li>
 			</ul>
 			<p>{{dateErrText}}</p>
-			<p v-if="dateTime&&timeout&&picInfo.fullRefund">You can reschedule or cancel your trip at zero cost before {{formatDate(delmulDay(dateTime,picInfo.refundTimeLimit))}}.</p>
+			<p style="color:#353a3f" v-if="dateTime&&timeout&&picInfo.fullRefund">You can reschedule or cancel your trip at zero cost before {{formatDate(delmulDay(dateTime,picInfo.refundTimeLimit))}}.</p>
 		</div>
 		<div class="btn_next">
 			<button @click="order">Next</button>
@@ -106,7 +106,8 @@
 
 				nowExchange:{},//{'rate':1,'currency':'USD','symbol':'$'}
 				exchange:[],
-				timeout:false
+				timeout:false,
+				owner:'',
 				
 			}
 		},
@@ -369,7 +370,8 @@
 		          adultsPic: that.returnFloat(that.adultsPic),
 		          title: that.title,
 		          childDiscountP: that.picInfo.childDiscount,
-		          pickup: that.pickup,
+				  pickup: that.pickup,
+				  owner:that.owner,
 		          averagePrice: that.returnFloat(
 		            that.adultsPic / (that.adults + that.children)
 		          ),
@@ -401,7 +403,7 @@
 			this.title= objDetail.title
 			this.pickup= objDetail.pickup
 			this.refundTimeLimit= objDetail.refundTimeLimit
-			
+			this.owner=objDetail.owner
 
 
 
@@ -429,7 +431,7 @@
 
 			//根据人数默认总价
 			this.adultsPic = this.picInfo.details[this.people-1].price;
-			var currency=JSON.parse(Cookie.get('currency'))?JSON.parse(Cookie.get('currency')):{'code':'USD'}
+			var currency=JSON.parse(Cookie.get('currency'))?JSON.parse(Cookie.get('currency')):{'code':'USD',symbol:"$"}
 			this.picInfo.symbol=currency.symbol;
 			this.options = {
 				minDate: this.picInfo.earliestBookDate,

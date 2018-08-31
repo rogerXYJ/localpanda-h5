@@ -46,6 +46,7 @@
 </template>
 
 <script>
+	
 	import Head from '~/components/header/index'
 	import linkFoot from '~/components/travel/expats/linkFoot'
 	export default {

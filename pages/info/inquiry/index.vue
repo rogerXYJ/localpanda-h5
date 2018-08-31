@@ -371,7 +371,7 @@ export default {
         }
 
         allTime+=200;
-        if(allTime>=10000){
+        if(allTime>=15000){
           that.loadTime = true;
           that.loadingStatus = false;
           window.clearInterval(that.webWidgetTimer);
@@ -393,6 +393,7 @@ export default {
           that.showWinBg = false;
         }
       };
+      
     }
   },
   mounted: function() {
@@ -407,7 +408,8 @@ export default {
     document.getElementById("win_bg").addEventListener("click", function() {
       that.showWinBg = false;
     });
-
+      
+    
 
 
     //设置语言

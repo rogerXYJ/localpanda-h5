@@ -1,9 +1,20 @@
 <template>
 	<div class="fillYourInfo" id="fillYourInfo">
-
+		<Head></Head>
 		<div class="fillInfo" @touchmove="hideFiexd=false">
-			<div class="back"><i class="iconfont" @click="back">&#xe615;</i></div>
-			<h3>Fill in your information</h3>
+			<div class="back">
+				<i class="iconfont" @click="back">&#xe615;</i>
+				<h3>Fill in your information</h3>
+			</div>
+			<div class="safeguard">
+				<ul>
+					<li><i class="iconfont">&#xe654;</i>We protect your personal information</li>
+					<li><i class="iconfont">&#xe654;</i>100% secure payment</li>
+					<li><i class="iconfont">&#xe654;</i>No hidden booking or credit card fees</li>
+					<li><i class="iconfont">&#xe654;</i>Instant confirmation after booking</li>
+					<li  v-if="opctions.finalRefundPeriod"><i class="iconfont">&#xe654;</i>Free cancellation or rescheduling before {{formatDate(opctions.finalRefundPeriod)}}</li>
+				</ul>
+			</div>
 			<div class="oderInfo">
 				<div class="oderTitle">{{opctions.title}}</div>
 				<div class="oderDetail">
@@ -19,7 +30,7 @@
 					</p>
 				</div>
 			</div>
-			<div v-if="!logIn" class="hint">As a guest user, you can access your order details through your name and email</div>
+			
 			<div class="orderContact">
 				<h4>Contact Information</h4>
 
@@ -65,11 +76,16 @@
 					<p v-if="hasCode==1" style="color: red;">The promotional code you entered is invalid. Please try again.</p>
 				</div>
 			</div>
-			<p class="booktip" v-if="opctions.finalRefundPeriod">You can reschedule or cancel your trip at zero cost before {{formatDate(opctions.finalRefundPeriod)}}.</p>
+			<p class="booktip" v-if="!logIn">
+				<i class="iconfont">&#xe617;</i>
+				<span>As a guest user, you can access your order details through your name and email</span>
+			</p>
+			<!-- <div  class="hint"></div> -->
 			<div class="price">Total ({{opctions.currency}}): <span @click="showPrice=!showPrice">{{opctions.symbol}}{{opctions.amount}}<i class="iconfont">&#xe659;</i></span></div>
 			<div class="nextBtn clearfix" v-show="!hideFiexd" @touchmove="stopMove">
 				<div class="next" @click="placeOrder">NEXT</div>
 			</div>
+			<div v-if="isWork()" class="chat">Having trouble booking ?&nbsp;&nbsp;&nbsp;&nbsp; <a @click="chat()">Chat with Us</a></div>
 		</div>
 
 		<transition name="fade">
@@ -87,6 +103,7 @@
 			<div class="boxline"></div>
 			<p><span>{{opctions.symbol}}{{opctions.amount}}</span>Total ({{opctions.currency}})</p>
 		</div>
+		 <Talk :zendeskStatus="zendeskStatus" @getShowZendesk="setShowZendesk"></Talk>
 		<!-- 优惠券校验失败 提示 -->
 		<div class="dialog" v-if="orderHasCouponRate">
 			<div class="dialogContent">
@@ -104,9 +121,10 @@
 <script>
 	import Vue from 'vue'
 	import booking from '~/components/booking'
-
+	import Talk from '~/components/booking/talk'
 	import { regExp,formatDate } from '~/assets/js/utils.js'
 	import countryCode from '~/assets/js/countryCode.js'
+	import Head from '~/components/header/index'
 	import { checkboxGroup, checkbox } from "~/plugins/panda/checkbox/";
 	import Loading from "~/components/plugin/Loading"
 	export default {
@@ -177,18 +195,33 @@
 				orderHasCouponRate: false, //下单 判断是否含有优惠券
 				couponType:'',//优惠券类型
 				standard:0,
-				loadingStatus:false
+				loadingStatus:false,
+				 zendeskStatus:false
 
 			}
 
 		},
 		components: {
+			Head,
 			booking,
 			checkboxGroup,
 			checkbox,
-			Loading
+			Loading,
+			Talk
 		},
 		methods: {
+			chat(){
+				
+				this.zendeskStatus=true;
+				document.documentElement.scrollTop=0;
+				history.pushState({
+					'type': 'showChat'
+				}, '');
+			},
+			setShowZendesk(val){
+				this.zendeskStatus=val
+				history.back()
+			},
 			changeFn(e) {
 				let self=this
 				if(!e.target.checked) {
@@ -588,8 +621,31 @@
 			},
 			stopMove(e) {
 				e.preventDefault();
-			}
-
+			},
+			 isWork(){
+				//获取东八区时区
+				var nowDate = this.getLocalTime(8),
+					nowHour = nowDate.getHours();
+					console.log(nowHour)
+					console.log(this.getLocalTime(8))
+				if(nowHour>=9 && nowHour<20){
+					return true;
+				};
+				return false;
+			},
+			   //得到标准时区的时间的函数
+			getLocalTime(i) {
+				//参数i为时区值数字，比如北京为东八区则输进8,西5输入-5
+				if (typeof i !== 'number') return;
+				var d = new Date();
+				//得到1970年一月一日到现在的秒数
+				var len = d.getTime();
+				//本地时间与GMT时间的时间偏移差
+				var offset = d.getTimezoneOffset() * 60000;
+				//得到现在的格林尼治时间
+				var utcTime = len + offset;
+				return new Date(utcTime + 3600000 * i);
+			},
 		},
 		created: function() {
 
@@ -607,6 +663,9 @@
 				if(self.isShowBook) {
 					self.isShowBook = false;
 				}
+				if(self.zendeskStatus){
+					self.zendeskStatus=false
+				}
 			};
 
 		},
@@ -622,6 +681,31 @@
 </script>
 
 <style lang="scss" scope>
+.chat{
+	padding: 0.4rem;
+	color: red;
+	a{
+		text-decoration: underline;
+		color: #353a3f;
+		font-weight: bold;
+	}
+}
+/** 保障 **/
+.safeguard{
+	background: #faf9f8;
+	padding: 0.2rem 0 0.2rem 0.2rem;
+	padding-left:0.3rem;
+	ul{
+		li{
+			font-size: 0.26rem;
+			i{
+				font-size: 0.2rem;
+				display: inline-block;
+				margin-right: 0.2rem;
+			}
+		}
+	}
+}
 /** 优惠券  **/
 	.checkbox_label .checkbox_content {
 			white-space: normal!important;
@@ -731,18 +815,23 @@
 			padding: 0 0.4rem 0.5rem;
 			.back {
 				line-height: 1.013333rem;
-				color: #666;
 				i {
 					font-size: 0.32rem;
 					font-weight: bold;
+					color: #666;
+					
+				}
+				h3 {
+					text-align: center;
+					width: 95%;
+					font-size: 0.44rem;
+					font-weight: bold;
+					display: inline-block;
 				}
 			}
-			h3 {
-				font-size: 0.6rem;
-				font-weight: bold;
-			}
+			
 			.oderInfo {
-				margin-top: 0.4rem;
+				margin-top: 0.2rem;
 				.oderTitle {
 					font-size: 0.34rem;
 					font-weight: bold;
@@ -761,9 +850,9 @@
 				}
 			}
 			.hint{
-				margin-top: 0.2rem;
 				padding: 0.2rem;
-				background: #faf9f8;
+				color: #878e95;
+				
 			}
 			.orderContact {
 				h4 {
@@ -875,7 +964,15 @@
 			}
 			.booktip {
 				margin-top: 0.4rem;
-				color: red;
+				i{
+					display: inline-block;
+					margin-top: -0.02rem;
+					font-size: 0.28rem;
+				}
+				span{
+					float: right;
+					width: 95%
+				}
 			}
 		}
 		.nextBtn {
@@ -965,7 +1062,7 @@
 			text-align: center;
 			font-size: 0.36rem;
 			line-height: 0.5rem;
-			margin-top: 0.5rem;
+			margin-top: 0.4rem;
 			span {
 				font-size: 0.4rem;
 				display: inline-block;
@@ -992,14 +1089,22 @@
 </style>
 
 <style lang="scss">
-	
-	#launcher {
-		bottom: 2.133333rem!important;
+	.fillYourInfo{
+		.header_search_icon{
+			display: none;
+		}
+		.selectCurrey_box{
+			display: none;
+		}
+		#launcher {
+			bottom: 2.133333rem!important;
+		}
+		
+		::-webkit-input-placeholder,::-webkit-textarea-placeholder {
+			/* WebKit browsers */
+			font-size: 0.28rem;
+			color: #878e95;
+		}
 	}
 	
-	::-webkit-input-placeholder,::-webkit-textarea-placeholder {
-		/* WebKit browsers */
-		font-size: 0.28rem;
-		color: #878e95;
-	}
 </style>

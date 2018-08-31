@@ -208,9 +208,15 @@
 					<div class="view" v-if="isShowTable" @click="showTable">View More</div>
 					<p v-if="picInfo.priceInstructions" class="picNote">{{picInfo.priceInstructions}}</p>
 				</div>
-				<div class="notes" v-if="detail.notice" id="notice">
+				<div class="notes" v-if="detail.notice||(notice&&notice.length>0)" id="notice">
 					<h3>Additional Info</h3>
-					<p>{{detail.notice}}</p>
+					<p v-if="detail.notice&&!notice.length">{{detail.notice}}</p>
+					<ul v-if="notice&&notice.length>0">
+						<li v-for="item in notice">
+							<h5>{{item.title}}</h5>
+							<span v-if="item.content">{{item.content}}</span>
+						</li>
+					</ul>
 				</div>
 			
 				<div class="inqury" @click="goInqury">
@@ -523,6 +529,7 @@ import photo from '~/components/activity/details/photo'
 					picInfo:this.picInfo,
 					title:this.detail.title,
 					pickup:this.detail.pickup,
+					owner:this.detail.owner,
 					refundTimeLimit:this.picInfo.refundTimeLimit,
 					
 				}
@@ -1034,6 +1041,36 @@ import photo from '~/components/activity/details/photo'
 				p {
 					margin-top: 0.18rem;
 					font-size: 0.26rem;
+				}
+				ul{
+					li{
+						padding-left: 0.22rem;
+						display: inherit;
+						margin-top: 0.1rem;
+						font-size: 0.32rem;
+						position: relative;
+						h5 {
+							font-size: 0.28rem;
+						}
+						span {
+							font-size: 0.26rem;
+							margin-top: 0.1rem;
+							line-height: 0.34rem;
+						}
+						&:after {
+							content: "";
+							position: absolute;
+							width: 0.053333rem;
+							height: 0.053333rem;
+							border-radius: 50%;
+							background: #353a3f;
+							left: 0px;
+							top: 0.2rem
+						}
+						&:first-child {
+							margin-top: 0.3rem;
+						}
+					}
 				}
 				.photoCover {
 						margin-top: 0.4rem;

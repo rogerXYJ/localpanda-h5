@@ -804,7 +804,6 @@
 								margin-top: 0.26rem;
 								p {
 									font-size: 0.24rem;
-									color: #e14f3f;
 									&:last-child {
 										margin-top: 0.2rem;
 									}

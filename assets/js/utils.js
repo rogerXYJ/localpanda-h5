@@ -109,7 +109,7 @@ var formatDate = function(millinSeconds){
 	var year = date.getFullYear(); //年
 	var month = monthArr[date.getMonth()]; //月
 	var ddate = date.getDate(); //日
-	return month + " "+ ddate + ", " + year;
+	return month + " "+ ddate ;
 }
 var regExp = (function() {
 	return {

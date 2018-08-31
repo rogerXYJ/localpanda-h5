@@ -630,7 +630,7 @@ module.exports = {
 		"country_name": "Syria",
 		"prefix": "963"
 	}, {
-		"country_name": "Taiwan",
+		"country_name": "Taiwan (China)",
 		"prefix": "886"
 	}, {
 		"country_name": "Tajikistan",

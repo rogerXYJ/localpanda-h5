@@ -341,14 +341,14 @@
 			</div>
 		</div>
 
-		<div class="customize">
+		<!-- <div class="customize">
 			<img src="https://cloud.localpanda.com/homepage/custom.jpg" width="100%" alt="">
 			<div class="customize_info">
 				<h4>BY YOU / FOR YOU</h4>
 				<p>Choose your cities, match your dates, <br>design your bespoke journey</p>
 				<a class="btn_customize" href="/travel/customize/step1">Build Your Adventure</a>
 			</div>
-		</div>
+		</div> -->
 
 
 		<div class="guests">
