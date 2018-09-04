@@ -741,9 +741,7 @@
 					"response": "",
 					"status": ""//SUCCESSFUL/FAILED
 				};
-
-
-				console.log(paypalCode);
+				
 
 				paypal.Button.render({
 					env : paypalCode, // sandbox | production

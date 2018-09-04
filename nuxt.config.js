@@ -9,7 +9,7 @@ module.exports = {
     // testGa: true,
     // payCode: 'pk_live_mRSdUvgwE4pZo2IVofL4cVch',
     // paypalCode: 'production',
-    //publicPath: '/mobile/_nuxt/', //PC和移动共存区分用
+    // publicPath: '/mobile/_nuxt/', //PC和移动共存区分用
 
 
 
