@@ -49,6 +49,15 @@
 						<div class="selectCarType" v-if="id==1"></div>
 						<div class="selectCarTypeNull"  v-else></div>
 					</div>
+
+					<div class="striptcard paypalcard" @click="selectCard(2)" v-if="orderInfo.currency != 'CNY'">
+						<i class="iconfont">&#xe644;</i>
+						<span>Paypal</span>
+						<div class="selectCarType" v-if="id==2"></div>
+						<div class="selectCarTypeNull" v-else></div>
+					</div>
+
+
 					<div class="striptcard" @click="selectCard(1)">
 						<i class="iconfont">&#xe675;</i>
 						<span>Credit/Debit Card </span>
@@ -101,8 +110,9 @@
 			</div>
 			<div class="btn_pay">
 				<a v-if="(id==1 && openWxUrl)||!isWx && id==1" :href="openWxUrl" @click="wxOpenClick">Pay</a>
-				<button @click="getToken" v-else-if="showWxPayBtn || orderInfo.currency != 'CNY' || id!=1">Pay</button>
-
+				<button @click="getToken" v-else-if="showWxPayBtn || id==0">Pay</button>
+				<!-- showWxPayBtn || orderInfo.currency != 'CNY' ||  -->
+				<div class="btn" v-show="id==2" id="paypal-button-container">Pay</div>
 			</div>
 		</div>
 
@@ -139,6 +149,10 @@
 //					},
 					{
 						src:'https://js.stripe.com/v3/',
+						type: 'text/javascript'
+					},
+					{
+						src:'https://www.paypalobjects.com/api/checkout.js',
 						type: 'text/javascript'
 					}
 				]
@@ -210,7 +224,7 @@
 				tryAgainHref: '',
 				cardNumber:'',
 				stripe:"",
-				id:0,//切换支付方式
+				id:2,//切换支付方式
 				payStatus:false,
 				payErrMsg:'',
 				isPay:false,
@@ -235,7 +249,7 @@
 				if(id==0){
 					this.id=1
 					//document.getElementById("oderdetial").scrollIntoView()
-				}else{
+				}else if(id==1){
 					this.id=0
 					setTimeout(function(){
 						document.body.scrollTop=
@@ -243,6 +257,8 @@
 						document.documentElement.scrollTop=
 						document.getElementById("oderdetial").scrollHeight-document.documentElement.clientHeight;
 					},0)
+				}else{
+					this.id = 2;
 				}
 				
 				
@@ -709,6 +725,113 @@
 			},
 			hideWxOpenBox() {
 				this.showWxOpenBox = false;
+			},
+			paypal(){
+				console.log(this.orderInfo);
+				var self = this;
+				var putData = {
+					"amount": this.orderInfo.amount,
+					"currency": this.orderInfo.currency,
+					"deviceType": "MOBILE",
+					"email": this.orderInfo.contactInfo.emailAddress,
+					"objectId": this.orderId,
+					"objectType": "ACTIVITY",
+					"paySerial": "",
+					"platform": "PAYPAL",
+					"response": "",
+					"status": ""//SUCCESSFUL/FAILED
+				};
+
+
+				console.log(paypalCode);
+
+				paypal.Button.render({
+					env : paypalCode, // sandbox | production
+					style:{
+						color: 'blue',
+					},
+					client: {
+            sandbox:    'AQU-ZaCuePiwF7vwM6FhAW-fq69LI6HuWuGqbk9JXEP_gZw1gronm1T25EHY7pXeevEQL3g4TVfO16PV',
+            production: 'AQdt9x4Glxn-Hxi42yzQE--MucskE38eUdITLxMQFhg1JKsmSyIWMYCd3_a_6pVGzIkspkV5OGfDccn9'
+        	},
+
+					// Show the buyer a 'Pay Now' button in the checkout flow
+					commit : false,
+
+					payment: function (data, actions) {
+            return actions.payment.create({
+							transactions: [{
+								amount: {
+									total: putData.amount,
+									currency: putData.currency
+								},
+								item_list: {
+									items: [
+										{
+											name: self.orderInfo.activityInfo.title,
+											quantity: '1',
+											price: putData.amount,
+											currency: putData.currency
+										}
+									]
+								}
+							}],
+							note_to_payer: 'Contact us for any questions on your order.'
+						});
+					},
+
+					// onAuthorize() is called when the buyer approves the payment
+					onAuthorize : function(data, actions) {
+						
+						var execute = actions.payment.execute().then(function(res) {
+
+							delete res.payer;
+							delete res.transactions;
+
+							putData.paySerial = data.paymentID;
+							putData.response = JSON.stringify(res);
+							putData.status = 'SUCCESSFUL';
+							self.paypalCreate(putData);
+						});
+						return execute;
+					},
+					onError: function (err) {
+						putData.paySerial = err.paymentID;
+						putData.response = err;
+						putData.status = 'FAILED';
+						self.paypalCreate(putData);
+					},
+
+					onCancel: function(data, actions) {
+						// putData.paySerial = err.paymentID;
+						// putData.response = err;
+						// putData.status = 'FAILED';
+						// self.paypalCreate(putData);
+						console.log(data);
+					}
+
+				}, '#paypal-button-container');
+
+			},
+			paypalCreate(putData){
+
+				var that = this;
+				
+				this.axios.post("https://api.localpanda.com/api/payment/pay/paypal",JSON.stringify(putData), {
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				}).then(function(response) {
+					if(response.data.succeed) {
+						//跳转
+						window.location.href = "/activity/payment/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + '&succeed=true&symbol=' + that.opctions.symbol + '&currency=' + that.opctions.currency;
+					} else {
+						//请求失败跳转
+						window.location.href = "/activity/payment/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + '&succeed=false&symbol=' + that.opctions.symbol + '&currency=' + that.opctions.currency + '&msg=fail';
+					}
+				}, function(response) {
+					
+				})
 			}
 		},
 		created: function() {
@@ -721,6 +844,12 @@
 			
 			this.getInfo();
 			//this.getToken()
+
+			//paypal支付
+			if(this.orderInfo.currency !='CNY'){
+				this.paypal();
+			}
+			
 
 			this.stripeFn();
 
@@ -747,7 +876,30 @@
 	}
 </script>
 <style lang="scss">
+.payNow{
 	.float{float: right;width: 85%;vertical-align:middle;}
+	.btn_pay{
+		
+		.btn{
+			position: relative;
+			.paypal-button{
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				//opacity: 0.01;
+				z-index: 2;
+				.xcomponent-outlet{
+					width: 100%!important;
+					height: 100%!important;
+				}
+				
+			}
+		}
+	}
+}
+	
 </style>
 <style lang="scss" scoped>
 	 .icon {
@@ -852,6 +1004,12 @@
 							transform: translateY(-50%);
 						}
 					}
+					.paypalcard{
+						.iconfont{
+							font-size:22px;
+							color: #009cde;
+						}
+					}
 					.paymentCard {
 						margin-top: 0.44rem;
 						padding:0 0.266666rem;
@@ -910,7 +1068,7 @@
 				padding: 0.26rem 0.4rem;
 				background: #fff;
 				button,
-				a {
+				a,.btn {
 					display: block;
 					width: 100%;
 					height: 0.9rem;
@@ -919,7 +1077,7 @@
 					text-align: center;
 					color: #fff;
 					border-radius: 0.6rem;
-					font-size: 0.346666rem;
+					font-size: 0.34rem;
 					font-weight: bold;
 				}
 			}

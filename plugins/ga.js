@@ -10,6 +10,8 @@ export default ({ app }) => {
 
   //测试和线上key
   window.payCode = buildData.payCode ? buildData.payCode : 'pk_test_ymxnY3KoqRcjCEElfvFxPy1G';
+  window.paypalCode = buildData.paypalCode ? buildData.paypalCode : 'sandbox';
+
   //判断是否禁用ga
   window.gaSend = '';
   if(!buildData.testGa){
