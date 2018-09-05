@@ -821,12 +821,13 @@
 			paypalCreate(putData){
 
 				var that = this;
-				
+				this.loadingStatus = true;
 				this.axios.post("https://api.localpanda.com/api/payment/pay/paypal",JSON.stringify(putData), {
 					headers: {
 						'Content-Type': 'application/json'
 					}
 				}).then(function(response) {
+					that.loadingStatus = false;
 					if(putData.status == 'SUCCESSFUL') {
 						//跳转
 						window.location.href = "/activity/payment/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + '&succeed=true&symbol=' + that.opctions.symbol + '&currency=' + that.opctions.currency;
