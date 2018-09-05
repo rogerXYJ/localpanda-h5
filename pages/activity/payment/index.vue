@@ -46,25 +46,21 @@
 							</svg>
 						</i>
 						<span>Wechat</span>
-						<div class="selectCarType" v-if="id==1"></div>
+						<div class="selectCarType" v-if="id==0"></div>
 						<div class="selectCarTypeNull"  v-else></div>
 					</div>
 
-					<div class="striptcard paypalcard" @click="selectCard(2)" v-if="orderInfo.currency != 'CNY'">
-						<i class="iconfont">&#xe644;</i>
-						<span>Paypal</span>
-						<div class="selectCarType" v-if="id==2"></div>
-						<div class="selectCarTypeNull" v-else></div>
-					</div>
+					
 
 
 					<div class="striptcard" @click="selectCard(1)">
 						<i class="iconfont">&#xe675;</i>
 						<span>Credit/Debit Card </span>
-						<div class="selectCarType" v-if="id==0"></div>
+						<div class="selectCarType" v-if="id==1"></div>
 						<div class="selectCarTypeNull" v-else></div>
 					</div>
-					<div class="paymentCard"  v-show="id==0">
+
+					<div class="paymentCard"  v-show="id==1">
 						<div class="cardNub">
 							<label>CARD NUMBER</label>
 							<div class="cardNub_ clearfix">
@@ -83,8 +79,19 @@
 								<div id="card-cvc" class="field empty"></div>
 							</div>
 						</div>
-					<p style="margin-top: 0.2rem; font-size: 0.32rem;color:red" v-if="payStatus">{{payErrMsg}}</p>
+						<p style="margin-top: 0.2rem; font-size: 0.32rem;color:red" v-if="payStatus">{{payErrMsg}}</p>
 					</div>
+
+
+					<!-- paypal -->
+					<div class="striptcard paypalcard" @click="selectCard(2)" v-if="orderInfo.currency != 'CNY'">
+						<i class="iconfont">&#xe644;</i>
+						<span>PayPal</span>
+						<div class="selectCarType" v-if="id==2"></div>
+						<div class="selectCarTypeNull" v-else></div>
+					</div>
+
+
 				</div>
 				<!--<div class="pic">
 					<div class="adult clearfix">
@@ -109,8 +116,8 @@
 
 			</div>
 			<div class="btn_pay">
-				<a v-if="(id==1 && openWxUrl)||!isWx && id==1" :href="openWxUrl" @click="wxOpenClick">Pay</a>
-				<button @click="getToken" v-else-if="showWxPayBtn || id==0">Pay</button>
+				<a v-if="(id==0 && openWxUrl)||!isWx && id==0" :href="openWxUrl" @click="wxOpenClick">Pay</a>
+				<button @click="getToken" v-else-if="showWxPayBtn || id==1">Pay</button>
 				<!-- showWxPayBtn || orderInfo.currency != 'CNY' ||  -->
 				<div class="btn" v-show="id==2" id="paypal-button-container">Pay</div>
 			</div>
@@ -224,7 +231,7 @@
 				tryAgainHref: '',
 				cardNumber:'',
 				stripe:"",
-				id:2,//切换支付方式
+				id:'',//切换支付方式
 				payStatus:false,
 				payErrMsg:'',
 				isPay:false,
@@ -247,10 +254,10 @@
 			selectCard(id){
 				//console.log(id)
 				if(id==0){
-					this.id=1
+					this.id=0;
 					//document.getElementById("oderdetial").scrollIntoView()
 				}else if(id==1){
-					this.id=0
+					this.id=1;
 					setTimeout(function(){
 						document.body.scrollTop=
 						document.getElementById("oderdetial").scrollHeight-document.documentElement.clientHeight;
@@ -322,7 +329,7 @@
 
 					//人民币支付
 					if(that.opctions.currency == 'CNY') {
-						that.id=1
+						that.id=0;
 						//微信外部H5
 						if(!that.isWx) {
 							that.openWxPay({
@@ -523,7 +530,7 @@
 				//console.log(this.postData)
 				if(that.isWx) {
 					//微信内部
-					if(that.id==1) {
+					if(that.id==0) {
 						if(this.payData){
 							this.wxPay(this.payData);
 						}
