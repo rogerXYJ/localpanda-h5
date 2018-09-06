@@ -144,6 +144,8 @@ export default {
           if(zenHeader){
             zenHeader.style.marginTop = '-50px';
           }
+          var ChatPanel = iframeDocument.querySelector(".meshim_widget_components_mobileChatWindow_ChatPanel");
+          ChatPanel.style="height:calc(100% - 86px)";
           
           // zenDeskHidden.className = '';
           // zenDeskHidden.style.height = '100%';

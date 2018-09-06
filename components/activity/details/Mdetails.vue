@@ -74,9 +74,9 @@
 			<div class="heightLights" id="heightLights" v-if="highlights.length">
 				<p :key="index" class="clearfix" v-for="(item,index) in highlights"><i class="iconfont">&#xe654;</i><span>{{item}}</span></p>
 			</div>
-			<div class="journey" ref="journey" v-if="introduction.length || detail.itineraries">
+			<div class="journey" ref="journey" v-if="introduction.length || detail.itineraries" id="Itinerary">
 				<div class="expect">
-					
+					<h3 class='itinerary_title'>Itinerary</h3>
 					<div class="introduction" :class="{'show':isShowMore}">
 						<p :key="index" v-for="(j,index) in introduction">{{j}}</p>
 						<ul>
@@ -909,7 +909,7 @@ import photo from '~/components/activity/details/photo'
 			}
 
 			.expect-title {
-				font-size: 0.3rem;
+				font-size: 0.32rem;
 				font-weight: bold;
 				margin-top: 0.44rem;
 			}
@@ -918,7 +918,11 @@ import photo from '~/components/activity/details/photo'
 				padding-bottom: 0.64rem;
 				border-bottom: 1px solid #dde0e0;
 				.expect {
-					
+					.itinerary_title{
+						font-size: 0.32rem;
+						font-weight: bold;
+						margin-bottom:0.4rem;
+					}
 					.introduction {
 						
 					
@@ -978,7 +982,7 @@ import photo from '~/components/activity/details/photo'
 				padding: 0.44rem 0;
 				border-bottom: 1px solid #dde0e0;
 				h3 {
-					font-size: 0.3rem;
+					font-size: 0.32rem;
 					font-weight: bold;
 				}
 				.childDiscount{
@@ -1035,7 +1039,7 @@ import photo from '~/components/activity/details/photo'
 				padding: 0.44rem 0;
 				border-bottom: 1px solid #dde0e0;
 				h3 {
-					font-size: 0.3rem;
+					font-size: 0.32rem;
 					font-weight: bold;
 				}
 				p {

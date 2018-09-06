@@ -41,6 +41,7 @@
 						:remarkData="remarkData" 
 						:userABtestID="userABtestID" 
 						:ABtest="ABtest" 
+						:highlights="highlights"
 						></Mmeau>
         </transition>
       	<div class="marsk" v-if="isscroll" @click.stop="showMeau">

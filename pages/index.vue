@@ -377,8 +377,8 @@
 		
 		<Foot></Foot>
 
-
-		<a href="/info/feedback/" class="btn inquire">Inquire</a>
+			<Talk :zendeskStatus="zendeskStatus" @getShowZendesk="setShowZendesk"></Talk>
+			<a @click="chat" class="btn inquire">Inquire</a>
 		
 	</div>
 </template>
@@ -386,7 +386,7 @@
 
 	import Head from '~/components/header/'
 	import Foot from "~/components/footer/"
-
+	import Talk from '~/components/booking/talk'
 	import Vue from "vue";
 
 	// if(process.browser) {
@@ -397,7 +397,8 @@
 		name: 'activityList',
 		components: {
 			Head,
-			Foot
+			Foot,
+			Talk
 		},
 		async asyncData({
 			route,
@@ -408,7 +409,8 @@
 
 			return {
 				showHeaderSearch: false,
-				keyword:''
+				keyword:'',
+				zendeskStatus:false
 			}
 		},
 		computed:{
@@ -419,7 +421,46 @@
 			searchChange(value){
 				this.keyword = value;
 			},
-			
+			isWork(){
+				//获取东八区时区
+				var nowDate = this.getLocalTime(8),
+					nowHour = nowDate.getHours();
+					console.log(nowHour)
+					console.log(this.getLocalTime(8))
+				if(nowHour>=9 && nowHour<20){
+					return true;
+				};
+				return false;
+			},
+			   //得到标准时区的时间的函数
+			getLocalTime(i) {
+				//参数i为时区值数字，比如北京为东八区则输进8,西5输入-5
+				if (typeof i !== 'number') return;
+				var d = new Date();
+				//得到1970年一月一日到现在的秒数
+				var len = d.getTime();
+				//本地时间与GMT时间的时间偏移差
+				var offset = d.getTimezoneOffset() * 60000;
+				//得到现在的格林尼治时间
+				var utcTime = len + offset;
+				return new Date(utcTime + 3600000 * i);
+			},
+			chat(){
+				if(this.isWork()){
+					this.zendeskStatus=true;
+					document.documentElement.scrollTop=0;
+					history.pushState({
+						'type': 'showindexChat'
+					}, '');
+				}else{
+					location.href="/info/feedback/"
+				}
+				
+			},
+			setShowZendesk(val){
+				this.zendeskStatus=val
+				history.back()
+			},
 		},
 		watch: {
 			
@@ -435,7 +476,11 @@
 					el: '#swiper_guests_pagination'
 				}
 			});
-
+			window.onpopstate = function(event) {
+				if(self.zendeskStatus){
+					self.zendeskStatus=false
+				}
+			};
 			
 			
 		},

@@ -4,8 +4,11 @@
 			
 			<ul class="clearfix">
 
-				<li v-if="introduction.length || detail.itineraries">
+				<li v-if="highlights&&highlights.length>0">
 					<a href="#journey">What You Can Expect</a>
+				</li>
+				<li v-if="introduction.length || detail.itineraries">
+					<a href="#Itinerary">Itinerary</a>
 				</li>
 				<li v-if="photoList.length>0">
 					<a href="#photoList">Moments in Travel</a>
@@ -64,7 +67,8 @@
 			'recommed',
 			'remarkData',
 			"userABtestID",
-			"ABtest"
+			"ABtest",
+			'highlights'
 
 		],
 		name: "Mmenu",
