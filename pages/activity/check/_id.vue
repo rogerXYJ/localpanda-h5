@@ -149,7 +149,6 @@
 
 			Promise1.then(function(results){
 				//data.calendar = results.data?results.data:[];
-				console.log(results);
 				//同步回调
 				callback(null,results);
 				
