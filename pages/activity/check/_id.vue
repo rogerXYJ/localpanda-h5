@@ -80,10 +80,20 @@
 
 	export default {
 		name: "activitiesDetail",
-		data() {
-			var people = parseInt(this.$route.query.people);
-			
-			return {
+		async asyncData({
+			route,
+			store,
+			error,
+			apiBasePath,
+			redirect,
+			req
+		},callback) {
+
+
+			let id = route.params.id;
+			var people = parseInt(route.query.people);
+
+			var data = {
 				dateTime: '',
 				logIn: '',
 				people: people?people:2,
@@ -109,7 +119,36 @@
 				timeout:false,
 				owner:'',
 				
-			}
+			};
+
+			//基本信息
+			var Promise1 = new Promise(function(resolve, reject){
+				Vue.axios.get(apiBasePath + "product/activity/" + id).then(function(res) {
+					// var consoleTimeS2 = new Date().getTime();
+					// 	console.log('基本信息接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
+
+					var thisData = res.data;
+						if(!thisData.allAvailable){
+							Vue.axios.get(apiBasePath + "product/activity/"+id+"/sale/calendar").then(function(resCalendar) {
+								resolve(resCalendar);
+							}, function(res) {
+								resolve(res);
+							});
+						}
+
+					
+				}, function(res) {
+					resolve(res);
+				});
+			});
+
+			Promise1.then(function(results){
+				data.calendar = results.data?results.data:[];
+				//同步回调
+				callback(null,data);
+				
+			});
+
 		},
 
 		components: {
@@ -406,8 +445,6 @@
 			this.owner=objDetail.owner
 
 
-
-
 			//加载币种
 			// that.axios.get("https://api.localpanda.com/api/public/currency/all/"+that.picInfo.defaultCurrency).then(function(response) {
 			// 	// console.log(response);
@@ -429,6 +466,13 @@
 				this.adults = maxPeople;
 			}
 
+			//团期日期
+			var saleDate = [];
+			for(var i=0;i<this.calendar.length;i++){
+				var thisData = this.calendar[i];
+				saleDate.push(thisData.saleDate);
+			}
+
 			//根据人数默认总价
 			this.adultsPic = this.picInfo.details[this.people-1].price;
 			var currency=JSON.parse(Cookie.get('currency'))?JSON.parse(Cookie.get('currency')):{'code':'USD',symbol:"$"}
@@ -437,6 +481,7 @@
 				minDate: this.picInfo.earliestBookDate,
 				maxDate: addmulMonth(this.picInfo.earliestBookDate, 12),
 				disableMobile: true,
+				enable: saleDate,
 				onOpen : function(e){
 					
 					that.showWinBg = true;
@@ -570,9 +615,9 @@
 	.flatpickr-calendar.open:before,.flatpickr-calendar.open:after{
 		display: none;
 	}
-	.flatpickr-day.nextMonthDay{
-		color: #393939!important;
-	}
+	// .flatpickr-day.nextMonthDay{
+	// 	color: #393939!important;
+	// }
 
 	
 	#launcher {
