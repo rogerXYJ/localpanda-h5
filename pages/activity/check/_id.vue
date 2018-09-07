@@ -119,6 +119,8 @@
 				timeout:false,
 				owner:'',
 				
+				calendar:[]
+				
 			};
 
 			//基本信息
@@ -130,22 +132,26 @@
 					var thisData = res.data;
 						if(!thisData.allAvailable){
 							Vue.axios.get(apiBasePath + "product/activity/"+id+"/sale/calendar").then(function(resCalendar) {
-								resolve(resCalendar);
+								data.calendar = resCalendar.data;
+								resolve(data);
 							}, function(res) {
-								resolve(res);
+								resolve(data);
 							});
+						}else{
+							resolve(data);
 						}
 
 					
 				}, function(res) {
-					resolve(res);
+					resolve(data);
 				});
 			});
 
 			Promise1.then(function(results){
-				data.calendar = results.data?results.data:[];
+				//data.calendar = results.data?results.data:[];
+				console.log(results);
 				//同步回调
-				callback(null,data);
+				callback(null,results);
 				
 			});
 
@@ -599,9 +605,7 @@
 		.flatpickr-month{
 			height: 40px;
 		}
-		.flatpickr-day.disabled, .flatpickr-day.disabled:hover{
-			color:rgba(57, 57, 57, .3);
-		}
+		
 		.flatpickr-days,.flatpickr-weekdays,.flatpickr-rContainer,.dayContainer{
 			width: 100%;
 			max-width: none;
@@ -615,9 +619,12 @@
 	.flatpickr-calendar.open:before,.flatpickr-calendar.open:after{
 		display: none;
 	}
-	// .flatpickr-day.nextMonthDay{
-	// 	color: #393939!important;
-	// }
+	.flatpickr-calendar .flatpickr-day.nextMonthDay,.flatpickr-calendar .flatpickr-day.prevMonthDay{
+		color: #393939;
+	}
+	.flatpickr-calendar .flatpickr-day.disabled, .flatpickr-day.disabled:hover{
+		color:rgba(57, 57, 57, .3);
+	}
 
 	
 	#launcher {
