@@ -84,7 +84,7 @@
 
 
 					<!-- paypal -->
-					<div class="striptcard paypalcard" @click="selectCard(2)" v-if="orderInfo.currency != 'CNY' && opctions.currency != 'JPY'">
+					<div class="striptcard paypalcard" @click="selectCard(2)" v-if="orderInfo.currency != 'CNY'">
 						<i class="iconfont">&#xe644;</i>
 						<span>PayPal</span>
 						<div class="selectCarType" v-if="id==2"></div>

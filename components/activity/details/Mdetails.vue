@@ -197,10 +197,10 @@
 								<span v-if="item.capacity==1">1 person</span>
 								<span v-else>{{item.capacity}} people</span>
 							</td>
-							<td><span>{{nowExchange.symbol}} {{returnFloat(item.price)}} {{nowExchange.code}}</span></td>
+							<td><span>{{nowExchange.symbol}} {{item.price}} {{nowExchange.code}}</span></td>
 							<td>
 								<div v-show="item.capacity">
-									<span>{{nowExchange.symbol}} {{returnFloat(item.price/item.capacity)}} {{nowExchange.code}}</span>
+									<span>{{nowExchange.symbol}} {{item.perPersonPrice}} {{nowExchange.code}}</span>
 								</div>
 							</td>
 						</tr>
