@@ -113,7 +113,7 @@
 	import FBLogin from "~/plugins/panda/FBLogin/";
 
 	export default {
-		props:["showSearch",'searchValue',"isExpats","people",'nowCurrency'],
+		props:["showSearch",'searchValue',"isExpats",'nowCurrency'],
 		name:'M-head',
 		data(){
 			var query = this.$route.query;
@@ -128,8 +128,6 @@
 				query: query,
 				path: this.$route.path,
 				//gaType: query.type ? query.type : 'direct',
-
-				participants: this.people || 2,
 				inputTimer: null,
 				//搜索默认推荐
 				recommend:{
@@ -254,7 +252,7 @@
 				// };
 				// return '/activity/list/China' + (queryStr ? '?' : '') + queryStr.substring(1);
 
-				return '/activity/list/China?keyword=' + value.replace(/(^\s*)|(\s*$)/g,'') + (this.participants==2?'':'&participants='+this.participants)+'&type=' + (type?type:'direct');
+				return '/activity/list/China?keyword=' + value.replace(/(^\s*)|(\s*$)/g,'')+'&type=' + (type?type:'direct');
 			},
 			searchFn(){
 				if(!this.searchVal.replace(/(^\s*)|(\s*$)/g,'')){

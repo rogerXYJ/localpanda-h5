@@ -19,14 +19,14 @@
 				<div class="select_people">
 					<!-- {{peopleNum}} People <i class="iconfont">&#xe666;</i> -->
 					<select v-model="peopleNum" @change="changePeople">
-						<option :value="item" :key="index" v-for="(item,index) in picInfo.maxParticipants" v-if="item>=picInfo.minParticipants">pp for party of {{item}}</option>
+						<option :value="item.label" :key="index" v-for="(item,index) in participantsOption">{{item.selectparticipant}}</option>
 					</select>
 					<i class="iconfont">&#xe666;</i>
 				</div>
 
 				<div class="picinfo">
 					<!-- <p v-if="picInfo.originalPrice">From <span class="oldpic">{{nowExchange.symbol}} {{returnFloat(picInfo.originalPrice)}}</span></p> -->
-					<p>{{nowExchange.code}} <b>{{nowExchange.symbol}} {{returnFloat(picInfo.details[peopleNum-1].price/peopleNum)}}</b></p>
+					<p>{{nowExchange.code}} <b>{{nowExchange.symbol}} {{returnFloat(picInfo.details[peopleNum-1].price/peopleNum)}}</b>{{returnText(peopleNum)}}</p>
 				</div>
 
 				
@@ -357,12 +357,62 @@ import photo from '~/components/activity/details/photo'
 				//defaultCurrency : 'USD',
 				nowExchange:{},//{'rate':1,'currency':'USD','symbol':'$'}
 				exchange:[],
-
 				peopleNum: participants ? participants : 2,
 				showPeopleBox: false,
 				
 				itinerary:[],//行程折叠
-				showMoreItinerary:false
+				showMoreItinerary:false,
+				participantsOption:[
+					{
+						selectparticipant:'',
+						label:0
+
+					},
+					{
+						selectparticipant:'1 person',
+						label:1
+					},
+					{
+						selectparticipant:'2 people ',
+						label:2
+
+					},
+					{
+						selectparticipant:'3 people',
+						label:3
+
+					},
+					{
+						selectparticipant:'4 people ',
+						label:4
+
+					},
+					{
+						selectparticipant:'5 people',
+						label:5
+
+					},
+					{
+						selectparticipant:'6 people',
+						label:6
+
+					},
+					{
+						selectparticipant:'7 people',
+						label:7
+
+					},
+					{
+						selectparticipant:'8 people',
+						label:8
+
+					},
+					{
+						selectparticipant:'9 people & more',
+						label:9
+
+					},
+					],
 				
 				
 		}
@@ -461,6 +511,9 @@ import photo from '~/components/activity/details/photo'
 			// 		thisDetail[i].defaultPrice = thisPrice;
 			// 	}
 			// },
+			returnText(peopleNum){
+				return peopleNum?(peopleNum==1?' for 1 person':' pp for party of '+ peopleNum):' pp'
+			},
 			goInqury(){
 				location.href="/info/inquiry?objectId="+this.id
 			},
@@ -631,6 +684,7 @@ import photo from '~/components/activity/details/photo'
 			},
 			changePeople(e){
 				this.peopleNum = e.target.value;
+				console.log(this.peopleNum )
 			},
 			noScroll(e){
 				e.preventDefault();
@@ -1432,10 +1486,12 @@ import photo from '~/components/activity/details/photo'
 	.price {
 		
 		.picinfo {
-			float: right;
+			
 			line-height: 0.74rem;
 			margin-right: 0.3rem;
 				p {
+					position: relative;
+					right:-0.5rem;
 					font-size: 0.28rem;
 					color: #878e95;
 					b {
@@ -1482,7 +1538,7 @@ import photo from '~/components/activity/details/photo'
 				line-height: 0.8rem;
 				i{
 					position: absolute;
-					right: 0;
+					right: 1.5rem;
 					top: 0;
 					height: 0.8rem;
 					line-height: 0.8rem;
@@ -1491,10 +1547,9 @@ import photo from '~/components/activity/details/photo'
 					font-weight: bold;
 				}
 				select{
-					width: 100%;
-					height: 100%;
+					
 					line-height: 0.8rem;
-					padding: 0 0.4rem 0 0.2rem;
+					padding: 0 0.2rem 0 0.2rem;
 					background: none;
 					border: none;
 					appearance:none;
@@ -1502,6 +1557,7 @@ import photo from '~/components/activity/details/photo'
 					-webkit-appearance:none;
 					position: relative;
 					z-index: 2;
+					opacity: 0;
 				}
 			}
 		}

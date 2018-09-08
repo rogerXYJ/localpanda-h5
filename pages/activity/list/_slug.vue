@@ -598,7 +598,7 @@
 
 <template>
 	<div class="activity_list">
-		<Head :searchValue="keyword" :people="peopleNum" :showSearch="showHeaderSearch" @searchChange="searchChange" @closeSearch="showHeaderSearch=false"  :nowCurrency="currency" @headCurrency="headCurrencyFn"></Head>
+		<Head :searchValue="keyword" :showSearch="showHeaderSearch" @searchChange="searchChange" @closeSearch="showHeaderSearch=false"  :nowCurrency="currency" @headCurrency="headCurrencyFn"></Head>
 
 		<div class="fixed_all" id="fixed_all">
 			<div class="fixed_box" :class="{filter_fixed:isFixed}">
@@ -614,8 +614,8 @@
 
 					<div class="select_people">
 						<!-- {{peopleNum}} People <i class="iconfont">&#xe666;</i> -->
-						<select v-model="peopleNum" @change="changePeople">
-							<option :value="item" :key="index" v-for="(item,index) in participantsAll.maxValue" v-if="item>=participantsAll.minValue">{{item}} {{item==1?'Person':'People'}}</option>
+						<select class="select_people_box" v-model="postData.participants" @change="changePeople">
+							<option v-for="(item,index) in participantsOptionFn()" :value="item.label">{{item.selectparticipant}}</option>
 						</select>
 						<i class="iconfont">&#xe666;</i>
 					</div>
@@ -678,7 +678,7 @@
 			</div>
 			<ul class="list_ul" v-show="activityList.length">
 				<li :key="index" v-for="(item,index) in activityList">
-					<a :href="'/activity/details/'+item.activityId + '?participants=' + peopleNum">
+					<a :href="'/activity/details/'+item.activityId">
 						<div class="list_img" v-lazy:background-image="item.coverPhotoUrl">
 							<p>{{item.category}}</p>
 						</div>
@@ -699,8 +699,8 @@
 								Booked by {{item.sales}} travelers (last 30 days)
 							</div> -->
 							<div class="price_box clearfix">
-								<span class="list_price">
-									{{currency.code}}<b>{{currency.symbol}}{{item.perPersonPrice}}</b>pp
+								<span class="list_price">{{!postData.participants?'From ':''}}
+									{{currency.code}}<b>{{currency.symbol}}{{postData.participants?item.perPersonPrice:item.bottomPrice}}</b>{{postData.participants?(postData.participants==1?'for 1 person':'pp for party of '+postData.participants):'pp'}}
 								</span>
 								<p v-if="item.sales">Booked {{item.sales}} {{item.sales>1?'times':'time'}} (last 30 days)</p>
 							</div>
@@ -723,7 +723,7 @@
 			</Back>
 			<div class="filter_content">
 				<dl>
-					<dt>Price / person for party of {{peopleNum}}</dt>
+					<dt>{{postData.participants!=0?'Price/person for party of ' + postData.participants:'Price/person'}}</dt>
 					<dd>
 						<div class="filter_price" v-if="currency.code=='CNY'">
 							<slider v-model="sliderValue" max="3030" maxTipValue="3000+" step="30"></slider>
@@ -820,7 +820,16 @@
 			var options = query.options ? JSON.parse(query.options) : '';
 			var sort = query.sort ? JSON.parse(query.sort) : '';
 			var keyword = query.keyword ? query.keyword : '';
-
+			//默认请求接口post的数据
+			var postData = {
+				keyword:loc=='Xian'?"Xi'an":loc,
+				pageNum:1,
+				pageSize:10,
+				sort:{"type":"SCORE"},
+				participants: 0,
+				currency:'USD',
+				type: gaType
+			};
 			//如果什么条件都没有则默认北京的数据
 			var isAll = (loc.toLowerCase() =='china' && !options && !keyword);
 
@@ -831,33 +840,6 @@
 			if(keyword){
 				loc = keyword;
 			}
-
-			//默认请求接口post的数据
-			var participants = query.participants ? parseInt(query.participants) : 2;
-			var gaType = query.type ? query.type : 'direct';
-
-			var postData = {
-				keyword:loc=='Xian'?"Xi'an":loc,
-				pageNum:1,
-				pageSize:10,
-				sort:{"type":"SCORE"},
-				participants: participants,
-				currency:'USD',
-				type: gaType
-			};
-
-
-			//兼容老的key，老key转为新key
-			var oldType = function(text){
-				if(text=='TOURTYPE'){
-					return 'TOUR_TYPE';
-				}else if(text=='DURATIONS'){
-					return 'DURATION';
-				}
-				return text;
-			};
-
-
 			//获取页面cookie
 			var userCookie = {};
 			if(req){
@@ -871,12 +853,29 @@
 				}
 			};
 
+			var gaType = query.type ? query.type : 'direct';
+			var participants = 0
 			var currency = {code: "USD", symbol: "$", exchangeRate: 1};
 			if(userCookie.currency){
 				currency = JSON.parse(decodeURIComponent(userCookie.currency));
 				postData.currency = currency.code;
 			}
 			
+			if(userCookie.participants){
+				postData.participants=JSON.parse(decodeURIComponent(userCookie.participants));
+			}
+			//兼容老的key，老key转为新key
+			var oldType = function(text){
+				if(text=='TOURTYPE'){
+					return 'TOUR_TYPE';
+				}else if(text=='DURATIONS'){
+					return 'DURATION';
+				}
+				return text;
+			};
+			
+		
+
 			//兼容老的key，新key转为老key
 			var oldTypeKey = function(text){
 				if(text=='tour_type'){
@@ -894,7 +893,7 @@
 			}else if(currency.code=='JPY'){
 				price = [0,50500];
 			}
-
+			
 			
 			//根据url数据生成post需要的格式
 			var postFilters = [];
@@ -942,10 +941,14 @@
 			if(sort){
 				postData.sort = sort;
 			}
-			console.log(postData)
+			let obj = Object.assign({}, postData);
+			//处理调用select 人数
+			if(obj.participants==0){
+				delete obj.participants
+			}
 			//console.log(postData);
 			try{
-				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(postData), {
+				listdata = await Vue.axios.post(apiBasePath + "search/activity", JSON.stringify(obj), {
 					headers: {
 						'Content-Type': 'application/json'
 					}
@@ -1068,9 +1071,63 @@
 				showClear: hasFilterCheck?true:false,
 
 				showHeaderSearch: false,
+				participantsOption:[
+					{
+						selectparticipant:'Guests Number',
+						label:0
+
+					},
+					{
+						selectparticipant:'1 person',
+						label:1
+					},
+					{
+						selectparticipant:'2 people',
+						label:2
+
+					},
+					{
+						selectparticipant:'3 people',
+						label:3
+
+					},
+					{
+						selectparticipant:'4 people',
+						label:4
+
+					},
+					{
+						selectparticipant:'5 people',
+						label:5
+
+					},
+					{
+						selectparticipant:'6 people',
+						label:6
+
+					},
+					{
+						selectparticipant:'7 people',
+						label:7
+
+					},
+					{
+						selectparticipant:'8 people',
+						label:8
+
+					},
+					{
+						selectparticipant:'9 people & more',
+						label:9
+
+					},
+				],
+
+
+
 
 				participantsAll:participantsAll,
-				peopleNum: participants<participantsAll.minValue?participantsAll.minValue:participants,
+				peopleNum: 0,
 
 				//price: price,
 				defaultPrice: price,
@@ -1172,7 +1229,23 @@
 				this.zendeskStatus=val
 				history.back()
 			},
-
+			participantsOptionFn(){
+				var participants=this.participantsOption,
+				minParticipants=this.participantsAll.minValue,
+				maxParticipants=this.participantsAll.maxValue;
+				var newParticipants=[];
+				for(var i = 1;i<participants.length;i++){
+					if(participants[i].label>=minParticipants&&participants[i].label<=maxParticipants){
+						newParticipants.push(participants[i])
+					}
+				}
+				newParticipants.unshift({
+					selectparticipant:'Guests Number',
+					label:0
+				})
+				
+				return newParticipants;
+			},
 
 			hideFilter(e){
 				var isBg = /filter_products/.test(e.target.className);
@@ -1364,9 +1437,9 @@
 				}
 
 				//人数
-				if(this.peopleNum!=2){
-					jumpData.participants = this.peopleNum;
-				}
+				// if(this.peopleNum!=2){
+				// 	jumpData.participants = this.peopleNum;
+				// }
 
 				//去掉空数据,并对跳转的数据排序，把需要的数据放在新的options里
 				var options = {};
@@ -1459,7 +1532,7 @@
 					case 'ATTRACTION': typeStr = 'Points of Interest'; break;
 					case 'CATEGORY': typeStr = 'Products'; break;
 					case 'CITY': typeStr = 'DESTINATIONS COVERED'; break;
-					case 'PRICE': typeStr = 'Price / person for party of '+this.peopleNum; break;
+					//case 'PRICE': typeStr = 'Price / person for party of '+this.peopleNum; break;
 				};
 				return typeStr ? typeStr : type;
 			},
@@ -1538,6 +1611,7 @@
 				this.peopleNum = e.target.value;
 				var urlObj = this.$route.query;
 				urlObj.participants = this.peopleNum;
+				Cookie.set('participants',this.postData.participants,{path:'/','expires':30})
 				var urlQuery = this.getUrlQuery(urlObj);
 
 				//有数据则跳转
@@ -1620,13 +1694,6 @@
 			}
 		},
 		mounted: function() {
-			console.log(window.name)
-			if(window.name != "aa"){
-				window.name = "aa";
-				location.reload();
-			}else{
-				window.name = "";
-			}
 			var self = this;
 			//filter统计ga   start  ///////////////////////////////////////////
 			var listGa = localStorage.getItem('listGa');
@@ -1645,8 +1712,13 @@
 				localStorage.removeItem('listGa');
 			},900);
 			//filter统计ga   end  ///////////////////////////////////////////
-			
-
+			if(window.name != "aa"){
+				location.reload();
+				window.name = "aa";
+			}else{
+				window.name = "";
+			}
+			document.querySelector('.select_people_box option').setAttribute('hidden','hidden')
 			
 			//筛选悬浮
 			// var filterBox = document.getElementById('fixed_all'),
