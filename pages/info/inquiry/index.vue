@@ -466,10 +466,7 @@ body{
     .flatpickr-month {
       height: 40px;
     }
-    .flatpickr-day.disabled,
-    .flatpickr-day.disabled:hover {
-      color: rgba(57, 57, 57, 0.3);
-    }
+    
     .flatpickr-days,
     .flatpickr-weekdays,
     .flatpickr-rContainer,
@@ -487,9 +484,12 @@ body{
   .flatpickr-calendar.open:after {
     display: none;
   }
-  .flatpickr-day.nextMonthDay {
-    color: #393939 !important;
-  }
+  .flatpickr-calendar .flatpickr-day.nextMonthDay,.flatpickr-calendar .flatpickr-day.prevMonthDay{
+		color: #393939;
+	}
+	.flatpickr-calendar .flatpickr-day.disabled, .flatpickr-day.disabled:hover{
+		color:rgba(57, 57, 57, .3);
+	}
   .flatpickr-day {
     // color: #393939!important;
   }
