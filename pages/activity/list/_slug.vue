@@ -960,7 +960,7 @@
 
 			//列表页数据
 			var data = listdata.data;
-			console.log(obj)
+			//console.log(obj)
 			//console.log(data);
 
 			//根据接口数据，生成需要筛选的类型默认数据和默认filter数据
@@ -1636,8 +1636,19 @@
 				
 				//修改翻页数量
 				//this.postData.pageNum = 1;
-				//this.postData.currency = currency.code;
+				this.postData.currency = currency.code;
 
+				
+				//console.log(filterCheck);
+
+				//重置价格区间
+				var filterCheck = this.filterCheck;
+				for(var key in filterCheck){
+					if(key=='price'){
+						delete filterCheck[key];
+					}
+				}
+				
 				this.jumpUrl();
 				
 				//请求数据
@@ -1719,13 +1730,21 @@
 				localStorage.removeItem('listGa');
 			},900);
 			//filter统计ga   end  ///////////////////////////////////////////
-			if(window.name != "aa"){
+
+
+			//返回页面的时候币种不一致 就刷新页面
+			var nowCurrency = JSON.parse(Cookie.get('currency'));
+			if(nowCurrency.code != this.currency.code){
 				location.reload();
-				window.name = "aa";
-			}else{
-				window.name = "";
 			}
-			document.querySelector('.select_people_box option').setAttribute('hidden','hidden')
+
+			// if(window.name != "aa"){
+			// 	//location.reload();
+			// 	window.name = "aa";
+			// }else{
+			// 	window.name = "";
+			// }
+			//document.querySelector('.select_people_box option').setAttribute('hidden','hidden')
 			
 			//筛选悬浮
 			// var filterBox = document.getElementById('fixed_all'),

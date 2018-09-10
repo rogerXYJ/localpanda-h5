@@ -450,10 +450,14 @@
 			// }else{
 			// 	window.name = "";
 			// }
-			 var currency=JSON.parse(Cookie.get('currency'))?JSON.parse(Cookie.get('currency')):{code:'USD',symbol:'$'}
-				if(this.currency!=currency){
-					this.currency=currency
-				}
+			var cookieCurrency = JSON.parse(Cookie.get('currency'));
+			var ua = window.navigator.userAgent.toLowerCase();
+			var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
+			var currency= cookieCurrency ? cookieCurrency : (isWx ? {'code':'CNY','symbol':'¥'} : {'code':'USD','symbol':'$'});
+
+			if(this.currency!=currency){
+				this.currency=currency
+			}
 			console.log(this.$data);
 
 			//等待渲染完毕后调用

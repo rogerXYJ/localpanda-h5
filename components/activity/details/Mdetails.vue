@@ -813,13 +813,16 @@ import photo from '~/components/activity/details/photo'
 		mounted: function() {
 			
 			let that = this;
-			 
-			var currency= JSON.parse(Cookie.get('currency'))?JSON.parse(Cookie.get('currency')):{'code':'USD','symbol':'$'};
-			that.nowExchange=currency
-			//that.picInfo.symbol = that.nowExchange.symbol;
+			
 			var ua = window.navigator.userAgent.toLowerCase();
 			var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
-			if(isWx||that.picInfo.currency=="CNY"){
+			
+			var cookieCurrency = JSON.parse(Cookie.get('currency'));
+			var currency= cookieCurrency ? cookieCurrency : (isWx ? {'code':'CNY','symbol':'¥'} : {'code':'USD','symbol':'$'});
+			that.nowExchange=currency
+			//that.picInfo.symbol = that.nowExchange.symbol;
+			
+			if(isWx && !cookieCurrency){
 				//that.defaultCurrency = 'CNY';
 				that.changeCurrency('CNY');
 			}

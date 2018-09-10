@@ -172,6 +172,7 @@
 				mobileCode: '',
 				codeErr: '',
 				countryCode: countryCode.phone_countries,
+				country:'',
 
 				//显示code列表
 				showCode: false,
@@ -282,10 +283,11 @@
 			},
 			//获取code
 			setCode(val) {
-				console.log(this.index)
+				
 				if(this.index == 0) {
-					this.mobileCode = val.mobileCode
-					this.code = val.code
+					this.country = val.country;
+					this.mobileCode = val.mobileCode;
+					this.code = val.code;
 				} else {
 					this.mobileTravellCode = val.mobileCode
 					this.TravellerCode = val.code
@@ -565,7 +567,8 @@
 								"firstName": that.oderFirstName,
 								"lastName": that.oderlastName,
 								"phoneNumber": that.code + that.phone,
-								"emailAddress": that.emailAddress
+								"emailAddress": that.emailAddress,
+								"nationality":that.country
 							},
 							"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
 							"deviceType": deviceType
