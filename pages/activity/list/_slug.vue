@@ -820,16 +820,7 @@
 			var options = query.options ? JSON.parse(query.options) : '';
 			var sort = query.sort ? JSON.parse(query.sort) : '';
 			var keyword = query.keyword ? query.keyword : '';
-			//默认请求接口post的数据
-			var postData = {
-				keyword:loc=='Xian'?"Xi'an":loc,
-				pageNum:1,
-				pageSize:10,
-				sort:{"type":"SCORE"},
-				participants: 0,
-				currency:'USD',
-				type: gaType
-			};
+			var gaType = query.type ? query.type : 'direct';
 			//如果什么条件都没有则默认北京的数据
 			var isAll = (loc.toLowerCase() =='china' && !options && !keyword);
 
@@ -840,6 +831,18 @@
 			if(keyword){
 				loc = keyword;
 			}
+			//默认请求接口post的数据
+			var postData = {
+				keyword:loc=='Xian'?"Xi'an":loc,
+				pageNum:1,
+				pageSize:10,
+				sort:{"type":"SCORE"},
+				participants: 0,
+				currency:'USD',
+				type: gaType
+			};
+			
+			
 			//获取页面cookie
 			var userCookie = {};
 			if(req){
@@ -853,7 +856,7 @@
 				}
 			};
 
-			var gaType = query.type ? query.type : 'direct';
+			
 			var participants = 0
 			var currency = {code: "USD", symbol: "$", exchangeRate: 1};
 			if(userCookie.currency){
@@ -957,7 +960,7 @@
 
 			//列表页数据
 			var data = listdata.data;
-
+			console.log(obj)
 			//console.log(data);
 
 			//根据接口数据，生成需要筛选的类型默认数据和默认filter数据
@@ -1551,9 +1554,13 @@
 				
 				//修改翻页数量
 				this.postData.pageNum++;
-				
+				let obj = Object.assign({},this.postData);
+				//处理调用select 人数
+				if(obj.participants==0){
+					delete obj.participants
+				}
 				//请求数据
-				this.axios.post(that.apiBasePath + "search/activity", JSON.stringify(this.postData), {
+				this.axios.post(that.apiBasePath + "search/activity", JSON.stringify(obj), {
 					headers: {
 						'Content-Type': 'application/json; charset=UTF-8'
 					}

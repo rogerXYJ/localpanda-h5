@@ -23,7 +23,7 @@
 					<div v-if="adults+children==1" class="guests">{{adults+children}} Person</div>
 					<div v-if="adults+children>1" class="guests">{{adults+children}} People</div> -->
 
-					<SelectPeople class="view" :people="people" :picInfo="picInfo" @call-back="setCallBack" @sureSelect="getSave"></SelectPeople>
+					<SelectPeople  class="view" :people="people" :picInfo="picInfo" @call-back="setCallBack" @sureSelect="getSave"></SelectPeople>
 				</li>
 				
 				<li class="clearfix" v-if="adults+children>=1">
@@ -91,17 +91,28 @@
 
 
 			let id = route.params.id;
-			var people = parseInt(route.query.people);
-
+			var userCookie = {};
+			if(req){
+				var cookie = req.headers.cookie;
+				if(cookie){
+					var cookieArr = cookie.split(';');
+					for(var i=0;i<cookieArr.length;i++){
+						var thisCookie = cookieArr[i].split('=');
+						userCookie[thisCookie[0].trim()] = (thisCookie[1]||'').trim();
+					}
+				}
+			};
+			
+			
 			var data = {
 				dateTime: '',
 				logIn: '',
-				people: people?people:2,
+				people:0,
 				picInfo: '',
 				refundTimeLimit:'',
 				options: {},
 				isshow: false,
-				adults: people?people:2,
+				adults: 0,
 				children: 0,
 				infant: 0,
 				adultsPic:'',
@@ -113,7 +124,7 @@
 				dateErrText:"",
 				showWinBg : false,
 				isshowDetail:false, //priceDetail
-
+				participants:0,
 				nowExchange:{},//{'rate':1,'currency':'USD','symbol':'$'}
 				exchange:[],
 				timeout:false,
@@ -122,6 +133,12 @@
 				calendar:[]
 				
 			};
+			
+			if(userCookie.participants){
+				data.participants=JSON.parse(decodeURIComponent(userCookie.participants))
+				data.adults=data.participants
+				data.people=data.participants
+			}
 
 			//基本信息
 			var Promise1 = new Promise(function(resolve, reject){
@@ -281,10 +298,10 @@
 				history.back()
 			},
 			show() {
-				/*let that=this
-				setTimeout(()=>{
-					that.isshow = true
-				},0)*/
+				let that=this
+				// setTimeout(()=>{
+				// 	that.isshow = true
+				// },0)
 				this.isshow = true
 				window.ga && ga("gtag_UA_107010673_2.send", {
 					hitType: "event",
@@ -354,6 +371,14 @@
 					return 0;
 				}
 				
+			},
+			retrunPrice(){
+				var price = this.picInfo.details
+				for(var i =0;i<price.length;i++){
+					if(this.people==price[i].capacity){
+						return price[i].price
+					}
+				}
 			},
 			gaFail(){
 				 window.ga && ga("gtag_UA_107010673_2.send", {
@@ -450,6 +475,8 @@
 			this.owner=objDetail.owner
 
 
+			
+
 			//加载币种
 			// that.axios.get("https://api.localpanda.com/api/public/currency/all/"+that.picInfo.defaultCurrency).then(function(response) {
 			// 	// console.log(response);
@@ -464,12 +491,12 @@
 			
 
 			//设置默认人数总价
-			var maxPeople = this.picInfo.maxParticipants;
+			//var maxPeople = this.picInfo.maxParticipants;
 
-			if(this.people > maxPeople){
-				this.people = maxPeople;
-				this.adults = maxPeople;
-			}
+			// if(this.people > maxPeople){
+			// 	this.people = maxPeople;
+			// 	this.adults = maxPeople;
+			// }
 
 			//团期日期
 			var saleDate = [];
@@ -479,7 +506,10 @@
 			}
 
 			//根据人数默认总价
-			this.adultsPic = this.picInfo.details[this.people-1].price;
+			if(this.participants>0){
+				this.adultsPic =this.retrunPrice()
+			}
+			console.log(this.adultsPic)
 			var currency=JSON.parse(Cookie.get('currency'))?JSON.parse(Cookie.get('currency')):{'code':'USD',symbol:"$"}
 			this.picInfo.symbol=currency.symbol;
 			this.options = {
@@ -553,13 +583,14 @@
 		      this.people = val + this.adults;
 		    },
 		    people(val,oldVal){
-		    	if(val>=this.picInfo.minParticipants||val>=1){
+		    	if(val>=this.picInfo.minParticipants){
 		    		this.dateErrText=""
 		    		this.peopleErr=false
 		    	}
 		    	for (var i = 0; i < this.picInfo.details.length; i++) {
 		        if (this.adults + this.children == this.picInfo.details[i].capacity) {
-		          this.adultsPic = this.picInfo.details[i].price;
+				  this.adultsPic = this.picInfo.details[i].price;
+				  
 		          
 		          break;
 		        } else {

@@ -54,7 +54,7 @@
 		name: "selectPeople",
 		data(){
 			return {
-				adults:2,
+				adults:0,
 				children:0,
 				infant:0	
 			}

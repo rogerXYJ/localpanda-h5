@@ -19,7 +19,11 @@
     //src:url('https://cloud.localpanda.com/static/font/ubuntu-r-s.woff');
     src:url('https://cloud.localpanda.com/static/font/Regular-min.woff');
 }
-
+@font-face{
+    font-family: "Ubuntu";
+    //src:url('https://cloud.localpanda.com/static/font/ubuntu-r-s.woff');
+    src:url('~/static/font/Regular-min.woff');
+}
 body,
 html {
     background: #fff;

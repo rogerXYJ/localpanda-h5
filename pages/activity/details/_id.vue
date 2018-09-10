@@ -21,6 +21,7 @@
 			:destination="destination" 
 			:remarkData="remarkData" 
 			:userABtestID="userABtestID" 
+			:participants="participants"
 			:ABtest="ABtest" 
 			:isABtestShow="isABtestShow" 
 			@currencyChange="currencyChangeFn" 
@@ -134,7 +135,8 @@
 				userABtestID:'',
 				ABtest: false,
 				isABtestShow:false,
-				currency:{code: "USD", symbol: "$", exchangeRate: 1}
+				currency:{code: "USD", symbol: "$", exchangeRate: 1},
+				participants:0,
 			};
 			var response = {};
 			let apiActivityPriceRes = {};
@@ -143,7 +145,10 @@
 
 			if(userCookie.currency){
 				data.currency = JSON.parse(decodeURIComponent(userCookie.currency));
-				console.log(JSON.parse(decodeURIComponent(userCookie.currency)))
+				
+			}
+			if(userCookie.participants){
+				data.participants=JSON.parse(decodeURIComponent(userCookie.participants))
 			}
 
 			//ABtest 点评

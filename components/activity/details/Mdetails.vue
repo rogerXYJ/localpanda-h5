@@ -18,15 +18,16 @@
 
 				<div class="select_people">
 					<!-- {{peopleNum}} People <i class="iconfont">&#xe666;</i> -->
-					<select v-model="peopleNum" @change="changePeople">
-						<option :value="item.label" :key="index" v-for="(item,index) in participantsOption">{{item.selectparticipant}}</option>
+					<select class="select_people_box" v-model="peopleNum" @change="changePeople">
+						<option :value="item.label" :key="index" v-for="(item,index) in participantsOptionFn()">{{item.selectparticipant}}</option>
 					</select>
 					<i class="iconfont">&#xe666;</i>
 				</div>
 
 				<div class="picinfo">
 					<!-- <p v-if="picInfo.originalPrice">From <span class="oldpic">{{nowExchange.symbol}} {{returnFloat(picInfo.originalPrice)}}</span></p> -->
-					<p>{{nowExchange.code}} <b>{{nowExchange.symbol}} {{returnFloat(picInfo.details[peopleNum-1].price/peopleNum)}}</b>{{returnText(peopleNum)}}</p>
+					<p>{{peopleNum?' ':'From '}}{{nowExchange.code}} <b>{{nowExchange.symbol}} {{peopleNum>0?returnFloat(retrunPrice()/peopleNum):returnFloat(picInfo.bottomPrice)}}</b>{{returnText(peopleNum)}}</p>
+					
 				</div>
 
 				
@@ -243,7 +244,7 @@
 								    -webkit-box-orient:vertical;">{{i.title}}</h4>
 									<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{i.duration}} {{i.durationUnit|firstUpperCase}}</div>
 									<div class="pic">
-										<div class="old-pic" v-if="i.originalPrice">{{nowExchange.symbol}}{{returnFloat(i.originalPrice)}}</div>
+										<!-- <div class="old-pic" v-if="i.originalPrice">{{nowExchange.symbol}}{{returnFloat(i.originalPrice)}}</div> -->
 										<div class="current-price">From {{nowExchange.code}} <b>{{nowExchange.symbol}}{{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
 									</div>
 								</div>
@@ -333,11 +334,12 @@ import photo from '~/components/activity/details/photo'
 			"userABtestID",
 			"ABtest",
 			"isABtestShow",
-			'value'
+			'value',
+			"participants"
 		],
 		name: 'm-details',
 		data() {
-			var participants = parseInt(this.$route.query.participants);
+			//var participants = parseInt(this.$route.query.participants);
 			return {
 				isShowMore: false,
 				showbtn: 0,
@@ -357,7 +359,7 @@ import photo from '~/components/activity/details/photo'
 				//defaultCurrency : 'USD',
 				nowExchange:{},//{'rate':1,'currency':'USD','symbol':'$'}
 				exchange:[],
-				peopleNum: participants ? participants : 2,
+				peopleNum:parseInt(this.participants)?parseInt(this.participants):0,
 				showPeopleBox: false,
 				
 				itinerary:[],//行程折叠
@@ -421,8 +423,32 @@ import photo from '~/components/activity/details/photo'
 		photo
 	},
 		methods: {
-			fnTag(){
+
+			retrunPrice(){
+				var price = this.picInfo.details
+				for(var i =0;i<price.length;i++){
+					if(this.peopleNum==price[i].capacity){
+						return price[i].price
+					}
+				}
+			},
+			participantsOptionFn(){
+				var participants=this.participantsOption,
+				minParticipants=this.picInfo.minParticipants,
+				maxParticipants=this.picInfo.maxParticipants;
 				
+				var newParticipants=[];
+				for(var i = 1;i<participants.length;i++){
+					if(participants[i].label>=minParticipants&&participants[i].label<=maxParticipants){
+						newParticipants.push(participants[i])
+					}
+				}
+				newParticipants.unshift({
+					selectparticipant:'',
+					label:0
+				})
+				
+				return newParticipants;
 			},
 			//行程展开收起
 			fn(){
@@ -458,7 +484,7 @@ import photo from '~/components/activity/details/photo'
 							if(self.picInfo.childDiscount){
 								self.picInfo.childDiscount=res.data.childDiscount
 							}
-							
+							self.picInfo.bottomPrice=res.data.bottomPrice
 							self.picInfo.currency=res.data.currency
 							
 							
@@ -466,9 +492,9 @@ import photo from '~/components/activity/details/photo'
 						
 					});
 					
-					self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price/detail?currency="+value).then(function(res) {
+					self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price/detail?currency="+value+(self.participants?'&participants='+self.participants:'')).then(function(res) {
 							self.picInfo.details=res.data
-						
+							console.log(self.picInfo.details)
 							self.sixArr=res.data
 							if(self.peopleNum>0){
 								self.adultsPic =thisDetail[self.peopleNum-1].price;	
@@ -512,7 +538,7 @@ import photo from '~/components/activity/details/photo'
 			// 	}
 			// },
 			returnText(peopleNum){
-				return peopleNum?(peopleNum==1?' for 1 person':' pp for party of '+ peopleNum):' pp'
+				return peopleNum?(peopleNum==1?' for 1 person':' pp for party of '+ peopleNum):' pp '
 			},
 			goInqury(){
 				location.href="/info/inquiry?objectId="+this.id
@@ -590,7 +616,7 @@ import photo from '~/components/activity/details/photo'
 				objDetail=JSON.stringify(objDetail)
 				localStorage.setItem("objDetail",objDetail)
 				
-				location.href="/activity/check/"+this.detail.activityId+"?people="+this.peopleNum;
+				location.href="/activity/check/"+this.detail.activityId;
 			},
 			 returnFloat(value) {
 				value*=1;
@@ -684,7 +710,8 @@ import photo from '~/components/activity/details/photo'
 			},
 			changePeople(e){
 				this.peopleNum = e.target.value;
-				console.log(this.peopleNum )
+				Cookie.set('participants',this.peopleNum,{path:'/','expires':30})
+				
 			},
 			noScroll(e){
 				e.preventDefault();
@@ -786,10 +813,8 @@ import photo from '~/components/activity/details/photo'
 		mounted: function() {
 			
 			let that = this;
-			that.adultsPic=that.picInfo.details[that.peopleNum-1].price;
-			
+			 
 			var currency= JSON.parse(Cookie.get('currency'))?JSON.parse(Cookie.get('currency')):{'code':'USD','symbol':'$'};
-			console.log(currency)
 			that.nowExchange=currency
 			//that.picInfo.symbol = that.nowExchange.symbol;
 			var ua = window.navigator.userAgent.toLowerCase();
@@ -837,16 +862,16 @@ import photo from '~/components/activity/details/photo'
 			});
 			
 			//根据最低成团人数修改默认人数
-			if(this.picInfo.minParticipants == 1 && this.picInfo.maxParticipants == 1){
-				this.peopleNum = 1;
-			}else if(this.picInfo.minParticipants>2 && this.peopleNum<=this.picInfo.minParticipants){
-				this.peopleNum = this.picInfo.minParticipants;
-			}
+			// if(this.picInfo.minParticipants == 1 && this.picInfo.maxParticipants == 1){
+			// 	this.peopleNum = 1;
+			// }else if(this.picInfo.minParticipants>2 && this.peopleNum<=this.picInfo.minParticipants){
+			// 	this.peopleNum = this.picInfo.minParticipants;
+			// }
 
 			console.log(this.picInfo);
 			//var ua = window.navigator.userAgent.toLowerCase();
 			//that.isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
-
+			document.querySelector('.select_people_box option').setAttribute('hidden','hidden')
 			
 			
 
@@ -855,7 +880,6 @@ import photo from '~/components/activity/details/photo'
 
 		},
 		watch:{
-
 			//监听币种变化
 			value:function(val){
 				this.nowExchange = val;
@@ -1488,10 +1512,10 @@ import photo from '~/components/activity/details/photo'
 		.picinfo {
 			
 			line-height: 0.74rem;
-			margin-right: 0.3rem;
+			
 				p {
-					position: relative;
-					right:-0.5rem;
+					position: absolute;;
+					right:0.8rem;
 					font-size: 0.28rem;
 					color: #878e95;
 					b {
@@ -1538,7 +1562,7 @@ import photo from '~/components/activity/details/photo'
 				line-height: 0.8rem;
 				i{
 					position: absolute;
-					right: 1.5rem;
+					right: 0;
 					top: 0;
 					height: 0.8rem;
 					line-height: 0.8rem;
