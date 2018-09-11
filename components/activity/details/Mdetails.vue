@@ -134,7 +134,7 @@
 				</ul>
 			</div>
 			<!-- 点评模块 -->
-			<div class="remark_all" id="Reviews" v-if="remarkDataAll.length && !ABtest || remarkDataAll.length && ABtest && userABtestID%2==0">
+			<div class="remark_all" id="Reviews" v-if="remarkDataAll.length">
 				<div class="remark_title">
 					<span class="reviews">{{records}} {{remarkDataAll.length==1 ? 'Review':'Reviews'}}</span>
 					<div class="remark_star" v-html="remarkStarHtml(avgscore)"></div>
@@ -538,6 +538,9 @@ import photo from '~/components/activity/details/photo'
 			// 	}
 			// },
 			returnText(peopleNum){
+				if(this.picInfo.unifiedPricing){
+					return ' pp';
+				}
 				return peopleNum?(peopleNum==1?' for 1 person':' pp for party of '+ peopleNum):' pp '
 			},
 			goInqury(){
@@ -593,14 +596,14 @@ import photo from '~/components/activity/details/photo'
 			},
 			goBooking(){
 				
-				if(this.isABtestShow){
-					ga(gaSend, {
-						hitType: 'event',
-						eventCategory: 'activity_detail',
-						eventAction: 'abtest_comment',
-						eventLabel: 'book',
-					});
-				}
+				// if(this.isABtestShow){
+				// 	ga(gaSend, {
+				// 		hitType: 'event',
+				// 		eventCategory: 'activity_detail',
+				// 		eventAction: 'abtest_comment',
+				// 		eventLabel: 'book',
+				// 	});
+				// }
 
 
 				let objDetail={
@@ -871,7 +874,11 @@ import photo from '~/components/activity/details/photo'
 			// 	this.peopleNum = this.picInfo.minParticipants;
 			// }
 
-			console.log(this.picInfo);
+			if(this.peopleNum>this.picInfo.maxParticipants){
+				this.peopleNum = this.picInfo.maxParticipants;
+			}
+
+			console.log(this.picInfo.unifiedPricing);
 			//var ua = window.navigator.userAgent.toLowerCase();
 			//that.isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
 			document.querySelector('.select_people_box option').setAttribute('hidden','hidden')

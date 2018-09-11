@@ -136,6 +136,25 @@
 				apiBasePath: apiBasePath
 			}
 		},
+		head() {
+			let title = 'Fill in your Booking details informaiton ';
+			let description = 'Fill out your info so we can confirm your booking!'
+			let keywords =''
+			return {
+				title: title,
+				meta: [{
+						hid: "keywords",
+						name: "keywords",
+						content: keywords
+					},
+					{
+						hid: "description",
+						name: "description",
+						content: description
+					}
+				]
+			};
+		},
 		data() {
 			return {
 				opctions: {},

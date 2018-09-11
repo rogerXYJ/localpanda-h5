@@ -152,9 +152,9 @@
 			}
 
 			//ABtest 点评
-			if(id == '11280' || id =='11068'){
-				data.ABtest = true;
-			}
+			// if(id == '11280' || id =='11068'){
+			// 	data.ABtest = true;
+			// }
 			
 			try {
 				//基本信息
@@ -478,29 +478,29 @@
 
 
 			var galoadTimer = null;
-			setTimeout(function(){
-				//获取ABtestID
-				var userABtestID = Cookie.get('userABtestID');
-				self.userABtestID = userABtestID?userABtestID:'';
-				//GA统计
-				self.isABtestShow = self.remarkData.entities && self.remarkData.entities.length && self.ABtest && self.userABtestID%2==0;
-				if(self.isABtestShow){
+			// setTimeout(function(){
+			// 	//获取ABtestID
+			// 	var userABtestID = Cookie.get('userABtestID');
+			// 	self.userABtestID = userABtestID?userABtestID:'';
+			// 	//GA统计
+			// 	self.isABtestShow = self.remarkData.entities && self.remarkData.entities.length && self.ABtest && self.userABtestID%2==0;
+			// 	if(self.isABtestShow){
 
-					galoadTimer = setInterval(function(){
-						if(window.ga){
-							window.clearInterval(galoadTimer);
-							ga(gaSend, {
-								hitType: 'event',
-								eventCategory: 'activity_detail',
-								eventAction: 'abtest_comment',
-								eventLabel: 'load',
-							});
-						}
-					},500);
+			// 		galoadTimer = setInterval(function(){
+			// 			if(window.ga){
+			// 				window.clearInterval(galoadTimer);
+			// 				ga(gaSend, {
+			// 					hitType: 'event',
+			// 					eventCategory: 'activity_detail',
+			// 					eventAction: 'abtest_comment',
+			// 					eventLabel: 'load',
+			// 				});
+			// 			}
+			// 		},500);
 					
-					//console.log('ABtest产品，加载到了点评！');
-				}
-			},100);
+			// 		//console.log('ABtest产品，加载到了点评！');
+			// 	}
+			// },100);
 
 
 		},
