@@ -546,12 +546,12 @@
 			
 
 			//设置默认人数总价
-			//var maxPeople = this.picInfo.maxParticipants;
+			var maxPeople = this.picInfo.maxParticipants;
 
-			// if(this.people > maxPeople){
-			// 	this.people = maxPeople;
-			// 	this.adults = maxPeople;
-			// }
+			if(this.people > maxPeople){
+				this.people = maxPeople;
+				this.adults = maxPeople;
+			}
 
 			//团期日期
 			var saleDate = [];

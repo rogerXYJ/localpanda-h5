@@ -43,6 +43,25 @@
 		components: {
 			headBack
 		},
+		head() {
+			let title = 'My Orders - Localpanda.com ';
+			let description = 'Review your order history with Local Panda '
+			let keywords ='My Orders, Local Panda'
+			return {
+				title: title,
+				meta: [{
+						hid: "keywords",
+						name: "keywords",
+						content: keywords
+					},
+					{
+						hid: "description",
+						name: "description",
+						content: description
+					}
+				]
+			};
+		},
 		data(){
 			return {
 				lastName: "",

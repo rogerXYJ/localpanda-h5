@@ -1734,7 +1734,7 @@
 
 			//返回页面的时候币种不一致 就刷新页面
 			var nowCurrency = JSON.parse(Cookie.get('currency'));
-			if(nowCurrency.code != this.currency.code){
+			if(nowCurrency && nowCurrency.code != this.currency.code){
 				location.reload();
 			}
 
@@ -1744,7 +1744,7 @@
 			// }else{
 			// 	window.name = "";
 			// }
-			//document.querySelector('.select_people_box option').setAttribute('hidden','hidden')
+			document.querySelector('.select_people_box option').setAttribute('hidden','hidden')
 			
 			//筛选悬浮
 			// var filterBox = document.getElementById('fixed_all'),
