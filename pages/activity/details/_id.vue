@@ -1,6 +1,6 @@
 <template>
 	<div id="activitiesDetail">
-		<Head :nowCurrency="currency" @headCurrency="headCurrencyFn"></Head>
+		<Head :nowCurrency="currency" @headCurrency="headCurrencyFn" @getExchange="setExchange"></Head>
 		<Mbanner :bannerPhotos="detail.bannerPhotos" :destination="destination"></Mbanner>
 		<Mdetails
 			:remark="remark" 
@@ -26,6 +26,7 @@
 			:isABtestShow="isABtestShow" 
 			@currencyChange="currencyChangeFn" 
 			v-model="currency"
+			:exchange="exchange"
 			></Mdetails>
 		<transition name="slideleft">
             <Mmeau v-show="isShowMeau" class="Mmeau" 
@@ -137,6 +138,7 @@
 				isABtestShow:false,
 				currency:{code: "USD", symbol: "$", exchangeRate: 1},
 				participants:0,
+				exchange:[]
 			};
 			var response = {};
 			let apiActivityPriceRes = {};
@@ -435,7 +437,11 @@
 			},
 			headCurrencyFn(currency){
 				this.currency = currency;
-			}
+			},
+			setExchange(val){
+				this.exchange=val
+				
+			},
 		},
 		mounted: function() {
 			

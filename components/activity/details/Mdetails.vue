@@ -32,12 +32,12 @@
 
 				
 
-				<!-- <div class="picRate">
-					<select class="currency_type" id="changeCurrency" @change="changeCurrency" v-model="picInfo.currency">
+				<div class="picRate">
+					<select class="currency_type" id="changeCurrency" @change="changeCurrency" v-model="SelectCurrency">
 						<option :value="item.code" v-for="item in exchange" :key="item.code">{{item.code}}</option>
 					</select>
 					<span class="iconfont">&#xe666;</span>
-				</div> -->
+				</div>
 
 				<div class="sales" v-if="detail.sales"> Booked {{detail.sales}} {{detail.sales==1?'time':'times'}} (last 30 days)</div>
 				
@@ -335,7 +335,8 @@ import photo from '~/components/activity/details/photo'
 			"ABtest",
 			"isABtestShow",
 			'value',
-			"participants"
+			"participants",
+			"exchange"
 		],
 		name: 'm-details',
 		data() {
@@ -358,12 +359,13 @@ import photo from '~/components/activity/details/photo'
 				
 				//defaultCurrency : 'USD',
 				nowExchange:{},//{'rate':1,'currency':'USD','symbol':'$'}
-				exchange:[],
+				//exchange:[],
 				peopleNum:parseInt(this.participants)?parseInt(this.participants):0,
 				showPeopleBox: false,
 				
 				itinerary:[],//行程折叠
 				showMoreItinerary:false,
+				SelectCurrency:'USD',
 				participantsOption:[
 					{
 						selectparticipant:'',
@@ -423,7 +425,7 @@ import photo from '~/components/activity/details/photo'
 		photo
 	},
 		methods: {
-
+			
 			retrunPrice(){
 				var price = this.picInfo.details
 				for(var i =0;i<price.length;i++){
@@ -474,12 +476,22 @@ import photo from '~/components/activity/details/photo'
 			changeCurrency(e){
 				var self = this;
 				var value = e.target ? e.target.value : e;
-				var picInfo = self.picInfo;
+				var picInfo = this.picInfo;
 				var thisDetail = picInfo.details;
-
-				
 				//换算折扣价
 				var exchange = this.exchange;
+				for(var i=0;i<exchange.length;i++){
+					var thisEx = exchange[i];
+				 	//检测当前货币类型
+				 	if(thisEx.code==value){
+				// 		//设置当前币种
+						 this.nowExchange = thisEx;
+					 }
+				}
+				
+				
+				//换算折扣价
+				
 				self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price?currency="+value).then(function(res) {
 							if(self.picInfo.childDiscount){
 								self.picInfo.childDiscount=res.data.childDiscount
@@ -508,7 +520,7 @@ import photo from '~/components/activity/details/photo'
 					}, function(res) {
 						
 					});
-
+					console.log(this.nowExchange)
 				//切换币种
 				self.$emit('input',this.nowExchange);
 
@@ -893,6 +905,7 @@ import photo from '~/components/activity/details/photo'
 			//监听币种变化
 			value:function(val){
 				this.nowExchange = val;
+				this.SelectCurrency=val.code
 				this.changeCurrency(val.code);
 				//this.defaultCurrency = val.code;
 			}

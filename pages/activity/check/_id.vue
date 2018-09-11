@@ -40,12 +40,12 @@
 					<span class="weight" v-if="children>0&&picInfo.childDiscount">{{picInfo.symbol}}{{returnFloat(returnFloat(adultsPic)-returnFloat(children*picInfo.childDiscount))}}</span>
 					<span class="weight" v-else>{{picInfo.symbol}}{{returnFloat(adultsPic)}}</span>
 
-					<!-- <div class="picRate">
+					<div class="picRate">
 						<select class="currency_type" @change="changeCurrency" v-model="picInfo.currency">
 							<option :value="item.code" v-for="item in exchange" :key="item.code">{{item.code}}</option>
 						</select>
 						<span class="iconfont">&#xe666;</span>
-					</div> -->
+					</div>
 				</li>
 			</ul>
 			<p>{{dateErrText}}</p>
@@ -180,6 +180,61 @@
 			headBack
 		},
 		methods: {
+			 changeCurrency(e) {
+				var self = this; 
+				var value = e.target.value;
+				var picInfo=self.picInfo
+				picInfo.currency=value
+				var exchange = this.exchange;
+				for(var i = 0; i < exchange.length; i++) {
+					var thisEx = exchange[i];
+					if(thisEx.code == value) {
+						this.nowExchange = thisEx;
+						picInfo.symbol=thisEx.symbol
+						
+					}
+				}
+				const p1 = new Promise(function (resolve, reject) {
+						self.axios.get("https://api.localpanda.com/api/product/activity/"+self.id+"/price?currency="+value).then(function(res) {
+							resolve(res)
+						}, function(res) {
+							
+						});
+					});
+
+					const p2 = new Promise(function (resolve, reject) {
+						self.axios.get("https://api.localpanda.com/api/product/activity/"+self.id+"/price/detail?currency="+value).then(function(res) {
+							resolve(res)
+						}, function(res) {
+							
+						});
+					
+					})
+					Promise.all([p1,p2]).then(results=>{
+							if(picInfo.childDiscount){
+								picInfo.childDiscount=self.returnFloat(results[0].data.childDiscount)
+							}
+							picInfo.details=results[1].data
+							for(var i=0;i<results[1].data.length;i++){
+								if(self.adults+self.children==results[1].data[i].capacity){
+									self.adultsPic=self.returnFloat(results[1].data[i].price)
+									
+									self.averagePrice=self.returnFloat(results[1].data[i].perPersonPrice)
+									self.amount=self.children > 0 && picInfo.childDiscount ?
+							self.returnFloat(self.returnFloat(results[1].data[i].price) - self.returnFloat(self.children * results[0].data.childDiscount)):
+							self.returnFloat(results[1].data[i].price)
+							
+							
+							}
+
+							
+						}	
+							
+							
+
+					})
+				
+			 },
 			// changeCurrency(e){
 			// 	var self = this;
 			// 	var value = e.target.value;
@@ -473,18 +528,18 @@
 			this.pickup= objDetail.pickup
 			this.refundTimeLimit= objDetail.refundTimeLimit
 			this.owner=objDetail.owner
-
+			
 
 			
 
 			//加载币种
-			// that.axios.get("https://api.localpanda.com/api/public/currency/all/"+that.picInfo.defaultCurrency).then(function(response) {
-			// 	// console.log(response);
-			// 	if(response.status==200){
-			// 		that.exchange = response.data;
-			// 		that.nowExchange = that.exchange[0];
-			// 	}
-			// }, function(response) {});
+			that.axios.get("https://api.localpanda.com/api/public/currency/all/"+that.picInfo.currency).then(function(response) {
+				// console.log(response);
+				if(response.status==200){
+					that.exchange = response.data;
+					//that.nowExchange = that.exchange[0];
+				}
+			}, function(response) {});
 			//that.exchange=Cookie.get('currency')?Cookie.get('currency'):{'code':'USD',}
 			//console.log(this.picInfo.details);
 			// this.picInfo.details = this.tableData(this.picInfo.details);
