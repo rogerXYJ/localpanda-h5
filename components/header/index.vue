@@ -375,6 +375,7 @@
 			var self = this;
 			window.currencyCallbackHeader = function(data){
 				self.exchange = data;
+				self.$emit('getExchange',data)
 			};
 			
 			//读取币种
