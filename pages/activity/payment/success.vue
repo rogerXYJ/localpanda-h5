@@ -40,7 +40,26 @@
 	import foot from "~/components/footer/index"
   export default {
 
-		name: 'payResult',
+    name: 'payResult',
+    head() {
+			let title = 'Order Complete! - Localpanda.com';
+			let description = 'Your Order is confirmed! You should received a confirmation email from us shortly. '
+			let keywords =''
+			return {
+				title: title,
+				meta: [{
+						hid: "keywords",
+						name: "keywords",
+						content: keywords
+					},
+					{
+						hid: "description",
+						name: "description",
+						content: description
+					}
+				]
+			}
+		},
 		data() {
       var query = this.$route.query;
       
