@@ -763,9 +763,10 @@
 		</div>
 
 		<Loading :loadingStatus="loadingStatus"></Loading>
-		 <Talk :zendeskStatus="zendeskStatus" @getShowZendesk="setShowZendesk"></Talk>
+		 <!-- <Talk :zendeskStatus="zendeskStatus" @getShowZendesk="setShowZendesk"></Talk> -->
 
-		<a @click="chat" class="btn inquire">Inquire</a>
+		<!-- <a @click="chat" class="btn inquire">Inquire</a> -->
+		<a href="/info/feedback/" class="btn inquire">Inquire</a>
 		
 	</div>
 </template>
@@ -779,7 +780,7 @@
 	import slider from "~/plugins/panda/slider/"
 	import infiniteLoading from '~/plugins/panda/infiniteLoading/'
 	import Loading from "~/components/plugin/Loading"
-	import Talk from '~/components/booking/talk'
+	// import Talk from '~/components/booking/talk'
 
 	import Vue from "vue";
 	
@@ -796,7 +797,7 @@
 			slider,
 			infiniteLoading,
 			Loading,
-			Talk
+			// Talk
 		},
 		async asyncData({
 			route,

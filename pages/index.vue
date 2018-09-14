@@ -377,8 +377,9 @@
 		
 		<Foot></Foot>
 
-			<Talk :zendeskStatus="zendeskStatus" @getShowZendesk="setShowZendesk"></Talk>
-			<a @click="chat" class="btn inquire">Inquire</a>
+			<!-- <Talk :zendeskStatus="zendeskStatus" @getShowZendesk="setShowZendesk"></Talk>
+			<a @click="chat" class="btn inquire">Inquire</a> -->
+			<a href="/info/feedback/" class="btn inquire">Inquire</a>
 		
 	</div>
 </template>
@@ -386,7 +387,7 @@
 
 	import Head from '~/components/header/'
 	import Foot from "~/components/footer/"
-	import Talk from '~/components/booking/talk'
+	// import Talk from '~/components/booking/talk'
 	import Vue from "vue";
 
 	// if(process.browser) {
@@ -398,7 +399,7 @@
 		components: {
 			Head,
 			Foot,
-			Talk
+			// Talk
 		},
 		async asyncData({
 			route,
