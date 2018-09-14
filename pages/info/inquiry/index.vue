@@ -2,16 +2,16 @@
 	<div class="inquiry">
 		<div class="back"><i class="iconfont" @click="back">&#xe615;</i></div>
 
-    <ul class="nav_list">
+    <!-- <ul class="nav_list">
       <li class="active" @click="showInquiry">Advise Me</li>
-      <!-- <li @click="showZendesk">Chat with Panda</li> -->
-      <li>&nbsp;</li>
-    </ul>
+      <li @click="showZendesk">Chat with Panda</li>
+    </ul> -->
 
     <Loading :loadingStatus="loadingStatus"></Loading>
 
 
 		<div class="head" v-show="isInquiry">
+      <h3>Send My Inquiry</h3>
 			<p>If you have questions or needs about any specific tour, we have professional consultants to answer your questions 
 on a 1-1 basis.</p>
 		</div>
