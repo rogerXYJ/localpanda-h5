@@ -4,7 +4,8 @@
 
     <ul class="nav_list">
       <li class="active" @click="showInquiry">Advise Me</li>
-      <li @click="showZendesk">Chat with Panda</li>
+      <!-- <li @click="showZendesk">Chat with Panda</li> -->
+      <li>&nbsp;</li>
     </ul>
 
     <Loading :loadingStatus="loadingStatus"></Loading>
@@ -89,7 +90,7 @@ service@localpanda.com</p>
 
 <script>
 if (process.browser) {
-  require("~/assets/js/plugin/talk.js");
+  // require("~/assets/js/plugin/talk.js");
 }
 
 import Dialog from "~/components/info/inquiry/Dialog";
@@ -414,11 +415,11 @@ export default {
 
 
     //设置语言
-		zE(function() {
-			zE.setLocale('en_US');
-		});
-    //在线交谈
-    this.loadDesk();
+		// zE(function() {
+		// 	zE.setLocale('en_US');
+		// });
+    // //在线交谈
+    // this.loadDesk();
     document.body.className = document.body.className?document.body.className+' show_zendesk': 'show_zendesk';
 
   },

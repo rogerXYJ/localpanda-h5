@@ -85,7 +85,7 @@
 			<div class="nextBtn clearfix" v-show="!hideFiexd" @touchmove="stopMove">
 				<div class="next" @click="placeOrder">NEXT</div>
 			</div>
-			<div v-if="isWork()" class="chat">Having trouble booking ?&nbsp;&nbsp;&nbsp;&nbsp; <a @click="chat()">Chat with Us</a></div>
+			<!-- <div v-if="isWork()" class="chat">Having trouble booking ?&nbsp;&nbsp;&nbsp;&nbsp; <a @click="chat()">Chat with Us</a></div> -->
 		</div>
 
 		<transition name="fade">
@@ -103,7 +103,7 @@
 			<div class="boxline"></div>
 			<p><span>{{opctions.symbol}}{{opctions.amount}}</span>Total ({{opctions.currency}})</p>
 		</div>
-		 <Talk :zendeskStatus="zendeskStatus" @getShowZendesk="setShowZendesk"></Talk>
+		 <!-- <Talk :zendeskStatus="zendeskStatus" @getShowZendesk="setShowZendesk"></Talk> -->
 		<!-- 优惠券校验失败 提示 -->
 		<div class="dialog" v-if="orderHasCouponRate">
 			<div class="dialogContent">
@@ -121,7 +121,7 @@
 <script>
 	import Vue from 'vue'
 	import booking from '~/components/booking'
-	import Talk from '~/components/booking/talk'
+	// import Talk from '~/components/booking/talk'
 	import { regExp,formatDate } from '~/assets/js/utils.js'
 	import countryCode from '~/assets/js/countryCode.js'
 	import Head from '~/components/header/index'
@@ -227,7 +227,7 @@
 			checkboxGroup,
 			checkbox,
 			Loading,
-			Talk
+			// Talk
 		},
 		methods: {
 			chat(){
