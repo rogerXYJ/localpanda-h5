@@ -617,7 +617,7 @@
 		    }
 		.marsk{
 			position: fixed;
-			top: 50%;
+			bottom: 2rem;
 			right: 0.293333rem;
 			width:1rem;
 			height: 1rem;

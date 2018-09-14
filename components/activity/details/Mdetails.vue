@@ -75,6 +75,125 @@
 			<div class="heightLights" id="heightLights" v-if="highlights.length">
 				<p :key="index" class="clearfix" v-for="(item,index) in highlights"><i class="iconfont">&#xe654;</i><span>{{item}}</span></p>
 			</div>
+
+
+			<!-- 导游板块 -->
+			<div class="guide_all">
+				<h3>Travel with our experts</h3>
+				<p>You can  select your best fit or let us assign one for you</p>
+				<div class="guide_list">
+					<div class="swiper-container js_guide">
+						<div class="swiper-wrapper">
+							<div class="swiper-slide">
+								<img src="http://placehold.it/80x80/dddddd" width="100%" alt="">
+								<span><i class="iconfont">&#xe654;</i></span>
+							</div>
+							<div class="swiper-slide">
+								<img src="http://placehold.it/80x80/dddddd" width="100%" alt="">
+								<span><i class="iconfont">&#xe654;</i></span>
+							</div>
+							<div class="swiper-slide">
+								<img src="http://placehold.it/80x80/dddddd" width="100%" alt="">
+								<span><i class="iconfont">&#xe654;</i></span>
+							</div>
+							<div class="swiper-slide">
+								<img src="http://placehold.it/80x80/dddddd" width="100%" alt="">
+								<span><i class="iconfont">&#xe654;</i></span>
+							</div>
+							<div class="swiper-slide">
+								<img src="http://placehold.it/80x80/dddddd" width="100%" alt="">
+								<span><i class="iconfont">&#xe654;</i></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 预定信息板块 -->
+			<div class="check_all">
+				<h3>Select date, particpants</h3>
+				<ul class="check_info">
+					<li>
+						<i class="iconfont input_icon">&#xe60d;</i>
+						<input id="js_changetime" v-model="startDate" readonly type="text" placeholder="Select">
+						<!-- <div class="check_box" id="js_changetime">Select</div> -->
+					</li>
+					<li>
+						<i class="iconfont input_icon">&#xe63d;</i>
+						<i class="iconfont arrow">&#xe60f;</i>
+						<input id="js_changepeople" @click="showChangePeople=true" readonly type="text" v-model="peopleText" placeholder="Select">
+						<!-- &#xe63f; -->
+						<!-- <div class="check_box">Select</div> -->
+						<div class="change_people" v-show="showChangePeople">
+							<dl>
+								<dt>Adults</dt>
+								<dd>
+									<i class="iconfont change_btn" :class="{'change_btn_dis':changeAdults<2 || (changeAdults+changeChildren<picInfo.minParticipants+1)}" @click="peopleRed($event,1)">&#xe64d;</i>
+									<span class="people_num">{{changeAdults}}</span>
+									<i class="iconfont change_btn" :class="{'change_btn_dis':(changeAdults+changeChildren>=picInfo.maxParticipants)}" @click="peopleAdd($event,1)">&#xe64b;</i>
+								</dd>
+							</dl>
+							<dl>
+								<dt style="line-height:0.34rem;">Children<span>(Age 3-7)</span></dt>
+								<dd>
+									<i class="iconfont change_btn" :class="{'change_btn_dis':changeChildren<1 || (changeAdults+changeChildren<picInfo.minParticipants+1)}" @click="peopleRed($event,2)">&#xe64d;</i>
+									<span class="people_num">{{changeChildren}}</span>
+									<i class="iconfont change_btn" :class="{'change_btn_dis':(changeAdults+changeChildren>=picInfo.maxParticipants)}" @click="peopleAdd($event,2)">&#xe64b;</i>
+								</dd>
+							</dl>
+							<span class="btn" @click="peopleChange">Done</span>
+						</div>
+					</li>
+					<li v-show="!showPriceInfo">
+						<span class="btn" @click="availability">Check availability</span>
+					</li>
+				</ul>
+
+				<!-- 绿色预定板块 -->
+				<div class="book_all" v-show="showPriceInfo">
+
+					<!-- 导游信息 -->
+					<div class="book_guide_check" :class="{'active':!hasGuide}" @click="hasGuide=false">
+						<i></i>Let us assign one experts for you
+					</div>
+					<div class="book_guide_check" @click="showGuideList=true">
+						<i></i>Let us assign one experts for you
+					</div>
+					<div class="book_guide_info" v-show="hasGuide">
+						<div class="book_guide_select">Reselect</div>
+						<div class="book_guide_photo"><img src="http://placehold.it/78x78/dddddd" width="100%" alt=""></div>
+						Ciprian has been selected !
+					</div>
+
+					<!-- 价格明细 -->
+					<div class="book_price_box">
+						<dl class="book_price_info">
+							<dt>
+								<span>{{nowExchange.symbol}}{{perPersonPrice}}×{{bookPeople}} people</span>
+								<span v-if="picInfo.childDiscount && bookChildren">-{{nowExchange.symbol}}{{picInfo.childDiscount*bookChildren}} for children</span>
+							</dt>
+							<dd><i class="iconfont">&#xe659;</i>{{nowExchange.symbol}}{{price}}</dd>
+						</dl>
+						<dl class="book_price_info">
+							<dt>Total ({{nowExchange.code}})</dt>
+							<dd>
+								<div class="picRate">
+									<select class="currency_type" id="changeCurrency" @change="changeCurrency" v-model="SelectCurrency">
+										<option :value="item.code" v-for="item in exchange" :key="item.code">{{item.code}}</option>
+									</select>
+									<span class="iconfont">&#xe666;</span>
+								</div>
+								{{nowExchange.symbol}}{{returnFloat(amount)}}</dd>
+						</dl>
+						<div class="hr"></div>
+						<p class="book_tip">{{picInfo.refundInstructions}}</p>
+						<span class="btn">Book</span>
+					</div>
+				</div>
+
+			</div>
+
+
 			<div class="journey" ref="journey" v-if="introduction.length || detail.itineraries" id="Itinerary">
 				<div class="expect">
 					<h3 class='itinerary_title'>Itinerary</h3>
@@ -296,7 +415,9 @@
 
 		
 
-
+		<transition name="fade">
+			<div class="win_bg" id="win_bg" @click="showWinBg = false" v-show="showWinBg"></div>
+		</transition>
 
 	</div>
 	
@@ -305,7 +426,10 @@
 <script>
 
 import vue from 'vue'
+import Flatpickr from 'flatpickr';
+import {addmulMonth} from "~/assets/js/utils";
 import photo from '~/components/activity/details/photo'
+
 // if(process.browser) {
 // 	const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr')
 // 	vue.use(VueAwesomeSwiper)
@@ -417,8 +541,22 @@ import photo from '~/components/activity/details/photo'
 
 					},
 					],
-				
-				
+			
+			//选择日期和人数板块
+			showWinBg:false,
+			showChangePeople:false,
+			showPriceInfo:false,
+			startDate:'',
+			peopleText:'',
+			changeAdults:1,
+			changeChildren:0,
+			hasGuide:false,
+			showGuideList:false,
+			bookChildren:0,
+			bookPeople:0,
+			price:0,
+			perPersonPrice:0,
+			amount:0
 		}
 	},
 	components: {
@@ -478,14 +616,15 @@ import photo from '~/components/activity/details/photo'
 				var value = e.target ? e.target.value : e;
 				var picInfo = this.picInfo;
 				var thisDetail = picInfo.details;
-				//换算折扣价
+
+				
 				var exchange = this.exchange;
+				//设置当前币种
 				for(var i=0;i<exchange.length;i++){
 					var thisEx = exchange[i];
 				 	//检测当前货币类型
 				 	if(thisEx.code==value){
-				// 		//设置当前币种
-						 this.nowExchange = thisEx;
+						 self.nowExchange = thisEx;
 					 }
 				}
 				
@@ -506,7 +645,10 @@ import photo from '~/components/activity/details/photo'
 					
 					self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price/detail?currency="+value+(self.participants?'&participants='+self.participants:'')).then(function(res) {
 							self.picInfo.details=res.data
-							console.log(self.picInfo.details)
+							
+							//重设book价格
+							self.setPeoplePrice();
+
 							self.sixArr=res.data
 							if(self.peopleNum>0){
 								self.adultsPic =thisDetail[self.peopleNum-1].price;	
@@ -520,7 +662,7 @@ import photo from '~/components/activity/details/photo'
 					}, function(res) {
 						
 					});
-					console.log(this.nowExchange)
+				
 				//切换币种
 				self.$emit('input',this.nowExchange);
 
@@ -633,12 +775,26 @@ import photo from '~/components/activity/details/photo'
 				
 				location.href="/activity/check/"+this.detail.activityId;
 			},
+			zeroLength(text){
+				var num = 0;
+				for(var i=0;i<text.length;i++){
+					var thisStr = text[i];
+					if(thisStr==0 && i>1){
+						num++;
+					}
+				}
+				return num;
+			},
 			 returnFloat(value) {
 				value*=1;
 				if(value) {
 					var numberArr = (''+value).split('.');
 					if(numberArr.length>1 && numberArr[1].length>2){
-						return (value+0.005).toFixed(2);
+						if(this.zeroLength(numberArr[1])>5){
+							return value.toFixed(2);
+						}else{
+							return (value+0.005).toFixed(2);
+						}
 					}
 					return value.toFixed(2);
 				}else{
@@ -817,6 +973,84 @@ import photo from '~/components/activity/details/photo'
 					}
 				}
 				return thisHtml;
+			},
+
+			///选择日期和人数
+			checkInit(){
+				var self = this;
+				this.options = {
+					minDate: this.picInfo.earliestBookDate,
+					maxDate: addmulMonth(this.picInfo.earliestBookDate, 12),
+					disableMobile: true,
+					enable: [],//saleDate
+					onOpen : function(e){
+						
+						self.showWinBg = true;
+					},
+					onChange(){
+						self.showWinBg = false;
+					}
+				}
+				
+				self.flatPickr = new Flatpickr('#js_changetime',this.options);
+			},
+			peopleRed(e,type){
+				if(/change_btn_dis/.test(e.target.className)){
+					return;
+				};
+
+				if(type==1){
+					this.changeAdults--;
+				}else{
+					this.changeChildren--;
+				};
+			},
+			peopleAdd(e,type){
+				if(/change_btn_dis/.test(e.target.className)){
+					return;
+				};
+
+				if(type==1){
+					this.changeAdults++;
+				}else{
+					this.changeChildren++;
+				}
+			},
+			peopleChange(){
+				var changeChildren = this.changeChildren;
+				this.peopleText = 'Adult x '+this.changeAdults+(changeChildren?' , '+(changeChildren==1?'child':'children')+' x '+changeChildren:'');
+				this.showChangePeople = false;
+				this.showPriceInfo = true;
+				this.bookChildren = changeChildren;
+				this.bookPeople = this.changeAdults+changeChildren;
+
+				//console.log(this.bookPeople);
+			},
+			setPeoplePrice(){
+				var details = this.picInfo.details;
+				var bookPeople = this.bookPeople;
+				for(var i=0;i<details.length;i++){
+					var thisData = details[i];
+					if(thisData.capacity==bookPeople){
+						this.price = thisData.price;
+						this.perPersonPrice = thisData.perPersonPrice;
+						this.amount = this.price - this.picInfo.childDiscount*this.changeChildren;
+						break;
+					}
+				}
+			},
+			availability(){
+				var self = this;
+				if(!self.startDate){
+					setTimeout(function(){
+						self.flatPickr.open();
+					},100);
+					self.showWinBg = true;
+				}else if(!this.bookPeople){
+					setTimeout(function(){
+						self.showChangePeople = true;
+					},50);
+				}
 			}
 		},
 		filters: {
@@ -872,12 +1106,28 @@ import photo from '~/components/activity/details/photo'
 			}
 
 
+
+			//初始化日期选择
+			this.checkInit();
+
+
 			new Swiper('#swiper_tuijian', {
 				lazy: true,
 				slidesPerView :"auto",
 				initialSlide: 0,
 				spaceBetween:17,
 			});
+
+
+			new Swiper('.js_guide', {
+				autoplay: false,//可选选项，自动滑动
+				slidesPerView : 4.5,
+				on:{
+					tap: function(e){
+						console.log(this.clickedIndex);
+					},
+				},
+			})
 			
 			//根据最低成团人数修改默认人数
 			// if(this.picInfo.minParticipants == 1 && this.picInfo.maxParticipants == 1){
@@ -890,11 +1140,29 @@ import photo from '~/components/activity/details/photo'
 				this.peopleNum = this.picInfo.maxParticipants;
 			}
 
-			console.log(this.picInfo.unifiedPricing);
+			//选择人数默认最低
+			if(this.peopleNum){
+				this.changeAdults = this.peopleNum;
+				this.peopleChange();
+			}else{
+				this.changeAdults = this.picInfo.minParticipants;
+			}
+			
+			console.log(this.picInfo,111);
 			//var ua = window.navigator.userAgent.toLowerCase();
 			//that.isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
 			document.querySelector('.select_people_box option').setAttribute('hidden','hidden')
 			
+			
+			document.querySelector('.change_people').onclick = function(e){
+				e.stopPropagation();
+			};
+			document.querySelector('body').onclick = function(e){
+				if(e.target.id !='js_changepeople' && that.showChangePeople){
+					that.peopleChange();
+				}
+				
+			};
 			
 
 			//console.log(this.remarkDataAll);
@@ -907,7 +1175,11 @@ import photo from '~/components/activity/details/photo'
 				this.nowExchange = val;
 				this.SelectCurrency=val.code
 				this.changeCurrency(val.code);
+				
 				//this.defaultCurrency = val.code;
+			},
+			bookPeople:function(){
+				this.setPeoplePrice();
 			}
 		}
 	}
@@ -915,7 +1187,7 @@ import photo from '~/components/activity/details/photo'
 
 
 <style lang="scss" scoped>
-	@import "~/assets/font/iconfont.css";
+	// @import "~/assets/font/iconfont.css";
 	.m-details {
 		padding: 0 0.4rem 0rem;
 		.m-details-cont {
@@ -1435,12 +1707,321 @@ import photo from '~/components/activity/details/photo'
 				margin-top: 1rem;
 			}
 		}
+
+
+		.guide_all{
+			width: 100vw;
+			margin-left: -0.4rem;
+			padding:0.36rem 0 0.5rem 0.4rem;
+			box-sizing: border-box;
+			color: #353a3f;
+			background-color: #f5f7f6;
+			margin-top: -1px;
+			h3{
+				font-size: 0.3rem;
+				font-weight: bold;
+			}
+			p{
+				font-size: 0.26rem;
+			}
+			.guide_list{
+				width: calc(100vw - 0.4rem);
+				margin-top: 0.4rem;
+				.swiper-slide{
+					border-radius: 50%;
+					overflow: hidden;
+					position: relative;
+					img{ width: 100%; border: 4px solid #fff; box-sizing: border-box; border-radius: 50%;}
+					span{ 
+						display: none; width: 100%; height: 100%; position: absolute; left: 0; top: 0; background-color:rgba(27,188,157,0.6); text-align: center;
+						i{
+							position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); color: #fff;
+						}
+					}
+				}
+				.active{
+					span{
+						display: block;
+					}
+				}
+			}
+		}
+
+		.check_all{
+			color: #353a3f;
+			padding: 0.4rem 0;
+			h3{
+				font-size: 0.3rem;
+				font-weight: bold;
+			}
+			.btn{ font-weight: bold;}
+			.check_info{
+				li{
+					position: relative;
+					margin-top: 0.24rem;
+					.check_box,input{
+						line-height: 0.74rem;
+						border: 1px solid #ebebeb;
+						box-sizing: border-box;
+						width: 100%;
+						padding-left: 0.76rem;
+						position: relative;
+						z-index: 2;
+						background: none;
+						
+						font-size: 0.28rem;
+						color: #878e95;
+						border-radius: 4px;
+					}
+					input{color: #353a3f;}
+					input::-webkit-input-placeholder { color: #878e95; }
+					.input_icon{
+						position: absolute;
+						left: 0;
+						top: 0;
+						width: 0.76rem;
+						text-align: center;
+						line-height: 0.76rem;
+						color: #878e95;
+						font-size: 0.4rem;
+					}
+					.arrow{
+						width: 0.76rem;
+						display: block;
+						text-align: center;
+						position: absolute;
+						right: 0;
+						top: 0;
+						line-height: 0.76rem;
+						color: #353a3f;
+						font-size: 0.28rem;
+						// border: 6px solid #000;
+						// border-color: #000 #fff #fff #fff;
+					}
+				}
+				.change_people{
+					position: absolute; left: 0; top: calc(100% - 1px); width: 100%; box-sizing: border-box; padding: 0 0.26rem 0.36rem; background-color: #fff; z-index: 3;border: #ebebeb solid 1px;border-top:none; border-radius: 0 0 4px 4px;
+					dl{
+						overflow: hidden;
+						padding: 0.44rem 0 0.2rem;
+						&:nth-child(1){
+							border-top: #ebebeb solid 1px;
+						}
+						dt{ float: left;line-height: 0.6rem; font-size: 0.28rem; font-weight: bold;
+							span{ display: block;font-size: 0.24rem; line-height: 0.24rem; margin-top: 0.1rem;}
+						}
+						dd{ 
+							float: right;
+							.change_btn{
+								display: inline-block;
+								color: #1bbc9d;
+								width: 0.6rem;
+								height: 0.6rem;
+								line-height: 0.6rem;
+								text-align: center;
+								border: 1px solid #1bbc9d;
+								border-radius: 50%;
+								font-size: 0.36rem;
+							}
+							.change_btn_dis{ color: #ccc; border-color: #ccc;}
+							.people_num{
+								display: inline-block;
+								width: 0.8rem;
+								text-align: center;
+								font-size: 0.36rem;
+								line-height: 0.6rem;
+							}
+						}
+					}
+					.btn{ height: 0.78rem; line-height: 0.78rem; margin-top: 0.3rem;}
+				}
+
+				
+			}
+			.book_all{
+				box-sizing: border-box;
+				width: 100vw;
+				border: 2px solid #1bbc9d;
+				margin-left: -0.4rem;
+				margin-top: 0.58rem;
+				padding: 0.3rem;
+				
+				.book_guide_check{
+					padding-left: 0.7rem;
+					overflow: hidden;
+					font-size: 0.28rem;
+					margin-bottom: 0.3rem;
+					line-height: 0.38rem;
+					i{ float: left; margin-left: -0.7rem; width: 0.38rem; height: 0.38rem; border: 1px solid #dde0e0; border-radius: 50%; box-sizing: border-box;}
+				}
+				.active{
+					i{border: 6px solid #1bbc9d;}
+				}
+				.book_guide_info{
+					font-size: 0.28rem;
+					line-height: 0.78rem;
+					.book_guide_select{
+						float: right;
+						color: #1bbc9d;
+						text-decoration: underline;
+					}
+					.book_guide_photo{
+						float: left;
+						width: 0.78rem;
+						height: 0.78rem;
+						border-radius: 50%;
+						overflow: hidden;
+						margin-right: 0.3rem;
+					}
+				}
+				.book_price_box{
+					font-size: 0.28rem;
+					margin-top: 0.3rem;
+					.book_price_info{
+						border-top: #ebebeb solid 1px;
+						overflow: hidden;
+						padding: 0.3rem 0;
+						dt{
+							float: left;
+							span{
+								display: block;
+								line-height: 0.4rem;
+							}
+						}
+						dd{
+							float: right;
+							
+							.iconfont{
+								font-size: 0.4rem;
+								vertical-align: middle;
+								color: #878e95;
+								line-height: 0.24rem;
+								margin-right: 5px;
+								position: relative;
+								top: -1px;
+							}
+							.picRate{
+								
+								.currency_type{
+									height: auto;
+									width: 100%;
+									padding-right: 0.5rem;
+									position: relative;
+									z-index: 2;
+								}
+								.iconfont{
+									height: auto;
+									line-height: 100%;
+									vertical-align: middle;
+									top:2px;
+									position: absolute;
+									right: 0;
+								}
+							}
+							
+						}
+					}
+					.hr{ height: 1px; background-color: #ebebeb;}
+					.book_tip{ margin-top: 0.3rem; font-size: 0.22rem;}
+					.btn{margin-top: 0.6rem;}
+				}
+			}
+		}
+		
 	}
 
 
 </style>
 
 <style lang="scss">
+	@import "~/assets/scss/plugin/flatpickr.min.css";
+
+	.flatpickr-months .flatpickr-prev-month svg,
+	.flatpickr-months .flatpickr-next-month svg {
+		width: 20px!important;
+		height: 20px!important;
+	}
+	.flatpickr-calendar{
+		padding: 10px 0;
+		width: 90%;
+		max-width: 500px;
+		position: fixed;
+		left: 50%!important;
+		top: 50%!important;
+		right: auto!important;
+		transform: translate(-50%,-50%);
+		opacity: 1;
+		visibility: initial;
+		
+		&.animate.open{
+			animation: all 0 cubic-bezier(.23,1,.32,1);
+			z-index: 999;
+			opacity: 1;
+		}
+		.flatpickr-next-month,.flatpickr-prev-month{
+			top: 5px;
+		}
+		.flatpickr-month{
+			height: 40px;
+		}
+		
+		.flatpickr-days,.flatpickr-weekdays,.flatpickr-rContainer,.dayContainer{
+			width: 100%;
+			max-width: none;
+		}
+		.flatpickr-day{
+			max-width: none;
+			height: 7vh;
+			max-height: 45px;
+		}
+	}
+	.flatpickr-calendar.open:before,.flatpickr-calendar.open:after{
+		display: none;
+	}
+	.flatpickr-calendar .flatpickr-day.nextMonthDay,.flatpickr-calendar .flatpickr-day.prevMonthDay{
+		color: #393939;
+	}
+	.flatpickr-calendar .flatpickr-day.disabled, .flatpickr-day.disabled:hover{
+		color:rgba(57, 57, 57, .3);
+	}
+
+	
+	#launcher {
+		bottom: 0.266666rem!important;
+	}
+	input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {   
+	 /* WebKit browsers */   
+	color: #878e95;   
+	}   
+	input:-moz-placeholder, textarea:-moz-placeholder {   
+	/* Mozilla Firefox 4 to 18 */   
+	color: #878e95   
+	}   
+	input::-moz-placeholder, textarea::-moz-placeholder {   
+	 /* Mozilla Firefox 19+ */   
+	color: #878e95
+	}   
+	input:-ms-input-placeholder, textarea:-ms-input-placeholder {   
+	 /* Internet Explorer 10+ */   
+	color: #878e95  
+	}
+	.dateTime {
+		
+		.flatpickr-input {
+			border: none!important;
+			padding-left: 0!important;
+			height: 1.4rem!important;
+			text-align: right;
+			color: #1bbc9d;
+			font-size: 0.36rem!important;
+			width: 100%;
+			
+		}
+		
+	}
+
+
+
 	.m-details{
 	.el-table__row .cell {
 		line-height: 0.56rem!important;
@@ -1550,34 +2131,7 @@ import photo from '~/components/activity/details/photo'
 					}
 				}
 			}
-			.picRate {
-				display: inline-block;
-				color: #fff;
-				position: relative;
-				margin-right: 0.2rem;
-				span {
-					font-size: 10px;
-				}
-				.iconfont {
-					float: right;
-					height: 0.8rem;
-					line-height: 0.8rem;
-					text-align: center;
-					font-size: 0.36rem;
-					color: #666;
-					font-weight: bold;
-				}
-				.currency_type {
-					background: none;
-					color: #666;
-					border: none;
-					height: 0.8rem;
-					font-size: 0.28rem;
-					-webkit-appearance: none;
-					-moz-appearance: none;
-					appearance: none;
-				}
-			}
+			
 			.select_people{
 				float: right;
 				position: relative;
@@ -1617,6 +2171,34 @@ import photo from '~/components/activity/details/photo'
 		color: #878e95;
 	}
 
+	.picRate {
+		display: inline-block;
+		color: #fff;
+		position: relative;
+		margin-right: 0.2rem;
+		span {
+			font-size: 10px;
+		}
+		.iconfont {
+			float: right;
+			height: 0.8rem;
+			line-height: 0.8rem;
+			text-align: center;
+			font-size: 0.36rem;
+			color: #666;
+			font-weight: bold;
+		}
+		.currency_type {
+			background: none;
+			color: #666;
+			border: none;
+			height: 0.8rem;
+			font-size: 0.28rem;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+		}
+	}
 
 	// 点评
 	.remark_all{
