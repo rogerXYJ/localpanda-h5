@@ -27,18 +27,18 @@
 				</li>
 				
 				<li class="clearfix" v-if="adults+children>=1">
-					<label v-if="children==0&&adults==1">{{picInfo.symbol}}{{returnFloat(adultsPic/(adults+children))}} x {{adults+children}} Person</label>
+					<label v-if="children==0&&adults==1">{{nowExchange.symbol}}{{returnFloat(adultsPic/(adults+children))}} x {{adults+children}} Person</label>
 					
-					<label v-else>{{picInfo.symbol}}{{returnFloat(adultsPic/(adults+children))}} x {{adults+children}} People 
+					<label v-else>{{nowExchange.symbol}}{{returnFloat(adultsPic/(adults+children))}} x {{adults+children}} People 
 					<br/>
-					<em v-if="children>0&&picInfo.childDiscount"><b style="display: inline-block;">- {{picInfo.symbol}}{{returnFloat(children*picInfo.childDiscount)}}</b> for child(ren)</em>
+					<em v-if="children>0&&picInfo.childDiscount"><b style="display: inline-block;">- {{nowExchange.symbol}}{{returnFloat(children*picInfo.childDiscount)}}</b> for child(ren)</em>
 					</label>
-					<span @click.stop="showPriceDetail"><i class="iconfont">&#xe659;</i>{{picInfo.symbol}}{{returnFloat(adultsPic)}}</span>
+					<span @click.stop="showPriceDetail"><i class="iconfont">&#xe659;</i>{{nowExchange.symbol}}{{returnFloat(adultsPic)}}</span>
 				</li>
 				<li class="clearfix" v-if="adults+children>=1">
 					<label>Total ({{picInfo.currency}})</label>
-					<span class="weight" v-if="children>0&&picInfo.childDiscount">{{picInfo.symbol}}{{returnFloat(returnFloat(adultsPic)-returnFloat(children*picInfo.childDiscount))}}</span>
-					<span class="weight" v-else>{{picInfo.symbol}}{{returnFloat(adultsPic)}}</span>
+					<span class="weight" v-if="children>0&&picInfo.childDiscount">{{nowExchange.symbol}}{{returnFloat(returnFloat(adultsPic)-returnFloat(children*picInfo.childDiscount))}}</span>
+					<span class="weight" v-else>{{nowExchange.symbol}}{{returnFloat(adultsPic)}}</span>
 
 					<div class="picRate">
 						<select class="currency_type" @change="changeCurrency" v-model="picInfo.currency">
@@ -58,7 +58,40 @@
 			
 		</transition> -->
 		<transition name="slideleft">
-			<PriceDetail v-show="isshowDetail" class="view" :picInfo="picInfo" @call-back-detail="setCallBackDetail"></PriceDetail>
+			<div class="priceDetail" v-if="isshowDetail">
+				<div class="cont">
+					<div class="back"><i class="iconfont" @click="back">&#xe606;</i></div>
+					<div class="head">
+						<h3>Price details</h3>
+					</div>
+					<div class="details">
+						<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is   {{picInfo.symbol}}  {{returnFloat(picInfo.childDiscount)}} {{picInfo.currency}}  less than adults' price.</p>
+
+
+						<table class="price_list">
+							<tr>
+								<th>No. of people</th>
+								<th>Total cost</th>
+								<th>Price per person</th>
+							</tr>
+							<tr :key="index" v-for="(item,index) in picInfo.details">
+								<td>
+									<span v-if="item.capacity==1">1 person</span>
+									<span v-else>{{item.capacity}} people</span>
+								</td>
+								<td>
+									<span>{{picInfo.symbol}} {{returnFloat(item.price)}} {{picInfo.currency}}</span>
+								</td>
+								<td>
+									<div v-show="item.capacity">
+										<span>{{picInfo.symbol}} {{returnFloat(item.price/item.capacity)}} {{picInfo.currency}}</span>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
 		</transition>
 		
 		<transition name="fade">
@@ -74,7 +107,7 @@
 	
 	import { GetDateStr, addmulMonth, getPriceMark,formatDate} from "~/assets/js/utils";
 	import SelectPeople from "~/components/activity/details/SelectPeople"
-	import PriceDetail from "~/components/activity/details/PriceDetail"
+	// import PriceDetail from "~/components/activity/details/PriceDetail"
 	import headBack from "~/components/header/back";
 	import Vue from 'vue';
 
@@ -103,6 +136,11 @@
 				}
 			};
 			
+			var currency = {code: "USD", symbol: "$", exchangeRate: 1};
+			if(userCookie.currency){
+				currency = JSON.parse(decodeURIComponent(userCookie.currency));
+				
+			}
 			
 			var data = {
 				dateTime: '',
@@ -125,31 +163,29 @@
 				showWinBg : false,
 				isshowDetail:false, //priceDetail
 				participants:0,
-				nowExchange:{},//{'rate':1,'currency':'USD','symbol':'$'}
+				nowExchange:currency,//{'rate':1,'currency':'USD','symbol':'$'}
 				exchange:[],
 				timeout:false,
 				owner:'',
-				
+				currency:currency,
 				calendar:[]
 				
 			};
-			
 			if(userCookie.participants){
 				data.participants=JSON.parse(decodeURIComponent(userCookie.participants))
 				data.adults=data.participants
 				data.people=data.participants
 			}
-
+			
 			//基本信息
 			var Promise1 = new Promise(function(resolve, reject){
 				Vue.axios.get(apiBasePath + "product/activity/" + id).then(function(res) {
 					// var consoleTimeS2 = new Date().getTime();
 					// 	console.log('基本信息接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
-
 					var thisData = res.data;
 						if(!thisData.allAvailable){
-							Vue.axios.get(apiBasePath + "product/activity/"+id+"/sale/calendar").then(function(resCalendar) {
-								data.calendar = resCalendar.data;
+							Vue.axios.get(apiBasePath + "product/activity/"+id+"/sale/calendar").then(function(data) {
+								
 								resolve(data);
 							}, function(res) {
 								resolve(data);
@@ -163,20 +199,41 @@
 					resolve(data);
 				});
 			});
+			var Promise2 = new Promise(function(resolve, reject){
+					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price?currency="+data.currency.code).then(function(res) {
+						// var consoleTimeS2 = new Date().getTime();
+						// 	console.log('价格接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
+						resolve(res);
+					}, function(res) {
+						resolve(res);
+					});
+				});
 
-			Promise1.then(function(results){
-				//data.calendar = results.data?results.data:[];
-				//同步回调
-				callback(null,results);
-				
+			//价格明细
+			var Promise3 = new Promise(function(resolve, reject){
+				Vue.axios.get(apiBasePath + "product/activity/"+id+"/price/detail?currency="+data.currency.code).then(function(res) {
+					// var consoleTimeS2 = new Date().getTime();
+					// 	console.log('价格接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
+					resolve(res);
+				}, function(res) {
+					resolve(res);
+				});
 			});
+			Promise.all([Promise1,Promise2,Promise3]).then(function(results){
+				data.calendar = results[0].data?results[0].data:[];
+				data.picInfo=results[1].data
+				data.picInfo.details=results[2].data
 
+				
+				//同步回调
+				callback(null,data);
+			});		
 		},
 
 		components: {
 			//flatPickr,
 			SelectPeople,
-			PriceDetail,
+			// PriceDetail,
 			headBack
 		},
 		methods: {
@@ -214,7 +271,9 @@
 							if(picInfo.childDiscount){
 								picInfo.childDiscount=self.returnFloat(results[0].data.childDiscount)
 							}
-							picInfo.details=results[1].data
+							self.picInfo=results[0].data
+							self.picInfo.details=results[1].data
+							
 							for(var i=0;i<results[1].data.length;i++){
 								if(self.adults+self.children==results[1].data[i].capacity){
 									self.adultsPic=self.returnFloat(results[1].data[i].price)
@@ -228,11 +287,10 @@
 							}
 
 							
-						}	
-							
-							
+						}		
 
 					})
+					Cookie.set('currency',JSON.stringify(this.nowExchange),{path:'/','expires':30});
 				
 			 },
 			// changeCurrency(e){
@@ -522,7 +580,7 @@
 
 			var objDetail = JSON.parse(window.localStorage.getItem("objDetail"));
 			
-			this.picInfo = objDetail.picInfo
+			//this.picInfo = objDetail.picInfo
 			this.id= objDetail.id
 			this.title= objDetail.title
 			this.pickup= objDetail.pickup
@@ -552,14 +610,14 @@
 				this.people = maxPeople;
 				this.adults = maxPeople;
 			}
-
+			console.log(this.calendar)
 			//团期日期
 			var saleDate = [];
 			for(var i=0;i<this.calendar.length;i++){
 				var thisData = this.calendar[i];
 				saleDate.push(thisData.saleDate);
 			}
-
+			
 			//根据人数默认总价
 			if(this.participants>0){
 				this.adultsPic =this.retrunPrice()
@@ -910,6 +968,62 @@
 		}
 		
 	}
-
+	.price_list{
+		margin-top: 0.2rem;
+		width: 100%;
+		tr{
+			&:nth-child(2n+3){
+				background: rgba(27, 188, 157, .06) !important;
+			}
+		
+			th{
+				text-align: center;
+				
+			}
+			td{
+				text-align: center;
+				font-size: 0.24rem;
+				line-height: 0.56rem;
+				padding: 0.1rem 0;
+				
+			}
+		}
+		
+	}
+	.priceDetail{
+		position: fixed;
+		left: 0;
+		top: 0;
+		width: 100%;
+		min-height: 100%;
+		z-index: 99999999;
+		background: #fff;
+		.cont{
+			position: absolute;
+			left: 0;
+			top: 0;
+			height: 100%;
+			width:100%;
+			overflow: scroll;
+			padding:0 0.4rem 0.533333rem;
+			
+			.back{
+				padding: 0.34rem 0 0.4rem;
+			}
+			.head{
+				h3{
+					font-size:0.6rem;
+					font-weight: bold;
+				}
+			}
+		}
+		.details{
+			
+			p{
+				font-size: 0.32rem;
+				margin-top: 0.2rem;
+			}
+		}
+	}
 	
 </style>

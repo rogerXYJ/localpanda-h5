@@ -26,7 +26,7 @@
 
 				<div class="picinfo">
 					<!-- <p v-if="picInfo.originalPrice">From <span class="oldpic">{{nowExchange.symbol}} {{returnFloat(picInfo.originalPrice)}}</span></p> -->
-					<p>{{peopleNum?' ':(picInfo.unifiedPricing?'':'From ')}}{{nowExchange.code}} <b>{{nowExchange.symbol}} {{peopleNum>0?returnFloat(retrunPrice()/peopleNum):returnFloat(picInfo.bottomPrice)}}</b>{{returnText(peopleNum)}}</p>
+					<p>{{peopleNum?' ':(picInfo.unifiedPricing?'':'From ')}} <b>{{nowExchange.symbol}} {{peopleNum>0?returnFloat(retrunPrice()/peopleNum):returnFloat(picInfo.bottomPrice)}}</b>{{returnText(peopleNum)}}</p>
 					
 				</div>
 

@@ -15,7 +15,7 @@
 						<th>Total cost</th>
 						<th>Price per person</th>
 					</tr>
-					<tr :key="index" v-for="(item,index) in sixArr">
+					<tr :key="index" v-for="(item,index) in picInfo.details">
 						<td>
 							<span v-if="item.capacity==1">1 person</span>
 							<span v-else>{{item.capacity}} people</span>
@@ -69,7 +69,7 @@
 		name: "priceDetail",
 		data() {
 
-			console.log(this.picInfo);
+			
 			return {
 				sixArr:[],
 			}
@@ -170,12 +170,14 @@
 		},
 		mounted: function() {
 			let that=this
+			
 			that.$nextTick(function(){
-				that.sixArr=that.picInfo.details
+				console.log(that.picInfo.details)
+				
 			})
 //			console.log(that.tableData(that.picInfo.details))
 			
-		}
+		},
 	}
 </script>
 <style lang="scss">

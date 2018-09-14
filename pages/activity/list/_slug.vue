@@ -903,18 +903,47 @@
 			for(var key in options){
 				var keyUpper = key.toUpperCase();
 				if(keyUpper=='PRICE'){
-					if(options[key].maxValue>500){
+					if(currency.code == "CNY"){
+						if(options[key].maxValue>3000){
 						postFilters.push({
 							type: keyUpper,
 							minValue: options[key].minValue
 						});
-					}else{
+						}else{
+							postFilters.push({
+								type: keyUpper,
+								minValue: options[key].minValue,
+								maxValue: options[key].maxValue
+							});
+						}	
+					}else if(currency.code == "JPY"){
+						if(options[key].maxValue>50000){
 						postFilters.push({
 							type: keyUpper,
-							minValue: options[key].minValue,
-							maxValue: options[key].maxValue
+							minValue: options[key].minValue
 						});
+						}else{
+							postFilters.push({
+								type: keyUpper,
+								minValue: options[key].minValue,
+								maxValue: options[key].maxValue
+							});
+						}	
+					}else{
+						if(options[key].maxValue>500){
+							postFilters.push({
+								type: keyUpper,
+								minValue: options[key].minValue
+							});
+						}else{
+							postFilters.push({
+								type: keyUpper,
+								minValue: options[key].minValue,
+								maxValue: options[key].maxValue
+							});
+						}
 					}
+					
 					
 					//设置默认价格区间
 					price = [options[key].minValue,options[key].maxValue];
@@ -1076,7 +1105,7 @@
 				showHeaderSearch: false,
 				participantsOption:[
 					{
-						selectparticipant:'Guests Number',
+						selectparticipant:'Travelers',
 						label:0
 
 					},
@@ -1243,7 +1272,7 @@
 					}
 				}
 				newParticipants.unshift({
-					selectparticipant:'Guests Number',
+					selectparticipant:'Travelers',
 					label:0
 				})
 				
@@ -1450,9 +1479,20 @@
 					if(filterCheck[key].length){
 						options[key] = filterCheck[key].sort();
 					}else if(key=='price' && !Array.isArray(filterCheck[key])){
-						if(filterCheck[key].minValue!=0 || filterCheck[key].maxValue!=505){
+						if(this.postData.currency=="CNY"){
+							if(filterCheck[key].minValue!=0 || filterCheck[key].maxValue!=3030){
+								options[key] = filterCheck[key];
+							}	
+						}else if(this.postData.currency=="JPY"){
+							if(filterCheck[key].minValue!=0 || filterCheck[key].maxValue!=50050){
 							options[key] = filterCheck[key];
+							}
+						}else{
+							if(filterCheck[key].minValue!=0 || filterCheck[key].maxValue!=505){
+								options[key] = filterCheck[key];
+							}
 						}
+						
 						
 					}
 				}
