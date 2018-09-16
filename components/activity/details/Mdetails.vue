@@ -172,7 +172,7 @@
 						</dl>
 						<div class="hr"></div>
 						<p class="book_tip">{{picInfo.refundInstructions}}</p>
-						<span class="btn">Book</span>
+						<span class="btn" @click="bookFn">Book</span>
 					</div>
 				</div>
 
@@ -1103,6 +1103,53 @@ import photo from '~/components/activity/details/photo'
 			checkGuideFn(index){
 				this.showGuideDetail = false;
 				this.checkGuideIndex = index;
+			},
+			bookFn(){
+				console.log(this.picInfo);
+				
+			// changeAdults:1,
+			// changeChildren:0,
+			// bookChildren:0,
+			// bookPeople:0,
+			// price:0,
+			// perPersonPrice:0,
+			// amount:0,
+
+
+			
+
+
+				
+				var orderInfo = {
+		      activityId: this.detail.id,
+		      amount: this.returnFloat(this.amount),
+					currency: this.picInfo.currency,
+					symbol: this.nowExchange.symbol,
+					adultNum: this.bookPeople - this.bookChildren,
+					refundTimeLimit: this.picInfo.refundTimeLimit,
+				  fullRefund:this.picInfo.fullRefund,
+				  finalRefundPeriod:null,  //????
+					childrenNum: this.bookChildren,
+					infantNum: 0,
+					startDate: this.startDate,
+					startTime: null,
+					adultsPic: this.returnFloat(this.perPersonPrice*this.bookPeople),
+					title: this.detail.title,
+					childDiscount: this.picInfo.childDiscount*this.bookChildren, //儿童优惠总价
+					childDiscountP: this.picInfo.childDiscount,  //儿童优惠平均价
+				  pickup: this.detail.pickup,
+				  owner:this.detail.owner,
+		      averagePrice: this.perPersonPrice, //人均价 
+		      
+				};
+				
+
+				console.log(orderInfo);
+				return false;
+				
+				orderInfo = JSON.stringify(orderInfo);
+		    localStorage.setItem("orderInfo", orderInfo);
+				location.href="/activity/booking/"+that.id;
 			}
 		},
 		filters: {
@@ -1157,7 +1204,7 @@ import photo from '~/components/activity/details/photo'
 				that.sixArr=that.picInfo.details;
 			}
 
-
+	console.log(this.detail);
 
 			//初始化日期选择
 			this.checkInit();
