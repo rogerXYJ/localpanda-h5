@@ -95,7 +95,7 @@
 			</div>
 
 			<!-- 预定信息板块 -->
-			<div class="check_all">
+			<div class="check_all" id="check_all">
 				<h3>Select date, particpants</h3>
 				<ul class="check_info">
 					<li>
@@ -360,7 +360,7 @@
 		</div>
 		<div class="book">
 			<button @click="gaInquire">Inquire</button>
-			<button class="bookBtn" @click="goBooking">Book</button>
+			<a class="bookBtn" href="#check_all">Check availability</a>
 		</div>
 		<!--<photo :photoList="photoList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></photo>-->
 
@@ -1104,6 +1104,9 @@ import photo from '~/components/activity/details/photo'
 				this.showGuideDetail = false;
 				this.checkGuideIndex = index;
 			},
+			goCheck(){
+
+			},
 			bookFn(){
 				console.log(this.picInfo);
 				
@@ -1729,7 +1732,7 @@ import photo from '~/components/activity/details/photo'
 			background: #fff;
 			border-top: 1px solid #dde0e0;
 			display: flex;
-			button{
+			button,a{
 				flex: 1;
 				margin-right: 0.32rem;
 				width: 3.6rem;
@@ -1740,7 +1743,7 @@ import photo from '~/components/activity/details/photo'
 				font-weight: bold;
 				border-radius: 0.6rem;
 				margin-top: 0.23rem;
-				font-size: 0.36rem;
+				font-size: 0.32rem;
 				&:last-child{
 					margin-right: 0;
 					background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
