@@ -84,24 +84,9 @@
 				<div class="guide_list">
 					<div class="swiper-container js_guide">
 						<div class="swiper-wrapper">
-							<div class="swiper-slide">
-								<img src="http://placehold.it/80x80/dddddd" width="100%" alt="">
-								<span><i class="iconfont">&#xe654;</i></span>
-							</div>
-							<div class="swiper-slide">
-								<img src="http://placehold.it/80x80/dddddd" width="100%" alt="">
-								<span><i class="iconfont">&#xe654;</i></span>
-							</div>
-							<div class="swiper-slide">
-								<img src="http://placehold.it/80x80/dddddd" width="100%" alt="">
-								<span><i class="iconfont">&#xe654;</i></span>
-							</div>
-							<div class="swiper-slide">
-								<img src="http://placehold.it/80x80/dddddd" width="100%" alt="">
-								<span><i class="iconfont">&#xe654;</i></span>
-							</div>
-							<div class="swiper-slide">
-								<img src="http://placehold.it/80x80/dddddd" width="100%" alt="">
+							<div class="swiper-slide" :class="{'active':checkGuideIndex===index}" v-for="(item,index) in detail.guide" :key="index" @click="showGuideFn(index)">
+								<!-- <img :src="item.guidePhoto.headPortraitUrl" width="100%" alt=""> -->
+								<div class="guide_list_head" :style="'background-image:url('+item.guidePhoto.headPortraitUrl+')'"></div>
 								<span><i class="iconfont">&#xe654;</i></span>
 							</div>
 						</div>
@@ -419,6 +404,37 @@
 			<div class="win_bg" id="win_bg" @click="showWinBg = false" v-show="showWinBg"></div>
 		</transition>
 
+
+		<div class="guide_dialog" v-show="showGuideDetail">
+			<div class="guide_dialog_header">
+				<span class="iconfont" @click="showGuideDetail=false">&#xe606;</span>
+				{{guideSwiperIndex+1}}/{{detail.guide.length}} Experts
+			</div>
+
+			<div class="swiper-container js_guide_detail">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide" v-for="(item,index) in detail.guide" :key="index">
+						<div class="guide_detail">
+							<div class="guide_img" :style="'background-image:url('+item.guidePhoto.headPortraitUrl+')'"></div>
+							<div class="guide_content">
+								<h3>{{item.enName}}</h3>
+								<p>Old Beijing history consultant</p>
+								<p><b>Trips Given: </b>{{item.serviceTimes}}</p>
+								<p><b>Birthplace: </b>{{item.birthplace}}</p>
+								<p><b>Language(s): </b><span v-for="(Language,num) in item.guideLanguages">{{(num>0?' , ':'')+Language.language+'('+Language.level+')'}}</span></p>
+								<p>{{item.selfIntro}}</p>
+							</div>
+						</div>
+						<div class="btn" @click="checkGuideFn(index)" v-if="checkGuideIndex===index"><i class="iconfont">&#xe654;</i> Successfully selected</div>
+						<div class="btn" @click="checkGuideFn(index)" v-else>Select this expert</div>
+					</div>
+				</div>
+			</div>
+
+			
+
+		</div>
+
 	</div>
 	
 </template>
@@ -550,13 +566,19 @@ import photo from '~/components/activity/details/photo'
 			peopleText:'',
 			changeAdults:1,
 			changeChildren:0,
-			hasGuide:false,
-			showGuideList:false,
 			bookChildren:0,
 			bookPeople:0,
 			price:0,
 			perPersonPrice:0,
-			amount:0
+			amount:0,
+
+			//导游
+			showGuideDetail:false,
+			guideSwiper:null,
+			hasGuide:false,
+			showGuideList:false,
+			checkGuideIndex:'',
+			guideSwiperIndex:0,
 		}
 	},
 	components: {
@@ -1051,6 +1073,36 @@ import photo from '~/components/activity/details/photo'
 						self.showChangePeople = true;
 					},50);
 				}
+			},
+			showGuideFn(index){
+				var self = this;
+				this.showGuideDetail = true;
+				//初始化过就不再初始化
+				if(!self.guideSwiper){
+					setTimeout(function(){
+						self.guideSwiper = new Swiper('.js_guide_detail', {
+							autoplay: false,//可选选项，自动滑动
+							initialSlide:index,
+							on:{
+								tap: function(e){
+									console.log(this.clickedIndex);
+								},
+								slideChangeTransitionEnd: function(){
+									self.guideSwiperIndex = this.activeIndex;
+								},
+								
+							},
+						});
+					},200);
+				}else{
+					//滑动到对应索引
+					self.guideSwiper.slideTo(index, 0, false);
+				}
+
+			},
+			checkGuideFn(index){
+				this.showGuideDetail = false;
+				this.checkGuideIndex = index;
 			}
 		},
 		filters: {
@@ -1127,7 +1179,11 @@ import photo from '~/components/activity/details/photo'
 						console.log(this.clickedIndex);
 					},
 				},
-			})
+			});
+
+			
+
+			
 			
 			//根据最低成团人数修改默认人数
 			// if(this.picInfo.minParticipants == 1 && this.picInfo.maxParticipants == 1){
@@ -1149,6 +1205,7 @@ import photo from '~/components/activity/details/photo'
 			}
 			
 			console.log(this.picInfo,111);
+			console.log(this.detail.guide,222);
 			//var ua = window.navigator.userAgent.toLowerCase();
 			//that.isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
 			document.querySelector('.select_people_box option').setAttribute('hidden','hidden')
@@ -1180,6 +1237,15 @@ import photo from '~/components/activity/details/photo'
 			},
 			bookPeople:function(){
 				this.setPeoplePrice();
+			},
+			showGuideDetail:function(val){
+				if(val){
+					document.querySelector('html').style.overflowY = 'hidden';
+					document.querySelector('body').style.overflowY = 'hidden';
+				}else{
+					document.querySelector('html').style.overflowY = 'inherit';
+					document.querySelector('body').style.overflowY = 'inherit';
+				}
 			}
 		}
 	}
@@ -1732,6 +1798,15 @@ import photo from '~/components/activity/details/photo'
 					overflow: hidden;
 					position: relative;
 					img{ width: 100%; border: 4px solid #fff; box-sizing: border-box; border-radius: 50%;}
+					.guide_list_head{
+						width: 100%;
+						padding-bottom: calc(100% - 8px);
+						height: 0;
+						border: 4px solid #fff; box-sizing: border-box; border-radius: 50%;
+						background-position: center center;
+						background-size: cover;
+						background-repeat: no-repeat;
+					}
 					span{ 
 						display: none; width: 100%; height: 100%; position: absolute; left: 0; top: 0; background-color:rgba(27,188,157,0.6); text-align: center;
 						i{
@@ -1927,7 +2002,72 @@ import photo from '~/components/activity/details/photo'
 				}
 			}
 		}
-		
+		.guide_dialog{
+			position: fixed;
+			left: 0;
+			top: 0;
+			z-index: 999;
+			width: 100%;
+			height: 100%;
+			box-sizing: border-box;
+			
+			color: #353a3f;
+			background-color: #f5f5f5;
+			.guide_dialog_header{
+				padding: 0 0.3rem;
+				background-color: #f5f5f5;
+				// padding: 0.3rem 0;
+				font-size: 0.28rem;
+				height: 1rem;
+				line-height: 1rem;
+				// color: #000;
+				
+				// position: fixed;
+				// top: 0;
+				// left: 0;
+				// width: 100%;
+				.iconfont{
+					position: absolute;
+					right: 0.3rem;
+					top: 0;
+					font-size: 0.4rem;
+					padding: 0 0.2rem;
+				}
+			}
+			.guide_detail{
+				height: calc(100vh - 2.2rem);
+				overflow-y: auto;
+				background-color: #fff;
+				margin: 0 0.3rem;
+				.guide_img{
+					
+					height: 4.6rem;
+					background-size: cover;
+					background-position: center center;
+					background-repeat: no-repeat;
+					background-color: #fff;
+				}
+				.swiper-container{
+					height: calc(100% - 1rem);
+					.swiper-wrapper,.swiper-slide{
+						height: 100%;
+					}
+				}
+				
+				.guide_content{
+					padding: 0.4rem;
+					box-sizing: border-box;
+					
+					h3{ font-size: 0.46rem;}
+					p{ font-size: 0.26rem; margin-top: 0.15rem;
+						b{ font-weight: bold;}
+					}
+				}
+			}
+			.btn{
+				margin: 0.15rem auto 0; width: calc(100% - 1.2rem); display: block; box-sizing: border-box;
+			}
+		}
 	}
 
 

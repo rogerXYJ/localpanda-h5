@@ -281,8 +281,17 @@
 					});
 				});
 
+				//导游信息
+				var Promise12 = new Promise(function(resolve, reject){
+					Vue.axios.get(apiBasePath+"product/ACTIVITY/"+id+"/guide/info/list").then(function(res) {
+						resolve(res);
+					}, function(res) {
+						resolve(res);
+					});
+				});
+
 				
-				Promise.all([Promise1,Promise2,Promise3,Promise4,Promise5,Promise6,Promise7,Promise8,Promise9,Promise10,Promise11]).then(function(results){
+				Promise.all([Promise1,Promise2,Promise3,Promise4,Promise5,Promise6,Promise7,Promise8,Promise9,Promise10,Promise11,Promise12]).then(function(results){
 
 					//基本信息
 					response = results[0];
@@ -335,6 +344,8 @@
 						//行程信息
 						data.detail.itineraries = results[7].data || [];
 
+						//导游信息
+						data.detail.guide = results[11].data;
 
 					} else {
 						//同步回调
