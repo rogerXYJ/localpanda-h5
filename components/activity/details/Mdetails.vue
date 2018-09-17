@@ -160,7 +160,7 @@
 								<span>{{nowExchange.symbol}}{{perPersonPrice}}×{{bookPeople}} {{bookPeople>1?'People':'Person'}}</span>
 								<span v-if="picInfo.childDiscount && bookChildren">-{{nowExchange.symbol}}{{picInfo.childDiscount*bookChildren}} for children</span>
 							</dt>
-							<dd><i class="iconfont">&#xe659;</i>{{nowExchange.symbol}}{{price}}</dd>
+							<dd><a class="iconfont" href="#picDetails">&#xe659;</a>{{nowExchange.symbol}}{{price}}</dd>
 						</dl>
 						<dl class="book_price_info">
 							<dt>Total ({{nowExchange.code}})</dt>
@@ -293,7 +293,7 @@
 			</div>
 			<div class="provide" v-if="picInfo.details.length>0" id="picDetails">
 					<h3>Price Details</h3>
-					<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is  {{nowExchange.symbol}}  {{returnFloat(picInfo.childDiscount)}}  {{nowExchange.code}}  less than adults' price.</p>
+					<p class="childDiscount" v-if="picInfo.childDiscount">Children's price is  {{nowExchange.code}} {{nowExchange.symbol}}  {{returnFloat(picInfo.childDiscount)}}  less than adults' price.</p>
 
 					<table class="price_list">
 						<tr>
@@ -306,10 +306,10 @@
 								<span v-if="item.capacity==1">1 person</span>
 								<span v-else>{{item.capacity}} people</span>
 							</td>
-							<td><span>{{nowExchange.symbol}} {{item.price}} {{nowExchange.code}}</span></td>
+							<td><span>{{nowExchange.code}} {{nowExchange.symbol}} {{item.price}} </span></td>
 							<td>
 								<div v-show="item.capacity">
-									<span>{{nowExchange.symbol}} {{item.perPersonPrice}} {{nowExchange.code}}</span>
+									<span>{{nowExchange.code}} {{nowExchange.symbol}} {{item.perPersonPrice}} </span>
 								</div>
 							</td>
 						</tr>
