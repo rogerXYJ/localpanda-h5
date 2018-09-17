@@ -78,7 +78,7 @@
 
 
 			<!-- 导游板块 -->
-			<div class="guide_all">
+			<div class="guide_all" v-if="detail.guide.length">
 				<h3>Travel with our experts</h3>
 				<p>You can  select your best fit or let us assign one for you</p>
 				<div class="guide_list">
@@ -131,6 +131,7 @@
 					</li>
 					<li v-show="!showPriceInfo">
 						<span class="btn" @click="availability">Check availability</span>
+						<span class="btn_inquire" @click="gaInquire">Inquire</span>
 					</li>
 				</ul>
 
@@ -138,15 +139,17 @@
 				<div class="book_all" v-show="showPriceInfo">
 
 					<!-- 导游信息 -->
-					<div class="book_guide_check" :class="{'active':!hasGuide}" @click="hasGuide=false">
-						<i></i>Let us assign one experts for you
+					<div v-if="detail.guide.length">
+						<div class="book_guide_check" :class="{'active':checkGuideIndex===''}" @click="checkGuideIndex=''">
+							<i></i>Let us assign one experts for you
+						</div>
+						<div class="book_guide_check" :class="{'active':checkGuideIndex!==''}" @click="showGuideFn(checkGuideIndex?checkGuideIndex:0)">
+							<i></i>Select your best experts (free of charge)
+						</div>
 					</div>
-					<div class="book_guide_check" @click="showGuideList=true">
-						<i></i>Let us assign one experts for you
-					</div>
-					<div class="book_guide_info" v-show="hasGuide">
-						<div class="book_guide_select">Reselect</div>
-						<div class="book_guide_photo"><img src="http://placehold.it/78x78/dddddd" width="100%" alt=""></div>
+					<div class="book_guide_info" v-if="checkGuideIndex!==''">
+						<div class="book_guide_select" @click="showGuideFn(checkGuideIndex)">Reselect</div>
+						<div class="book_guide_photo" :style="'background-image:url('+detail.guide[checkGuideIndex].guidePhoto.headPortraitUrl+')'"></div>
 						Ciprian has been selected !
 					</div>
 
@@ -154,7 +157,7 @@
 					<div class="book_price_box">
 						<dl class="book_price_info">
 							<dt>
-								<span>{{nowExchange.symbol}}{{perPersonPrice}}×{{bookPeople}} people</span>
+								<span>{{nowExchange.symbol}}{{perPersonPrice}}×{{bookPeople}} {{bookPeople>1?'People':'Person'}}</span>
 								<span v-if="picInfo.childDiscount && bookChildren">-{{nowExchange.symbol}}{{picInfo.childDiscount*bookChildren}} for children</span>
 							</dt>
 							<dd><i class="iconfont">&#xe659;</i>{{nowExchange.symbol}}{{price}}</dd>
@@ -173,6 +176,7 @@
 						<div class="hr"></div>
 						<p class="book_tip">{{picInfo.refundInstructions}}</p>
 						<span class="btn" @click="bookFn">Book</span>
+						<span class="btn_inquire" @click="gaInquire">Inquire</span>
 					</div>
 				</div>
 
@@ -358,7 +362,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="book">
+		<div class="book" v-show="showFixedBtn">
 			<button @click="gaInquire">Inquire</button>
 			<a class="bookBtn" href="#check_all">Check availability</a>
 		</div>
@@ -559,6 +563,7 @@ import photo from '~/components/activity/details/photo'
 					],
 			
 			//选择日期和人数板块
+			showFixedBtn:true,
 			showWinBg:false,
 			showChangePeople:false,
 			showPriceInfo:false,
@@ -576,7 +581,6 @@ import photo from '~/components/activity/details/photo'
 			showGuideDetail:false,
 			guideSwiper:null,
 			hasGuide:false,
-			showGuideList:false,
 			checkGuideIndex:'',
 			guideSwiperIndex:0,
 		}
@@ -1104,8 +1108,23 @@ import photo from '~/components/activity/details/photo'
 				this.showGuideDetail = false;
 				this.checkGuideIndex = index;
 			},
-			goCheck(){
-
+			scrollFn($check_all){
+				var top = document.documentElement.scrollTop;
+				var boxTop = $check_all.offsetTop;
+				var winH = window.innerHeight;
+				if(top>boxTop-winH+100 && top<boxTop+$check_all.clientHeight){
+					this.showFixedBtn = false;
+				}else{
+					this.showFixedBtn = true;
+				}
+			},
+			addZero(num){
+				return num>9 ? num : '0'+num;
+			},
+			getRefundDate(dateStr,days){
+				var dt = new Date(dateStr.replace(/\-/g,'/'));
+				dt.setDate(dt.getDate()-days);
+				return dt.getFullYear() + "-" +this.addZero(dt.getMonth()+1) + "-" + this.addZero(dt.getDate());
 			},
 			bookFn(){
 				console.log(this.picInfo);
@@ -1131,11 +1150,11 @@ import photo from '~/components/activity/details/photo'
 					adultNum: this.bookPeople - this.bookChildren,
 					refundTimeLimit: this.picInfo.refundTimeLimit,
 				  fullRefund:this.picInfo.fullRefund,
-				  finalRefundPeriod:null,  //????
+				  finalRefundPeriod:(this.picInfo.fullRefund?this.getRefundDate(this.startDate,this.picInfo.refundTimeLimit):null),  //最后退款日期
 					childrenNum: this.bookChildren,
 					infantNum: 0,
-					startDate: this.startDate,
-					startTime: null,
+					startDate: this.startDate, //出游时间
+					startTime: null,  //
 					adultsPic: this.returnFloat(this.perPersonPrice*this.bookPeople),
 					title: this.detail.title,
 					childDiscount: this.picInfo.childDiscount*this.bookChildren, //儿童优惠总价
@@ -1146,13 +1165,9 @@ import photo from '~/components/activity/details/photo'
 		      
 				};
 				
-
-				console.log(orderInfo);
-				return false;
-				
 				orderInfo = JSON.stringify(orderInfo);
 		    localStorage.setItem("orderInfo", orderInfo);
-				location.href="/activity/booking/"+that.id;
+				location.href="/activity/booking/"+this.detail.id;
 			}
 		},
 		filters: {
@@ -1207,7 +1222,7 @@ import photo from '~/components/activity/details/photo'
 				that.sixArr=that.picInfo.details;
 			}
 
-	console.log(this.detail);
+			//console.log(this.detail);
 
 			//初始化日期选择
 			this.checkInit();
@@ -1254,8 +1269,8 @@ import photo from '~/components/activity/details/photo'
 				this.changeAdults = this.picInfo.minParticipants;
 			}
 			
-			console.log(this.picInfo,111);
-			console.log(this.detail.guide,222);
+			// console.log(this.picInfo,111);
+			// console.log(this.detail.guide,222);
 			//var ua = window.navigator.userAgent.toLowerCase();
 			//that.isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
 			document.querySelector('.select_people_box option').setAttribute('hidden','hidden')
@@ -1272,6 +1287,10 @@ import photo from '~/components/activity/details/photo'
 			};
 			
 
+			var $check_all = document.querySelector('#check_all');
+			window.onscroll = function(){
+				that.scrollFn($check_all);
+			}
 			//console.log(this.remarkDataAll);
 			
 
@@ -1720,6 +1739,21 @@ import photo from '~/components/activity/details/photo'
 			}
 			
 		}
+		.btn_inquire{
+			display: block;
+			height: 0.86rem;
+			line-height: 0.86rem;
+			text-align: center;
+			color: #FFF;
+			font-weight: bold;
+			border-radius: 0.6rem;
+			margin-top: 0.23rem;
+			font-size: 0.32rem;
+			border: solid 1px #1bbc9d;
+			background: #fff;
+			color: #1bbc9d;
+			font-size:0.36rem;
+		}
 		.book {
 			width: 100%;
 			box-sizing: border-box;
@@ -1874,7 +1908,7 @@ import photo from '~/components/activity/details/photo'
 
 		.check_all{
 			color: #353a3f;
-			padding: 0.4rem 0;
+			padding: 0.3rem 0 0.4rem;
 			h3{
 				font-size: 0.3rem;
 				font-weight: bold;
@@ -1970,7 +2004,7 @@ import photo from '~/components/activity/details/photo'
 				margin-left: -0.4rem;
 				margin-top: 0.58rem;
 				padding: 0.3rem;
-				
+				border-radius: 6px;
 				.book_guide_check{
 					padding-left: 0.7rem;
 					overflow: hidden;
@@ -1997,6 +2031,9 @@ import photo from '~/components/activity/details/photo'
 						border-radius: 50%;
 						overflow: hidden;
 						margin-right: 0.3rem;
+						background-position: center center;
+						background-size: cover;
+						background-repeat: no-repeat;
 					}
 				}
 				.book_price_box{
