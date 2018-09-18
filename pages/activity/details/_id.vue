@@ -536,6 +536,13 @@
 	#launcher{
 		bottom: 2.133333rem!important;
 	}
+
+	#activitiesDetail{
+		.header{
+			.selectCurrey_box{ display: none!important;}
+		}
+	}
+	
 </style>
 <style lang="scss" scoped>
 	

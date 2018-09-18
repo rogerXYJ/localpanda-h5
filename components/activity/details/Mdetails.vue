@@ -1052,19 +1052,30 @@ import photo from '~/components/activity/details/photo'
 			},
 			validatePeople(){
 				var peopleStatus = this.peopleStatus();
+				// var $check_people = document.querySelectorAll('.check_people');
 				if(this.bookAdults + this.bookChildren==0){ //判断是否已选人数
-					this.checkTipText = 'The minimum number of Participants is '+this.picInfo.minParticipants+' in total';
+					this.checkTipText = 'include at least one adult';
+					// $check_people[0].style.borderColor = 'red';
 				}else if(peopleStatus==0){ //判断人数对不对
 					this.checkTipText = 'The minimum number of Participants is '+this.picInfo.minParticipants+' in total';
 					this.showPriceInfo = false;
+					// $check_people[0].style.borderColor = 'red';
+					// $check_people[1].style.borderColor = 'red';
 					return false;
 				}else if(peopleStatus==2){
 					this.checkTipText = 'Exceed the maximum number of Participants';
 					this.showPriceInfo = false;
+					// $check_people[0].style.borderColor = 'red';
+					// $check_people[1].style.borderColor = 'red';
 					return false;
+				}else if(!this.bookAdults){
+					this.checkTipText = 'include at least one adult';
+					// $check_people[0].style.borderColor = 'red';
 				}else{
 					this.checkTipText = '';
 					this.showPriceInfo = true;
+					// $check_people[0].style.borderColor = '#ebebeb';
+					// $check_people[1].style.borderColor = '#ebebeb';
 					return true;
 				}
 			},
@@ -1133,13 +1144,17 @@ import photo from '~/components/activity/details/photo'
 					self.showWinBg = true;
 					return false;
 				}
+				// else if(!this.bookAdults){
+				// 	this.validatePeople();
+				// 	return false;
+				// }
 				
 				var orderInfo = {
 		      activityId: this.id,
 		      amount: this.returnFloat(this.amount),
 					currency: this.picInfo.currency,
 					symbol: this.nowExchange.symbol,
-					adultNum: this.bookPeople - this.bookChildren,
+					adultNum: this.bookAdults,
 					refundTimeLimit: this.picInfo.refundTimeLimit,
 				  fullRefund:this.picInfo.fullRefund,
 				  finalRefundPeriod:(this.picInfo.fullRefund?this.getRefundDate(this.startDate,this.picInfo.refundTimeLimit):null),  //最后退款日期
@@ -1282,7 +1297,7 @@ import photo from '~/components/activity/details/photo'
 			bookAdults:function(val){
 				
 				this.adultsText = 'Adult x '+val;
-
+				
 				//校验人数
 				if(this.validatePeople()){
 					this.bookPeople = val + this.bookChildren;
@@ -1297,6 +1312,7 @@ import photo from '~/components/activity/details/photo'
 				if(this.validatePeople()){
 					this.bookPeople = val + this.bookAdults;
 				}
+
 			},
 			bookPeople:function(){
 				//设置价格
