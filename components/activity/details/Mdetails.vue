@@ -108,7 +108,7 @@
 						<i class="iconfont arrow">&#xe60f;</i>
 						<div class="check_people_text" :style="bookAdults>0?'color:#333;font-size:0.3rem;':'color:#888;font-size:0.3rem;'">{{adultsText}}</div>
 						<select id="" v-model="bookAdults">
-							<option :value="item" v-for="item in picInfo.maxParticipants" :key="item">{{item}}</option>
+							<option :value="item" v-for="item in picInfo.maxParticipants" :key="item">{{(item>1?'Adults':'Adult')+' x '+item}}</option>
 						</select>
 					</li>
 					<li class="check_people">
@@ -116,8 +116,8 @@
 						<i class="iconfont arrow">&#xe60f;</i>
 						<div class="check_people_text" :style="bookChildren>0?'color:#333;font-size:0.3rem;':'color:#888;font-size:0.22rem;'">{{childrenText}}</div>
 						<select id="" v-model="bookChildren">
-							<option :value="0">0</option>
-							<option :value="item" v-for="item in picInfo.maxParticipants-1" :key="item">{{item}}</option>
+							<option :value="0">Child x 0</option>
+							<option :value="item" v-for="item in picInfo.maxParticipants-1" :key="item">{{(item>1?'Children':'Child')+' x '+item}}</option>
 						</select>
 					</li>
 					<li>
