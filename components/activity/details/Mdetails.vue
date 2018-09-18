@@ -590,7 +590,7 @@ import photo from '~/components/activity/details/photo'
 			showPriceInfo:false,
 			startDate:'',
 			adultsText:'Adults',
-			childrenText:'Chlidren (age 2-'+this.picInfo.childStandard+')',
+			childrenText:'Chlidren (age 3-'+this.picInfo.childStandard+')',
 			checkTipText:'',
 			changeAdults:1,
 			changeChildren:0,
@@ -1032,7 +1032,7 @@ import photo from '~/components/activity/details/photo'
 					if(thisData.capacity==bookPeople){
 						this.price = thisData.price;
 						this.perPersonPrice = thisData.perPersonPrice;
-						this.amount = this.price - this.picInfo.childDiscount*this.bookChildren;
+						this.amount = this.price - (this.picInfo.childDiscount?this.picInfo.childDiscount*this.bookChildren:0);
 						break;
 					}
 				}
@@ -1094,7 +1094,7 @@ import photo from '~/components/activity/details/photo'
 								},
 							},
 						});
-					},200);
+					},10);
 				}else{
 					//滑动到对应索引
 					self.guideSwiper.slideTo(index, 0, false);
@@ -1296,7 +1296,7 @@ import photo from '~/components/activity/details/photo'
 			},
 			bookAdults:function(val){
 				
-				this.adultsText = 'Adult x '+val;
+				this.adultsText = (val>1?'Adults':'Adult')+' x '+val;
 				
 				//校验人数
 				if(this.validatePeople()){
