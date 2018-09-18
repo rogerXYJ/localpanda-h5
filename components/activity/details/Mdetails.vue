@@ -590,7 +590,7 @@ import photo from '~/components/activity/details/photo'
 			showPriceInfo:false,
 			startDate:'',
 			adultsText:'Adults',
-			childrenText:'Chlidren (age 3-12)',
+			childrenText:'Chlidren (age 2-'+this.picInfo.childStandard+')',
 			checkTipText:'',
 			changeAdults:1,
 			changeChildren:0,
@@ -1032,7 +1032,7 @@ import photo from '~/components/activity/details/photo'
 					if(thisData.capacity==bookPeople){
 						this.price = thisData.price;
 						this.perPersonPrice = thisData.perPersonPrice;
-						this.amount = this.price - this.picInfo.childDiscount*this.changeChildren;
+						this.amount = this.price - this.picInfo.childDiscount*this.bookChildren;
 						break;
 					}
 				}
