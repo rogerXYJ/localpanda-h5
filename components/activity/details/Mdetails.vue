@@ -96,19 +96,38 @@
 
 			<!-- 预定信息板块 -->
 			<div class="check_all" id="check_all">
-				<h3>Select date, particpants</h3>
-				<ul class="check_info">
+				<h3>Check Availability</h3>
+				<ul class="check_info clearfix">
 					<li>
 						<i class="iconfont input_icon">&#xe60d;</i>
 						<input id="js_changetime" v-model="startDate" readonly type="text" placeholder="Select">
 						<!-- <div class="check_box" id="js_changetime">Select</div> -->
 					</li>
+					<li class="check_people">
+						<i class="iconfont input_icon">&#xe63d;</i>
+						<i class="iconfont arrow">&#xe60f;</i>
+						<div class="check_people_text" :style="bookAdults>0?'color:#333;font-size:0.3rem;':'color:#888;font-size:0.3rem;'">{{adultsText}}</div>
+						<select id="" v-model="bookAdults">
+							<option :value="item" v-for="item in picInfo.maxParticipants" :key="item">{{item}}</option>
+						</select>
+					</li>
+					<li class="check_people">
+						<i class="iconfont input_icon">&#xe63d;</i>
+						<i class="iconfont arrow">&#xe60f;</i>
+						<div class="check_people_text" :style="bookChildren>0?'color:#333;font-size:0.3rem;':'color:#888;font-size:0.22rem;'">{{childrenText}}</div>
+						<select id="" v-model="bookChildren">
+							<option :value="0">0</option>
+							<option :value="item" v-for="item in picInfo.maxParticipants-1" :key="item">{{item}}</option>
+						</select>
+					</li>
 					<li>
+						<div class="check_tip" v-show="checkTipText"><span>{{checkTipText}}</span></div>
+						<div class="check_tip">Participants : {{picInfo.minParticipants}}-{{picInfo.maxParticipants}}. Free for infants under 3 years old.</div>
+					</li>
+					<!-- <li>
 						<i class="iconfont input_icon">&#xe63d;</i>
 						<i class="iconfont arrow">&#xe60f;</i>
 						<input id="js_changepeople" @click="showChangePeople=true" readonly type="text" v-model="peopleText" placeholder="Select">
-						<!-- &#xe63f; -->
-						<!-- <div class="check_box">Select</div> -->
 						<div class="change_people" v-show="showChangePeople">
 							<dl>
 								<dt>Adults</dt>
@@ -128,8 +147,9 @@
 							</dl>
 							<span class="btn" @click="peopleChange">Done</span>
 						</div>
-					</li>
+					</li> -->
 					<li v-show="!showPriceInfo">
+						
 						<span class="btn" @click="availability">Check availability</span>
 						<span class="btn_inquire" @click="gaInquire">Inquire</span>
 					</li>
@@ -158,9 +178,10 @@
 						<dl class="book_price_info">
 							<dt>
 								<span>{{nowExchange.symbol}}{{perPersonPrice}}×{{bookPeople}} {{bookPeople>1?'People':'Person'}}</span>
-								<span v-if="picInfo.childDiscount && bookChildren">-{{nowExchange.symbol}}{{picInfo.childDiscount*bookChildren}} for children</span>
+								<span v-if="picInfo.childDiscount && bookChildren">-{{nowExchange.symbol}}{{returnFloat(picInfo.childDiscount*bookChildren)}} for {{bookChildren>1?'children':'child'}}</span>
 							</dt>
-							<dd><a class="iconfont" href="#picDetails">&#xe659;</a>{{nowExchange.symbol}}{{price}}</dd>
+							<dd>{{nowExchange.symbol}}{{price}}</dd>
+							<!-- <a class="iconfont" href="#picDetails">&#xe659;</a> -->
 						</dl>
 						<dl class="book_price_info">
 							<dt>Total ({{nowExchange.code}})</dt>
@@ -568,9 +589,12 @@ import photo from '~/components/activity/details/photo'
 			showChangePeople:false,
 			showPriceInfo:false,
 			startDate:'',
-			peopleText:'',
+			adultsText:'Adults',
+			childrenText:'Chlidren (age 3-12)',
+			checkTipText:'',
 			changeAdults:1,
 			changeChildren:0,
+			bookAdults:0,
 			bookChildren:0,
 			bookPeople:0,
 			price:0,
@@ -835,56 +859,6 @@ import photo from '~/components/activity/details/photo'
 			setCallBack(val) {
 				this.alertPicStatus = val
 			},
-			// tableData(details) {
-				
-			// 	var newObj = function(obj) {
-			// 		var o = {};
-			// 		for(var key in obj) {
-			// 			o[key] = obj[key];
-			// 		}
-			// 		return o;
-			// 	}
-
-			// 	let newArr = [],
-			// 		tableD = [];
-
-
-
-			// 	if(details.length==1){
-			// 		for(let i=0;i<details[0].capacity;i++){
-			// 			var s=newObj(details[0]);
-			// 			s.capacity = i+1;
-			// 			newArr.push(s)
-			// 		}
-					
-			// 	}else{
-					
-			// 		for(let i = 0; i < details[details.length-1].capacity; i++) {
-			// 			let thisD = details[i];
-			// 			newArr.push(thisD);
-			// 			if(i + 1 > details.length - 1) break;
-
-			// 			var thisC = thisD.capacity;
-			// 			var nextC = details[i + 1].capacity;
-			// 			var forLen = nextC - thisC - 1;
-			// 			for(let j = 0; j < forLen; j++) {
-			// 				var midArr = newObj(details[i+1]);
-			// 				//console.log(midArr)
-			// 				newArr.push(midArr);
-			// 			}
-			// 			//console.log(newArr)
-			// 		}
-			// 	}
-				
-			// 	for(var k = 0; k < newArr.length; k++) {
-			// 		newArr[k].capacity = k + newArr[0].capacity;
-
-			// 	}
-
-			// 	//console.log(newArr);
-				
-			// 	return newArr;
-			// },
 			peopleMinus(e){
 				this.peopleNum--;
 				var minLen = this.picInfo.minParticipants;
@@ -1042,16 +1016,14 @@ import photo from '~/components/activity/details/photo'
 					this.changeChildren++;
 				}
 			},
-			peopleChange(){
-				var changeChildren = this.changeChildren;
-				this.peopleText = 'Adult x '+this.changeAdults+(changeChildren?' , '+(changeChildren==1?'child':'children')+' x '+changeChildren:'');
-				this.showChangePeople = false;
-				this.showPriceInfo = true;
-				this.bookChildren = changeChildren;
-				this.bookPeople = this.changeAdults+changeChildren;
-
-				//console.log(this.bookPeople);
-			},
+			// peopleChange(){
+			// 	var changeChildren = this.changeChildren;
+			// 	this.peopleText = 'Adult x '+this.changeAdults+(changeChildren?' , '+(changeChildren==1?'child':'children')+' x '+changeChildren:'');
+			// 	this.showChangePeople = false;
+			// 	this.showPriceInfo = true;
+			// 	this.bookChildren = changeChildren;
+			// 	this.bookPeople = this.changeAdults+changeChildren;
+			// },
 			setPeoplePrice(){
 				var details = this.picInfo.details;
 				var bookPeople = this.bookPeople;
@@ -1067,15 +1039,33 @@ import photo from '~/components/activity/details/photo'
 			},
 			availability(){
 				var self = this;
+				var peopleStatus = this.peopleStatus();
+				//判断日期
 				if(!self.startDate){
 					setTimeout(function(){
 						self.flatPickr.open();
-					},100);
+					},80);
 					self.showWinBg = true;
-				}else if(!this.bookPeople){
-					setTimeout(function(){
-						self.showChangePeople = true;
-					},50);
+				}else{
+					this.validatePeople();
+				}
+			},
+			validatePeople(){
+				var peopleStatus = this.peopleStatus();
+				if(this.bookAdults + this.bookChildren==0){ //判断是否已选人数
+					this.checkTipText = 'The minimum number of Participants is x in total';
+				}else if(peopleStatus==0){ //判断人数对不对
+					this.checkTipText = 'The minimum number of Participants is x in total';
+					this.showPriceInfo = false;
+					return false;
+				}else if(peopleStatus==2){
+					this.checkTipText = 'Exceed the maximum number of Participants';
+					this.showPriceInfo = false;
+					return false;
+				}else{
+					this.checkTipText = '';
+					this.showPriceInfo = true;
+					return true;
 				}
 			},
 			showGuideFn(index){
@@ -1118,6 +1108,18 @@ import photo from '~/components/activity/details/photo'
 					this.showFixedBtn = true;
 				}
 			},
+			//检测人数是否在产品可选人数之内
+			peopleStatus(){
+				var allPeople = this.bookAdults + this.bookChildren;
+				var picInfo = this.picInfo;
+				if(allPeople>=picInfo.minParticipants && allPeople<=picInfo.maxParticipants){
+					return 1;
+				}else if(allPeople<picInfo.minParticipants){
+					return 0;
+				}else{
+					return 2;
+				}
+			},
 			addZero(num){
 				return num>9 ? num : '0'+num;
 			},
@@ -1127,23 +1129,17 @@ import photo from '~/components/activity/details/photo'
 				return dt.getFullYear() + "-" +this.addZero(dt.getMonth()+1) + "-" + this.addZero(dt.getDate());
 			},
 			bookFn(){
-				console.log(this.picInfo);
-				
-			// changeAdults:1,
-			// changeChildren:0,
-			// bookChildren:0,
-			// bookPeople:0,
-			// price:0,
-			// perPersonPrice:0,
-			// amount:0,
-
-
-			
-
-
+				var self = this;
+				if(!self.startDate){
+					setTimeout(function(){
+						self.flatPickr.open();
+					},80);
+					self.showWinBg = true;
+					return false;
+				}
 				
 				var orderInfo = {
-		      activityId: this.detail.id,
+		      activityId: this.id,
 		      amount: this.returnFloat(this.amount),
 					currency: this.picInfo.currency,
 					symbol: this.nowExchange.symbol,
@@ -1162,12 +1158,13 @@ import photo from '~/components/activity/details/photo'
 				  pickup: this.detail.pickup,
 				  owner:this.detail.owner,
 		      averagePrice: this.perPersonPrice, //人均价 
-		      
+		      guide_id: this.checkGuideIndex ? this.detail.guide[this.checkGuideIndex].guideId : null
 				};
+				
 				
 				orderInfo = JSON.stringify(orderInfo);
 		    localStorage.setItem("orderInfo", orderInfo);
-				location.href="/activity/booking/"+this.detail.id;
+				location.href="/activity/booking/"+this.id;
 			}
 		},
 		filters: {
@@ -1263,29 +1260,13 @@ import photo from '~/components/activity/details/photo'
 
 			//选择人数默认最低
 			if(this.peopleNum){
-				this.changeAdults = this.peopleNum;
-				this.peopleChange();
-			}else{
-				this.changeAdults = this.picInfo.minParticipants;
+				this.bookAdults = this.peopleNum;
 			}
-			
-			// console.log(this.picInfo,111);
-			// console.log(this.detail.guide,222);
+
+
 			//var ua = window.navigator.userAgent.toLowerCase();
 			//that.isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
 			document.querySelector('.select_people_box option').setAttribute('hidden','hidden')
-			
-			
-			document.querySelector('.change_people').onclick = function(e){
-				e.stopPropagation();
-			};
-			document.querySelector('body').onclick = function(e){
-				if(e.target.id !='js_changepeople' && that.showChangePeople){
-					that.peopleChange();
-				}
-				
-			};
-			
 
 			var $check_all = document.querySelector('#check_all');
 			window.onscroll = function(){
@@ -1301,10 +1282,28 @@ import photo from '~/components/activity/details/photo'
 				this.nowExchange = val;
 				this.SelectCurrency=val.code
 				this.changeCurrency(val.code);
+			},
+			bookAdults:function(val){
 				
-				//this.defaultCurrency = val.code;
+				this.adultsText = 'Adult x '+val;
+
+				//校验人数
+				if(this.validatePeople()){
+					this.bookPeople = val + this.bookChildren;
+				}
+				
+			},
+			bookChildren:function(val){
+				
+				this.childrenText = (val?(val==1?'child':'children')+' x '+val:'Chlidren (age 3-12)');
+
+				//校验人数
+				if(this.validatePeople()){
+					this.bookPeople = val + this.bookAdults;
+				}
 			},
 			bookPeople:function(){
+				//设置价格
 				this.setPeoplePrice();
 			},
 			showGuideDetail:function(val){
@@ -1892,13 +1891,14 @@ import photo from '~/components/activity/details/photo'
 						background-repeat: no-repeat;
 					}
 					span{ 
-						display: none; width: 100%; height: 100%; position: absolute; left: 0; top: 0; background-color:rgba(27,188,157,0.6); text-align: center;
+						display: none; width: 100%; height: 100%; position: absolute; left: 0; top: 0; text-align: center;
 						i{
-							position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); color: #fff;
+							position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); color: #1bbc9d;
 						}
 					}
 				}
 				.active{
+					.guide_list_head{border-color:rgba(27,188,157,0.8);}
 					span{
 						display: block;
 					}
@@ -1908,7 +1908,13 @@ import photo from '~/components/activity/details/photo'
 
 		.check_all{
 			color: #353a3f;
-			padding: 0.3rem 0 0.4rem;
+			box-sizing: border-box;
+			width: calc(100vw - 0.4rem);
+			border: 2px solid #1bbc9d;
+			margin-left: -0.2rem;
+			margin-top: 0.58rem;
+			padding: 0.3rem 0.3rem 0.4rem;
+			border-radius: 6px;
 			h3{
 				font-size: 0.3rem;
 				font-weight: bold;
@@ -1916,6 +1922,7 @@ import photo from '~/components/activity/details/photo'
 			.btn{ font-weight: bold;}
 			.check_info{
 				li{
+					clear: both;
 					position: relative;
 					margin-top: 0.24rem;
 					.check_box,input{
@@ -1938,25 +1945,58 @@ import photo from '~/components/activity/details/photo'
 						position: absolute;
 						left: 0;
 						top: 0;
-						width: 0.76rem;
+						width: 0.6rem;
 						text-align: center;
 						line-height: 0.76rem;
 						color: #878e95;
-						font-size: 0.4rem;
+						font-size: 0.36rem;
 					}
 					.arrow{
-						width: 0.76rem;
+						width: auto;
 						display: block;
 						text-align: center;
 						position: absolute;
-						right: 0;
+						right: 0.1rem;
 						top: 0;
 						line-height: 0.76rem;
 						color: #353a3f;
-						font-size: 0.28rem;
+						font-size: 0.26rem;
 						// border: 6px solid #000;
 						// border-color: #000 #fff #fff #fff;
 					}
+					.check_tip{
+						margin: 0 0 0.25rem;
+						span{ color: red; display: inline-block; vertical-align: middle;}
+					}
+				}
+				.check_people{
+					width: 48%;
+					float: left;
+					clear: inherit;
+					height: 0.78rem;
+					border: 1px solid #ebebeb;
+					box-sizing: border-box;
+					margin-bottom: 0.25rem;
+					&:nth-child(3){
+						margin-left: 4%;
+					}
+					select{
+						opacity: 0;
+						border: none;
+						height: 0.74rem;
+						line-height: 0.74rem;
+						width: 100%;
+						position: relative;
+						z-index: 2;
+						box-sizing: border-box;
+						padding-left: 0.7rem;
+						background: none;
+						appearance:none;
+						-moz-appearance:none;
+						-webkit-appearance:none;
+						font-size: 0.28rem;
+					}
+					.check_people_text{ position: absolute; left: 0.6rem; top: 0; height: 0.74rem; line-height: 0.74rem; font-size: 0.22rem;}
 				}
 				.change_people{
 					position: absolute; left: 0; top: calc(100% - 1px); width: 100%; box-sizing: border-box; padding: 0 0.26rem 0.36rem; background-color: #fff; z-index: 3;border: #ebebeb solid 1px;border-top:none; border-radius: 0 0 4px 4px;
@@ -1998,13 +2038,7 @@ import photo from '~/components/activity/details/photo'
 				
 			}
 			.book_all{
-				box-sizing: border-box;
-				width: 100vw;
-				border: 2px solid #1bbc9d;
-				margin-left: -0.4rem;
-				margin-top: 0.58rem;
-				padding: 0.3rem;
-				border-radius: 6px;
+				margin-top: 0.5rem;
 				.book_guide_check{
 					padding-left: 0.7rem;
 					overflow: hidden;
