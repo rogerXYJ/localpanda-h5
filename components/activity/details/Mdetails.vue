@@ -1053,9 +1053,9 @@ import photo from '~/components/activity/details/photo'
 			validatePeople(){
 				var peopleStatus = this.peopleStatus();
 				if(this.bookAdults + this.bookChildren==0){ //判断是否已选人数
-					this.checkTipText = 'The minimum number of Participants is x in total';
+					this.checkTipText = 'The minimum number of Participants is '+this.picInfo.minParticipants+' in total';
 				}else if(peopleStatus==0){ //判断人数对不对
-					this.checkTipText = 'The minimum number of Participants is x in total';
+					this.checkTipText = 'The minimum number of Participants is '+this.picInfo.minParticipants+' in total';
 					this.showPriceInfo = false;
 					return false;
 				}else if(peopleStatus==2){
@@ -1078,13 +1078,9 @@ import photo from '~/components/activity/details/photo'
 							autoplay: false,//可选选项，自动滑动
 							initialSlide:index,
 							on:{
-								tap: function(e){
-									console.log(this.clickedIndex);
-								},
 								slideChangeTransitionEnd: function(){
 									self.guideSwiperIndex = this.activeIndex;
 								},
-								
 							},
 						});
 					},200);
@@ -1099,7 +1095,7 @@ import photo from '~/components/activity/details/photo'
 				this.checkGuideIndex = index;
 			},
 			scrollFn($check_all){
-				var top = document.documentElement.scrollTop;
+				var top = document.documentElement.scrollTop || document.body.scrollTop;
 				var boxTop = $check_all.offsetTop;
 				var winH = window.innerHeight;
 				if(top>boxTop-winH+100 && top<boxTop+$check_all.clientHeight){
