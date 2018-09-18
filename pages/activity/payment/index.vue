@@ -888,7 +888,7 @@
 			}
 			
 			//检测是否是安卓唤起微信，针对安卓无法跳转回调页面
-			if(localStorage.getItem('AndroidOpenWx') == 'true') {
+			if(localStorage.getItem('AndroidOpenWx')) {
 				this.showWxOpenBox = true;
 				localStorage.removeItem('AndroidOpenWx');
 			}

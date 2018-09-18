@@ -448,6 +448,7 @@
 								<p><b>Birthplace: </b>{{item.birthplace}}</p>
 								<p><b>Language(s): </b><span v-for="(Language,num) in item.guideLanguages">{{(num>0?' , ':'')+Language.language+'('+Language.level+')'}}</span></p>
 								<p>{{item.selfIntro}}</p>
+								<br>
 							</div>
 						</div>
 						<div class="btn" @click="checkGuideFn(index)" v-if="checkGuideIndex===index"><i class="iconfont">&#xe654;</i> Successfully selected</div>
@@ -2167,9 +2168,16 @@ import photo from '~/components/activity/details/photo'
 					padding: 0 0.2rem;
 				}
 			}
+			.swiper-container{
+				height: calc(100% - 1rem);
+				.swiper-wrapper,.swiper-slide{
+					height: 100%;
+				}
+			}
 			.guide_detail{
 				height: calc(100vh - 2.2rem);
 				overflow-y: auto;
+				-webkit-overflow-scrolling: touch;
 				background-color: #fff;
 				margin: 0 0.3rem;
 				.guide_img{
@@ -2180,12 +2188,7 @@ import photo from '~/components/activity/details/photo'
 					background-repeat: no-repeat;
 					background-color: #fff;
 				}
-				.swiper-container{
-					height: calc(100% - 1rem);
-					.swiper-wrapper,.swiper-slide{
-						height: 100%;
-					}
-				}
+				
 				
 				.guide_content{
 					padding: 0.4rem;
@@ -2198,7 +2201,7 @@ import photo from '~/components/activity/details/photo'
 				}
 			}
 			.btn{
-				margin: 0.15rem auto 0; width: calc(100% - 1.2rem); display: block; box-sizing: border-box;
+				position: fixed; bottom: 0.15rem; margin-left: 0.6rem; width: calc(100% - 1.2rem); display: block; box-sizing: border-box;
 			}
 		}
 	}
