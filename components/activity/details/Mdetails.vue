@@ -161,10 +161,10 @@
 					<!-- 导游信息 -->
 					<div v-if="detail.guide.length">
 						<div class="book_guide_check" :class="{'active':checkGuideIndex===''}" @click="checkGuideIndex=''">
-							<i></i>Let us assign one experts for you
+							<i></i>Let us assign one expert for you
 						</div>
 						<div class="book_guide_check" :class="{'active':checkGuideIndex!==''}" @click="showGuideFn(checkGuideIndex?checkGuideIndex:0)">
-							<i></i>Select your best experts (free of charge)
+							<i></i>Select your best expert (free of charge)
 						</div>
 					</div>
 					<div class="book_guide_info" v-if="checkGuideIndex!==''">
@@ -195,7 +195,8 @@
 								{{nowExchange.symbol}}{{returnFloat(amount)}}</dd>
 						</dl>
 						<div class="hr"></div>
-						<p class="book_tip">{{picInfo.refundInstructions}}</p>
+						<p class="book_tip" v-if="picInfo.refundTimeLimit">You can get a 100% refund up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit:24*picInfo.refundTimeLimit)}} {{picInfo.refundTimeLimit>2?'days':'hours'}} before you trip</p>
+						<!-- {{picInfo.refundInstructions}} -->
 						<span class="btn" @click="bookFn">Book</span>
 						<span class="btn_inquire" @click="gaInquire">Inquire</span>
 					</div>
@@ -451,8 +452,11 @@
 								<br>
 							</div>
 						</div>
-						<div class="btn" @click="checkGuideFn(index)" v-if="checkGuideIndex===index"><i class="iconfont">&#xe654;</i> Successfully selected</div>
-						<div class="btn" @click="checkGuideFn(index)" v-else>Select this expert</div>
+						<div class="guide_dialog_footer">
+							<div class="btn" @click="checkGuideFn(index)" v-if="checkGuideIndex===index"><i class="iconfont">&#xe654;</i> Successfully selected</div>
+							<div class="btn" @click="checkGuideFn(index)" v-else>Select this expert</div>
+						</div>
+						
 					</div>
 				</div>
 			</div>
@@ -1170,7 +1174,7 @@ import photo from '~/components/activity/details/photo'
 				  pickup: this.detail.pickup,
 				  owner:this.detail.owner,
 		      averagePrice: this.perPersonPrice, //人均价 
-		      guide_id: this.checkGuideIndex ? this.detail.guide[this.checkGuideIndex].guideId : null
+		      guideId: this.checkGuideIndex ? this.detail.guide[this.checkGuideIndex].guideId : null
 				};
 				
 				
@@ -2200,8 +2204,12 @@ import photo from '~/components/activity/details/photo'
 					}
 				}
 			}
-			.btn{
-				position: fixed; bottom: 0.15rem; margin-left: 0.6rem; width: calc(100% - 1.2rem); display: block; box-sizing: border-box;
+			.guide_dialog_footer{
+				position: fixed;
+				bottom: 0;
+				width: 100%;
+				padding: 0.15rem 0.6rem;
+				background-color: #f5f5f5;
 			}
 		}
 	}

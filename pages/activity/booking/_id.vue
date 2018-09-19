@@ -590,7 +590,8 @@
 								"nationality":that.country
 							},
 							"utcOffset": new Date().getTimezoneOffset() / 60 * -1,
-							"deviceType": deviceType
+							"deviceType": deviceType,
+							"guideId": that.opctions.guideId
 						}
 
 						if(that.addOder == false) {
@@ -602,7 +603,7 @@
 							}).then(function(response) {
 								var loginState = (that.logIn ? that.logIn : 0);
 								var thisUrl = "/activity/payment/?objectId=" + response.data.response + '&login=' + loginState;
-
+return;
 								if(obj.currency == 'CNY') {
 									var ua = window.navigator.userAgent.toLowerCase();
 									var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
