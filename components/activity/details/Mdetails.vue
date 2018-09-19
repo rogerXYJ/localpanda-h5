@@ -170,7 +170,7 @@
 					<div class="book_guide_info" v-if="checkGuideIndex!==''">
 						<div class="book_guide_select" @click="showGuideFn(checkGuideIndex)">Reselect</div>
 						<div class="book_guide_photo" :style="'background-image:url('+detail.guide[checkGuideIndex].guidePhoto.headPortraitUrl+')'"></div>
-						Ciprian has been selected !
+						{{detail.guide[checkGuideIndex].enName}} has been selected !
 					</div>
 
 					<!-- 价格明细 -->
@@ -178,7 +178,7 @@
 						<dl class="book_price_info">
 							<dt>
 								<span>{{nowExchange.symbol}}{{perPersonPrice}}×{{bookPeople}} {{bookPeople>1?'People':'Person'}}</span>
-								<span v-if="picInfo.childDiscount && bookChildren">-{{nowExchange.symbol}}{{returnFloat(picInfo.childDiscount*bookChildren)}} for {{bookChildren>1?'children':'child'}}</span>
+								<span v-if="picInfo.childDiscount && bookChildren">-{{nowExchange.symbol}}{{returnFloat(picInfo.childDiscount*bookChildren)}} for {{bookChildren>1?'Children':'Child'}}</span>
 							</dt>
 							<dd>{{nowExchange.symbol}}{{price}}</dd>
 							<!-- <a class="iconfont" href="#picDetails">&#xe659;</a> -->
@@ -195,7 +195,7 @@
 								{{nowExchange.symbol}}{{amount}}</dd>
 						</dl>
 						<div class="hr"></div>
-						<p class="book_tip" v-if="picInfo.refundTimeLimit">You can get a 100% refund up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit:24*picInfo.refundTimeLimit)}} {{picInfo.refundTimeLimit>2?'days':'hours'}} before you trip</p>
+						<p class="book_tip" v-if="picInfo.refundTimeLimit">You can get a 100% refund up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit:24*picInfo.refundTimeLimit)}} {{picInfo.refundTimeLimit>2?'days':'hours'}} before your trip</p>
 						<!-- {{picInfo.refundInstructions}} -->
 						<span class="btn" @click="bookFn">Book</span>
 						<span class="btn_inquire" @click="gaInquire">Inquire</span>
@@ -205,11 +205,12 @@
 			</div>
 
 
-			<div class="journey" ref="journey" v-if="introduction.length || detail.itineraries" id="Itinerary">
+			<div class="journey" ref="journey" v-if="detail.itineraries" id="Itinerary">
 				<div class="expect">
 					<h3 class='itinerary_title'>Itinerary</h3>
 					<div class="introduction" :class="{'show':isShowMore}">
-						<p :key="index" v-for="(j,index) in introduction">{{j}}</p>
+						<!-- introduction.length ||  -->
+						<!-- <p :key="index" v-for="(j,index) in introduction">{{j}}</p> -->
 						<ul>
 							<li :key="index" v-for="(i,index) in itinerary">
 								<div class="item_v clearfix">
@@ -459,6 +460,8 @@
 						
 					</div>
 				</div>
+				<div class="swiper-button-prev iconfont">&#xe615;</div><!--左箭头-->
+    		<div class="swiper-button-next iconfont">&#xe620;</div><!--右箭头-->
 			</div>
 
 			
@@ -1054,6 +1057,14 @@ import photo from '~/components/activity/details/photo'
 				}else{
 					this.validatePeople();
 				}
+				
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "click",
+					eventLabel:"Check_availability"
+				});
+
 			},
 			validatePeople(){
 				var peopleStatus = this.peopleStatus();
@@ -1093,6 +1104,10 @@ import photo from '~/components/activity/details/photo'
 						self.guideSwiper = new Swiper('.js_guide_detail', {
 							autoplay: false,//可选选项，自动滑动
 							initialSlide:index,
+							navigation: {
+								nextEl: '.swiper-button-next',
+								prevEl: '.swiper-button-prev',
+							},
 							on:{
 								slideChangeTransitionEnd: function(){
 									self.guideSwiperIndex = this.activeIndex;
@@ -1159,6 +1174,13 @@ import photo from '~/components/activity/details/photo'
 				// 	this.validatePeople();
 				// 	return false;
 				// }
+
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "click",
+					eventLabel:"book_succeed"
+				});
 				
 				var orderInfo = {
 		      activityId: this.id,
@@ -1313,17 +1335,30 @@ import photo from '~/components/activity/details/photo'
 				if(this.validatePeople()){
 					this.bookPeople = val + this.bookChildren;
 				}
+
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "select",
+					eventLabel:"Adults"
+				});
 				
 			},
 			bookChildren:function(val){
 				
-				this.childrenText = (val?(val==1?'child':'children')+' x '+val:'Chlidren (age 3-12)');
+				this.childrenText = (val?(val==1?'Child':'Children')+' x '+val:'Chlidren (age 3-12)');
 
 				//校验人数
 				if(this.validatePeople()){
 					this.bookPeople = val + this.bookAdults;
 				}
 
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "select",
+					eventLabel:"Children"
+				});
 			},
 			bookPeople:function(){
 				//设置价格
@@ -1337,6 +1372,14 @@ import photo from '~/components/activity/details/photo'
 					document.querySelector('html').style.overflowY = 'inherit';
 					document.querySelector('body').style.overflowY = 'inherit';
 				}
+			},
+			startDate(){
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "select",
+					eventLabel:"Date"
+				});
 			}
 		}
 	}
@@ -2182,6 +2225,18 @@ import photo from '~/components/activity/details/photo'
 				height: calc(100% - 1rem);
 				.swiper-wrapper,.swiper-slide{
 					height: 100%;
+				}
+				.swiper-button-next,.swiper-button-prev{
+					width: 0.88rem;
+					height: 0.88rem;
+					border-radius: 50%;
+					text-align: center;
+					line-height: 0.88rem;
+					color: #fff;
+					font-size: 0.36rem;
+					background: none;
+					background-color: rgba(0,0,0,0.3);
+					z-index: 99;
 				}
 			}
 			.guide_detail{
