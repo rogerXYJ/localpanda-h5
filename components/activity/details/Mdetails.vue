@@ -192,7 +192,7 @@
 									</select>
 									<span class="iconfont">&#xe666;</span>
 								</div>
-								{{nowExchange.symbol}}{{returnFloat(amount)}}</dd>
+								{{nowExchange.symbol}}{{amount}}</dd>
 						</dl>
 						<div class="hr"></div>
 						<p class="book_tip" v-if="picInfo.refundTimeLimit">You can get a 100% refund up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit:24*picInfo.refundTimeLimit)}} {{picInfo.refundTimeLimit>2?'days':'hours'}} before you trip</p>
@@ -1037,7 +1037,7 @@ import photo from '~/components/activity/details/photo'
 					if(thisData.capacity==bookPeople){
 						this.price = thisData.price;
 						this.perPersonPrice = thisData.perPersonPrice;
-						this.amount = this.price - (this.picInfo.childDiscount?this.picInfo.childDiscount*this.bookChildren:0);
+						this.amount = this.price - (this.picInfo.childDiscount?this.returnFloat(this.picInfo.childDiscount*this.bookChildren):0);
 						break;
 					}
 				}
@@ -1156,7 +1156,7 @@ import photo from '~/components/activity/details/photo'
 				
 				var orderInfo = {
 		      activityId: this.id,
-		      amount: this.returnFloat(this.amount),
+		      amount: this.amount,
 					currency: this.picInfo.currency,
 					symbol: this.nowExchange.symbol,
 					adultNum: this.bookAdults,
@@ -1167,7 +1167,7 @@ import photo from '~/components/activity/details/photo'
 					infantNum: 0,
 					startDate: this.startDate, //出游时间
 					startTime: null,  //
-					adultsPic: this.returnFloat(this.perPersonPrice*this.bookPeople),
+					adultsPic: this.price,
 					title: this.detail.title,
 					childDiscount: this.picInfo.childDiscount*this.bookChildren, //儿童优惠总价
 					childDiscountP: this.picInfo.childDiscount,  //儿童优惠平均价

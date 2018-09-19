@@ -97,7 +97,7 @@
 			<div class="price_info_tit">
 				<span class="price_info_close iconfont" @click="showPrice=false">&#xe629;</span> Detail:
 			</div>
-			<p><span>{{opctions.symbol}}{{opctions.adultsPic}}</span>{{opctions.symbol}}{{returnFloat(opctions.adultsPic/(opctions.adultNum+opctions.childrenNum))}} x {{opctions.adultNum+opctions.childrenNum}} People</p>
+			<p><span>{{opctions.symbol}}{{opctions.adultsPic}}</span>{{opctions.symbol}}{{opctions.averagePrice}} x {{opctions.adultNum+opctions.childrenNum}} People</p>
 			<p v-if="opctions.childrenNum && opctions.childDiscountP">- {{opctions.symbol}}{{returnFloat(opctions.childrenNum*opctions.childDiscountP)}} (Children discount)</p>
 			<p v-if="couponType">- {{opctions.symbol}}{{opctions.couponDiscount}} (Coupon discount)</p>
 			<div class="boxline"></div>
