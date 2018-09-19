@@ -1174,7 +1174,7 @@ import photo from '~/components/activity/details/photo'
 				  pickup: this.detail.pickup,
 				  owner:this.detail.owner,
 		      averagePrice: this.perPersonPrice, //人均价 
-		      guideId: this.checkGuideIndex ? this.detail.guide[this.checkGuideIndex].guideId : null
+		      guideId: this.checkGuideIndex!=='' ? this.detail.guide[this.checkGuideIndex].guideId : null
 				};
 				
 				
