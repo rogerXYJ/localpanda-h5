@@ -386,7 +386,7 @@
 		</div>
 		<div class="book" v-show="showFixedBtn">
 			<button @click="gaInquire">Inquire</button>
-			<a class="bookBtn" href="#check_all">Check availability</a>
+			<a class="bookBtn" @click="goCheck">Check availability</a>
 		</div>
 		<!--<photo :photoList="photoList" :alertPicStatus="alertPicStatus" @alert-call-back="setCallBack"></photo>-->
 
@@ -1089,7 +1089,7 @@ import photo from '~/components/activity/details/photo'
 				this.showGuideDetail = true;
 				//初始化过就不再初始化
 				if(!self.guideSwiper){
-					setTimeout(function(){
+					this.$nextTick(function(){
 						self.guideSwiper = new Swiper('.js_guide_detail', {
 							autoplay: false,//可选选项，自动滑动
 							initialSlide:index,
@@ -1099,10 +1099,12 @@ import photo from '~/components/activity/details/photo'
 								},
 							},
 						});
-					},10);
+					});
 				}else{
 					//滑动到对应索引
-					self.guideSwiper.slideTo(index, 0, false);
+					self.guideSwiper.slideTo(index, 0, function(){
+						self.guideSwiperIndex = index;
+					});
 				}
 
 			},
@@ -1139,6 +1141,10 @@ import photo from '~/components/activity/details/photo'
 				var dt = new Date(dateStr.replace(/\-/g,'/'));
 				dt.setDate(dt.getDate()-days);
 				return dt.getFullYear() + "-" +this.addZero(dt.getMonth()+1) + "-" + this.addZero(dt.getDate());
+			},
+			goCheck(){
+				var checkTop = document.querySelector('#check_all').offsetTop;
+				document.documentElement.scrollTop = document.body.scrollTop = checkTop;
 			},
 			bookFn(){
 				var self = this;
