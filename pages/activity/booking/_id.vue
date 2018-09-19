@@ -603,7 +603,6 @@
 							}).then(function(response) {
 								var loginState = (that.logIn ? that.logIn : 0);
 								var thisUrl = "/activity/payment/?objectId=" + response.data.response + '&login=' + loginState;
-return;
 								if(obj.currency == 'CNY') {
 									var ua = window.navigator.userAgent.toLowerCase();
 									var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
