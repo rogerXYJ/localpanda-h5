@@ -84,7 +84,7 @@
 				<div class="guide_list">
 					<div class="swiper-container js_guide">
 						<div class="swiper-wrapper">
-							<div class="swiper-slide" :class="{'active':checkGuideIndex===index}" v-for="(item,index) in detail.guide" :key="index" @click="showGuideFn(index)">
+							<div class="swiper-slide" :class="{'active':checkGuideIndex===index}" v-for="(item,index) in detail.guide" :key="index" @click="showGuideFn(index,'ga')">
 								<!-- <img :src="item.guidePhoto.headPortraitUrl" width="100%" alt=""> -->
 								<div class="guide_list_head" :style="'background-image:url('+item.guidePhoto.headPortraitUrl+')'"></div>
 								<span><i class="iconfont">&#xe654;</i></span>
@@ -163,7 +163,7 @@
 						<div class="book_guide_check" :class="{'active':checkGuideIndex===''}" @click="checkGuideIndex=''">
 							<i></i>Let us assign one expert for you
 						</div>
-						<div class="book_guide_check" :class="{'active':checkGuideIndex!==''}" @click="showGuideFn(checkGuideIndex?checkGuideIndex:0)">
+						<div class="book_guide_check" :class="{'active':checkGuideIndex!==''}" @click="showGuideFn(checkGuideIndex?checkGuideIndex:0,'ga')">
 							<i></i>Select your best expert (free of charge)
 						</div>
 					</div>
@@ -1095,7 +1095,7 @@ import photo from '~/components/activity/details/photo'
 					return true;
 				}
 			},
-			showGuideFn(index){
+			showGuideFn(index,type){
 				var self = this;
 				this.showGuideDetail = true;
 				//初始化过就不再初始化
@@ -1119,6 +1119,15 @@ import photo from '~/components/activity/details/photo'
 					//滑动到对应索引
 					self.guideSwiper.slideTo(index, 0, function(){
 						self.guideSwiperIndex = index;
+					});
+				}
+
+				if(type){
+					ga(gaSend, {
+						hitType: "event",
+						eventCategory: "activity_detail",
+						eventAction: "click",
+						eventLabel:"guide"
 					});
 				}
 
@@ -1160,6 +1169,15 @@ import photo from '~/components/activity/details/photo'
 			goCheck(){
 				var checkTop = document.querySelector('#check_all').offsetTop;
 				document.documentElement.scrollTop = document.body.scrollTop = checkTop;
+			},
+			hideScroll(val){
+				if(val){
+					document.querySelector('html').style.overflowY = 'hidden';
+					document.querySelector('body').style.overflowY = 'hidden';
+				}else{
+					document.querySelector('html').style.overflowY = 'inherit';
+					document.querySelector('body').style.overflowY = 'inherit';
+				}
 			},
 			bookFn(){
 				var self = this;
@@ -1279,12 +1297,7 @@ import photo from '~/components/activity/details/photo'
 
 			new Swiper('.js_guide', {
 				autoplay: false,//可选选项，自动滑动
-				slidesPerView : 4.5,
-				on:{
-					tap: function(e){
-						console.log(this.clickedIndex);
-					},
-				},
+				slidesPerView : 4.5
 			});
 
 			
@@ -1365,13 +1378,10 @@ import photo from '~/components/activity/details/photo'
 				this.setPeoplePrice();
 			},
 			showGuideDetail:function(val){
-				if(val){
-					document.querySelector('html').style.overflowY = 'hidden';
-					document.querySelector('body').style.overflowY = 'hidden';
-				}else{
-					document.querySelector('html').style.overflowY = 'inherit';
-					document.querySelector('body').style.overflowY = 'inherit';
-				}
+				this.hideScroll(val);
+			},
+			showWinBg:function(val){
+				this.hideScroll(val);
 			},
 			startDate(){
 				ga(gaSend, {
@@ -2237,6 +2247,10 @@ import photo from '~/components/activity/details/photo'
 					background: none;
 					background-color: rgba(0,0,0,0.3);
 					z-index: 99;
+				}
+				.swiper-button-next:focus,.swiper-button-prev:focus,.swiper-button-next:active,.swiper-button-prev:active{
+					box-shadow: none;
+					border: none;
 				}
 			}
 			.guide_detail{
