@@ -1037,7 +1037,7 @@ import photo from '~/components/activity/details/photo'
 					if(thisData.capacity==bookPeople){
 						this.price = thisData.price;
 						this.perPersonPrice = thisData.perPersonPrice;
-						this.amount = this.price - (this.picInfo.childDiscount?this.returnFloat(this.picInfo.childDiscount*this.bookChildren):0);
+						this.amount = this.returnFloat(this.price - (this.picInfo.childDiscount?this.returnFloat(this.picInfo.childDiscount*this.bookChildren):0));
 						break;
 					}
 				}
