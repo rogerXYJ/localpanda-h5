@@ -723,7 +723,7 @@
 			</Back>
 			<div class="filter_content">
 				<dl>
-					<dt>{{postData.participants!=0?'Price/person for party of ' + postData.participants:'Price/person'}}</dt>
+					<dt>Price / Person</dt>
 					<dd>
 						<div class="filter_price" v-if="currency.code=='CNY'">
 							<slider v-model="sliderValue" max="3030" maxTipValue="3000+" step="30"></slider>
