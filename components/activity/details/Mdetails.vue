@@ -100,7 +100,7 @@
 				<ul class="check_info clearfix">
 					<li>
 						<i class="iconfont input_icon">&#xe60d;</i>
-						<input id="js_changetime" v-model="startDate" readonly type="text" placeholder="Select">
+						<input id="js_changetime" v-model="startDate" readonly type="text" placeholder="Select Date">
 						<!-- <div class="check_box" id="js_changetime">Select</div> -->
 					</li>
 					<li class="check_people">
