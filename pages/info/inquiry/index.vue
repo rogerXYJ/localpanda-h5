@@ -428,6 +428,7 @@ export default {
     },
     confirmCallback(){
       this.dialogStatus = false;
+      location.href = '/activity/details/'+this.objectId;
     },
     sendEmail(){
       var that = this;
