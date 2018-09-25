@@ -182,7 +182,8 @@
 		},
 		async asyncData({
 			apiBasePath,
-			route
+			route,
+			error
 		}) {
 
 			let that = this;

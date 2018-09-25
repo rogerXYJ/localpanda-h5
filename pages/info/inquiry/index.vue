@@ -85,6 +85,32 @@ service@localpanda.com</p>
 		<transition name="fade">
 			<div class="win_bg" id="win_bg" @click="showWinBg = false" v-show="showWinBg"></div>
 		</transition>
+
+
+
+    <!-- service弹窗 -->
+		<dialogBox v-model="dialogStatus" confirmShow="true" confirmText="Confirm" @confirmCallback="confirmCallback" width="100%">
+			
+			<div class="service_box">
+        <div class="tip_title"> Thank you. You have submitted <br> your Inquiry successfully! <br>We will get back to you within 1 day.</div>
+				<p class="tip_detail">A confirmation email has been sent to “{{inqueryEmailOld}}”,<br>Please check. If you have not received it, please check your junk mail folder. If you still do not see it,<br>please <a @click="showEmailBox=true">click here</a> to enter your correct or alternative email address.</p>
+				<div class="email_box" v-show="showEmailBox">
+					<input type="text" v-model="inqueryEmail">
+          <div class="email_tip red" v-show="emailTip">Please enter a valid email</div>
+					<span class="btn_sendemail" @click="sendEmail">Resend email address</span>
+
+					
+					<div class="email_tip green" v-show="emailSendTip"><i class="iconfont">&#xe654;</i> Email address has been updated ,and We have sent an email to your new mailbox</div>
+				</div>
+
+				
+			</div>
+
+			<service></service>
+			
+		</dialogBox>
+
+
 	</div>
 </template>
 
@@ -94,6 +120,8 @@ if (process.browser) {
 }
 
 import Dialog from "~/components/info/inquiry/Dialog";
+import service from '~/components/info/inquiry/service';
+import dialogBox from '~/plugins/panda/dialogBox';
 import Loading from '~/components/plugin/Loading'
 import { regExp, GetDateStr, addmulMonth } from "~/assets/js/utils";
 import Flatpickr from "flatpickr";
@@ -139,12 +167,24 @@ export default {
       alertMessage: "",
       objectId: id,
       loadingStatus:false,
-      loadTime:false
+      loadTime:false,
+
+
+      dialogStatus:false,
+      emailTip:false,
+      emailSendTip:false,
+      showEmailBox:false,
+      inqueryEmail:'',
+      inqueryEmailOld:'',
+      feedbackId: ''
+
     };
   },
   components: {
     Dialog,
-    Loading
+    Loading,
+    dialogBox,
+    service
   },
   methods: {
     setShowAlert(val) {
@@ -235,14 +275,20 @@ export default {
             .then(
               function(response) {
                 if (response.data.succeed) {
-                  that.isShowAlert = true;
-                  that.alertTitle = "Submission completed!";
-                  that.alertMessage =
-                    "Thank you for your feedback. We will get back to you within 1 day.";
+
+                  that.contactCallBack({'data':response.data,'email':that.email});
+                  
                 } else {
+                  that.isShowAlert = true;
+                  that.alertTitle = "Failed!";
+                  that.alertMessage = "";
                 }
               },
-              function(response) {}
+              function(response) {
+                that.isShowAlert = true;
+                that.alertTitle = "Failed!";
+                that.alertMessage = "";
+              }
             );
         }
       }
@@ -379,6 +425,48 @@ export default {
           window.clearInterval(that.webWidgetTimer);
         }
       },200);
+    },
+    confirmCallback(){
+      this.dialogStatus = false;
+    },
+    sendEmail(){
+      var that = this;
+      if(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(this.inqueryEmail)){
+
+        //默认是修改feedback的邮箱
+        var postData = {
+          emailAddress: this.inqueryEmail,
+          id: this.feedbackId
+        };
+        var postUrl = "https://api.localpanda.com/api/user/feedback";
+
+        //修改邮箱请求
+        that.axios.post(postUrl, JSON.stringify(postData), {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(function(response) {
+          if(response.data.succeed) {
+            that.emailSendTip = true;
+            that.inqueryEmail = '';
+          };
+
+        }, function(response) {
+
+        })
+        this.emailTip = false;
+      }else{
+        this.emailTip = true;
+      }
+    },
+    contactCallBack(val){
+      if(val){
+        var data = val.data;
+        this.feedbackId = data.response;
+        this.inqueryEmailOld = val.email;
+        this.dialogStatus = true;
+      }
+      
     }
   },
   created: function() {
@@ -728,6 +816,58 @@ body{
   }
   .color8 {
     color: #878e95;
+  }
+
+
+  
+
+  .service_box{
+    font-size: 14px;
+
+    .tip_title{
+      margin-top: 0.2rem;
+      padding: 0.3rem 0;
+      text-align: center;
+      font-size: 0.34rem;
+      // background-color: #fafafa;
+    }
+
+    .tip_detail{ 
+      margin-top: 20px; font-size: 14px; line-height: 22px;
+      a{ color:#00B886; cursor: pointer;
+        &:hover{ text-decoration: underline;}
+      }
+    }
+    .email_box{
+      margin-top: 10px;
+      input{
+        width: 100%;
+        border: 1px solid #ddd;
+        height: 32px;
+        line-height: 32px;
+      }
+      .btn_sendemail{
+        display: inline-block;
+        margin-top: 0.2rem;
+        height: 32px;
+        border-radius: 16px;
+        line-height: 30px;
+        padding: 0 20px;
+        font-size: 14px;
+        cursor: pointer;
+        background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
+        background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+        color: #fff;
+      }
+    }
+    .email_tip{
+      margin-top: 9px;
+      i{
+        font-size: 14px;
+      }
+    }
+    
+    
   }
 }
 </style> 
