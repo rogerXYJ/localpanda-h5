@@ -509,7 +509,8 @@ import photo from '~/components/activity/details/photo'
 			"isABtestShow",
 			'value',
 			"participants",
-			"exchange"
+			"exchange",
+			"calendar"
 		],
 		name: 'm-details',
 		data() {
@@ -986,11 +987,20 @@ import photo from '~/components/activity/details/photo'
 			///选择日期和人数
 			checkInit(){
 				var self = this;
+				
+				//团期日期
+				var saleDate = [];
+				for(var i=0;i<this.calendar.length;i++){
+					var thisData = this.calendar[i];
+					saleDate.push(thisData.saleDate);
+				}
+
+
 				this.options = {
 					minDate: this.picInfo.earliestBookDate,
 					maxDate: addmulMonth(this.picInfo.earliestBookDate, 12),
 					disableMobile: true,
-					enable: [],//saleDate
+					enable: saleDate,
 					onOpen : function(e){
 						
 						self.showWinBg = true;

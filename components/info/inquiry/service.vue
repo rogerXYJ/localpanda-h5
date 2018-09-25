@@ -2,7 +2,7 @@
 	
 
 	<div class="service_info">
-		<p>If you still do not receive a response, please check your junk mail folder. Additionally, you can contact us in the following ways:</p>
+		<p v-if="!status">If you still do not receive a response, please check your junk mail folder. Additionally, you can contact us in the following ways:</p>
 		<div class="service_content">
 			<dl>
 				<dt>Call</dt>
@@ -32,6 +32,7 @@
 <script>
 	export default {
 		name: "service",
+		props:['status'],
 		data() {
 			return {
 				

@@ -38,7 +38,7 @@
 
 
       <p class="order_contact" v-show="!success"><span v-show="msg">Your payment did not go through. Here is the error that you can reference:{{msg}}</span><br><br>
-        If you want to proceed with payment, click “Try again.” If your payment problems continue, we suggest you try using another card or talk to our online assistant at the bottom right of the webpage to get payment help. You can also email service@localpanda.com or call us at +86 (21) 8081-2090/+1 (888) 9390-8839 (US toll free).</p>
+        If you want to proceed with payment, click "Try again." If your payment problems continue, we suggest you try using another card or contact us via call, text, email or other messaging tools listed below.</p>
 
       <p class="order_contact c_666" v-if="showTipTxt && success">You ordered as a guest. You can click this button to view your order details.</p>
       <p class="order_contact c_666" v-else-if="success">Click this button and view your order details.</p>
@@ -53,7 +53,7 @@
 
 
     
-    <service></service>
+    <service :status="!success"></service>
     <foot></foot>
   </div>
 </template>
@@ -76,14 +76,12 @@
 		}) {
 
 			let query = route.query;
-
 			var orderInfo = '';
 
 			try {
         
         orderInfo = await Vue.axios.get(apiBasePath + "order/activity/" + query.orderId);
         
-        console.log(orderInfo);
 			} catch(err) {
 				return error({
 					statusCode: 500,

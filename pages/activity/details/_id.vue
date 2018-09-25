@@ -26,7 +26,8 @@
 			:isABtestShow="isABtestShow" 
 			@currencyChange="currencyChangeFn" 
 			v-model="currency"
-			:exchange="exchange"
+			:exchange="exchange" 
+			:calendar="calendar"
 			></Mdetails>
 		<transition name="slideleft">
             <Mmeau v-show="isShowMeau" class="Mmeau" 
@@ -138,7 +139,8 @@
 				isABtestShow:false,
 				currency:{code: "USD", symbol: "$", exchangeRate: 1},
 				participants:0,
-				exchange:[]
+				exchange:[],
+				calendar:[]
 			};
 			var response = {};
 			let apiActivityPriceRes = {};
@@ -162,9 +164,18 @@
 				//基本信息
 				var Promise1 = new Promise(function(resolve, reject){
 					Vue.axios.get(apiBasePath + "product/activity/" + id).then(function(res) {
-						// var consoleTimeS2 = new Date().getTime();
-						// 	console.log('基本信息接口花费时间：'+(consoleTimeS2-consoleTimeS)+' ms');
-						resolve(res);
+						
+						//获取可售日期
+						if(!res.data.allAvailable){
+							Vue.axios.get(apiBasePath + "product/activity/"+id+"/sale/calendar").then(function(response) {
+								data.calendar = response.data?response.data:[];
+								resolve(res);
+							}, function() {
+								resolve(res);
+							});
+						}else{
+							resolve(res);
+						}
 					}, function(res) {
 						resolve(res);
 					});
