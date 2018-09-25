@@ -53,7 +53,7 @@
 
 
     
-    <service :status="!success"></service>
+    <service :status="success"></service>
     <foot></foot>
   </div>
 </template>

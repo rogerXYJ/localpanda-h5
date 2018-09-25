@@ -1363,7 +1363,14 @@ import photo from '~/components/activity/details/photo'
 					hitType: "event",
 					eventCategory: "activity_detail",
 					eventAction: "select",
-					eventLabel:"Adults"
+					eventLabel:"guests"
+				});
+
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "select",
+					eventLabel:"detail_select"
 				});
 				
 			},
@@ -1376,12 +1383,12 @@ import photo from '~/components/activity/details/photo'
 					this.bookPeople = val + this.bookAdults;
 				}
 
-				ga(gaSend, {
-					hitType: "event",
-					eventCategory: "activity_detail",
-					eventAction: "select",
-					eventLabel:"Children"
-				});
+				// ga(gaSend, {
+				// 	hitType: "event",
+				// 	eventCategory: "activity_detail",
+				// 	eventAction: "select",
+				// 	eventLabel:"Children"
+				// });
 			},
 			bookPeople:function(){
 				//设置价格
@@ -1398,8 +1405,17 @@ import photo from '~/components/activity/details/photo'
 					hitType: "event",
 					eventCategory: "activity_detail",
 					eventAction: "select",
-					eventLabel:"Date"
+					eventLabel:"date"
 				});
+
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "select",
+					eventLabel:"detail_select"
+				});
+
+				
 			}
 		}
 	}
