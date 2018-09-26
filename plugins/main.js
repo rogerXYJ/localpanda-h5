@@ -54,22 +54,34 @@ if(!Cookie.get('userABtestID')){
 
 
 
+window.currencyData = [
+  {"code":"USD","symbol":"$","svg":""},
+  {"code":"CNY","symbol":"¥","svg":""},
+  {"code":"EUR","symbol":"€","svg":""},
+  {"code":"GBP","symbol":"£","svg":""},
+  {"code":"AUD","symbol":"$","svg":""},
+  {"code":"CAD","symbol":"$","svg":""},
+  {"code":"JPY","symbol":"¥","svg":""}
+];
+
+
+
 //获取币种
-(function(){
-  var xhr = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
-  xhr.open('GET', 'https://api.localpanda.com/api/public/currency/all/USD', true);
-  xhr.send();
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState == 4 && xhr.status == 200 || xhr.status == 304) { // readyState == 4说明请求已完成
-      var data = JSON.parse(xhr.responseText);
-      if(typeof window.currencyCallbackHeader == 'function'){
-        window.currencyCallbackHeader(data);
-      }
-      if(typeof window.currencyCallbackFooter == 'function'){
-        window.currencyCallbackFooter(data);
-      }
-    }
-  }
-})();
+// (function(){
+//   var xhr = new XMLHttpRequest();  // XMLHttpRequest对象用于在后台与服务器交换数据          
+//   xhr.open('GET', 'https://api.localpanda.com/api/public/currency/all/USD', true);
+//   xhr.send();
+//   xhr.onreadystatechange = function() {
+//     if (xhr.readyState == 4 && xhr.status == 200 || xhr.status == 304) { // readyState == 4说明请求已完成
+//       var data = JSON.parse(xhr.responseText);
+//       if(typeof window.currencyCallbackHeader == 'function'){
+//         window.currencyCallbackHeader(data);
+//       }
+//       if(typeof window.currencyCallbackFooter == 'function'){
+//         window.currencyCallbackFooter(data);
+//       }
+//     }
+//   }
+// })();
 
 

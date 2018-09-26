@@ -351,13 +351,15 @@
 					}
 				}
 
-				if(thisCurrency){
-					
+				var oldCurrency = JSON.parse(Cookie.get('currency'));
+				//检测是否需要触发回调
+				if(thisCurrency && !oldCurrency || thisCurrency && oldCurrency.code != thisCurrency.code){
+					//设置cookie
 					Cookie.set('currency',JSON.stringify({
 						code: thisCurrency.code,
 						symbol: thisCurrency.symbol
 					}),{path:'/','expires':30});
-					console.log(Cookie.get('currency'))
+					//触发回调
 					this.$emit('headCurrency',thisCurrency);
 				}
 			},			
@@ -372,11 +374,8 @@
 			this.islogIn = logstate?true:false;
 			
 			//获取币种
-			var self = this;
-			window.currencyCallbackHeader = function(data){
-				self.exchange = data;
-				self.$emit('getExchange',data)
-			};
+			this.exchange = currencyData;
+			this.$emit('getExchange',currencyData);
 			
 			//读取币种
 			var nowCurrency = JSON.parse(Cookie.get('currency'));

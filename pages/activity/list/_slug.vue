@@ -1779,37 +1779,9 @@
 				location.reload();
 			}
 
-			// if(window.name != "aa"){
-			// 	//location.reload();
-			// 	window.name = "aa";
-			// }else{
-			// 	window.name = "";
-			// }
 			document.querySelector('.select_people_box option').setAttribute('hidden','hidden')
 			
 			//筛选悬浮
-			// var filterBox = document.getElementById('fixed_all'),
-			// 	h_search_H = document.querySelectorAll('.h_search_top')[0].clientHeight,
-			// 	filterBoxTop = filterBox.offsetTop + h_search_H;
-			// var oldY = 0;
-			// window.addEventListener("scroll", (e)=>{
-				
-			// 	//向上滑动
-			// 	if(scrollY<oldY){
-			// 		this.fixedShowSearch = true;
-			// 		if(scrollY<filterBoxTop - h_search_H){
-			// 			this.isFixed=false;
-			// 		}else{
-			// 			this.isFixed=true;
-			// 		}
-			// 	}else if(scrollY>filterBoxTop){
-			// 		this.isFixed=true;
-			// 		this.fixedShowSearch = false;
-			// 	}
-			// 	oldY = scrollY;
-				
-			// });
-
 			var filterBox = document.getElementById('fixed_all');
 			window.addEventListener("scroll", (e)=>{
 				if(scrollY<filterBox.offsetTop){
