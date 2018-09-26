@@ -13,7 +13,7 @@
       <!-- 头部信息 -->
       <div class="dialog_header" v-if="title">{{title}}</div>
       <!-- 弹窗内容 -->
-      <div class="dialog_content">
+      <div class="dialog_content" ref="dialogContent">
         <slot></slot>
       </div>
       <!-- 弹窗底部 -->
@@ -58,6 +58,7 @@
         this.$emit('cancelCallback');
       },
       close(){
+        this.$emit('closeCallback');
         this.showDialog = false;
       },
       bgClick(){
@@ -99,6 +100,9 @@
           this.bodyScrollTop = (document.documentElement.scrollTop || document.body.scrollTop);
           $body.style.position = 'fixed';
           $body.style.top = '-'+this.bodyScrollTop+'px';
+          this.$nextTick(() => {
+            this.$refs.dialogContent.scrollTop = 0;
+          });
         }else{
           $body.style.position = 'inherit';
           $body.style.top = 'auto';

@@ -561,7 +561,9 @@
 			},
 			pay(){
 				let that=this
-				that.stripe.createToken(that.cardNumber).then(function(result) {
+				that.stripe.createToken(that.cardNumber,{
+						name:that.email
+					}).then(function(result) {
 				       if (result.error) {
 				      // Inform the user if there was an error.
 				      //console.log(that.loadingStatus)
