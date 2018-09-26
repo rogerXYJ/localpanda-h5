@@ -201,7 +201,7 @@ get back to you within 1 day. </p>
 				this.name = '';
 				this.email = '';
 				this.textInfo = '';
-				
+				this.back();
 			},
 			sendEmail(){
 				var that = this;
