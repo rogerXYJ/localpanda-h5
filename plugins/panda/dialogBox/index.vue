@@ -13,7 +13,7 @@
       <!-- 头部信息 -->
       <div class="dialog_header" v-if="title">{{title}}</div>
       <!-- 弹窗内容 -->
-      <div class="dialog_content" ref="dialogContent">
+      <div class="dialog_content" :class="{'dialog_content_max':(!confirmShow && !cancelShow)}" ref="dialogContent">
         <slot></slot>
       </div>
       <!-- 弹窗底部 -->

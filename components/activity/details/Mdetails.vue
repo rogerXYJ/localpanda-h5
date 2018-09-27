@@ -468,6 +468,13 @@
 
 		</div>
 
+
+
+		<dialogBox v-model="dialogInquiryStatus" @confirmCallback="confirmCallback" width="100%">
+			<inquiry :objectId="id" @inquiryCallback="confirmCallback"></inquiry>
+		</dialogBox>
+		
+
 	</div>
 	
 </template>
@@ -478,6 +485,8 @@ import vue from 'vue'
 import Flatpickr from 'flatpickr';
 import {addmulMonth} from "~/assets/js/utils";
 import photo from '~/components/activity/details/photo'
+import dialogBox from '~/plugins/panda/dialogBox';
+import inquiry from '~/components/info/inquiry/inquiry'
 
 // if(process.browser) {
 // 	const VueAwesomeSwiper = require('vue-awesome-swiper/dist/ssr')
@@ -616,13 +625,20 @@ import photo from '~/components/activity/details/photo'
 			hasGuide:false,
 			checkGuideIndex:'',
 			guideSwiperIndex:0,
+
+			//inquiry
+			dialogInquiryStatus:false
 		}
 	},
 	components: {
-		photo
+		photo,
+		dialogBox,
+		inquiry
 	},
 		methods: {
-			
+			confirmCallback(){
+				this.dialogInquiryStatus = false;
+			},
 			retrunPrice(){
 				var price = this.picInfo.details
 				for(var i =0;i<price.length;i++){
@@ -667,8 +683,9 @@ import photo from '~/components/activity/details/photo'
 						eventLabel: 'activity_inquiry',
 	
 					});
-					localStorage.setItem("owner",this.detail.owner)
-					location.href='/info/inquiry?objectId='+this.id
+					// localStorage.setItem("owner",this.detail.owner)
+					// location.href='/info/inquiry?objectId='+this.id
+					this.dialogInquiryStatus = true;
 			},
 			changeCurrency(e){
 				var self = this;
@@ -855,7 +872,7 @@ import photo from '~/components/activity/details/photo'
 							return (value+0.005).toFixed(2);
 						}
 					}
-					return value.toFixed(2);
+					return (value*1).toFixed(2);
 				}else{
 					return 0;
 				}

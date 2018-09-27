@@ -1,6 +1,5 @@
 <template>
 	<div class="inquiry">
-		<div class="back"><i class="iconfont" @click="back">&#xe615;</i></div>
 
     <!-- <ul class="nav_list">
       <li class="active" @click="showInquiry">Advise Me</li>
@@ -34,7 +33,7 @@
 			
 			<div class="inputItem">
 				<p>Date of Arrival</p>
-				<input id="js_changetime" class="inputin" placeholder="Select Date" onfocus="this.blur()" v-model="dateTime" readonly type="text">
+				<input id="js_inquirytime" class="inputin" placeholder="Select Date" onfocus="this.blur()" v-model="dateTime" readonly type="text">
 			</div>
 			<div class="inputItem">
 				<p>Number of People</p>
@@ -78,13 +77,13 @@
 				:alertMessage="alertMessage"
 				></Dialog>
 		<transition name="fade">
-			<div class="win_bg" id="win_bg" @click="showWinBg = false" v-show="showWinBg"></div>
+			<div class="win_bg" id="win_bg" @click="showInquiryWinBg = false" v-show="showInquiryWinBg"></div>
 		</transition>
 
 
 
     <!-- service弹窗 -->
-		<dialogBox v-model="dialogStatus" confirmShow="true" confirmText="Confirm" @confirmCallback="confirmCallback" width="100%">
+		<dialogBox v-model="dialogStatus" confirmShow="true" confirmText="Confirm" @confirmCallback="confirmCallback" @cancelCallback="confirmCallback" width="100%">
 			
 			<div class="service_box">
         <div class="tip_title"> Thank you. You have submitted <br> your Inquiry successfully! <br>We will get back to you within 1 day.</div>
@@ -134,6 +133,9 @@ export default {
   // 		]
   // 	}
   // },
+  props:[
+    'objectId'
+  ],
   data() {
     let id = this.$route.query.objectId;
 
@@ -151,7 +153,7 @@ export default {
 
       dateTime: "",
       options: {},
-      showWinBg: false,
+      showInquiryWinBg: false,
       isshowchoose: false,
       peopleNub: 0,
       flatPickr: null,
@@ -161,7 +163,7 @@ export default {
       isShowAlert: false,
       alertTitle: "",
       alertMessage: "",
-      objectId: id,
+      // objectId: id,
       loadingStatus:false,
       loadTime:false,
 
@@ -279,11 +281,13 @@ export default {
                   that.alertTitle = "Failed!";
                   that.alertMessage = "";
                 }
+                that.isclick = false;
               },
               function(response) {
                 that.isShowAlert = true;
                 that.alertTitle = "Failed!";
                 that.alertMessage = "";
+                that.isclick = false;
               }
             );
         }
@@ -424,7 +428,15 @@ export default {
     },
     confirmCallback(){
       this.dialogStatus = false;
-      location.href = '/activity/details/'+this.objectId;
+      this.$emit('inquiryCallback','');
+
+      this.name = "";
+      this.email = "";
+      this.textInfo = "";
+      this.dateTime = "";
+      this.peopleNub = "";
+
+      // location.href = '/activity/details/'+this.objectId;
     },
     sendEmail(){
       var that = this;
@@ -475,10 +487,10 @@ export default {
         maxDate: addmulMonth(GetDateStr(1), 12),
         disableMobile: true,
         onOpen: function(selectedDates, dateStr, instance) {
-          that.showWinBg = true;
+          that.showInquiryWinBg = true;
         },
         onChange() {
-          that.showWinBg = false;
+          that.showInquiryWinBg = false;
         }
       };
       
@@ -486,7 +498,7 @@ export default {
   },
   mounted: function() {
     let that = this;
-    that.flatPickr = new Flatpickr("#js_changetime", this.options);
+    that.flatPickr = new Flatpickr("#js_inquirytime", this.options);
     document
       .getElementsByTagName("body")[0]
       .addEventListener("click", function() {
@@ -494,7 +506,7 @@ export default {
       });
 
     document.getElementById("win_bg").addEventListener("click", function() {
-      that.showWinBg = false;
+      that.showInquiryWinBg = false;
     });
       
     
@@ -800,6 +812,7 @@ body{
     position: fixed;
     left: 0;
     top: 0;
+    z-index: 99;
   }
   .fade-enter-active,
   .fade-leave-active {
