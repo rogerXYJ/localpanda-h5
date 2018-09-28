@@ -42,7 +42,8 @@
 		data() {
 			return {
         showDialog:this.value?this.value:false,
-        maxHeight:false
+        maxHeight:false,
+        bodyScrollTop:0
 			}
     },
     computed:{
@@ -52,38 +53,25 @@
       confirm(){
         var self = this;
         this.$emit('confirmCallback');
-        history.back()
+        //关闭弹窗自动，后退页面
+        history.back();
       },
       cancel(){
         var self = this;
         this.$emit('cancelCallback');
-        history.back()
+        //关闭弹窗自动，后退页面
+        history.back();
       },
       close(){
         this.$emit('closeCallback');
         this.showDialog = false;
-        history.back()
+        //关闭弹窗自动，后退页面
+        history.back();
       },
       bgClick(){
         //this.close();
       },
-      setTop(){
-        var self = this;
-        // var top = document.documentElement.scrollTop || document.body.scrollTop;
-        // var $body = document.querySelector('body');
-        // $body.style.position = 'absolute';
-        // $body.style.top = top+'px';
-        // this.$nextTick(function(){
-        //   var $dialog = self.$el.childNodes[1];
-        //   var dialogH = $dialog.clientHeight,
-        //     winH = window.innerHeight,
-        //     top = document.documentElement.scrollTop || document.body.scrollTop;
-        //   if(dialogH>winH){
-        //     self.maxHeight = true;
-        //     $dialog.style.top = top+10+'px';
-        //   }
-        // });
-      }
+      
 		},
 		mounted(){
       var self = this;
@@ -101,7 +89,7 @@
       showDialog:function(val){
         this.$emit('input',val);
         if(val){
-          //浏览器弹窗后，添加一个新页面记录。
+          //显示弹窗后，添加一个新页面记录。用于后退关闭弹窗
           history.pushState({
             'type':'showDialog'
           },'');
@@ -110,23 +98,29 @@
       value:function(val){
         this.showDialog = val;
         var $body = document.querySelector('body');
-        
+        //显示弹窗
         if(val){
-          this.bodyScrollTop = (document.documentElement.scrollTop || document.body.scrollTop);
+          var scrollTop = (document.documentElement.scrollTop || document.body.scrollTop);
           $body.style.position = 'fixed';
-          $body.style.top = '-'+this.bodyScrollTop+'px';
+
+          //是否有滑动高度，有就记录下来
+          if(scrollTop){
+            this.bodyScrollTop = scrollTop;
+            $body.style.top = '-'+this.bodyScrollTop+'px';
+          }
           this.$nextTick(() => {
             this.$refs.dialogContent.scrollTop = 0;
           });
-        }else{
+        }else{//关闭弹窗
           $body.style.position = 'inherit';
           $body.style.top = 'auto';
+          //显示弹窗的时候有记录滑动高度，关闭后移动到对应位置
           if(this.bodyScrollTop){
             this.$nextTick(() => {
               window.scrollTo(0,this.bodyScrollTop);
             });
           }
-          this.bodyScrollTop = 0;
+          
         }
       }
     }
