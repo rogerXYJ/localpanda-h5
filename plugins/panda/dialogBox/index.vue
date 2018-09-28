@@ -122,7 +122,9 @@
           $body.style.position = 'inherit';
           $body.style.top = 'auto';
           if(this.bodyScrollTop){
-            document.documentElement.scrollTop = document.body.scrollTop = this.bodyScrollTop;
+            this.$nextTick(() => {
+              window.scrollTo(0,this.bodyScrollTop);
+            });
           }
           this.bodyScrollTop = 0;
         }
