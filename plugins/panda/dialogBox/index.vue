@@ -52,14 +52,17 @@
       confirm(){
         var self = this;
         this.$emit('confirmCallback');
+        history.back()
       },
       cancel(){
         var self = this;
         this.$emit('cancelCallback');
+        history.back()
       },
       close(){
         this.$emit('closeCallback');
         this.showDialog = false;
+        history.back()
       },
       bgClick(){
         //this.close();
@@ -84,13 +87,25 @@
 		},
 		mounted(){
       var self = this;
+
+      //浏览器事件处理
+			window.onpopstate = function(event) {
+				if(self.showDialog){
+					self.showDialog = false;
+				}
+      };
+      
+
     },
     watch:{
       showDialog:function(val){
-        
         this.$emit('input',val);
-
-        
+        if(val){
+          //浏览器弹窗后，添加一个新页面记录。
+          history.pushState({
+            'type':'showDialog'
+          },'');
+        }
       },
       value:function(val){
         this.showDialog = val;
@@ -110,7 +125,6 @@
             document.documentElement.scrollTop = document.body.scrollTop = this.bodyScrollTop;
           }
           this.bodyScrollTop = 0;
-          
         }
       }
     }
