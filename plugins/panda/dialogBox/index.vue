@@ -76,12 +76,8 @@
 		mounted(){
       var self = this;
 
-      //浏览器事件处理
-			window.onpopstate = function(event) {
-				if(self.showDialog){
-					self.showDialog = false;
-				}
-      };
+      
+			
       
 
     },
@@ -102,6 +98,7 @@
         if(val){
           var scrollTop = (document.documentElement.scrollTop || document.body.scrollTop);
           $body.style.position = 'fixed';
+          $body.style.width = '100vw';
 
           //是否有滑动高度，有就记录下来
           if(scrollTop){
@@ -113,6 +110,7 @@
           });
         }else{//关闭弹窗
           $body.style.position = 'inherit';
+          $body.style.width = 'auto';
           $body.style.top = 'auto';
           //显示弹窗的时候有记录滑动高度，关闭后移动到对应位置
           if(this.bodyScrollTop){
