@@ -1455,9 +1455,12 @@ import service from '~/components/info/inquiry/service';
 		watch:{
 			//监听币种变化
 			value:function(val){
+				if(this.nowExchange.code !== val.code){
+					this.changeCurrency(val.code);
+				}
 				this.nowExchange = val;
 				this.SelectCurrency=val.code
-				this.changeCurrency(val.code);
+				
 			},
 			bookAdults:function(val){
 				
