@@ -273,14 +273,8 @@
 				</div>
 				<div class="remark_list" v-for="(item,index) in remarkDataAll" :key="index">
 					<div class="remark_list_top">
-						<div class="remark_star" v-html="remarkStarHtml(item.score)">
-							<!-- <span class="star_list" v-for="itemIndex in 5" :class="{star_h:item.score%2==1&&item.score/2<itemIndex}"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span> -->
-							<!-- <span class="star_list"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span>
-							<span class="star_list"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span>
-							<span class="star_list star_h"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span>
-							<span class="star_list star_no"><i></i><div class="star_half"><span class="star_list"><i></i></span></div></span> -->
-						</div>
-						<div class="remark_photo" :style="'background-image:url('+(item.userPortraitPhoto?item.userPortraitPhoto.url:'')+')'">
+						<div class="remark_star" v-html="remarkStarHtml(item.score)"></div>
+						<div class="remark_photo" :style="item.userPortraitPhoto?'background-image:url('+item.userPortraitPhoto.url+')':''">
 							<span class="remark_photo_def" v-if="!item.userPortraitPhoto">{{item.userName.substring(0,1)}}</span>
 							<!-- <img v-else v-lazy="item.userPortraitPhoto?item.userPortraitPhoto.url:''" alt=""> -->
 						</div>
@@ -506,10 +500,10 @@
 
 <script>
 
-import vue from 'vue'
+// import vue from 'vue'
 import Flatpickr from 'flatpickr';
 import {addmulMonth} from "~/assets/js/utils";
-import photo from '~/components/activity/details/photo'
+// import photo from '~/components/activity/details/photo'
 import dialogBox from '~/plugins/panda/dialogBox';
 import inquiry from '~/components/info/inquiry/inquiry'
 import service from '~/components/info/inquiry/service';
@@ -664,7 +658,7 @@ import service from '~/components/info/inquiry/service';
 		}
 	},
 	components: {
-		photo,
+		// photo,
 		dialogBox,
 		inquiry,
 		service
