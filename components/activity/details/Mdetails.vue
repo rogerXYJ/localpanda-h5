@@ -101,12 +101,13 @@
 					<li>
 						<i class="iconfont input_icon">&#xe60d;</i>
 						<input id="js_changetime" v-model="startDate" readonly type="text" placeholder="Select Date">
+						<i class="iconfont arrow">&#xe60f;</i>
 						<!-- <div class="check_box" id="js_changetime">Select</div> -->
 					</li>
 					<li class="check_people">
 						<i class="iconfont input_icon">&#xe63d;</i>
 						<i class="iconfont arrow">&#xe60f;</i>
-						<div class="check_people_text" :style="bookAdults>0?'color:#333;font-size:0.3rem;':'color:#888;font-size:0.3rem;'">{{adultsText}}</div>
+						<div class="check_people_text" :style="bookAdults>0?'color:#333;font-size:0.28rem;':'color:#888;font-size:0.28rem;'">{{adultsText}}</div>
 						<select id="" v-model="bookAdults">
 							<option :value="item" v-for="item in picInfo.maxParticipants" :key="item">{{(item>1?'Adults':'Adult')+' x '+item}}</option>
 						</select>
@@ -114,7 +115,7 @@
 					<li class="check_people">
 						<i class="iconfont input_icon">&#xe63d;</i>
 						<i class="iconfont arrow">&#xe60f;</i>
-						<div class="check_people_text" :style="bookChildren>0?'color:#333;font-size:0.3rem;':'color:#888;font-size:0.22rem;'">{{childrenText}}</div>
+						<div class="check_child_text" :style="bookChildren>0?'color:#333;font-size:0.28rem;':'color:#888;font-size:0.22rem;'">{{childrenText}}</div>
 						<select id="" v-model="bookChildren">
 							<option :value="0">Child x 0</option>
 							<option :value="item" v-for="item in picInfo.maxParticipants-1" :key="item">{{(item>1?'Children':'Child')+' x '+item}}</option>
@@ -177,14 +178,14 @@
 					<div class="book_price_box">
 						<dl class="book_price_info">
 							<dt>
-								<span>{{nowExchange.symbol}}{{perPersonPrice}}×{{bookPeople}} {{bookPeople>1?'People':'Person'}}</span>
+								<span>{{nowExchange.symbol}}{{perPersonPrice}}×{{bookPeople}} {{bookPeople>1?'Travelers':'Traveler'}}</span>
 								<span v-if="picInfo.childDiscount && bookChildren">-{{nowExchange.symbol}}{{returnFloat(picInfo.childDiscount*bookChildren)}} for {{bookChildren>1?'Children':'Child'}}</span>
 							</dt>
 							<dd>{{nowExchange.symbol}}{{price}}</dd>
 							<!-- <a class="iconfont" href="#picDetails">&#xe659;</a> -->
 						</dl>
 						<dl class="book_price_info">
-							<dt>Total ({{nowExchange.code}})</dt>
+							<dt>Total</dt>
 							<dd>
 								<div class="picRate">
 									<select class="currency_type" id="changeCurrency" @change="changeCurrency" v-model="SelectCurrency">
@@ -635,7 +636,7 @@ import service from '~/components/info/inquiry/service';
 			adultsText:'Adults',
 			childrenText:'Chlidren (age 3-'+this.picInfo.childStandard+')',
 			checkTipText:'',
-			changeAdults:1,
+			changeAdults:0,
 			changeChildren:0,
 			bookAdults:0,
 			bookChildren:0,
@@ -2210,7 +2211,8 @@ import service from '~/components/info/inquiry/service';
 						-webkit-appearance:none;
 						font-size: 0.28rem;
 					}
-					.check_people_text{ position: absolute; left: 0.6rem; top: 0; height: 0.74rem; line-height: 0.74rem; font-size: 0.22rem;}
+					.check_people_text{ position: absolute; left: 0.76rem; top: 0; height: 0.74rem; line-height: 0.74rem; font-size: 0.22rem;}
+					.check_child_text{ position: absolute; left: 0.6rem; top: 0; height: 0.74rem; line-height: 0.74rem; font-size: 0.22rem;}
 				}
 				.change_people{
 					position: absolute; left: 0; top: calc(100% - 1px); width: 100%; box-sizing: border-box; padding: 0 0.26rem 0.36rem; background-color: #fff; z-index: 3;border: #ebebeb solid 1px;border-top:none; border-radius: 0 0 4px 4px;

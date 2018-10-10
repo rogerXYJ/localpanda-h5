@@ -17,8 +17,9 @@
 
 			<!-- 币种 -->
 			<div class="selectCurrey_box">
+				<span class="svg_box" v-html="getSvg(currency)"></span>
 				<select class="selectCurrey" v-model="currency">
-					<option v-for="(item,index) in exchange" :value="item.code">{{item.code}} ( {{item.symbol}} )</option>
+					<option v-for="(item,index) in exchange" :value="item.code">{{item.code}}</option>
 				</select>
 				<span class="iconfont selectCurreyIcon">&#xe666;</span>
 			</div>
@@ -312,6 +313,19 @@
 					eventAction: action,
 					eventLabel: label
 				});
+			},
+
+			getSvg(currency){
+				var currencyData = this.currencyData;
+				if(currencyData){
+					for(var i=0;i<currencyData.length;i++){
+						var thisData = currencyData[i];
+						if(thisData.code == currency){
+							return thisData.svg;
+						}
+					}
+				}
+				return '';
 			}
 		},
 		computed:{
@@ -366,6 +380,7 @@
 			nowCurrency:function(val){
 				this.currency= val.code;
 			},
+			
 		},
 		mounted: function() {
 			this.showSearchDialog = this.showSearch;
@@ -374,8 +389,7 @@
 			this.islogIn = logstate?true:false;
 			
 			//获取币种
-			this.exchange = currencyData;
-			this.$emit('getExchange',currencyData);
+			this.exchange = this.currencyData;
 			
 			//读取币种
 			var nowCurrency = JSON.parse(Cookie.get('currency'));
@@ -443,7 +457,7 @@
 				border: none;
 				height: 0.98rem;
 				line-height: 0.98rem;
-				padding-right: 0.4rem;
+				padding:0 0.4rem 0 0.6rem;
 				position: relative;
 				z-index: 2;
 			}
@@ -746,10 +760,24 @@
 </style>
 
 <style lang="scss">
-.h_search_complate{
-	span{
-		b{
-			color: #1bbc9d;
+.header{
+	.h_search_complate{
+		span{
+			b{
+				color: #1bbc9d;
+			}
+		}
+	}
+
+	.selectCurrey_box{
+		.svg_box{
+			position: absolute;
+			left: 0;
+			top: 0.29rem;
+			width: 0.5rem;
+			svg{
+				vertical-align: top;
+			}
 		}
 	}
 }

@@ -103,13 +103,14 @@ function delNullArr(array) {
 /*
  * 正则验证
  */
-var formatDate = function(millinSeconds){
+var formatDate = function(millinSeconds,y){
+	if(!millinSeconds)return '';
 	var date = new Date(millinSeconds.replace(/\-/g,'/'));
 	var monthArr = new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
 	var year = date.getFullYear(); //年
 	var month = monthArr[date.getMonth()]; //月
 	var ddate = date.getDate(); //日
-	return month + " "+ ddate ;
+	return month + " "+ ddate  + (y?", " + year : '');
 }
 var regExp = (function() {
 	return {

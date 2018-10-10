@@ -25,7 +25,7 @@
 					<span v-if="opctions.adultNum">Number of adult(s):  {{opctions.adultNum}}</span>
 					<span v-if="opctions.childrenNum">Number of child(ren): {{opctions.childrenNum}}</span>
 					<p style="margin-top: 0.05rem;">
-						<span>Travel Date:  {{opctions.startDate}}</span>
+						<span>Travel Date:  {{formatDate(opctions.startDate,1)}}</span>
 						<span v-if="opctions.startTime">{{opctions.startTime}}</span>
 					</p>
 				</div>

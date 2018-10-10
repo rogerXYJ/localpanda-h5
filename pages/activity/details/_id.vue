@@ -1,6 +1,6 @@
 <template>
 	<div id="activitiesDetail">
-		<Head :nowCurrency="currency" @headCurrency="headCurrencyFn" @getExchange="setExchange"></Head>
+		<Head :nowCurrency="currency" @headCurrency="headCurrencyFn"></Head>
 		<Mbanner :bannerPhotos="detail.bannerPhotos" :destination="destination"></Mbanner>
 		<Mdetails
 			:remark="remark" 
@@ -76,11 +76,6 @@
 
 	export default {
 		name: "activitiesDetail",
-
-
-
-
-
 		async asyncData({
 			route,
 			store,
@@ -460,10 +455,6 @@
 			headCurrencyFn(currency){
 				this.currency = currency;
 			},
-			setExchange(val){
-				this.exchange=val
-				
-			},
 		},
 		mounted: function() {
 			
@@ -478,6 +469,10 @@
 			// }else{
 			// 	window.name = "";
 			// }
+
+			//币种信息
+			this.exchange = this.currencyData;
+
 			var cookieCurrency = JSON.parse(Cookie.get('currency'));
 			var ua = window.navigator.userAgent.toLowerCase();
 			var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
