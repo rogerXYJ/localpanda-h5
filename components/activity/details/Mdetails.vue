@@ -55,7 +55,7 @@
 					</li>
 					<li class="clearfix">
 						<label class="iconfont">&#xe624;</label>
-						<span>Duration: {{detail.duration}} {{detail.durationUnit|firstUpperCase}}</span>
+						<span>Duration: {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}}</span>
 					</li>
 					<li class="clearfix">
 						<label class="iconfont">&#xe627;</label>
@@ -101,6 +101,7 @@
 					<li>
 						<i class="iconfont input_icon">&#xe60d;</i>
 						<input id="js_changetime" v-model="startDate" readonly type="text" placeholder="Select Date">
+						<input class="time_box" :value="formatDate(startDate)" readonly type="text" placeholder="Date">
 						<i class="iconfont arrow">&#xe60f;</i>
 						<!-- <div class="check_box" id="js_changetime">Select</div> -->
 					</li>
@@ -178,14 +179,14 @@
 					<div class="book_price_box">
 						<dl class="book_price_info">
 							<dt>
-								<span>{{nowExchange.symbol}}{{perPersonPrice}}×{{bookPeople}} {{bookPeople>1?'Travelers':'Traveler'}}</span>
+								<span>{{nowExchange.symbol}}{{returnFloat(perPersonPrice)}}×{{bookPeople}} {{bookPeople>1?'Travelers':'Traveler'}}</span>
 								<span v-if="picInfo.childDiscount && bookChildren">-{{nowExchange.symbol}}{{returnFloat(picInfo.childDiscount*bookChildren)}} for {{bookChildren>1?'Children':'Child'}}</span>
 							</dt>
-							<dd>{{nowExchange.symbol}}{{price}}</dd>
+							<dd>{{nowExchange.symbol}}{{returnFloat(price)}}</dd>
 							<!-- <a class="iconfont" href="#picDetails">&#xe659;</a> -->
 						</dl>
 						<dl class="book_price_info">
-							<dt>Total</dt>
+							<dt>Total Amount</dt>
 							<dd>
 								<div class="picRate">
 									<select class="currency_type" id="changeCurrency" @change="changeCurrency" v-model="SelectCurrency">
@@ -368,7 +369,7 @@
 
 									<h4 style="-moz-box-orient: vertical;
 								    -webkit-box-orient:vertical;">{{i.title}}</h4>
-									<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{i.duration}} {{i.durationUnit|firstUpperCase}}</div>
+									<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{i.duration}} {{setTimeStr(i.duration,i.durationUnit)}}</div>
 									<div class="pic">
 										<!-- <div class="old-pic" v-if="i.originalPrice">{{nowExchange.symbol}}{{returnFloat(i.originalPrice)}}</div> -->
 										<div class="current-price">From {{nowExchange.code}} <b>{{nowExchange.symbol}}{{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
@@ -502,7 +503,7 @@
 
 // import vue from 'vue'
 import Flatpickr from 'flatpickr';
-import {addmulMonth} from "~/assets/js/utils";
+import {addmulMonth,formatDate} from "~/assets/js/utils";
 // import photo from '~/components/activity/details/photo'
 import dialogBox from '~/plugins/panda/dialogBox';
 import inquiry from '~/components/info/inquiry/inquiry'
@@ -664,8 +665,16 @@ import service from '~/components/info/inquiry/service';
 		service
 	},
 		methods: {
+			formatDate:formatDate,
 			confirmCallback(){
 				this.dialogInquiryStatus = false;
+			},
+			setTimeStr(num,str){
+				if(str.toLowerCase()=='hours'){
+					return num===1 ? 'Hour' : 'Hours'
+				}else if(str.toLowerCase()=='days'){
+					return num===1 ? 'Day' : 'Days'
+				}
 			},
 			retrunPrice(){
 				var price = this.picInfo.details
@@ -2160,6 +2169,8 @@ import service from '~/components/info/inquiry/service';
 						color: #878e95;
 						font-size: 0.36rem;
 					}
+					.flatpickr-input{ opacity: 0; z-index: 2; position: relative;}
+					.time_box{ position: absolute; left: 0; z-index: 1; top: 0;}
 					.arrow{
 						width: auto;
 						display: block;

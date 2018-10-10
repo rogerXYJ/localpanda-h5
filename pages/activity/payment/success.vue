@@ -14,10 +14,11 @@
       <p class="order_info">{{orderInfo.activityInfo.title}}</p>
       <p class="order_info"><b>Order ID:</b> {{orderId}}</p>
       <!-- <p class="order_info" v-show="success">Time of transaction: 2017-12-20 09:32:51</p> -->
-      <p class="order_info"><b>Payment amount:</b> <span>{{orderInfo.currency+' '+orderInfo.symbol}}{{orderInfo.amount}}</span></p>
+      <p class="order_info"><b>Payment Amount:</b> <span>{{orderInfo.currency+' '+orderInfo.symbol}}{{orderInfo.amount}}</span></p>
       
-      <p class="order_info"><b>Number of travelers:</b> {{orderInfo.adultNum+orderInfo.childrenNum}}</p>
-      <p class="order_info"><b>Travel date:</b> {{orderInfo.startDate}}</p>
+      <p class="order_info"><b>Number of {{orderInfo.adultNum>1?'Adults':'Adult'}}:</b> {{orderInfo.adultNum}}</p>
+      <p class="order_info" v-if="orderInfo.childrenNum"><b>Number of {{orderInfo.childrenNum>1?'Children':'Child'}}:</b> {{orderInfo.childrenNum}}</p>
+      <p class="order_info"><b>Travel Date:</b> {{formatDate(orderInfo.startDate)}}</p>
       
 
 
@@ -62,6 +63,8 @@
 	if (process.browser) {
 	  require('~/assets/js/plugin/talk.js');
   }
+
+  import {formatDate } from '~/assets/js/utils.js'
   import service from '~/components/info/inquiry/service';
   import foot from "~/components/footer/index";
   import Vue from 'vue'
@@ -145,6 +148,7 @@
       service
 		},
 		methods: {
+      formatDate:formatDate,
 			getJumpUrl(isLogin){
         if(isLogin){
           return '/user/myBookings';

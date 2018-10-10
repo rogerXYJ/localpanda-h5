@@ -12,7 +12,7 @@
 					<li><i class="iconfont">&#xe654;</i>100% secure payment</li>
 					<li><i class="iconfont">&#xe654;</i>No hidden booking or credit card fees</li>
 					<li><i class="iconfont">&#xe654;</i>Instant confirmation after booking</li>
-					<li  v-if="opctions.finalRefundPeriod"><i class="iconfont">&#xe654;</i>Free cancellation or rescheduling before {{formatDate(opctions.finalRefundPeriod)}}</li>
+					<li  v-if="opctions.finalRefundPeriod"><i class="iconfont">&#xe654;</i>Free cancellation or rescheduling before {{formatDate(opctions.finalRefundPeriod,1)}}</li>
 				</ul>
 			</div>
 			<div class="oderInfo">
@@ -22,12 +22,13 @@
 					<span v-if="opctions.startTime">{{opctions.startTime}}</span>
 					<span v-if="opctions.adultNum==1&&opctions.childrenNum==0">1 Person</span>
 					<span v-else>{{opctions.adultNum+opctions.childrenNum}} People</span>-->
-					<span v-if="opctions.adultNum">Number of adult(s):  {{opctions.adultNum}}</span>
-					<span v-if="opctions.childrenNum">Number of child(ren): {{opctions.childrenNum}}</span>
-					<p style="margin-top: 0.05rem;">
-						<span>Travel Date:  {{formatDate(opctions.startDate,1)}}</span>
+					<p>
+						<span>Travel Date:  {{formatDate(opctions.startDate)}}</span>
 						<span v-if="opctions.startTime">{{opctions.startTime}}</span>
 					</p>
+					<span v-if="opctions.adultNum">Number of {{opctions.adultNum>1?'Adults':'Adult'}} :  {{opctions.adultNum}}</span><br>
+					<span v-if="opctions.childrenNum">Number of {{opctions.adultNum>1?'Children':'Child'}} : {{opctions.childrenNum}}</span>
+					
 				</div>
 			</div>
 			
@@ -81,7 +82,7 @@
 				<span>As a guest user, you can access your order details through your name and email</span>
 			</p>
 			<!-- <div  class="hint"></div> -->
-			<div class="price">Total ({{opctions.currency}}): <span @click="showPrice=!showPrice">{{opctions.symbol}}{{opctions.amount}}<i class="iconfont">&#xe659;</i></span></div>
+			<div class="price">Total Amount: <span @click="showPrice=!showPrice">{{opctions.currency}} {{opctions.symbol}}{{opctions.amount}}<i class="iconfont">&#xe659;</i></span></div>
 			<div class="nextBtn clearfix" v-show="!hideFiexd" @touchmove="stopMove">
 				<div class="next" @click="placeOrder">NEXT</div>
 			</div>
@@ -97,11 +98,11 @@
 			<div class="price_info_tit">
 				<span class="price_info_close iconfont" @click="showPrice=false">&#xe629;</span> Detail:
 			</div>
-			<p><span>{{opctions.symbol}}{{opctions.adultsPic}}</span>{{opctions.symbol}}{{opctions.averagePrice}} x {{opctions.adultNum+opctions.childrenNum}} People</p>
+			<p><span>{{opctions.symbol}}{{returnFloat(opctions.adultsPic)}}</span>{{opctions.symbol}}{{returnFloat(opctions.averagePrice)}} x {{opctions.adultNum+opctions.childrenNum}} {{opctions.adultNum+opctions.childrenNum>1?'Travelers':'Traveler'}}</p>
 			<p v-if="opctions.childrenNum && opctions.childDiscountP">- {{opctions.symbol}}{{returnFloat(opctions.childrenNum*opctions.childDiscountP)}} (Children discount)</p>
 			<p v-if="couponType">- {{opctions.symbol}}{{opctions.couponDiscount}} (Coupon discount)</p>
 			<div class="boxline"></div>
-			<p><span>{{opctions.symbol}}{{opctions.amount}}</span>Total ({{opctions.currency}})</p>
+			<p><span>{{opctions.currency}} {{opctions.symbol}}{{opctions.amount}}</span>Total Amount</p>
 		</div>
 		 <!-- <Talk :zendeskStatus="zendeskStatus" @getShowZendesk="setShowZendesk"></Talk> -->
 		<!-- 优惠券校验失败 提示 -->

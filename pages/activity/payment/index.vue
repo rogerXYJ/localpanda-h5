@@ -11,20 +11,21 @@
 						<h3>{{opctions.activityInfo?opctions.activityInfo.title:''}}</h3>
 						<div class="service">
 							<div class="serviceInfo">
-								<b>Date: </b>
-								<span>{{opctions.startDate}}<span v-if="opctions.startTime">{{opctions.startTime}}</span></span>
+								<b>Travel Date: </b>
+								<span>{{formatDate(opctions.startDate)}}<span v-if="opctions.startTime">{{formatDate(opctions.startTime)}}</span></span>
 								<!--<p>{{opctions.startDate}}<span v-if="opctions.startTime">opctions.startTime</span></p>-->
 							</div>
 							<div class="serviceInfo">
-								<b>Guests: </b>
-								<span v-if="opctions.adultNum==1&&opctions.childrenNum==0">1 Person</span>
-								<span v-else>{{opctions.adultNum+opctions.childrenNum}} People</span>
-								<!--<p v-if="opctions.adultNum==1&&opctions.childrenNum==0">1 Person</p>
-								<p v-else>{{opctions.adultNum+opctions.childrenNum}} People</p>-->
+								<b>Number of {{opctions.adultNum>1?'Adults':'Adult'}}: </b>
+								<span>{{opctions.adultNum}}</span>
+							</div>
+							<div class="serviceInfo" v-if="opctions.childrenNum">
+								<b>Number of {{opctions.childrenNum>1?'Children':'Child'}}: </b>
+								<span>{{opctions.childrenNum}}</span>
 							</div>
 							<div class="serviceInfo">
-								<b>Total ({{opctions.currency}}): </b>
-								<span class="blod">{{opctions.symbol}}{{returnFloat(opctions.amount)}}</span>
+								<b>Total Amount: </b>
+								<span class="blod">{{opctions.currency}} {{opctions.symbol}}{{returnFloat(opctions.amount)}}</span>
 								<!--<p>You can get a 100% refund up to {{refundTimeLimit}} hours before your trip.</p>-->
 								<!--<p v-if="opctions.adultNum==1&&opctions.childrenNum==0">1 Person</p>
 								<p v-else>{{opctions.adultNum+opctions.childrenNum}} People</p>-->
