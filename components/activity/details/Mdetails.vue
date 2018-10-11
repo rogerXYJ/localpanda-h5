@@ -275,8 +275,9 @@
 				<div class="remark_list" v-for="(item,index) in remarkDataAll" :key="index">
 					<div class="remark_list_top">
 						<div class="remark_star" v-html="remarkStarHtml(item.score)"></div>
-						<div class="remark_photo" :style="item.userPortraitPhoto?'background-image:url('+item.userPortraitPhoto.url+')':''">
+						<div class="remark_photo">
 							<span class="remark_photo_def" v-if="!item.userPortraitPhoto">{{item.userName.substring(0,1)}}</span>
+							<div class="remark_photo_img" v-lazy:background-image="item.userPortraitPhoto.url" v-else></div>
 							<!-- <img v-else v-lazy="item.userPortraitPhoto?item.userPortraitPhoto.url:''" alt=""> -->
 						</div>
 						<div class="remark_list_info">
@@ -2789,6 +2790,7 @@ import service from '~/components/info/inquiry/service';
 					img{
 						vertical-align: top;
 					}
+					.remark_photo_img{ width: 100%; height: 100%; background-size: cover;}
 					.remark_photo_def{
 						display: block;
 						width: 100%;

@@ -89,23 +89,23 @@
 						name:"Explore",
 						cont:[
 							{
-								text:"Activities in Shanghai",
+								text:"Shanghai",
 								url:"/activity/list/Shanghai"
 							},
 							{
-								text:"Activities in Beijing",
+								text:"Beijing",
 								url:"/activity/list/Beijing"
 							},
 							{
-								text:"Activities in Chengdu",
+								text:"Chengdu",
 								url:"/activity/list/Chengdu"
 							},
 							{
-								text:"Activities in Xi'an",
+								text:"Xi'an",
 								url:"/activity/list/Xian"
 							},
 							{
-								text:"Activities in Guilin",
+								text:"Guilin",
 								url:"/activity/list/Guilin"
 							},
 							
@@ -129,14 +129,14 @@
 					{
 						name:'Need Help',
 						cont:[
-							{
-								text:"Legal",
+							// {
+							// 	text:"Legal",
 								
-							},
-							{
-								text:"Terms of Use",
+							// },
+							// {
+							// 	text:"Terms of Use",
 								
-							},
+							// },
 							{
 								text:"Privacy Policy",
 								url:"/info/privacy-policy"

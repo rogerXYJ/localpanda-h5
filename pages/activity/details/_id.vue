@@ -1,7 +1,7 @@
 <template>
 	<div id="activitiesDetail">
 		<Head :nowCurrency="currency" @headCurrency="headCurrencyFn"></Head>
-		<Mbanner :bannerPhotos="detail.bannerPhotos" :destination="destination"></Mbanner>
+		<Mbanner :bannerPhotos="detail.bannerPhotos" :destination="destination" v-once></Mbanner>
 		<Mdetails
 			:remark="remark" 
 			:notice="notice" 
@@ -484,20 +484,20 @@
 			console.log(this.$data);
 
 			//等待渲染完毕后调用
-			setTimeout(function(){
+			this.$nextTick(function(){
 				new Swiper('#swiper_bannerbox', {
 					autoplay: {
 						delay: 3000,
 						disableOnInteraction: false
 					},
-					loop: true,
+					loop: false,
 					lazy: true,
 					// 如果需要分页器
 					pagination: {
 						el: '#swiper_banner_pagination'
 					}
 				});
-			},1000);
+			});
 
 
 			var galoadTimer = null;
