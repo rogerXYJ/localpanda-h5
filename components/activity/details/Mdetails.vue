@@ -86,7 +86,7 @@
 						<div class="swiper-wrapper">
 							<div class="swiper-slide" :class="{'active':checkGuideIndex===index}" v-for="(item,index) in detail.guide" :key="index" @click="showGuideFn(index,'ga')">
 								<!-- <img :src="item.guidePhoto.headPortraitUrl" width="100%" alt=""> -->
-								<div class="guide_list_head" :style="'background-image:url('+item.guidePhoto.headPortraitUrl+')'"></div>
+								<div class="guide_list_head" v-lazy:background-image="item.guidePhoto.headPortraitUrl"></div>
 								<span><i class="iconfont">&#xe654;</i></span>
 							</div>
 						</div>
@@ -438,7 +438,7 @@
 				<div class="swiper-wrapper">
 					<div class="swiper-slide" v-for="(item,index) in detail.guide" :key="index">
 						<div class="guide_detail">
-							<div class="guide_img" :style="'background-image:url('+item.guidePhoto.headPortraitUrl+')'"></div>
+							<div class="guide_img" v-lazy:background-image="item.guidePhoto.headPortraitUrl"></div>
 							<div class="guide_content">
 								<h3>{{item.enName}}</h3>
 								<p>Old Beijing history consultant</p>

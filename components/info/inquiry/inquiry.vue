@@ -222,6 +222,8 @@ export default {
           travelDate: that.dateTime ? that.dateTime : null,
           participants: that.peopleNub,
           objectId: that.objectId ? that.objectId : null,
+          deviceType:'MOBILE',
+          source:'DETAIL',
           //					destinations: that.destination ? that.destination : null,
           utcOffset: new Date().getTimezoneOffset() / 60 * -1,
           owner: localStorage.getItem("owner")

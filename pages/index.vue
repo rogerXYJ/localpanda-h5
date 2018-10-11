@@ -379,7 +379,7 @@
 
 			<!-- <Talk :zendeskStatus="zendeskStatus" @getShowZendesk="setShowZendesk"></Talk>
 			<a @click="chat" class="btn inquire">Inquire</a> -->
-			<a href="/info/feedback/" class="btn inquire">Inquire</a>
+			<a href="/info/feedback/?source=HOME" class="btn inquire">Inquire</a>
 		
 	</div>
 </template>

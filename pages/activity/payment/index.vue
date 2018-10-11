@@ -34,7 +34,7 @@
 								<!-- <p v-if="logInHide">You ordered as a guest. To view your order details, go to the homepage, click "My Bookings" at the top of the page, and type in the name and email address for your reservation.</p> -->
 								<!-- <p v-else>To view your order details, go to the homepage, click "My Bookings" at the top of the page.</p> -->
 
-								<p v-if="opctions.finalRefundPeriod">You can reschedule or cancel your trip at zero cost before {{formatDate(opctions.finalRefundPeriod)}}.</p>
+								<p v-if="opctions.finalRefundPeriod">Free cancellation or rescheduling before {{formatDate(opctions.finalRefundPeriod)}}.</p>
 							</div>
 						</div>
 					</div>

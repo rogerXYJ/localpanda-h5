@@ -62,6 +62,7 @@ get back to you within 1 day. </p>
 	export default {
     name: 'inquiry',
     data () {
+			let source = this.$route.query.source;
 			return {
 				name:'',
 				nameError:false,
@@ -86,7 +87,9 @@ get back to you within 1 day. </p>
 				showEmailBox:false,
 				inqueryEmail:'',
 				inqueryEmailOld:'',
-				feedbackId: ''
+				feedbackId: '',
+
+				source:source?source:''
 					
       }
     },
@@ -141,25 +144,23 @@ get back to you within 1 day. </p>
 						eventLabel: 'feedback_succ',
 		
 					});
+
+
+					var obj = {
+						objectType:"GENERAL",
+						userName: that.name,
+						emailAddress: that.email,
+						message: that.textInfo,
+						deviceType:'MOBILE',
+						"utcOffset": new Date().getTimezoneOffset() / 60 * -1
+					}
 					if(window.localStorage.getItem("userid")){
-						var obj = {
-							userId:window.localStorage.getItem("userid"),
-							objectType:"GENERAL",
-							userName: that.name,
-							emailAddress: that.email,
-							message: that.textInfo,
-							"utcOffset": new Date().getTimezoneOffset() / 60 * -1
-							
-						}
-					}else{
-						var obj = {
-							objectType:"GENERAL",
-							userName: that.name,
-							emailAddress: that.email,
-							message: that.textInfo,
-							"utcOffset": new Date().getTimezoneOffset() / 60 * -1
-							
-						}
+						obj.userId = window.localStorage.getItem("userid");
+					};
+
+					//source支持的类型LIST,HOME,DETAIL,CONTACT
+					if(this.source){
+						obj.source = this.source;
 					}
 					
 					if(that.isclick==false){
