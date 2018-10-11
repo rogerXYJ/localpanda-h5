@@ -22,12 +22,12 @@
 					<span v-if="opctions.startTime">{{opctions.startTime}}</span>
 					<span v-if="opctions.adultNum==1&&opctions.childrenNum==0">1 Person</span>
 					<span v-else>{{opctions.adultNum+opctions.childrenNum}} People</span>-->
-					<p>
+					<p v-if="opctions.startDate || opctions.startTime">
 						<span>Travel Date:  {{formatDate(opctions.startDate)}}</span>
 						<span v-if="opctions.startTime">{{opctions.startTime}}</span>
 					</p>
 					<span v-if="opctions.adultNum">Number of {{opctions.adultNum>1?'Adults':'Adult'}} :  {{opctions.adultNum}}</span><br>
-					<span v-if="opctions.childrenNum">Number of {{opctions.adultNum>1?'Children':'Child'}} : {{opctions.childrenNum}}</span>
+					<span v-if="opctions.childrenNum">Number of {{opctions.childrenNum>1?'Children':'Child'}} : {{opctions.childrenNum}}</span>
 					
 				</div>
 			</div>
