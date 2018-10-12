@@ -808,11 +808,12 @@
 					onAuthorize : function(data, actions) {
 						
 						var execute = actions.payment.execute().then(function(res) {
+							var saleId = res.transactions[0].related_resources[0].sale.id;
 
 							delete res.payer;
 							delete res.transactions;
 
-							putData.paySerial = data.paymentID;
+							putData.paySerial = saleId;
 							putData.response = JSON.stringify(res);
 							putData.status = 'SUCCESSFUL';
 							self.paypalCreate(putData);
@@ -820,7 +821,7 @@
 						return execute;
 					},
 					onError: function (err) {
-						putData.paySerial = err.paymentID;
+						putData.paySerial = '';
 						putData.response = err;
 						putData.status = 'FAILED';
 						self.paypalCreate(putData);
