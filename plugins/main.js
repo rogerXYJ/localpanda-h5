@@ -53,16 +53,33 @@ if(!Cookie.get('userABtestID')){
 }
 
 
-
-// window.currencyData = [
-//   {"code":"USD","symbol":"$","svg":""},
-//   {"code":"CNY","symbol":"¥","svg":""},
-//   {"code":"EUR","symbol":"€","svg":""},
-//   {"code":"GBP","symbol":"£","svg":""},
-//   {"code":"AUD","symbol":"$","svg":""},
-//   {"code":"CAD","symbol":"$","svg":""},
-//   {"code":"JPY","symbol":"¥","svg":""}
-// ];
+window.hasClass = function(obj,name){
+  var classArr = obj.className.split(' ');
+  for(var i=0;i<classArr.length;i++){
+    var thisData = classArr[i];
+    if(thisData==name){
+      return true;
+    }
+  }
+  return false;
+},
+//获取父级元素
+window.getParents = function(target,className){
+  //获取所有父元素
+  var parent = target;
+  var allParent = [];
+  while (parent.tagName != 'BODY') { 
+    allParent.push(parent);
+    parent = parent.parentNode;
+  }
+  //遍历所有父元素
+  for(var i=0;i<allParent.length;i++){
+    if(hasClass(allParent[i],className)){
+      return allParent[i];
+    }
+  };
+  return false;
+};
 
 
 import Vue from 'vue';
