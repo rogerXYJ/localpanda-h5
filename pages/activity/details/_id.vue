@@ -1,10 +1,10 @@
 <template>
 	<div id="activitiesDetail">
-		<Head :nowCurrency="currency" @headCurrency="headCurrencyFn"></Head>
+		<Head :nowCurrency="nowExchange" @headCurrency="headCurrencyFn"></Head>
 		<!-- 面包屑 -->
 		<div class="crumbs">
-			<a href="#">Home</a> <i class="iconfont">&#xe64a;</i>
-			<a href="#">Beijing Activities</a>
+			<a href="/">Home</a> <i class="iconfont">&#xe64a;</i>
+			<a :href="'/activity/list/'+detail.destinations[0]">{{detail.destinations[0]}} Activities</a>
 		</div>
 
 		<!-- banner -->
@@ -21,7 +21,7 @@
 
 		<!-- 产品标题信息 -->
 		<div class="detail_box activity_top">
-			<h2><span>GROUP</span>Small Group Forbidden City Walking Tour</h2>
+			<h2><span>{{detail.groupType}}</span>{{detail.title}}</h2>
 			<!-- 币种信息 -->
 			<div class="price_info clearfix">
 				<div class="price_select_box">
@@ -30,22 +30,32 @@
 					</select>
 					<i class="iconfont">&#xe666;</i>
 				</div>
-				<p>$34.90 <span>pp for party of 2</span></p>
+
+				<div class="select_people">
+					{{returnText(participants)}}
+					<select class="select_people_box" v-model="participants" @change="changePeople">
+						<option :value="item.people" :key="index" v-for="(item,index) in participantsData">{{item.text}}</option>
+					</select>
+					<i class="iconfont">&#xe666;</i>
+				</div>
+				<p><small v-if="participants==0">From</small> {{nowExchange.symbol}}{{participants>0?returnFloat(getPeoplePrice(participants,true)):returnFloat(picInfo.bottomPrice)}}</p>
+
+				
 			</div>
 			<!-- 预定和点评次数 -->
 			<div class="booking_info">
-				<span>(160)</span>
-				<div class="remark_star" v-html="remarkStarHtml(6)"></div>
-				Booked 19 times (last 30 days)
+				<!-- <span v-if="reviewsData && reviewsData.records">( {{reviewsData.records}} )</span>
+				<div v-if="reviewsData && reviewsData.records" class="reviews_star" v-html="reviewsStarHtml(6)"></div> -->
+				Booked {{detail.sales}} times (last 30 days)
 			</div>
 
 			<!-- 产品基本信息 -->
 			<ul class="activity_info">
-				<li><i class="iconfont">&#xe624;</i>4 Hours <span class="iconfont">&#xe689;</span></li>
-				<li><i class="iconfont">&#xe68a;</i>Guest Pickup offered <span class="iconfont">&#xe689;</span></li>
-				<li><i class="iconfont">&#xe627;</i>Offered in English <span class="iconfont">&#xe689;</span></li>
-				<li><i class="iconfont">&#xe610;</i>Shanghai, Hangzhou, Beijing</li>
-				<li><i class="iconfont">&#xe688;</i>100% refund up to xx hours before your trip</li>
+				<li><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont">&#xe689;</span></li>
+				<li><i class="iconfont" v-if="detail.pickup!==0">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont">&#xe689;</span></li>
+				<li><i class="iconfont">&#xe627;</i>Offered in {{detail.groupType=='Group'?'English':'English, French, Spanish, Russian, German, Japanese, Korean'}} <span class="iconfont">&#xe689;</span></li>
+				<li><i class="iconfont">&#xe610;</i>{{detail.destinations.join(', ')}}</li>
+				<li><i class="iconfont">&#xe688;</i>100% refund up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</li>
 				<li><i class="iconfont">&#xe68b;</i>This activity is for adults over 18 years old only</li>
 			</ul>
 
@@ -54,20 +64,15 @@
 		<!-- Why you’ll love this trip -->
 		<div class="detail_box why">
 			<h3><i></i>Why you’ll love this trip</h3>
-			<p class="detail_p">Get your fill of Beijing's two greatest marvels on this faced paced all-encompassing day trip. The perfect tour for those who need to see the best of Beijing in a single day.</p>
+			<p class="detail_p">{{detail.recommendedReason}}</p>
 			
 			<ul class="detail_txt_list">
-				<li><i class="dian"></i>Carefully-planned route to get the most out of your 4 hours</li>
-				<li><i class="dian"></i>Special group lane through Tiananmen security; skip long entrance lines</li>
-				<li><i class="dian"></i>Our guides are hand-picked for their experience and knowledge</li>
-				<li><i class="dian"></i>Incredible details about the history, architecture and culture of the palace</li>
-				<li><i class="dian"></i>Small Groups: no larger than 11 people</li>
-				<li><i class="dian"></i>Great value for budget travelers</li>
+				<li v-for="item in detail.highlights.split('\r\n')" :key="item"><i class="dian"></i>{{item}}</li>
 			</ul>
 		</div>
 
 		<!-- 导游 -->
-		<div class="detail_box guide">
+		<div class="detail_box guide" v-if="detail.guide">
 			<h3><i></i>Travel with our experts</h3>
 			<p class="gray">You can  select your best fit or let us assign one for you</p>
 
@@ -87,8 +92,7 @@
 
 		<!-- 预定板块 -->
 		<div class="detail_box check">
-			<h3><i></i>Check availability</h3>
-			<p class="gray">You can  select your best fit or let us assign one for you</p>
+			<h3><i></i>Available On</h3>
 
 			<ul class="check_info clearfix">
 				<li>
@@ -119,7 +123,7 @@
 					<div class="check_tip">Participants : {{picInfo.minParticipants}}-{{picInfo.maxParticipants}}. Free for infants under 3 years old.</div>
 				</li>
 				<li v-show="!showPriceInfo">
-					<span class="btn" @click="availability">Check availability</span>
+					<span class="btn" @click="availability">Book</span>
 					<span class="btn_inquire" @click="gaInquire">Inquire</span>
 				</li>
 			</ul>
@@ -173,7 +177,7 @@
 		<!-- 行程板块 -->
 		<div class="detail_box itinerary">
 			<h3><span class="btn_viewall" @click="itineraryViewall">View all</span><i></i>Experience Details</h3>
-			<dl class="itinerary_list" :class="{'active':index==0}" v-for="(items,index) in detail.itinerary" :key="index">
+			<dl class="itinerary_list" v-for="(items,index) in detail.itinerary" :key="index">
 				<dt @click="itineraryFn"><i class="iconfont i_down">&#xe667;</i><i class="iconfont i_up">&#xe666;</i><span></span>{{items.title}}</dt>
 				<dd>
 					<p>{{items.description}}</p>
@@ -183,13 +187,140 @@
 		</div>
 
 		<!-- 相似产品推荐1 -->
-		<div class="detail_box similar">
+		<!-- <div class="detail_box similar">
 			<h3><i></i>Similar Experiences</h3>
 			<ul class="similar_list">
 				<li><i class="iconfont">&#xe620;</i>Forbidden City + Lunch</li>
 				<li><i class="iconfont">&#xe620;</i>Forbidden City + Lunch</li>
 				<li><i class="iconfont">&#xe620;</i>Forbidden City + Lunch</li>
 			</ul>
+		</div> -->
+
+		<!-- 其他产品信息 -->
+		<div class="detail_box other_box">
+			
+			<div class="other_list">
+				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Incluslons</h3>
+				<div class="other_content">
+					<ul class="detail_txt_list">
+						<li v-for="(item,index) in inclusions" :key="index">
+							<i class="iconfont">&#xe65c;</i>{{item.title}}
+							<p>{{item.content}}</p>
+						</li>
+						<li v-if="detail.pickup !== 0">
+							<i class="iconfont">&#xe65c;</i>{{getPickupTitle(detail.pickup)}}
+							<p v-html="enterToBr(detail.statement)"></p>
+						</li>
+					</ul>
+					
+				</div>
+			</div>
+
+			<div class="other_list">
+				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Exclusions</h3>
+				<div class="other_content">
+					<ul class="detail_txt_list">
+						<li v-for="(item,index) in exclusions" :key="index">
+							<i class="iconfont red">&#xe606;</i>{{item.title}}
+							<p>{{item.content}}</p>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="other_list" v-if="detail.pickup===0">
+				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Meeting Point Info</h3>
+				<div class="other_content">
+					<ul class="detail_txt_list">
+						<li v-for="(item,index) in detail.venues" :key="index"><i class="dian"></i>{{item}}</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="other_list">
+				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Important Info</h3>
+				<div class="other_content">
+					<ul class="detail_txt_list">
+						<li v-for="item in detail.remark.split('\n')" :key="item">
+							<i class="dian"></i>{{item}}
+						</li>
+						<h4>Additional Info</h4>
+						<li v-for="(item,index) in notice" :key="index">
+							<i class="dian"></i>{{item.title}}
+							<p>{{item.content}}</p>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="other_list">
+				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Rescheduling & Cancellation Policy</h3>
+				<div class="other_content">
+					<ul class="detail_txt_list">
+						<li v-for="(item,index) in picInfo.refundInstructions.split('\n')" :key="index"><i class="dian"></i>{{item}}</li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- 点评 -->
+		<div class="detail_box reviews" v-if="reviewsData &&　reviewsData.records">
+			<div class="reviews_title">
+				<span class="reviews_num">{{reviewsData.records}} {{reviewsData.records==1 ? 'Review':'Reviews'}}</span>
+				<div class="reviews_star" v-html="reviewsStarHtml(reviewsData.avgScore)"></div>
+			</div>
+			<div class="reviews_list" v-for="(item,index) in reviews" :key="index">
+				<div class="reviews_list_top">
+					<div class="reviews_star" v-html="reviewsStarHtml(item.score)"></div>
+					<div class="reviews_photo">
+						<span class="reviews_photo_def" v-if="!item.userPortraitPhoto">{{item.userName.substring(0,1)}}</span>
+						<div class="reviews_photo_img" v-lazy:background-image="item.userPortraitPhoto.url" v-else></div>
+						<!-- <img v-else v-lazy="item.userPortraitPhoto?item.userPortraitPhoto.url:''" alt=""> -->
+					</div>
+					<div class="reviews_list_info">
+						<h5>{{item.userName}}</h5>
+						<p>{{item.createTime.substring(0,10)}}</p>
+						<!-- May 24,2018 -->
+					</div>
+				</div>
+				<div class="reviews_list_content" :content="item.content">{{item.content.length>200?item.content.substring(0,200)+'...':item.content}} <span class="reviews_text_more" v-if="item.content.length>200" @click="reviewsShowMore">View More</span> </div>
+				<ul class="reviews_img_s">
+					<li v-if="item.userCommentPhoto" v-for="(itemChild,index2) in item.userCommentPhoto" @click="showBigPic(index,index2)" :key="index2"><img v-lazy="itemChild.url" alt=""></li>
+				</ul>
+			</div>
+			<div class="reviews_more" @click="loadMoreReviews" v-if="reviewsData && reviewsData.records>3 && reviewsData.records>reviews.length">Show more</div>
+		</div>
+
+
+		<!-- 相似产品推荐2 -->
+		<div class="detail_box experiences">
+			<h3><i></i>Similar Experiences</h3>
+			<div class="swiper-container" id="swiper_experiences">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide" :key="index" v-for="(i,index) in detail.recommed">
+						<a :href="'/activity/details/'+i.activityId">
+							<div class="activity-pic">
+								<img v-lazy="i.coverPhotoUrl">
+							</div>
+							<div class="activity-cont">
+								<div class="activity-info clearfix">
+									<div class="activity-cont-type"><i class="iconfont">&#xe653;</i>{{i.category}}{{i.groupType?' · '+i.groupType:''}}</div>
+									
+								</div>
+
+								<h4 style="-moz-box-orient: vertical;
+									-webkit-box-orient:vertical;">{{i.title}}</h4>
+								<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{i.duration}} {{setTimeStr(i.duration,i.durationUnit)}}</div>
+								<div class="pic">
+									<!-- <div class="old-pic" v-if="i.originalPrice">{{nowExchange.symbol}}{{returnFloat(i.originalPrice)}}</div> -->
+									<div class="current-price">From {{nowExchange.code}} <b>{{nowExchange.symbol}}{{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
 		</div>
 		
 
@@ -234,6 +365,22 @@
 		<transition name="fade">
 			<div class="win_bg" id="win_bg" @click="showWinBg = false" v-show="showWinBg"></div>
 		</transition>
+
+
+		<!-- 点评弹层 -->
+		<div class="swiper-container swiper_reviews" id="swiper_reviews" v-show="showReviewsPic">
+			<div class="swiper-wrapper">
+				<div class="swiper-slide" :key="index" v-for="(item,index) in thisReviewsData.userCommentPhoto" v-if="thisReviewsData">
+					<!-- </div> -->
+					<div class="swiper-zoom-container">
+						<p></p>
+						<img class="image" :src="item.url">
+					</div>
+				</div>					
+			</div>
+			<div class="reviews_num">{{reviewsIndex}} / {{thisReviewsData.userCommentPhoto?thisReviewsData.userCommentPhoto.length:0}}</div>
+			<div class="reviews_close" @click="closeBigPic"><i class="iconfont">&#xe606;</i></div>
+		</div>
 
 
 		<!-- inquiry弹层 -->
@@ -310,19 +457,42 @@
 				logIn: "",
 				toast: "This activity was booked by another guest an hour ago",
 				toastShow: false,
-				currency:{code: "USD", symbol: "$", exchangeRate: 1},
 				participants:0,
 				exchange:[],
 				calendar:[],
 				people:0,
 
-				
+				//点评
+				reviews:[],
+				reviewsData:[],
+
+				//选择日期和人数板块
+				showFixedBtn:true,
+				showWinBg:false,
+				showChangePeople:false,
+				showPriceInfo:false,
+				startDate:'',
+				adultsText:'Adults',
+				childrenText:'',
+				checkTipText:'',
+				changeAdults:0,
+				changeChildren:0,
+				bookAdults:0,
+				bookChildren:0,
+				bookPeople:0,
+				price:0,
+				perPersonPrice:0,
+				amount:0,
+
+				// 币种
+				nowExchange:{code: "USD", symbol: "$"},
+				selectCurrency:'USD',
 			};
 
 			//设置币种
 			if(userCookie.currency){
-				data.currency = JSON.parse(decodeURIComponent(userCookie.currency));
-				
+				data.nowExchange = JSON.parse(decodeURIComponent(userCookie.currency));
+				data.selectCurrency = data.nowExchange.code;
 			}
 			//设置人数
 			if(userCookie.participants){
@@ -354,7 +524,7 @@
 				
 				//推荐信息
 				var Promise2 = new Promise(function(resolve, reject){
-					Vue.axios.get(apiBasePath + "product/activity/"+id+"/recommend?currency="+data.currency.code).then(function(res) {
+					Vue.axios.get(apiBasePath + "product/activity/"+id+"/recommend?currency="+data.nowExchange.code).then(function(res) {
 						resolve(res);
 					}, function(res) {
 						resolve(res);
@@ -363,7 +533,7 @@
 
 				//价格信息
 				var Promise3 = new Promise(function(resolve, reject){
-					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price?currency="+data.currency.code).then(function(res) {
+					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price?currency="+data.nowExchange.code).then(function(res) {
 						resolve(res);
 					}, function(res) {
 						resolve(res);
@@ -372,7 +542,7 @@
 
 				//价格明细
 				var Promise4 = new Promise(function(resolve, reject){
-					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price/detail?currency="+data.currency.code).then(function(res) {
+					Vue.axios.get(apiBasePath + "product/activity/"+id+"/price/detail?currency="+data.nowExchange.code).then(function(res) {
 						resolve(res);
 					}, function(res) {
 						resolve(res);
@@ -463,12 +633,16 @@
 						data.picInfo.departureTime ? (data.time = data.picInfo.departureTime[0]) : (data.time = "");
 						data.picInfo.details = results[3].data;
 
+						//设置儿童年龄提示文字
+						data.childrenText = 'Chlidren (age 3-'+data.picInfo.childStandard+')';
+
 						
 
 						//点评信息
-						var remarkData = results[4];
-						if(remarkData.data){
-							data.remarkData = remarkData.data;
+						var reviewsData = results[4];
+						if(reviewsData.data){
+							data.reviewsData = reviewsData.data;
+							data.reviews = reviewsData.data.entities;
 						}
 
 						//banner图
@@ -558,7 +732,7 @@
 			inquiry,
 			service
 		},
-		data(){
+		data(options){
 			
 			return {
 				//导游
@@ -568,27 +742,13 @@
 				checkGuideIndex:'',
 				guideSwiperIndex:0,
 
-				//选择日期和人数板块
-				showFixedBtn:true,
-				showWinBg:false,
-				showChangePeople:false,
-				showPriceInfo:false,
-				startDate:'',
-				adultsText:'Adults',
-				childrenText:'Chlidren (age 3-'+12+')',//this.picInfo.childStandard
-				checkTipText:'',
-				changeAdults:0,
-				changeChildren:0,
-				bookAdults:0,
-				bookChildren:0,
-				bookPeople:0,
-				price:0,
-				perPersonPrice:0,
-				amount:0,
+				
 
-				// 币种
-				nowExchange:{},
-				selectCurrency:'USD',
+				//点评页数
+				thisReviewsData:'',
+				showReviewsPic:false,
+				reviewsIndex:1,
+				pageNum:2,
 
 				//inquiry
 				dialogInquiryStatus:false,
@@ -601,15 +761,28 @@
 				feedbackId: ''
 			}
 		},
+		computed:{
+			participantsData(){
+				var participantsArr = [];
+				var picInfo = this.picInfo;
+				for(var i=1;i<=picInfo.maxParticipants;i++){
+					if(i>=picInfo.minParticipants && i<=9){
+						participantsArr.push({
+							people:i,
+							text: i==1 ? (1+' Person') : (i>=9 ? i+' People & more' : i+' People')
+						});
+					}
+				}
+				return participantsArr;
+			}
+		},
 		methods: {
 			formatDate:formatDate,
-			changePeople(){
-
+			changePeople(e){
+				this.participants = e.target.value;
+				Cookie.set('participants',this.participants,{path:'/','expires':30})
 			},
 			headCurrencyFn(){
-				
-			},
-			changeCurrency(){
 				
 			},
 			itineraryFn(e){
@@ -619,12 +792,144 @@
 				}else{
 					thisList.className = 'itinerary_list active';
 				}
+
+				//View all 和 View less动态改变
+				var itinerary_active = document.querySelectorAll('.itinerary_list.active'),
+					itinerary_list = document.querySelectorAll('.itinerary_list');
+				if(itinerary_active.length == itinerary_list.length){
+					document.querySelector('.btn_viewall').innerHTML = 'View less';
+				}else{
+					document.querySelector('.btn_viewall').innerHTML = 'View all';
+				}
 				
 			},
-			itineraryViewall(){
-
+			itineraryViewall(e){
+				var itinerary_list = document.querySelectorAll('.itinerary_list');
+				
+				if(e.target.innerHTML == 'View all'){
+					e.target.innerHTML = 'View less';
+					for(var i=0;i<itinerary_list.length;i++){
+						var thisData = itinerary_list[i];
+						thisData.className = 'itinerary_list active';
+					}
+				}else{
+					e.target.innerHTML = 'View all';
+					for(var i=0;i<itinerary_list.length;i++){
+						var thisData = itinerary_list[i];
+						thisData.className = 'itinerary_list';
+					}
+				}
+				
+				
 			},
-			remarkStarHtml(score){
+			returnText(peopleNum){
+				if(this.picInfo.unifiedPricing){
+					return ' pp';
+				}
+				return peopleNum?(peopleNum==1?' for 1 person':' pp for party of '+ peopleNum):' pp '
+			},
+			getPeoplePrice(peopleNum,pp){
+				var price = this.picInfo.details
+				for(var i =0;i<price.length;i++){
+					if(peopleNum==price[i].capacity){
+						return pp ? price[i].perPersonPrice : price[i].price;
+					}
+				}
+				return '';
+			},
+			getTextArr(text){
+				var arr = text.split('\n');
+				return arr.length==1?text.split('\r\n'):arr;
+			},
+			getPickupTitle(pickup){
+				if(pickup==1){
+					return 'Pick-up and drop-off included';
+				}else if(pickup==2){
+					return 'Pick-up included, drop-off excluded';
+				};
+				return '';
+			},
+			enterToBr(text){
+				return text ? text.replace(/\n/g,'<br>') : '';
+			},
+			otherFn(e){
+				var thisList = getParents(e.target,'other_list');
+				if(/active/.test(thisList.className)){
+					thisList.className = 'other_list';
+				}else{
+					thisList.className = 'other_list active';
+				}
+			},
+			reviewsShowMore(e){
+				var parent = e.target.parentNode;
+				parent.innerHTML = parent.getAttribute('content');
+			},
+			loadMoreReviews(e){
+				var postData = {
+					"activityId": this.id,
+					'pageNum':this.pageNum,
+					'pageSize':3
+				};
+				var thisBtn = e.target;
+				var self = this;
+
+				if(self.reviewsLoading){
+					return false;
+				}
+
+				self.reviewsLoading = true;
+				self.axios.post("https://api.localpanda.com/api/user/comment/list",JSON.stringify(postData),{
+					headers: {
+					'Content-Type': 'application/json'
+					}
+				}).then(function(response) {
+					var entities = response.data.entities;
+					if(entities && entities.length){
+						if(entities.length<3){
+							thisBtn.style.display = 'none';
+						}else{
+							thisBtn.style.display = 'block';
+						};
+						self.reviews = self.reviews.concat(entities);
+						self.pageNum++;
+					}else if(entities && entities.length==0){
+						thisBtn.style.display = 'none';
+					}
+					//开启请求状态
+					self.reviewsLoading = false;
+					
+				}, function(response) {
+					self.reviewsLoading = false;
+				});
+			},
+			showBigPic(index,imgIndex){
+				var that = this;
+				this.thisReviewsData = this.reviews[index];
+				this.showReviewsPic = true;
+				
+				//展示图册
+				this.$nextTick(()=>{
+					this.swiper_reviews = new Swiper('#swiper_reviews', {
+						lazy: false,
+						initialSlide:imgIndex,
+						zoom:true,
+						on:{
+							slideChangeTransitionEnd: function(swiper){
+								that.reviewsIndex = this.activeIndex+1;
+							}
+						}
+					});
+				})
+				//this.swiper_reviews.update();
+				//this.swiper_reviews.destroy();
+			},
+			closeBigPic(){
+				this.showReviewsPic = false;
+				this.swiper_reviews.destroy();
+				this.thisReviewsData = '';
+				this.reviewsIndex = 1;
+			},
+			reviewsStarHtml(score){
 				var thisHtml = '';
 				for(var i=0;i<5;i++){
 					if(/\./.test(score/2+'') && i == parseInt(score/2)){
@@ -636,6 +941,13 @@
 					}
 				}
 				return thisHtml;
+			},
+			setTimeStr(num,str){
+				if(str.toLowerCase()=='hours'){
+					return num===1 ? 'Hour' : 'Hours'
+				}else if(str.toLowerCase()=='days'){
+					return num===1 ? 'Day' : 'Days'
+				}
 			},
 			returnFloat(value) {
 				value*=1;
@@ -701,54 +1013,57 @@
 				var thisDetail = picInfo.details;
 				
 				var exchange = this.exchange;
-				//设置当前币种
-				for(var i=0;i<exchange.length;i++){
-					var thisEx = exchange[i];
-				 	//检测当前货币类型
-				 	if(thisEx.code==value){
-						self.nowExchange = thisEx;
-					}
-				}
+				
+
+				
 				//换算折扣价
 				self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price?currency="+value).then(function(res) {
-							if(self.picInfo.childDiscount){
-								self.picInfo.childDiscount=res.data.childDiscount
-							}
-							self.picInfo.bottomPrice=res.data.bottomPrice
-							self.picInfo.currency=res.data.currency
-							
-							
-					}, function(res) {
-						
-					});
+					if(self.picInfo.childDiscount){
+						self.picInfo.childDiscount=res.data.childDiscount
+					}
+					self.picInfo.bottomPrice=res.data.bottomPrice
+					self.picInfo.currency=res.data.currency
 					
-					self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price/detail?currency="+value+(self.participants?'&participants='+self.participants:'')).then(function(res) {
-							self.picInfo.details=res.data
-							
-							//重设book价格
-							self.setPeoplePrice();
-
-							self.sixArr=res.data
-							if(self.peopleNum>0){
-								self.adultsPic =thisDetail[self.peopleNum-1].price;	
-							}
-							if(res.data.length>6){
-								self.isShowTable=true
-								self.sixArr=res.data.concat().splice(0,6);
-							}else{
-								self.sixArr=res.data;
-							}
-					}, function(res) {
+					//设置当前币种
+					for(var i=0;i<exchange.length;i++){
+						var thisEx = exchange[i];
+						//检测当前货币类型
+						if(thisEx.code==value){
+							self.nowExchange = thisEx;
+						}
+					}
 						
-					});
+				}, function(res) {
+					
+				});
+					
+				self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price/detail?currency="+value+(self.participants?'&participants='+self.participants:'')).then(function(res) {
+						self.picInfo.details=res.data
+						
+						//重设book价格
+						self.setPeoplePrice();
+
+						self.sixArr=res.data
+						if(self.peopleNum>0){
+							self.adultsPic =thisDetail[self.peopleNum-1].price;	
+						}
+						if(res.data.length>6){
+							self.isShowTable=true
+							self.sixArr=res.data.concat().splice(0,6);
+						}else{
+							self.sixArr=res.data;
+						}
+				}, function(res) {
+					
+				});
 				
 				//切换币种
-				self.$emit('input',this.nowExchange);
+				// self.$emit('input',this.nowExchange);
 
 				//请求推荐模块
 				this.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/recommend?currency="+value).then(function(res) {
 					if(res.status==200){
-						self.$emit('currencyChange',res.data);
+						self.detail.recommed = res.data;
 					}
 				}, function(res) {});
 			},
@@ -1036,11 +1351,13 @@
 			//设置当前币种
 			var currency= cookieCurrency ? cookieCurrency : (isWx ? {'code':'CNY','symbol':'¥'} : {'code':'USD','symbol':'$'});
 
-			if(this.currency.code!=currency.code){
-				this.currency=currency
+			if(this.nowExchange.code!=currency.code){
+				this.nowExchange=currency
 			}
-			console.log(currency);
+			// console.log(currency);
 			console.log(this.$data);
+			console.log(this.$data.detail);
+			console.log(this.$data.picInfo);
 
 			//初始化日期选择
 			this.checkInit();
@@ -1066,6 +1383,14 @@
 					autoplay: false,//可选选项，自动滑动
 					slidesPerView : 4.5
 				});
+
+				//底部推荐
+				new Swiper('#swiper_experiences', {
+					lazy: true,
+					slidesPerView :"auto",
+					initialSlide: 0,
+					spaceBetween:17,
+				});
 			});
 
 
@@ -1080,14 +1405,14 @@
 		},
 		watch: {
 			//监听币种变化
-			value:function(val){
-				if(this.nowExchange.code !== val.code){
-					this.changeCurrency(val.code);
-				}
-				this.nowExchange = val;
-				this.SelectCurrency=val.code
+			// value:function(val){
+			// 	if(this.nowExchange.code !== val.code){
+			// 		this.changeCurrency(val.code);
+			// 	}
+			// 	this.nowExchange = val;
+			// 	this.SelectCurrency=val.code
 				
-			},
+			// },
 			bookAdults:function(val){
 				
 				this.adultsText = (val>1?'Adults':'Adult')+' x '+val;
@@ -1193,6 +1518,10 @@
 					background-color: #1bbc9d;
 					border-radius: 0.03rem;
 				}
+				.iconfont{
+					float: right;
+					font-size: 0.36rem;
+				}
 			}
 			.detail_p{
 				font-size: 0.26rem;
@@ -1205,23 +1534,68 @@
 				font-size: 0.44rem;
 				font-weight: bold;
 				line-height: 0.56rem;
-				span{ color: #fff; background-color: #f4b33f; font-size: 0.26rem; line-height: 0.38rem; display: inline-block; padding: 0 0.1rem; border-radius: 0.05rem; vertical-align: middle; margin-right: 0.2rem; font-weight: normal;}
+				span{ color: #fff; background-color: #f4b33f; font-size: 0.26rem; line-height: 0.38rem; display: inline-block; padding: 0 0.1rem; border-radius: 0.05rem; vertical-align: middle; margin-right: 0.2rem; font-weight: normal; text-transform: uppercase;}
 			}
 			.price_info{
 				padding-top: 0.2rem;
+				.select_people{
+					float: right;
+					margin-left: 0.2rem;
+					position: relative;
+					font-size: 0.32rem;
+					line-height: 0.6rem;
+					padding-right: 0.4rem;
+					i{
+						position: absolute;
+						right: 0;
+						top: 0;
+						height: 0.6rem;
+						line-height: 0.6rem;
+						vertical-align: top;
+						font-size: 0.36rem;
+						font-weight: bold;
+					}
+					select{
+						line-height: 0.6rem;
+						padding: 0;
+						background: none;
+						border: none;
+						appearance:none;
+						-moz-appearance:none;
+						-webkit-appearance:none;
+						position: absolute;
+						right: 0;
+						top: 0;
+						width: 100%;
+						height: 100%;
+						z-index: 2;
+						opacity: 0;
+					}
+				}
 				
+				.price_select_box{
+					float: left;
+					margin-top: 0.06rem;
+				}
 				p{
+					float: right;
 					font-size: 0.46rem;
+					position: relative;
 					span{
 						font-size: 0.22rem;
 						color: #878e95;
+					}
+					small{
+						font-size: 0.28rem;
+						color: #888;
 					}
 				}
 			}
 			.booking_info{
 				color: #878e95;
+				text-align: right;
 				span{ float: right; font-size: 0.22rem}
-				.remark_star{
+				.reviews_star{
 					 float: right;
 					 padding-top: 0.04rem;
 					 margin-right: 0.1rem;
@@ -1232,8 +1606,8 @@
 				border-top: 1px solid #dde0e0;
 				margin-top: 0.2rem;
 				li{
-					padding: 0.1rem 0;
-					i{font-size: 0.26rem; margin-right: 0.15rem;}
+					padding: 0.1rem 0 0.1rem 0.4rem;
+					i{font-size: 0.26rem; margin-right: 0.15rem; float: left; margin-left: -0.4rem;}
 					font-size: 0.26rem;
 					line-height: 0.36rem;
 				}
@@ -1530,6 +1904,7 @@
 					img{
 						display: block;
 						max-width: 100%;
+						min-height: 3rem;
 						margin-top: 0.15rem;
 						border-radius: 5px;
 					}
@@ -1568,10 +1943,156 @@
 					margin-top: 0.14rem;
 					i{
 						float: right;
-						font-size: 0.26rem;
+						font-size: 0.24rem;
 						margin-right: 0.3rem;
 					}
 				}
+			}
+		}
+
+		.other_box{
+			.other_list{
+				border-top: 1px solid #ddd;
+				&:nth-child(1){ border: none; margin-top: -0.2rem;}
+				h3{
+					padding: 0.38rem 0;
+				}
+				h4{
+					margin-top: 0.2rem;
+					padding: 0.2rem 0 0 0.45rem;
+					font-size: 0.3rem;
+					font-weight: bold;
+				}
+				.other_content{
+					margin-top: -0.2rem;
+					padding: 0 0 0.5rem;
+					display: none;
+				}
+				.i_up{
+					display: block;
+				}
+				.i_down{
+					display: none;
+				}
+			}
+			.active{
+				.other_content{
+					display: block;
+				}
+				.i_up{
+					display: none;
+				}
+				.i_down{
+					display: block;
+				}
+			}
+		}
+
+		.reviews{
+			.reviews_title{
+				.reviews_num{
+					font-size: 0.44rem;
+					font-weight: bold;
+				}
+				.reviews_star{
+					margin-left: 0.5rem;
+					vertical-align: top;
+					margin-top: 0.16rem;
+				}
+			}
+			.reviews_list{
+				padding: 0.4rem 0;
+				border-bottom: #ddd solid 1px;
+				// &:nth-child(2){
+				// 	border: none
+				// }
+				
+				.reviews_list_top{
+					overflow: hidden;
+					.reviews_photo{
+						float: left;
+						width: 0.8rem;
+						height: 0.8rem;
+						border-radius: 50%;
+						overflow: hidden;
+						margin-right: 0.24rem;
+						background-size: cover;
+						img{
+							vertical-align: top;
+						}
+						.reviews_photo_img{ width: 100%; height: 100%; background-size: cover;}
+						.reviews_photo_def{
+							display: block;
+							width: 100%;
+							height: 100%;
+							line-height: 0.8rem;
+							font-size: 0.4rem;
+							color: #fff;
+							text-align: center;
+							background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
+							background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+						}
+					}
+					.reviews_list_info{
+						float: left;
+						h5{
+							font-size: 0.28rem;
+							font-weight: bold;
+						}
+						p{
+							font-size: 0.24rem;
+						}
+					}
+					.reviews_star{
+						float: right;
+						margin-top: 0.3rem;
+						
+					}
+				}
+				.reviews_list_content{
+					font-size: 0.26rem;
+					margin-top: 0.24rem;
+					word-wrap:break-word;
+					.reviews_text_more{
+						color: #1bbc9d;
+						font-size: 0.24rem;
+					}
+				}
+				.reviews_img_s{
+					margin-top: 0.15rem;
+					overflow: hidden;
+					li{
+						float: left;
+						border-radius: 0.1rem;
+						width: 31%;
+						margin-left: 2%;
+						margin-top: 0.1rem;
+						overflow: hidden;
+						&:nth-child(1){
+							margin-left: 0;
+						}
+						&:nth-child(4){
+							margin-left: 0;
+						}
+						img{
+							width: 100%;
+							vertical-align: top;
+						}
+					}
+				}
+			}
+			
+			.reviews_more{
+				width: 3.2rem;
+				margin: 0.6rem auto 0;
+				height: 0.88rem;
+				line-height: 0.8rem;
+				border-radius: 0.44rem;
+				border: solid 2px #1bbc9d;
+				color: #1bbc9d;
+				text-align: center;
+				font-size: 0.28rem;
+				font-weight: bold;
 			}
 		}
 		
@@ -1579,24 +2100,41 @@
 		.detail_txt_list{
 			li{
 				margin-top: 0.1rem;
-				padding-left: 0.32rem;
+				padding-left: 0.45rem;
 				font-size: 0.26rem;
 				line-height: 0.36rem;
 				i{
 					float: left;
-					margin-left: -0.32rem;
+					margin-left: -0.45rem;
 					margin-top: 0.12rem;
 				}
 				.dian{
+					margin-left: -0.35rem;
 					width: 0.12rem;
 					height: 0.12rem;
 					border-radius: 50%;
 					background-color: #353a3f;
 				}
+				.iconfont{
+					font-size: 0.22rem;
+					margin-top: 0.02rem;
+				}
+				p{
+					margin-top: 0.1rem;
+					color: #666;
+				}
 			}
 		}
 
-		
+		.warning_box{
+			border: solid 1px #ffe6c2;
+			background-color: #fffbf2;
+			border-radius: 5px;
+			padding: 0.2rem 0.3rem;
+			margin-top: 0.3rem;
+			line-height: 0.36rem;
+			font-size: 0.26rem;
+		}
 
 
 
@@ -1706,17 +2244,160 @@
 			}
 		}
 
+
+		.swiper_reviews{
+			position: fixed;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 99;
+			background-color: rgba(0,0,0,0.8);
+			p{
+				position: absolute;
+				width: 100%;
+				height: 100%;
+			}
+			img{
+				position: relative;
+				z-index: 2;
+				max-width: 100%;
+				// left: 50%;
+				// top:50%;
+				// transform: translate(-50%,-50%);
+				// -webkit-transform: translate(-50%,-50%);
+			}
+			.reviews_close{
+				position: absolute;
+				right: 0;
+				top: 0;
+				color: #fff;
+				padding: 0.3rem 0.4rem;
+				z-index: 3;
+			}
+			.reviews_num{
+				position: absolute;
+				left: 10%;
+				top: 1rem;
+				color: #fff;
+				font-size: 0.32rem;
+			}
+		}
+
+
+		.experiences {
+			.swiper-wrapper {
+				margin-top: 0.3rem;
+				padding-bottom: 0.2rem;
+				.swiper-slide {
+					width:80%;
+					&:last-child {
+						margin-right: 0;
+					}
+					.activity-pic {
+						
+						height: 3.4rem;
+						position: relative;
+						img {
+							width: 100%;
+							height: 100%;
+						}
+						span {
+							position: absolute;
+							top: 10px;
+							left: 10px;
+							padding: 5px;
+							font-size: 14px;
+							font-weight: bold;
+							background: #f4b33f;
+							color: #fff;
+						}
+					}
+					.activity-cont {
+						height: 3.3rem;
+						position: relative;
+						padding: 0.3rem;
+						box-shadow: 0px 2px 3px 0px rgba(53, 58, 63, 0.1);
+						.activity-info {
+							
+							.activity-cont-type {
+								float: left;
+								font-size:  0.22rem;
+								color: #d87b65;
+								i {
+									font-size:  0.22rem;
+									color: #d87b65;
+									margin-right: 0.14rem;
+								}
+							}
+						}
+						h4 {
+							color: #353a3f;
+							height: 0.8rem;
+							line-height: 0.4rem;
+							text-overflow: ellipsis;
+							display: -webkit-box;
+							display: -moz-box;
+							-moz-box-orient: vertical;
+							-webkit-box-orient: vertical;
+							-webkit-line-clamp: 2;
+							word-wrap: break-word;
+							overflow: hidden;
+							margin-top: 0.14rem;
+							font-size: 0.3rem;
+							font-weight: bold;
+						}
+
+						.duration {
+							margin-top: 0.1rem;
+							font-size: 0.22rem;
+							color: #878e95;
+							i {
+								font-size: 0.22rem;
+								color: #878e95;
+								margin-right: 0.173333rem;
+							}
+						}
+						.pic {
+							position: absolute;
+							right: 0.4rem;
+							bottom: 0.5rem;
+							.old-pic {
+								text-align: right;
+								font-size: 0.24rem;
+								color: #878e95;
+								text-decoration: line-through;
+							}
+							.current-price {
+								font-size: 0.24rem;
+								color: #878e95;
+								margin-top: 0.093333rem;
+								b {
+									font-size: 0.36rem;
+									color: #353a3f;
+									margin-left: 6px;
+								}
+								span {
+									color: #353a3f;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
 		.price_select_box{
 			float: right;
 			position: relative;
 			font-size: 0.32rem;
-			line-height: 0.8rem;
+			line-height: 0.6rem;
 			i{
 				position: absolute;
 				right: 0;
 				top: 0;
-				height: 0.8rem;
-				line-height: 0.84rem;
+				height: 0.6rem;
+				line-height: 0.64rem;
 				vertical-align: top;
 				font-size: 0.36rem;
 				font-weight: bold;
@@ -1724,7 +2405,7 @@
 				overflow: hidden;
 			}
 			select{
-				line-height: 0.8rem;
+				line-height: 0.6rem;
 				padding: 0 0.4rem 0 0.2rem;
 				font-size: 0.24rem;
 				color: #878e95;
@@ -1835,7 +2516,7 @@
 		}
 
 		.booking_info{
-			.remark_star{
+			.reviews_star{
 				.star_list{
 					width: 0.26rem;
 					height: 0.26rem;
@@ -1843,7 +2524,18 @@
 			}
 		}
 
-		.remark_star{
+		.reviews{
+			.reviews_list_top{
+				.reviews_star{
+					.star_list{
+						width: 0.26rem;
+						height: 0.26rem;
+					}
+				}
+			}
+		}
+
+		.reviews_star{
 			display: inline-block;
 			.star_list{
 				display: inline-block;
