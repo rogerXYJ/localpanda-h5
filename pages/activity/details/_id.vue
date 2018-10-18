@@ -52,7 +52,7 @@
 			<!-- 产品基本信息 -->
 			<ul class="activity_info">
 				<li @click="showDurationInfo=true"><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont">&#xe689;</span></li>
-				<li v-if="getPickupTitle(detail.pickup)" @click="showPickupInfo=true"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont" v-if="detail.statement">&#xe689;</span></li>
+				<!-- <li v-if="getPickupTitle(detail.pickup)" @click="showPickupInfo=true"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont" v-if="detail.statement">&#xe689;</span></li> -->
 				<li @click="showLanguagesInfo=true"><i class="iconfont">&#xe627;</i>{{detail.groupType=='Group'?'Offered in English':'English (and other languages)-speaking guide'}} <span class="iconfont" v-if="detail.groupType!=='Group'">&#xe689;</span></li>
 				<li v-if="detail.destinations.length>1"><i class="iconfont">&#xe610;</i>{{detail.destinations.join(', ')}}</li>
 				<li><i class="iconfont">&#xe688;</i>Free cancellation  up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</li>
@@ -200,7 +200,8 @@
 		<!-- 其他产品信息 -->
 		<div class="detail_box other_box">
 			
-			<div class="other_list" v-if="inclusions.length || detail.pickup">
+			<div class="other_list" v-if="inclusions.length">
+				<!--  || detail.pickup -->
 				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Incluslons</h3>
 				<div class="other_content">
 					<ul class="detail_txt_list">
@@ -208,10 +209,10 @@
 							<i class="iconfont">&#xe65c;</i>{{item.title}}
 							<p>{{item.content}}</p>
 						</li>
-						<li v-if="detail.pickup !== 0">
+						<!-- <li v-if="detail.pickup !== 0">
 							<i class="iconfont">&#xe65c;</i>{{getPickupTitle(detail.pickup)}}
 							<p v-html="enterToBr(detail.statement)"></p>
-						</li>
+						</li> -->
 					</ul>
 					
 				</div>
