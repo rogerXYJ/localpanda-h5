@@ -21,7 +21,7 @@
 
 		<!-- 产品标题信息 -->
 		<div class="detail_box activity_top">
-			<h2><span>{{detail.groupType}}</span>{{detail.title}}</h2>
+			<h2><span :class="{'private':detail.groupType=='Private'}">{{detail.groupType}}</span>{{detail.title}}</h2>
 			<!-- 币种信息 -->
 			<div class="price_info clearfix">
 				<div class="price_select_box">
@@ -52,11 +52,11 @@
 			<!-- 产品基本信息 -->
 			<ul class="activity_info">
 				<li @click="showDurationInfo=true"><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont">&#xe689;</span></li>
-				<li v-if="getPickupTitle(detail.pickup)" @click="showPickupInfo=true"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont">&#xe689;</span></li>
-				<li @click="showLanguagesInfo=true"><i class="iconfont">&#xe627;</i>Offered in {{detail.groupType=='Group'?'English':'English, French, Spanish, Russian, German, Japanese, Korean'}} <span class="iconfont">&#xe689;</span></li>
+				<li v-if="getPickupTitle(detail.pickup)" @click="showPickupInfo=true"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont" v-if="detail.statement">&#xe689;</span></li>
+				<li @click="showLanguagesInfo=true"><i class="iconfont">&#xe627;</i>{{detail.groupType=='Group'?'Offered in English':'English (and other languages)-speaking guide'}} <span class="iconfont" v-if="detail.groupType!=='Group'">&#xe689;</span></li>
 				<li v-if="detail.destinations.length>1"><i class="iconfont">&#xe610;</i>{{detail.destinations.join(', ')}}</li>
 				<li><i class="iconfont">&#xe688;</i>Free cancellation  up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</li>
-				<li><i class="iconfont">&#xe68b;</i>This activity is for adults over 18 years old only</li>
+				<li v-if="detail.limits"><i class="iconfont">&#xe68b;</i>{{detail.limits}}</li>
 			</ul>
 
 		</div>
@@ -92,84 +92,85 @@
 
 		<!-- 预定板块 -->
 		<div class="detail_box check" id="check_all">
-			<h3><i></i>Available On</h3>
+			<div class="check_all_box">
+				<h3><i></i>Available On</h3>
+				<ul class="check_info clearfix">
+					<li>
+						<i class="iconfont input_icon">&#xe60d;</i>
+						<input id="js_changetime" v-model="startDate" readonly type="text" placeholder="Select Date">
+						<input class="time_box" :value="formatDate(startDate)" readonly type="text" placeholder="Date">
+						<i class="iconfont arrow">&#xe60f;</i>
+					</li>
+					<li class="check_people">
+						<i class="iconfont input_icon">&#xe63d;</i>
+						<i class="iconfont arrow">&#xe60f;</i>
+						<div class="check_people_text" :style="bookAdults>0?'color:#333;font-size:0.28rem;':'color:#888;font-size:0.28rem;'">{{adultsText}}</div>
+						<select id="" v-model="bookAdults">
+							<option :value="item" v-for="item in picInfo.maxParticipants" :key="item">{{(item>1?'Adults':'Adult')+' x '+item}}</option>
+						</select>
+					</li>
+					<li class="check_people">
+						<i class="iconfont input_icon">&#xe63d;</i>
+						<i class="iconfont arrow">&#xe60f;</i>
+						<div class="check_child_text" :style="bookChildren>0?'color:#333;font-size:0.28rem;':'color:#888;font-size:0.22rem;'">{{childrenText}}</div>
+						<select id="" v-model="bookChildren">
+							<option :value="0">Child x 0</option>
+							<option :value="item" v-for="item in picInfo.maxParticipants-1" :key="item">{{(item>1?'Children':'Child')+' x '+item}}</option>
+						</select>
+					</li>
+					<li>
+						<div class="check_tip" v-show="checkTipText"><span>{{checkTipText}}</span></div>
+						<div class="check_tip">Participants : {{picInfo.minParticipants}}-{{picInfo.maxParticipants}}. Free for infants under 3 years old.</div>
+					</li>
+					<li v-show="!showPriceInfo">
+						<span class="btn" @click="availability">Book</span>
+						<span class="btn_inquire" @click="gaInquire">Inquire</span>
+					</li>
+				</ul>
 
-			<ul class="check_info clearfix">
-				<li>
-					<i class="iconfont input_icon">&#xe60d;</i>
-					<input id="js_changetime" v-model="startDate" readonly type="text" placeholder="Select Date">
-					<input class="time_box" :value="formatDate(startDate)" readonly type="text" placeholder="Date">
-					<i class="iconfont arrow">&#xe60f;</i>
-				</li>
-				<li class="check_people">
-					<i class="iconfont input_icon">&#xe63d;</i>
-					<i class="iconfont arrow">&#xe60f;</i>
-					<div class="check_people_text" :style="bookAdults>0?'color:#333;font-size:0.28rem;':'color:#888;font-size:0.28rem;'">{{adultsText}}</div>
-					<select id="" v-model="bookAdults">
-						<option :value="item" v-for="item in picInfo.maxParticipants" :key="item">{{(item>1?'Adults':'Adult')+' x '+item}}</option>
-					</select>
-				</li>
-				<li class="check_people">
-					<i class="iconfont input_icon">&#xe63d;</i>
-					<i class="iconfont arrow">&#xe60f;</i>
-					<div class="check_child_text" :style="bookChildren>0?'color:#333;font-size:0.28rem;':'color:#888;font-size:0.22rem;'">{{childrenText}}</div>
-					<select id="" v-model="bookChildren">
-						<option :value="0">Child x 0</option>
-						<option :value="item" v-for="item in picInfo.maxParticipants-1" :key="item">{{(item>1?'Children':'Child')+' x '+item}}</option>
-					</select>
-				</li>
-				<li>
-					<div class="check_tip" v-show="checkTipText"><span>{{checkTipText}}</span></div>
-					<div class="check_tip">Participants : {{picInfo.minParticipants}}-{{picInfo.maxParticipants}}. Free for infants under 3 years old.</div>
-				</li>
-				<li v-show="!showPriceInfo">
-					<span class="btn" @click="availability">Book</span>
-					<span class="btn_inquire" @click="gaInquire">Inquire</span>
-				</li>
-			</ul>
-
-			<!-- 绿色预定板块 -->
-			<div class="book_all" v-show="showPriceInfo">
-				<!-- 导游信息 -->
-				<div v-if="detail.guide.length">
-					<div class="book_guide_check" :class="{'active':checkGuideIndex===''}" @click="checkGuideIndex=''">
-						<i></i>Let us assign one expert for you
+				<!-- 绿色预定板块 -->
+				<div class="book_all" v-show="showPriceInfo">
+					<!-- 导游信息 -->
+					<div v-if="detail.guide.length">
+						<div class="book_guide_check" :class="{'active':checkGuideIndex===''}" @click="checkGuideIndex=''">
+							<i></i>Let us assign one expert for you
+						</div>
+						<div class="book_guide_check" :class="{'active':checkGuideIndex!==''}" @click="showGuideFn(checkGuideIndex?checkGuideIndex:0,'ga')">
+							<i></i>Select your best expert (free of charge)
+						</div>
 					</div>
-					<div class="book_guide_check" :class="{'active':checkGuideIndex!==''}" @click="showGuideFn(checkGuideIndex?checkGuideIndex:0,'ga')">
-						<i></i>Select your best expert (free of charge)
+					<div class="book_guide_info" v-if="checkGuideIndex!==''">
+						<div class="book_guide_select" @click="showGuideFn(checkGuideIndex)">Reselect</div>
+						<div class="book_guide_photo" :style="'background-image:url('+detail.guide[checkGuideIndex].guidePhoto.headPortraitUrl+')'"></div>
+						{{detail.guide[checkGuideIndex].enName}} has been selected !
 					</div>
-				</div>
-				<div class="book_guide_info" v-if="checkGuideIndex!==''">
-					<div class="book_guide_select" @click="showGuideFn(checkGuideIndex)">Reselect</div>
-					<div class="book_guide_photo" :style="'background-image:url('+detail.guide[checkGuideIndex].guidePhoto.headPortraitUrl+')'"></div>
-					{{detail.guide[checkGuideIndex].enName}} has been selected !
-				</div>
 
-				<!-- 价格明细 -->
-				<div class="book_price_box">
-					<dl class="book_price_info">
-						<dt>
-							<span>{{nowExchange.symbol}}{{returnFloat(perPersonPrice)}}×{{bookPeople}} {{bookPeople>1?'Travelers':'Traveler'}}</span>
-							<span v-if="picInfo.childDiscount && bookChildren">-{{nowExchange.symbol}}{{returnFloat(picInfo.childDiscount*bookChildren)}} for {{bookChildren>1?'Children':'Child'}}</span>
-						</dt>
-						<dd>{{nowExchange.symbol}}{{returnFloat(price)}}</dd>
-					</dl>
-					<dl class="book_price_info">
-						<dt>Total Amount</dt>
-						<dd>
-							<div class="price_select_box">
-								<select v-model="selectCurrency" @change="changeCurrency">
-									<option :value="item.code" :key="index" v-for="(item,index) in exchange">{{item.code}}</option>
-								</select>
-								<i class="iconfont">&#xe666;</i>
-							</div>
-							{{nowExchange.symbol}}{{amount}}</dd>
-					</dl>
-					<div class="hr"></div>
-					<p class="book_tip" v-if="picInfo.refundTimeLimit">You can get a 100% refund up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit:24*picInfo.refundTimeLimit)}} {{picInfo.refundTimeLimit>2?'days':'hours'}} before your trip</p>
-					<!-- {{picInfo.refundInstructions}} -->
-					<span class="btn" @click="bookFn">Book</span>
-					<span class="btn_inquire" @click="gaInquire">Inquire</span>
+					<!-- 价格明细 -->
+					<div class="book_price_box">
+						<dl class="book_price_info">
+							<dt>
+								<span>{{nowExchange.symbol}}{{returnFloat(perPersonPrice)}}×{{bookPeople}} {{bookPeople>1?'Travelers':'Traveler'}}</span>
+								<span v-if="picInfo.childDiscount && bookChildren">-{{nowExchange.symbol}}{{returnFloat(picInfo.childDiscount*bookChildren)}} for {{bookChildren>1?'Children':'Child'}}</span>
+							</dt>
+							<dd>{{nowExchange.symbol}}{{returnFloat(price)}}</dd>
+						</dl>
+						<dl class="book_price_info">
+							<dt>Total Amount</dt>
+							<dd>
+								<div class="price_select_box">
+									<select v-model="selectCurrency" @change="changeCurrency">
+										<option :value="item.code" :key="index" v-for="(item,index) in exchange">{{item.code}}</option>
+									</select>
+									<i class="iconfont">&#xe666;</i>
+								</div>
+								{{nowExchange.symbol}}{{amount}}</dd>
+						</dl>
+						<div class="hr"></div>
+						<p class="book_tip" v-if="picInfo.refundTimeLimit">You can get a 100% refund up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit:24*picInfo.refundTimeLimit)}} {{picInfo.refundTimeLimit>2?'days':'hours'}} before your trip</p>
+						<!-- {{picInfo.refundInstructions}} -->
+						<span class="btn" @click="bookFn">Book</span>
+						<span class="btn_inquire" @click="gaInquire">Inquire</span>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -237,7 +238,7 @@
 				</div>
 			</div>
 
-			<div class="other_list" v-if="detail.remark || notice.length">
+			<div class="other_list" v-if="delEnter(detail.remark) || notice.length">
 				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Important Info</h3>
 				<div class="other_content">
 					<ul class="detail_txt_list">
@@ -253,7 +254,7 @@
 				</div>
 			</div>
 
-			<div class="other_list" v-if="picInfo.refundInstructions">
+			<div class="other_list" v-if="delEnter(picInfo.refundInstructions)">
 				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Rescheduling & Cancellation Policy</h3>
 				<div class="other_content">
 					<ul class="detail_txt_list">
@@ -865,6 +866,10 @@
 				}
 				return price[price.length-1].perPersonPrice;
 			},
+			delEnter(text){
+				if(!text)return '';
+				return text.replace(/(^\s*)|(\s*$)/g, "").replace(/(^\r\n*)|(\r\n*$)/g, "");
+			},
 			getTextArr(text){
 				var arr = text.split('\n');
 				var newArr = [];
@@ -1382,7 +1387,17 @@
 				orderInfo = JSON.stringify(orderInfo);
 		    localStorage.setItem("orderInfo", orderInfo);
 				location.href="/activity/booking/"+this.id;
-			}
+			},
+			scrollFn($check_all){
+				var top = document.documentElement.scrollTop || document.body.scrollTop;
+				var boxTop = $check_all.offsetTop;
+				var winH = window.innerHeight;
+				if(top>boxTop-winH+100 && top<boxTop+$check_all.clientHeight){
+					this.showFixedBtn = false;
+				}else{
+					this.showFixedBtn = true;
+				}
+			},
 		},
 		mounted: function() {
 			var self=this;
@@ -1457,6 +1472,11 @@
 			};
 
 			// console.log(this.picInfo);
+
+			var $check_all = document.querySelector('#check_all');
+			window.onscroll = function(){
+				self.scrollFn($check_all);
+			}
 
 		},
 		watch: {
@@ -1591,7 +1611,8 @@
 				font-size: 0.44rem;
 				font-weight: bold;
 				line-height: 0.56rem;
-				span{ color: #fff; background-color: #f4b33f; font-size: 0.26rem; line-height: 0.38rem; display: inline-block; padding: 0 0.1rem; border-radius: 0.05rem; vertical-align: middle; margin-right: 0.2rem; font-weight: normal; text-transform: uppercase;}
+				span{ color: #fff; background-color: #f4b33f; font-size: 0.26rem; line-height: 0.38rem; display: inline-block; padding: 0 0.1rem; border-radius: 0.05rem; vertical-align: middle; margin-right: 0.2rem; font-weight: normal;}
+				.private{ background-color: #1bbc9d;}
 			}
 			.price_info{
 				padding-top: 0.2rem;
@@ -1718,6 +1739,13 @@
 		}
 
 		.check{
+			.check_all_box{
+				width: calc(100vw - 0.3rem);
+				margin-left: -0.15rem;
+				border: 2px solid #1bbc9d;
+				border-radius: 10px;
+				padding: 0.3rem;
+			}
 			.check_info{
 				li{
 					clear: both;
