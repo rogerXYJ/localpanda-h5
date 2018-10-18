@@ -307,7 +307,7 @@
 			<h3><i></i>Similar Experiences</h3>
 			<div class="swiper-container" id="swiper_experiences">
 				<div class="swiper-wrapper">
-					<div class="swiper-slide" :key="index" v-for="(i,index) in detail.recommed">
+					<div class="swiper-slide" :key="index" v-for="(i,index) in detail.recommed.entities">
 						<a :href="'/activity/details/'+i.activityId">
 							<div class="activity-pic">
 								<img v-lazy="i.coverPhotoUrl">
@@ -322,8 +322,7 @@
 									-webkit-box-orient:vertical;">{{i.title}}</h4>
 								<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{i.duration}} {{setTimeStr(i.duration,i.durationUnit)}}</div>
 								<div class="pic">
-									<!-- <div class="old-pic" v-if="i.originalPrice">{{nowExchange.symbol}}{{returnFloat(i.originalPrice)}}</div> -->
-									<div class="current-price">From {{nowExchange.code}} <b>{{nowExchange.symbol}}{{returnFloat(i.bottomPrice)}}</b><span>  pp</span></div>
+									<div class="current-price">{{participants==0?'From':''}} {{nowExchange.code}} <b>{{nowExchange.symbol}}{{participants==0?returnFloat(i.bottomPrice):returnFloat(i.perPersonPrice)}}</b><span>  {{returnText(participants)}}</span></div>
 								</div>
 							</div>
 						</a>
@@ -555,12 +554,30 @@
 
 				
 				//推荐信息
+				var recommendOptions = {
+					"id": id,
+					'currency':data.nowExchange.code,
+					'pageNum':1,
+					'pageSize':3
+				};
+				if(data.participants){
+					recommendOptions.participants = data.participants;
+				}
 				var Promise2 = new Promise(function(resolve, reject){
-					Vue.axios.get(apiBasePath + "product/activity/"+id+"/recommend?currency="+data.nowExchange.code).then(function(res) {
+					Vue.axios.post(apiBasePath+"search/activity/recommend",JSON.stringify(recommendOptions),{
+						headers: {
+						'Content-Type': 'application/json'
+						}
+					}).then(function(res) {
 						resolve(res);
 					}, function(res) {
 						resolve(res);
 					});
+					// Vue.axios.get(apiBasePath + "product/activity/"+id+"/recommend?currency="+data.nowExchange.code).then(function(res) {
+					// 	resolve(res);
+					// }, function(res) {
+					// 	resolve(res);
+					// });
 				});
 
 				//价格信息
@@ -1091,6 +1108,25 @@
 							self.nowExchange = thisEx;
 						}
 					}
+
+					//请求推荐信息
+					var recommendOptions = {
+						"id": self.id,
+						'currency':self.nowExchange.code,
+						'pageNum':1,
+						'pageSize':3
+					};
+					if(self.participants){
+						recommendOptions.participants = self.participants;
+					}
+					self.axios.post("https://api.localpanda.com/api/search/activity/recommend",JSON.stringify(recommendOptions),{
+						headers: {
+						'Content-Type': 'application/json'
+						}
+					}).then(function(res) {
+						self.detail.recommed = res.data;
+					}, function(res) {});
+
 						
 				}, function(res) {
 					
@@ -1119,12 +1155,8 @@
 				//切换币种
 				// self.$emit('input',this.nowExchange);
 
-				//请求推荐模块
-				this.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/recommend?currency="+value).then(function(res) {
-					if(res.status==200){
-						self.detail.recommed = res.data;
-					}
-				}, function(res) {});
+				
+				
 			},
 			///选择日期和人数
 			checkInit(){
