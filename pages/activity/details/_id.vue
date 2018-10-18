@@ -166,7 +166,7 @@
 								{{nowExchange.symbol}}{{amount}}</dd>
 						</dl>
 						<div class="hr"></div>
-						<p class="book_tip" v-if="picInfo.refundTimeLimit">You can get a 100% refund up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit:24*picInfo.refundTimeLimit)}} {{picInfo.refundTimeLimit>2?'days':'hours'}} before your trip</p>
+						<p class="book_tip" v-if="picInfo.refundTimeLimit">Free cancellation  up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</p>
 						<!-- {{picInfo.refundInstructions}} -->
 						<span class="btn" @click="bookFn">Book</span>
 						<span class="btn_inquire" @click="gaInquire">Inquire</span>
@@ -345,7 +345,7 @@
 		<div class="guide_dialog" v-show="showGuideDetail">
 			<div class="guide_dialog_header">
 				<span class="iconfont" @click="showGuideDetail=false">&#xe606;</span>
-				{{guideSwiperIndex+1}}/{{detail.guide.length}} Experts
+				{{guideSwiperIndex+1}}/{{detail.guide.length}} {{detail.guide.length>1?'Experts':'Expert'}}
 			</div>
 
 			<div class="swiper-container js_guide_detail">
