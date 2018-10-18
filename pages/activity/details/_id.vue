@@ -53,7 +53,8 @@
 			<ul class="activity_info">
 				<li @click="showDurationInfo=true"><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont">&#xe689;</span></li>
 				<!-- <li v-if="getPickupTitle(detail.pickup)" @click="showPickupInfo=true"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont" v-if="detail.statement">&#xe689;</span></li> -->
-				<li @click="showLanguagesInfo=true"><i class="iconfont">&#xe627;</i>{{detail.groupType=='Group'?'Offered in English':'English (and other languages)-speaking guide'}} <span class="iconfont" v-if="detail.groupType!=='Group'">&#xe689;</span></li>
+				<li v-if="detail.groupType=='Group'"><i class="iconfont">&#xe627;</i>Offered in English</li>
+				<li @click="showLanguagesInfo=true" v-else-if="detail.category!='Ticket'"><i class="iconfont">&#xe627;</i>English (and other languages)-speaking guide <span class="iconfont">&#xe689;</span></li>
 				<li v-if="detail.destinations.length>1"><i class="iconfont">&#xe610;</i>{{detail.destinations.join(', ')}}</li>
 				<li><i class="iconfont">&#xe688;</i>Free cancellation  up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</li>
 				<li v-if="detail.limits"><i class="iconfont">&#xe68b;</i>{{detail.limits}}</li>
