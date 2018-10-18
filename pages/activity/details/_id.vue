@@ -38,7 +38,7 @@
 					</select>
 					<i class="iconfont">&#xe666;</i>
 				</div>
-				<p><small v-if="participants==0">From</small> {{nowExchange.symbol}}{{participants>0?returnFloat(getPeoplePrice(participants,true)):returnFloat(picInfo.bottomPrice)}}</p>
+				<p><small v-if="participants==0">From</small> {{nowExchange.symbol}} {{participants>0?returnFloat(getPeoplePrice(participants,true)):returnFloat(picInfo.bottomPrice)}}</p>
 
 				
 			</div>
@@ -51,11 +51,11 @@
 
 			<!-- 产品基本信息 -->
 			<ul class="activity_info">
-				<li><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont">&#xe689;</span></li>
-				<li><i class="iconfont" v-if="detail.pickup!==0">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont">&#xe689;</span></li>
-				<li><i class="iconfont">&#xe627;</i>Offered in {{detail.groupType=='Group'?'English':'English, French, Spanish, Russian, German, Japanese, Korean'}} <span class="iconfont">&#xe689;</span></li>
-				<li><i class="iconfont">&#xe610;</i>{{detail.destinations.join(', ')}}</li>
-				<li><i class="iconfont">&#xe688;</i>100% refund up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</li>
+				<li @click="showDurationInfo=true"><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont">&#xe689;</span></li>
+				<li v-if="getPickupTitle(detail.pickup)" @click="showPickupInfo=true"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont">&#xe689;</span></li>
+				<li @click="showLanguagesInfo=true"><i class="iconfont">&#xe627;</i>Offered in {{detail.groupType=='Group'?'English':'English, French, Spanish, Russian, German, Japanese, Korean'}} <span class="iconfont">&#xe689;</span></li>
+				<li v-if="detail.destinations.length>1"><i class="iconfont">&#xe610;</i>{{detail.destinations.join(', ')}}</li>
+				<li><i class="iconfont">&#xe688;</i>Free cancellation  up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</li>
 				<li><i class="iconfont">&#xe68b;</i>This activity is for adults over 18 years old only</li>
 			</ul>
 
@@ -63,11 +63,11 @@
 		
 		<!-- Why you’ll love this trip -->
 		<div class="detail_box why">
-			<h3><i></i>Why you’ll love this trip</h3>
+			<h3><i></i>Why you'll love this trip</h3>
 			<p class="detail_p">{{detail.recommendedReason}}</p>
 			
 			<ul class="detail_txt_list">
-				<li v-for="item in detail.highlights.split('\r\n')" :key="item"><i class="dian"></i>{{item}}</li>
+				<li v-for="item in getTextArr(detail.highlights)" :key="item"><i class="dian"></i>{{item}}</li>
 			</ul>
 		</div>
 
@@ -91,7 +91,7 @@
 
 
 		<!-- 预定板块 -->
-		<div class="detail_box check">
+		<div class="detail_box check" id="check_all">
 			<h3><i></i>Available On</h3>
 
 			<ul class="check_info clearfix">
@@ -199,7 +199,7 @@
 		<!-- 其他产品信息 -->
 		<div class="detail_box other_box">
 			
-			<div class="other_list">
+			<div class="other_list" v-if="inclusions.length || detail.pickup">
 				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Incluslons</h3>
 				<div class="other_content">
 					<ul class="detail_txt_list">
@@ -216,7 +216,7 @@
 				</div>
 			</div>
 
-			<div class="other_list">
+			<div class="other_list" v-if="exclusions.length">
 				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Exclusions</h3>
 				<div class="other_content">
 					<ul class="detail_txt_list">
@@ -237,14 +237,14 @@
 				</div>
 			</div>
 
-			<div class="other_list">
+			<div class="other_list" v-if="detail.remark || notice.length">
 				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Important Info</h3>
 				<div class="other_content">
 					<ul class="detail_txt_list">
-						<li v-for="item in detail.remark.split('\n')" :key="item">
+						<li v-for="item in getTextArr(detail.remark)" :key="item">
 							<i class="dian"></i>{{item}}
 						</li>
-						<h4>Additional Info</h4>
+						<h4 v-if="notice.length">Additional Info</h4>
 						<li v-for="(item,index) in notice" :key="index">
 							<i class="dian"></i>{{item.title}}
 							<p>{{item.content}}</p>
@@ -253,11 +253,11 @@
 				</div>
 			</div>
 
-			<div class="other_list">
+			<div class="other_list" v-if="picInfo.refundInstructions">
 				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Rescheduling & Cancellation Policy</h3>
 				<div class="other_content">
 					<ul class="detail_txt_list">
-						<li v-for="(item,index) in picInfo.refundInstructions.split('\n')" :key="index"><i class="dian"></i>{{item}}</li>
+						<li v-for="(item,index) in getTextArr(picInfo.refundInstructions)" :key="index"><i class="dian"></i>{{item}}</li>
 					</ul>
 				</div>
 			</div>
@@ -322,6 +322,12 @@
 				</div>
 			</div>
 		</div>
+
+
+		<div class="bookBtnBox" v-show="showFixedBtn">
+			<a @click="gaInquire">Inquire</a>
+			<a class="bookBtn" @click="goCheck">Check availability</a>
+		</div>
 		
 
 		<!-- 公底部 -->
@@ -341,10 +347,10 @@
 							<div class="guide_img" v-lazy:background-image="item.guidePhoto.headPortraitUrl"></div>
 							<div class="guide_content">
 								<h3>{{item.enName}}</h3>
-								<p>Old Beijing history consultant</p>
+								<p>{{item.slogan}}</p>
 								<p><b>Trips Given: </b>{{item.serviceTimes}}</p>
 								<p><b>Birthplace: </b>{{item.birthplace}}</p>
-								<p><b>Language(s): </b><span v-for="(Language,num) in item.guideLanguages">{{(num>0?' , ':'')+Language.language+'('+Language.level+')'}}</span></p>
+								<p><b>Language(s): </b><span v-for="(Language,num) in item.guideLanguages" :key="num">{{(num>0?' , ':'')+Language.language+'('+Language.level+')'}}</span></p>
 								<p>{{item.selfIntro}}</p>
 								<br>
 							</div>
@@ -365,6 +371,23 @@
 		<transition name="fade">
 			<div class="win_bg" id="win_bg" @click="showWinBg = false" v-show="showWinBg"></div>
 		</transition>
+
+
+		<!-- 顶部Duration信息弹层 -->
+		<dialogBox v-model="showDurationInfo" width="90%" height="auto">
+			<div class="dialog_tip_info">All trips start when you meet your tour guide (or driver if the trip does not include a guide), and conclude when you depart from your tour guide (or driver).</div>
+		</dialogBox>
+
+		<!-- 顶部Languages信息弹层 -->
+		<dialogBox v-model="showLanguagesInfo" width="90%" height="auto">
+			<div class="dialog_tip_info">Other languages:  Español, Français, Deutsch, русский язык. If you need guides in other languages, please comment in “Other Information”when you book. Our staff will contact you regarding further details e.g. price.</div>
+		</dialogBox>
+
+		<!-- 顶部Pickup信息弹层 -->
+		<dialogBox v-model="showPickupInfo" width="90%" height="auto">
+			<div class="dialog_tip_info" v-html="enterToBr(detail.statement)"></div>
+		</dialogBox>
+		
 
 
 		<!-- 点评弹层 -->
@@ -735,6 +758,11 @@
 		data(options){
 			
 			return {
+				showDurationInfo:false,
+				showLanguagesInfo:false,
+				showPickupInfo:false,
+
+
 				//导游
 				showGuideDetail:false,
 				guideSwiper:null,
@@ -758,7 +786,7 @@
 				showEmailBox:false,
 				inqueryEmail:'',
 				inqueryEmailOld:'',
-				feedbackId: ''
+				feedbackId: '',
 			}
 		},
 		computed:{
@@ -835,11 +863,18 @@
 						return pp ? price[i].perPersonPrice : price[i].price;
 					}
 				}
-				return '';
+				return price[price.length-1].perPersonPrice;
 			},
 			getTextArr(text){
 				var arr = text.split('\n');
-				return arr.length==1?text.split('\r\n'):arr;
+				var newArr = [];
+				for(var i=0;i<arr.length;i++){
+					var thisData = arr[i];
+					if(thisData.replace(/(^\s*)|(\s*$)/g, "")){
+						newArr.push(thisData);
+					}
+				}
+				return newArr;
 			},
 			getPickupTitle(pickup){
 				if(pickup==1){
@@ -949,6 +984,16 @@
 					return num===1 ? 'Day' : 'Days'
 				}
 			},
+			zeroLength(text){
+				var num = 0;
+				for(var i=0;i<text.length;i++){
+					var thisStr = text[i];
+					if(thisStr==0 && i>1){
+						num++;
+					}
+				}
+				return num;
+			},
 			returnFloat(value) {
 				value*=1;
 				if(value) {
@@ -1044,8 +1089,8 @@
 						self.setPeoplePrice();
 
 						self.sixArr=res.data
-						if(self.peopleNum>0){
-							self.adultsPic =thisDetail[self.peopleNum-1].price;	
+						if(self.participants>0){
+							self.adultsPic =thisDetail[self.participants-1].price;	
 						}
 						if(res.data.length>6){
 							self.isShowTable=true
@@ -1362,6 +1407,14 @@
 			//初始化日期选择
 			this.checkInit();
 
+			//选择默认处理
+			if(this.participants>this.picInfo.maxParticipants){
+				this.participants = this.picInfo.maxParticipants;
+			}
+			if(this.participants){
+				this.bookAdults = this.participants;
+			}
+
 			//等待渲染完毕后调用
 			this.$nextTick(function(){
 				//头图
@@ -1398,6 +1451,9 @@
       window.onpopstate = function(event) {
 				self.confirmCallback();
 				self.serviceConfirmCallback();
+				self.showDurationInfo = false;
+				self.showLanguagesInfo = false;
+				self.showPickupInfo = false;
 			};
 
 			// console.log(this.picInfo);
@@ -1502,7 +1558,8 @@
 		.detail_box{
 			padding: 0.3rem 0.3rem 0.4rem;
 			background-color: #fff;
-			margin-bottom: 0.16rem;
+			margin-bottom: 0.3rem;
+			box-shadow: 0 0 10px rgba(0,0,0,0.05);
 			h3{
 				font-size: 0.3rem;
 				font-weight: bold;
@@ -1545,6 +1602,7 @@
 					font-size: 0.32rem;
 					line-height: 0.6rem;
 					padding-right: 0.4rem;
+					color: #878e95;
 					i{
 						position: absolute;
 						right: 0;
@@ -1610,6 +1668,7 @@
 					i{font-size: 0.26rem; margin-right: 0.15rem; float: left; margin-left: -0.4rem;}
 					font-size: 0.26rem;
 					line-height: 0.36rem;
+					span.iconfont{ vertical-align: middle; margin-left: 0.2rem;}
 				}
 			}
 		}
@@ -2144,7 +2203,7 @@
 			line-height: 0.86rem;
 			text-align: center;
 			color: #FFF;
-			font-weight: bold;
+			// font-weight: bold;
 			border-radius: 0.6rem;
 			margin-top: 0.23rem;
 			font-size: 0.32rem;
@@ -2427,6 +2486,96 @@
 			top: 0;
 			background-color: rgba(0,0,0,0.6);
 			z-index: 100;
+		}
+		.dialog_tip_info{
+			margin-top: 0.8rem;
+			font-size: 0.26rem;
+		}
+
+		.service_box{
+			font-size: 14px;
+
+			.tip_title{
+				margin-top: 0.2rem;
+				padding: 0.3rem 0;
+				text-align: center;
+				font-size: 0.34rem;
+				// background-color: #fafafa;
+			}
+
+			.tip_detail{ 
+				margin-top: 20px; font-size: 14px; line-height: 22px;
+				a{ color:#00B886; cursor: pointer;
+					&:hover{ text-decoration: underline;}
+				}
+			}
+			.email_box{
+				margin-top: 10px;
+				input{
+					width: 100%;
+					border: 1px solid #ddd;
+					height: 32px;
+					line-height: 32px;
+				}
+				.btn_sendemail{
+					display: inline-block;
+					margin-top: 0.2rem;
+					height: 32px;
+					border-radius: 16px;
+					line-height: 30px;
+					padding: 0 20px;
+					font-size: 14px;
+					cursor: pointer;
+					background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
+					background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+					color: #fff;
+				}
+			}
+			.email_tip{
+				margin-top: 9px;
+				i{
+					font-size: 14px;
+				}
+			}
+			
+			
+		}
+
+		.bookBtnBox {
+			width: 100%;
+			box-sizing: border-box;
+			position: fixed;
+			padding: 0.25rem 0.4rem;
+			bottom: 0;
+			left: 0;
+			z-index: 99;
+			background: #fff;
+			border-top: 1px solid #dde0e0;
+			display: flex;
+			a{
+				flex: 1;
+				margin-right: 0.32rem;
+				width: 3.6rem;
+				height: 0.9rem;
+				line-height: 0.86rem;
+				text-align: center;
+				color: #FFF;
+				font-weight: bold;
+				border-radius: 0.6rem;
+				font-size: 0.32rem;
+				&:last-child{
+					margin-right: 0;
+					background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+				}
+				&:first-child{
+					border: solid 1px #1bbc9d;
+					box-sizing: border-box;
+					background: #fff;
+					color: #1bbc9d;
+					font-size:0.36rem;
+				}
+				
+			}
 		}
 	}
 </style>

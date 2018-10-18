@@ -9,7 +9,8 @@
     <!-- 半透明背景 -->
     <div class="dialog_bg" v-show="showDialog" @click="bgClick"></div>
     <!-- 弹窗模块 -->
-    <div class="dialog" :class="{'dialogMaxH':maxHeight}" v-show="showDialog" :style="{width:width}">
+    <div class="dialog" :class="{'dialogMaxH':maxHeight}" v-show="showDialog" :style="{width:(/px|\%/.test(width)?width:width+'px'),height:height}" ref="dialog">
+      <!-- ,left:'calc(100vw - '+dialogW+')' -->
       <!-- 头部信息 -->
       <div class="dialog_header" v-if="title">{{title}}</div>
       <!-- 弹窗内容 -->
@@ -37,13 +38,15 @@
       cancelShow: String,
       cancelText: String,
       value: Boolean,
-      width: String
+      width: String,
+      height:String
     },
 		data() {
 			return {
         showDialog:this.value?this.value:false,
         maxHeight:false,
-        bodyScrollTop:0
+        bodyScrollTop:0,
+        dialogW:this.width
 			}
     },
     computed:{
@@ -69,17 +72,30 @@
         history.back();
       },
       bgClick(){
-        //this.close();
+        this.close();
       },
-      
+      getW(str){
+        if(/\%/.test(str)){
+          return ((100-str.split('%')[0])/2*1 +str.split('%')[0]*1) + '%';
+        }else if(/px/.test(str)){
+          var winW = document.documentElement.clientWidth;
+          return ((winW-str.split('px')[0])/2*1 + str.split('px')[0]*1) + 'px';
+        }else{
+          var winW = document.documentElement.clientWidth;
+          return (winW-str)/2+str*1+'px';
+        }
+      }
 		},
 		mounted(){
       var self = this;
 
-      
+      // this.$refs.dialog.style.left = this.width;
 			
-      
+      // this.dialogW = this.getW(this.width);
 
+    },
+    created() {
+      
     },
     watch:{
       showDialog:function(val){

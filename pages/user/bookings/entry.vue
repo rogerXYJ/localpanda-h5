@@ -124,6 +124,8 @@
 	}
 </script>
 <style lang="scss">
+
+.searchMyBooking{
 	.page_main{
 		padding: 0 0.4rem;
 	}
@@ -179,7 +181,6 @@
 		line-height: 0.3rem;
 		margin-top: 0.5rem;
 	}
-.searchMyBooking{
 	.login_box{
 		margin-top: 0.5rem;
 		padding-top: 0.42rem;

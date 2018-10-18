@@ -725,6 +725,7 @@
 				font-size: 0.2rem;
 				display: inline-block;
 				margin-right: 0.2rem;
+				color: #1bbc9d;
 			}
 		}
 	}
