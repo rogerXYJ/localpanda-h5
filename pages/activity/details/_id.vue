@@ -21,7 +21,7 @@
 
 		<!-- 产品标题信息 -->
 		<div class="detail_box activity_top">
-			<h2><span :class="{'private':detail.groupType=='Private'}">{{detail.groupType}}</span>{{detail.title}}</h2>
+			<h2><span :class="{'private':detail.groupType=='Private'}" v-if="detail.groupType">{{detail.groupType}}</span>{{detail.title}}</h2>
 			<!-- 币种信息 -->
 			<div class="price_info clearfix">
 				<div class="price_select_box">
@@ -73,8 +73,8 @@
 
 		<!-- 导游 -->
 		<div class="detail_box guide" v-if="detail.guide">
-			<h3><i></i>Travel with our experts</h3>
-			<p class="gray">You can  select your best fit or let us assign one for you</p>
+			<h3><i></i>Explore our guides</h3>
+			<p class="gray">Select your preference below</p>
 
 			<div class="guide_list">
 				<div class="swiper-container js_guide">
@@ -176,7 +176,7 @@
 		</div>
 
 		<!-- 行程板块 -->
-		<div class="detail_box itinerary">
+		<div class="detail_box itinerary" v-if="detail.itinerary.length">
 			<h3><span class="btn_viewall" @click="itineraryViewall">View all</span><i></i>Experience Details</h3>
 			<dl class="itinerary_list" v-for="(items,index) in detail.itinerary" :key="index">
 				<dt @click="itineraryFn"><i class="iconfont i_down">&#xe667;</i><i class="iconfont i_up">&#xe666;</i><span></span>{{items.title}}</dt>
@@ -308,7 +308,7 @@
 			<h3><i></i>Similar Experiences</h3>
 			<div class="swiper-container" id="swiper_experiences">
 				<div class="swiper-wrapper">
-					<div class="swiper-slide" :key="index" v-for="(i,index) in detail.recommed.entities">
+					<div class="swiper-slide" :key="index" v-for="(i,index) in detail.recommend.entities">
 						<a :href="'/activity/details/'+i.activityId">
 							<div class="activity-pic">
 								<img v-lazy="i.coverPhotoUrl">
@@ -710,7 +710,7 @@
 						data.detail.guide = results[10].data;
 
 						//推荐信息
-						data.detail.recommed = results[1].data;
+						data.detail.recommend = results[1].data;
 
 
 						if(detailData.latestBooking < 1) {
@@ -834,7 +834,7 @@
 		methods: {
 			formatDate:formatDate,
 			changePeople(e){
-				this.participants = e.target.value;
+				// this.participants = e.target.value;
 				Cookie.set('participants',this.participants,{path:'/','expires':30})
 			},
 			headCurrencyFn(){
@@ -1083,6 +1083,26 @@
 				this.showGuideDetail = false;
 				this.checkGuideIndex = index;
 			},
+			getRecommend(){
+				var self = this;
+				//请求推荐信息
+				var recommendOptions = {
+					"id": self.id,
+					'currency':self.nowExchange.code,
+					'pageNum':1,
+					'pageSize':3
+				};
+				if(self.participants){
+					recommendOptions.participants = self.participants;
+				}
+				self.axios.post("https://api.localpanda.com/api/search/activity/recommend",JSON.stringify(recommendOptions),{
+					headers: {
+					'Content-Type': 'application/json'
+					}
+				}).then(function(res) {
+					self.detail.recommend = res.data;
+				}, function(res) {});
+			},
 			changeCurrency(e){
 				var self = this;
 				var value = e.target ? e.target.value : e;
@@ -1090,8 +1110,6 @@
 				var thisDetail = picInfo.details;
 				
 				var exchange = this.exchange;
-				
-
 				
 				//换算折扣价
 				self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price?currency="+value).then(function(res) {
@@ -1109,24 +1127,8 @@
 							self.nowExchange = thisEx;
 						}
 					}
-
-					//请求推荐信息
-					var recommendOptions = {
-						"id": self.id,
-						'currency':self.nowExchange.code,
-						'pageNum':1,
-						'pageSize':3
-					};
-					if(self.participants){
-						recommendOptions.participants = self.participants;
-					}
-					self.axios.post("https://api.localpanda.com/api/search/activity/recommend",JSON.stringify(recommendOptions),{
-						headers: {
-						'Content-Type': 'application/json'
-						}
-					}).then(function(res) {
-						self.detail.recommed = res.data;
-					}, function(res) {});
+					//推荐产品
+					self.getRecommend();
 
 						
 				}, function(res) {
@@ -1531,6 +1533,9 @@
 			// 	this.SelectCurrency=val.code
 				
 			// },
+			participants(){
+				this.getRecommend();
+			},
 			bookAdults:function(val){
 				
 				this.adultsText = (val>1?'Adults':'Adult')+' x '+val;
