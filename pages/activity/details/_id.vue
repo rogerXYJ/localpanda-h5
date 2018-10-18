@@ -229,11 +229,19 @@
 				</div>
 			</div>
 
-			<div class="other_list" v-if="detail.pickup===0">
+			<div class="other_list" v-if="detail.pickup===0 && detail.category !== 'Ticket'">
 				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Meeting Point Info</h3>
 				<div class="other_content">
 					<ul class="detail_txt_list">
 						<li v-for="(item,index) in detail.venues" :key="index"><i class="dian"></i>{{item}}</li>
+					</ul>
+				</div>
+			</div>
+			<div class="other_list" v-else-if="detail.category == 'Ticket'">
+				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Usage Instructions</h3>
+				<div class="other_content">
+					<ul class="detail_txt_list">
+						<li v-for="(item,index) in getTextArr(detail.statement)" :key="index"><i class="dian"></i>{{item}}</li>
 					</ul>
 				</div>
 			</div>
@@ -871,6 +879,7 @@
 				return text.replace(/(^\s*)|(\s*$)/g, "").replace(/(^\r\n*)|(\r\n*$)/g, "");
 			},
 			getTextArr(text){
+				if(!text)return [];
 				var arr = text.split('\n');
 				var newArr = [];
 				for(var i=0;i<arr.length;i++){
