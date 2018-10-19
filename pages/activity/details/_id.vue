@@ -216,10 +216,10 @@
 							<i class="iconfont">&#xe65c;</i>{{item.title}}
 							<p>{{item.content}}</p>
 						</li>
-						<!-- <li v-if="detail.pickup !== 0">
+						<li v-if="detail.pickup !== 0">
 							<i class="iconfont">&#xe65c;</i>{{getPickupTitle(detail.pickup)}}
 							<p v-html="enterToBr(detail.statement)"></p>
-						</li> -->
+						</li>
 					</ul>
 					
 				</div>
