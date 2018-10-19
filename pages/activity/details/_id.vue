@@ -203,7 +203,7 @@
 			
 			<div class="other_list" v-if="inclusions.length">
 				<!--  || detail.pickup -->
-				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Incluslons</h3>
+				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Inclusions</h3>
 				<div class="other_content">
 					<ul class="detail_txt_list">
 						<li v-for="(item,index) in inclusions" :key="index">
@@ -846,6 +846,11 @@
 				if(/active/.test(thisList.className)){
 					thisList.className = 'itinerary_list';
 				}else{
+					//加载图片
+					var thisImg = thisList.querySelector('img');
+					if(thisImg){
+						thisImg.setAttribute('src',thisImg.getAttribute('data-src'));
+					}
 					thisList.className = 'itinerary_list active';
 				}
 
@@ -866,6 +871,12 @@
 					e.target.innerHTML = 'View less';
 					for(var i=0;i<itinerary_list.length;i++){
 						var thisData = itinerary_list[i];
+						//加载图片
+						var thisImg = thisData.querySelector('img');
+						if(thisImg){
+							thisImg.setAttribute('src',thisImg.getAttribute('data-src'));
+						}
+						//展开样式
 						thisData.className = 'itinerary_list active';
 					}
 				}else{
