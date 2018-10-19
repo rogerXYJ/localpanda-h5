@@ -173,7 +173,7 @@
 								{{nowExchange.symbol}}{{amount}}</dd>
 						</dl>
 						<div class="hr"></div>
-						<p class="book_tip" v-if="picInfo.refundTimeLimit">Free cancellation  up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</p>
+						<p class="book_tip" v-if="picInfo.refundTimeLimit && picInfo.fullRefund===1">Free cancellation  up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</p>
 						<!-- {{picInfo.refundInstructions}} -->
 						<span class="btn" @click="bookFn">Book</span>
 						<span class="btn_inquire" @click="gaInquire">Inquire</span>
