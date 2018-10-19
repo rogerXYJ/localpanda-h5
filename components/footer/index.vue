@@ -127,7 +127,7 @@
 						show:false
 					},
 					{
-						name:'Need Help',
+						name:'Legal',
 						cont:[
 							// {
 							// 	text:"Legal",

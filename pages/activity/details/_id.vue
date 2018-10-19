@@ -24,12 +24,7 @@
 			<h2><span :class="{'private':detail.groupType=='Private'}" v-if="detail.groupType">{{detail.groupType}}</span>{{detail.title}}</h2>
 			<!-- 币种信息 -->
 			<div class="price_info clearfix">
-				<div class="price_select_box">
-					<select v-model="selectCurrency" @change="changeCurrency">
-						<option :value="item.code" :key="index" v-for="(item,index) in exchange">{{item.code}}</option>
-					</select>
-					<i class="iconfont">&#xe666;</i>
-				</div>
+				
 
 				<div class="select_people">
 					{{returnText(participants)}}
@@ -40,7 +35,12 @@
 				</div>
 				<p><small v-if="participants==0">From</small> {{nowExchange.symbol}} {{participants>0?returnFloat(getPeoplePrice(participants,true)):returnFloat(picInfo.bottomPrice)}}</p>
 
-				
+				<div class="price_select_box">
+					<select v-model="selectCurrency" @change="changeCurrency">
+						<option :value="item.code" :key="index" v-for="(item,index) in exchange">{{item.code}}</option>
+					</select>
+					<i class="iconfont">&#xe666;</i>
+				</div>
 			</div>
 			<!-- 预定和点评次数 -->
 			<div class="booking_info">
@@ -51,10 +51,16 @@
 
 			<!-- 产品基本信息 -->
 			<ul class="activity_info">
-				<li @click="showDurationInfo=true"><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont">&#xe689;</span></li>
-				<!-- <li v-if="getPickupTitle(detail.pickup)" @click="showPickupInfo=true"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont" v-if="detail.statement">&#xe689;</span></li> -->
+				<!-- Duration -->
+				<li v-if="/DAY/.test(detail.durationUnit)"><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}}</li>
+				<li @click="showDurationInfo=true" v-else><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont" v-if="!/DAY/.test(detail.durationUnit)">&#xe689;</span></li>
+				
+				<li v-if="getPickupTitle(detail.pickup)" @click="showPickupInfo=true"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont" v-if="detail.statement">&#xe689;</span></li>
+
+				<!-- 语言 -->
 				<li v-if="detail.groupType=='Group'"><i class="iconfont">&#xe627;</i>Offered in English</li>
 				<li @click="showLanguagesInfo=true" v-else-if="detail.category!='Ticket'"><i class="iconfont">&#xe627;</i>English (and other languages)-speaking guide <span class="iconfont">&#xe689;</span></li>
+
 				<li v-if="detail.destinations.length>1"><i class="iconfont">&#xe610;</i>{{detail.destinations.join(', ')}}</li>
 				<li><i class="iconfont">&#xe688;</i>Free cancellation  up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</li>
 				<li v-if="detail.limits"><i class="iconfont">&#xe68b;</i>{{detail.limits}}</li>
@@ -336,7 +342,7 @@
 
 		<div class="bookBtnBox" v-show="showFixedBtn">
 			<a @click="gaInquire">Inquire</a>
-			<a class="bookBtn" @click="goCheck">Check availability</a>
+			<a class="bookBtn" @click="goCheck">Book</a>
 		</div>
 		
 
@@ -384,17 +390,17 @@
 
 
 		<!-- 顶部Duration信息弹层 -->
-		<dialogBox v-model="showDurationInfo" width="90%" height="auto">
+		<dialogBox title="Duration tips" v-model="showDurationInfo" width="90%" height="auto">
 			<div class="dialog_tip_info">All trips start when you meet your tour guide (or driver if the trip does not include a guide), and conclude when you depart from your tour guide (or driver).</div>
 		</dialogBox>
 
 		<!-- 顶部Languages信息弹层 -->
-		<dialogBox v-model="showLanguagesInfo" width="90%" height="auto">
-			<div class="dialog_tip_info">Other languages:  Español, Français, Deutsch, русский язык. If you need guides in other languages, please comment in “Other Information”when you book. Our staff will contact you regarding further details e.g. price.</div>
+		<dialogBox title="Other languages" v-model="showLanguagesInfo" width="90%" height="auto">
+			<div class="dialog_tip_info">Español, Français, Deutsch, русский язык... <br>If you need guides in other languages, please comment in “Other Information”when you book. Our staff will contact you regarding further details e.g. price.</div>
 		</dialogBox>
 
 		<!-- 顶部Pickup信息弹层 -->
-		<dialogBox v-model="showPickupInfo" width="90%" height="auto">
+		<dialogBox title="Tips" v-model="showPickupInfo" width="90%" height="auto">
 			<div class="dialog_tip_info" v-html="enterToBr(detail.statement)"></div>
 		</dialogBox>
 		
@@ -1712,8 +1718,9 @@
 				}
 				
 				.price_select_box{
-					float: left;
+					float: right;
 					margin-top: 0.06rem;
+					margin-right: 0.2rem;
 				}
 				p{
 					float: right;
@@ -1748,7 +1755,7 @@
 					i{font-size: 0.26rem; margin-right: 0.15rem; float: left; margin-left: -0.4rem;}
 					font-size: 0.26rem;
 					line-height: 0.36rem;
-					span.iconfont{ vertical-align: middle; margin-left: 0.2rem;}
+					span.iconfont{ vertical-align: top; margin-left: 0.2rem; position: relative; top: 1px;}
 				}
 			}
 		}
@@ -2536,16 +2543,16 @@
 		.price_select_box{
 			float: right;
 			position: relative;
-			font-size: 0.32rem;
+			font-size: 0.4rem;
 			line-height: 0.6rem;
 			i{
 				position: absolute;
 				right: 0;
 				top: 0;
 				height: 0.6rem;
-				line-height: 0.64rem;
+				line-height: 0.66rem;
 				vertical-align: top;
-				font-size: 0.36rem;
+				font-size: 0.44rem;
 				font-weight: bold;
 				color: #878e95;
 				overflow: hidden;
@@ -2553,7 +2560,7 @@
 			select{
 				line-height: 0.6rem;
 				padding: 0 0.4rem 0 0.2rem;
-				font-size: 0.24rem;
+				font-size: 0.36rem;
 				color: #878e95;
 				background: none;
 				border: none;
@@ -2574,10 +2581,7 @@
 			background-color: rgba(0,0,0,0.6);
 			z-index: 100;
 		}
-		.dialog_tip_info{
-			margin-top: 0.8rem;
-			font-size: 0.26rem;
-		}
+		
 
 		.service_box{
 			font-size: 14px;
@@ -2757,6 +2761,15 @@
 					width: 0.26rem;
 					height: 0.26rem;
 				}
+			}
+		}
+
+		.dialog_tip_info{
+			margin-top: 0rem;
+			font-size: 0.26rem;
+			h4{
+				font-weight: bold;
+				padding-bottom: 0.1rem;
 			}
 		}
 

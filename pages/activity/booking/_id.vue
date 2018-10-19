@@ -596,7 +596,8 @@
 						}
 
 						if(that.addOder == false) {
-							that.addOder = true
+							that.addOder = true;
+							that.loadingStatus = true;
 							Vue.axios.put(that.apiBasePath +"order/activity", JSON.stringify(obj), {
 								headers: {
 									'Content-Type': 'application/json; charset=UTF-8'
@@ -607,6 +608,7 @@
 								if(obj.currency == 'CNY') {
 									var ua = window.navigator.userAgent.toLowerCase();
 									var isWx = (ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
+									
 									if(isWx) {
 										window.location.href = 'https://www.localpanda.com/relay/getWechatToken.html?url=' + encodeURIComponent('https://www.localpanda.com' + thisUrl);
 									} else {
