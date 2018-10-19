@@ -60,9 +60,9 @@
 </template>
 
 <script>
-	if (process.browser) {
-	  require('~/assets/js/plugin/talk.js');
-  }
+	// if (process.browser) {
+	//   require('~/assets/js/plugin/talk.js');
+  // }
 
   import {formatDate } from '~/assets/js/utils.js'
   import service from '~/components/info/inquiry/service';
