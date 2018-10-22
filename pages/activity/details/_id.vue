@@ -246,7 +246,7 @@
 					</ul>
 				</div>
 			</div>
-			<div class="other_list" v-else-if="detail.category == 'Ticket'">
+			<div class="other_list" v-else-if="detail.category == 'Ticket' &&　getTextArr(detail.statement).length">
 				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Usage Instructions</h3>
 				<div class="other_content">
 					<ul class="detail_txt_list">
