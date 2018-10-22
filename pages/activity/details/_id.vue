@@ -55,7 +55,7 @@
 				<li v-if="/DAY/.test(detail.durationUnit)"><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}}</li>
 				<li @click="showDurationInfo=true" v-else><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont" v-if="!/DAY/.test(detail.durationUnit)">&#xe689;</span></li>
 				
-				<li v-if="getPickupTitle(detail.pickup)" @click="showPickupInfo=true"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont" v-if="detail.statement">&#xe689;</span></li>
+				<li v-if="getPickupTitle(detail.pickup) && detail.category!='Ticket'" @click="showPickupInfo=true"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont" v-if="detail.statement">&#xe689;</span></li>
 
 				<!-- 语言 -->
 				<li v-if="detail.groupType=='Group'"><i class="iconfont">&#xe627;</i>Offered in English</li>
@@ -217,7 +217,7 @@
 							<i class="iconfont">&#xe65c;</i>{{item.title}}
 							<p>{{item.content}}</p>
 						</li>
-						<li v-if="detail.pickup !== 0">
+						<li v-if="detail.pickup !== 0 && detail.category!='Ticket'">
 							<i class="iconfont">&#xe65c;</i>{{getPickupTitle(detail.pickup)}}
 							<p v-html="enterToBr(detail.statement)"></p>
 						</li>
