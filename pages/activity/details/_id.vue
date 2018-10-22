@@ -397,7 +397,7 @@
 
 		<!-- 顶部Languages信息弹层 -->
 		<dialogBox title="Other languages" v-model="showLanguagesInfo" width="90%" height="auto">
-			<div class="dialog_tip_info">Español, Français, Deutsch, русский язык... <br>If you need guides in other languages, please comment in “Other Information”when you book. Our staff will contact you regarding further details e.g. price.</div>
+			<div class="dialog_tip_info">Español, Français, Deutsch, русский язык... <br>Price may vary depending on the language. If you need guides in other languages, feel free to contact us.</div>
 		</dialogBox>
 
 		<!-- 顶部Pickup信息弹层 -->
