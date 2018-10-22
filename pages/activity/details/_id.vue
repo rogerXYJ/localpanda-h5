@@ -33,9 +33,11 @@
 					</select>
 					<i class="iconfont">&#xe666;</i>
 				</div>
-				<p><small v-if="participants==0">From</small> {{nowExchange.symbol}} {{participants>0?returnFloat(getPeoplePrice(participants,true)):returnFloat(picInfo.bottomPrice)}}</p>
+				<p> {{nowExchange.symbol}} {{participants>0?returnFloat(getPeoplePrice(participants,true)):returnFloat(picInfo.bottomPrice)}}</p>
 
+				
 				<div class="price_select_box">
+					<small v-if="participants==0">From</small>
 					<select v-model="selectCurrency" @change="changeCurrency">
 						<option :value="item.code" :key="index" v-for="(item,index) in exchange">{{item.code}}</option>
 					</select>
@@ -1721,7 +1723,11 @@
 				.price_select_box{
 					float: right;
 					margin-top: 0.06rem;
-					margin-right: 0.2rem;
+					margin-right: 0.1rem;
+					small{
+						color: #888;
+						font-size: 0.26rem;
+					}
 				}
 				p{
 					float: right;
@@ -1834,6 +1840,8 @@
 					}
 					input{color: #353a3f;}
 					input::-webkit-input-placeholder { color: #878e95; }
+					input::-moz-placeholder { color: #878e95; }
+					input::-ms-input-placeholder { color: #878e95; }
 					.input_icon{
 						position: absolute;
 						left: 0;
