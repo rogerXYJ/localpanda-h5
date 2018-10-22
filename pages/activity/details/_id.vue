@@ -256,13 +256,13 @@
 			</div>
 
 			<div class="other_list" v-if="delEnter(detail.remark) || notice.length">
-				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Important Info</h3>
+				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>{{delEnter(detail.remark)?'Important Info':'Additional Info'}}</h3>
 				<div class="other_content">
 					<ul class="detail_txt_list">
 						<li v-for="item in getTextArr(detail.remark)" :key="item">
 							<i class="dian"></i>{{item}}
 						</li>
-						<h4 v-if="notice.length">Additional Info</h4>
+						<h4 v-if="notice.length && delEnter(detail.remark)">Additional Info</h4>
 						<li v-for="(item,index) in notice" :key="index">
 							<i class="dian"></i>{{item.title}}
 							<p>{{item.content}}</p>
