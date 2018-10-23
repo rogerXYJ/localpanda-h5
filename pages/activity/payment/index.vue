@@ -356,13 +356,14 @@
 							deviceType:that.device()
 						});
 					}else{
-						//code用过或者没有code则从新获取
+						
 						var localWxCode = localStorage.getItem('localWxCode');
-						if(that.wxcode != localWxCode && that.opctions.currency == 'CNY') {
+						if(that.wxcode && that.wxcode != localWxCode && that.opctions.currency == 'CNY') {
 							//本地存储code
 							localStorage.setItem('localWxCode', that.wxcode);
-						}else{
 							that.wxInit();
+						}else{
+							//code用过或者没有code则从新获取
 							location.href = 'https://www.localpanda.com/relay/getWechatToken.html?url=' + encodeURIComponent(location.href);
 						}
 						
