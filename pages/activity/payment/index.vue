@@ -339,39 +339,36 @@
 			getInfo() {
 				let that = this;
 				var orderInfo = this.orderInfo;
-				//Vue.axios.get(this.apiBasePath + "activity/order/detail/" + that.orderId).then(function(res) {
-					that.opctions = orderInfo;
-					that.email = orderInfo.contactInfo.emailAddress;
-					that.refundTimeLimit = orderInfo.activityPrice.refundTimeLimit;
+				that.opctions = orderInfo;
+				that.email = orderInfo.contactInfo.emailAddress;
+				that.refundTimeLimit = orderInfo.activityPrice.refundTimeLimit;
 
-					//人民币支付
-					if(that.opctions.currency == 'CNY') {
-						that.id=0;
-						//微信外部H5
-						if(!that.isWx) {
-							that.openWxPay({
-								tradeType: 'MWEB',
-								objectId: that.orderId,
-								amount: that.opctions.amount, // 支付金额，单位是“元”
-								objectType: 'ACTIVITY',
-								deviceType:that.device()
-							});
-						}else{
-							//code用过或者没有code则从新获取
-							var localWxCode = localStorage.getItem('localWxCode');
-							if(that.wxcode == localWxCode && that.opctions.currency == 'CNY' || !that.wxcode && that.opctions.currency == 'CNY') {
-								location.href = 'https://www.localpanda.com/relay/getWechatToken.html?url=' + encodeURIComponent(location.href);
-								return;
-							}
+				//人民币支付
+				if(that.opctions.currency == 'CNY') {
+					that.id=0;
+					//微信外部H5
+					if(!that.isWx) {
+						that.openWxPay({
+							tradeType: 'MWEB',
+							objectId: that.orderId,
+							amount: that.opctions.amount, // 支付金额，单位是“元”
+							objectType: 'ACTIVITY',
+							deviceType:that.device()
+						});
+					}else{
+						//code用过或者没有code则从新获取
+						var localWxCode = localStorage.getItem('localWxCode');
+						if(that.wxcode != localWxCode && that.opctions.currency == 'CNY') {
 							//本地存储code
 							localStorage.setItem('localWxCode', that.wxcode);
-							
+						}else{
 							that.wxInit();
+							location.href = 'https://www.localpanda.com/relay/getWechatToken.html?url=' + encodeURIComponent(location.href);
 						}
-					};
+						
+					}
+				};
 					
-
-				//}, function(res) {})
 			},
 			//提交设备机型
 			device() {
@@ -868,15 +865,15 @@
 			this.ua = window.navigator.userAgent.toLowerCase();
 			this.isWx = (this.ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
 			
+			//微信支付
 			this.getInfo();
-			//this.getToken()
 
 			//paypal支付
 			if(this.orderInfo.currency !='CNY'){
 				this.paypal();
 			}
 			
-
+			//stripe支付
 			this.stripeFn();
 
 			//console.log(this.orderInfo);
