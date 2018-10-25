@@ -45,7 +45,7 @@
 				</div>
 			</div>
 			<!-- 预定和点评次数 -->
-			<div class="booking_info">
+			<div class="booking_info" v-if="detail.sales">
 				<!-- <span v-if="reviewsData && reviewsData.records">( {{reviewsData.records}} )</span>
 				<div v-if="reviewsData && reviewsData.records" class="reviews_star" v-html="reviewsStarHtml(6)"></div> -->
 				Booked {{detail.sales}} times (last 30 days)
@@ -57,7 +57,7 @@
 				<li v-if="/DAY/.test(detail.durationUnit)"><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}}</li>
 				<li @click="showDurationInfo=true" v-else><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont" v-if="!/DAY/.test(detail.durationUnit)">&#xe689;</span></li>
 				
-				<li v-if="getPickupTitle(detail.pickup) && detail.category!='Ticket'" @click="showPickupInfo=true"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont" v-if="detail.statement">&#xe689;</span></li>
+				<li v-if="getPickupTitle(detail.pickup) && detail.category!='Ticket' && detail.statement" @click="showPickupInfo=true"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont">&#xe689;</span></li>
 
 				<!-- 语言 -->
 				<li v-if="detail.groupType=='Group'"><i class="iconfont">&#xe627;</i>Offered in English</li>
@@ -219,8 +219,8 @@
 							<i class="iconfont">&#xe65c;</i>{{item.title}}
 							<p>{{item.content}}</p>
 						</li>
-						<li v-if="detail.pickup !== 0 && detail.category!='Ticket'">
-							<i class="iconfont">&#xe65c;</i>{{getPickupTitle(detail.pickup)}}
+						<li v-if="detail.pickup !== 0 && detail.category!='Ticket' && detail.statement">
+							<i class="iconfont">&#xe65c;</i>{{getPickupTitle(detail.pickup)=='Pick-up included, drop-off excluded'?'Pick-up included':getPickupTitle(detail.pickup)}}
 							<p v-html="enterToBr(detail.statement)"></p>
 						</li>
 					</ul>
@@ -399,7 +399,14 @@
 
 		<!-- 顶部Languages信息弹层 -->
 		<dialogBox title="Other languages" v-model="showLanguagesInfo" width="90%" height="auto">
-			<div class="dialog_tip_info">Español, Français, Deutsch, русский язык... <br>Price may vary depending on the language. If you need guides in other languages, feel free to contact us.</div>
+			<div class="dialog_tip_info">* Le français<br>
+* Deutsch<br>
+* Español<br>
+* Português<br>
+* русский язык<br>
+* 日本語<br>
+* 한국어<br><br>
+Price may vary depending on the language. If you need guides in other languages, feel free to contact us.</div>
 		</dialogBox>
 
 		<!-- 顶部Pickup信息弹层 -->
@@ -1842,6 +1849,7 @@
 					input::-webkit-input-placeholder { color: #878e95; }
 					input::-moz-placeholder { color: #878e95; }
 					input::-ms-input-placeholder { color: #878e95; }
+					input::placeholder { color: #878e95; }
 					.input_icon{
 						position: absolute;
 						left: 0;
