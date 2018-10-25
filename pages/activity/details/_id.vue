@@ -28,16 +28,16 @@
 
 				<div class="select_people">
 					{{returnText(participants)}}
-					<select class="select_people_box" v-model="participants" @change="changePeople">
+					<select class="select_people_box" v-model="participants" @change="changePeople" v-if="!picInfo.unifiedPricing">
 						<option :value="item.people" :key="index" v-for="(item,index) in participantsData">{{item.text}}</option>
 					</select>
-					<i class="iconfont">&#xe666;</i>
+					<i class="iconfont" v-if="!picInfo.unifiedPricing">&#xe666;</i>
 				</div>
 				<p> {{nowExchange.symbol}} {{participants>0?returnFloat(getPeoplePrice(participants,true)):returnFloat(picInfo.bottomPrice)}}</p>
 
 				
 				<div class="price_select_box">
-					<small v-if="participants==0">From</small>
+					<small v-if="participants==0 && !picInfo.unifiedPricing">From</small>
 					<select v-model="selectCurrency" @change="changeCurrency">
 						<option :value="item.code" :key="index" v-for="(item,index) in exchange">{{item.code}}</option>
 					</select>
