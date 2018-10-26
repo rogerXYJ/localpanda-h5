@@ -2046,7 +2046,7 @@ Price may vary depending on the language. If you need guides in other languages,
 					font-size: 0.26rem;
 					font-weight: bold;
 					line-height: 0.4rem;
-					padding: 0.3rem 0;
+					padding: 0.3rem 0 0.3rem 0.35rem;
 					position: relative;
 					z-index: 2;
 					i{
@@ -2055,7 +2055,7 @@ Price may vary depending on the language. If you need guides in other languages,
 					}
 					span{
 						float: left;
-						margin:0.14rem 0.2rem 0 0;
+						margin:0.14rem 0 0 -0.35rem;
 						width: 0.12rem;
 						height: 0.12rem;
 						border-radius: 0.06rem;
