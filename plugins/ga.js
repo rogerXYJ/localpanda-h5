@@ -29,7 +29,7 @@ export default ({ app }) => {
     //添加google统计代码
     var scriptArr = [
       'https://www.googletagmanager.com/gtag/js?id=UA-107010673-2',
-      'https://www.google-analytics.com/ga.js?id=UA-107010673-2'
+      'https://www.google-analytics.com/analytics.js'
     ]
     for(var i=0;i<scriptArr.length;i++){
       var gaScript = document.createElement('script');
@@ -44,5 +44,25 @@ export default ({ app }) => {
     gtag('js', new Date());
     gtag('config', 'UA-107010673-2');
     window.gaSend = 'gtag_UA_107010673_2.send';
+
+    //支付电商统计
+    if(/payment/.test(window.location.pathname)){
+      var gaTimer = setInterval(function(){
+        if(ga){
+          //电商ga，创建跟踪器
+          ga('create', 'UA-107010673-2', 'auto');
+          //加载跟踪器插件
+          ga('require', 'ecommerce');
+          //GA加载完毕回调
+          if(typeof window.gaCallback == 'function'){
+            window.gaCallback();
+          };
+          //停止检测
+          window.clearInterval(gaTimer);
+        }
+      },300);
+    }
+    
+
   }
 }

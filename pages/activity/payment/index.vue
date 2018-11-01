@@ -145,6 +145,7 @@
 	import { GetQueryString,formatDate } from '~/assets/js/utils.js'
 	import Vue from 'vue'
 	import Loading from '~/components/plugin/Loading'
+import { clearInterval } from 'timers';
 
 	export default {
 		name: 'payNow',
@@ -450,10 +451,22 @@
 						if(/ok/.test(res.err_msg)) {
 
 							//成功
-							var pageTracker = _gat._getTracker("UA-107010673-1");
-							pageTracker._addTrans(that.orderId, "", that.opctions.amount, "", "", "", "", "");
-							pageTracker._addItem(that.orderId, that.opctions.activityId, "", "", that.opctions.amount, "1");
-							pageTracker._trackTrans();
+							// var pageTracker = _gat._getTracker("UA-107010673-1");
+							// pageTracker._addTrans(that.orderId, "", that.opctions.amount, "", "", "", "", "");
+							// pageTracker._addItem(that.orderId, that.opctions.activityId, "", "", that.opctions.amount, "1");
+							// pageTracker._trackTrans();
+
+						//ga统计
+						that.analyticsGa({
+							orderId: that.orderId,
+							activityId: that.opctions.activityId,
+							title: that.opctions.activityInfo.title,
+							travelers: that.opctions.childrenNum*1 + that.opctions.adultNum*1,
+							currency: that.opctions.currency,
+							amount: that.opctions.amount,
+							payType: 'Wechat'
+						});
+
 
 							msg = 'ok';
 							thisData.succeed = true;
@@ -624,10 +637,21 @@
 							//成功
 							if(response.status == 200) {
 								isPay=false
-								var pageTracker = _gat._getTracker("UA-107010673-1");
-								pageTracker._addTrans(that.orderId, "", that.opctions.amount, "", "", "", "", "");
-								pageTracker._addItem(that.orderId, that.opctions.activityId, "", "", that.opctions.amount, "1");
-								pageTracker._trackTrans();
+								// var pageTracker = _gat._getTracker("UA-107010673-1");
+								// pageTracker._addTrans(that.orderId, "", that.opctions.amount, "", "", "", "", "");
+								// pageTracker._addItem(that.orderId, that.opctions.activityId, "", "", that.opctions.amount, "1");
+								// pageTracker._trackTrans();
+
+								//ga统计
+								that.analyticsGa({
+									orderId: that.orderId,
+									activityId: that.opctions.activityId,
+									title: that.opctions.activityInfo.title,
+									travelers: that.opctions.childrenNum*1 + that.opctions.adultNum*1,
+									currency: that.opctions.currency,
+									amount: that.opctions.amount,
+									payType: 'Stripe'
+								});
 
 								if(!thisData.succeed && thisData.errorMessage && !/Exception/.test(thisData.errorMessage)) {
 									msg = thisData.errorMessage;
@@ -713,6 +737,7 @@
 			confirmation(e) {
 				//var query = this.query;
 				var self = this;
+				var that = this;
 				self.loadingStatus = true;
 				let postData={
 					orderId:self.orderId,
@@ -729,6 +754,16 @@
 							msg = '';
 						if(response.data.succeed) {
 							succeed = true;
+							//ga统计
+							that.analyticsGa({
+								orderId: that.orderId,
+								activityId: that.opctions.activityId,
+								title: that.opctions.activityInfo.title,
+								travelers: that.opctions.childrenNum*1 + that.opctions.adultNum*1,
+								currency: that.opctions.currency,
+								amount: that.opctions.amount,
+								payType: 'Wechat'
+							});
 						} else {
 							msg = 'fail';
 						}
@@ -847,6 +882,16 @@
 				}).then(function(response) {
 					that.loadingStatus = false;
 					if(putData.status == 'SUCCESSFUL') {
+						//ga统计
+						that.analyticsGa({
+							orderId: that.orderId,
+							activityId: that.opctions.activityId,
+							title: that.opctions.activityInfo.title,
+							travelers: that.opctions.childrenNum*1 + that.opctions.adultNum*1,
+							currency: that.opctions.currency,
+							amount: that.opctions.amount,
+							payType: 'Paypal'
+						});
 						//跳转
 						window.location.href = "/activity/payment/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + '&succeed=true&symbol=' + that.opctions.symbol + '&currency=' + that.opctions.currency;
 					} else {
@@ -856,6 +901,27 @@
 				}, function(response) {
 					
 				})
+			},
+			analyticsGa(data){
+				//电商ga
+				ga('ecommerce:addTransaction', {
+					'id': data.orderId,  // Transaction ID. Required.
+					'affiliation': data.payType,   // Affiliation or store name.
+					'revenue': data.amount,               // Grand Total.
+					'currency': data.currency
+					// 'shipping': '',                  // Shipping.
+					// 'tax': ''                     // Tax.
+				});
+				ga('ecommerce:addItem', {
+					'id': data.orderId,    // Transaction ID. Required.
+					'name': data.title,    // Product name. Required.
+					'sku': data.activityId,                 // SKU/code.
+					'category': 'ACTIVITY',         // Category or variation.
+					'price': data.amount,                 // Unit price.
+					'currency': data.currency,
+					'quantity': '1'             // Quantity.
+				});
+				ga('ecommerce:send');
 			}
 		},
 		created: function() {
