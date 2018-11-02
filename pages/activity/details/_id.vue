@@ -187,7 +187,7 @@
 		<!-- 行程板块 -->
 		<div class="detail_box itinerary" v-if="detail.itinerary.length">
 			<h3><span class="btn_viewall" @click="itineraryViewall">View all</span><i></i>Experience Details</h3>
-			<div class="itinerary_tip" v-if="detail.groupType=='Private'">If you want to adjust your itinerary, feel free to contact us. Since the tour is private, our staff can help you make changes according to your needs.</div>
+			<div class="itinerary_tip" v-if="detail.groupType=='Private'">Our staff can help you make changes to your itinerary since this is a private tour.</div>
 			<dl class="itinerary_list" v-for="(items,index) in detail.itinerary" :key="index">
 				<dt @click="itineraryFn" v-if="items.description"><i class="iconfont i_down">&#xe667;</i><i class="iconfont i_up">&#xe666;</i><span></span>{{items.title}}</dt>
 				<dt v-else><span></span>{{items.title}}</dt>
