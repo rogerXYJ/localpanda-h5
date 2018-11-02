@@ -133,7 +133,10 @@
 					</li>
 					<li v-show="!showPriceInfo">
 						<span class="btn" @click="availability">Book</span>
-						<span class="btn_inquire" @click="gaInquire">Inquire</span>
+						<div class="inquire_box">
+							Got questions before booking? <span @click="gaInquire">Contact Us</span>
+						</div>
+						<!-- <span class="btn_inquire" @click="gaInquire">Inquire</span> -->
 					</li>
 				</ul>
 
@@ -345,7 +348,7 @@
 
 
 		<div class="bookBtnBox" v-show="showFixedBtn">
-			<a @click="gaInquire">Inquire</a>
+			<!-- <a @click="gaInquire">Inquire</a> -->
 			<a class="bookBtn" @click="goCheck">Book</a>
 		</div>
 		
@@ -1146,7 +1149,7 @@ Price may vary depending on the language. If you need guides in other languages,
 						self.picInfo.childDiscount=res.data.childDiscount
 					}
 					self.picInfo.bottomPrice=res.data.bottomPrice
-					self.picInfo.currency=res.data.currency
+					self.picInfo.currency=res.data.currency;
 					
 					//设置当前币种
 					for(var i=0;i<exchange.length;i++){
@@ -1159,6 +1162,9 @@ Price may vary depending on the language. If you need guides in other languages,
 					//推荐产品
 					self.getRecommend();
 
+					//重设book价格
+					self.setPeoplePrice();
+
 						
 				}, function(res) {
 					
@@ -1167,19 +1173,19 @@ Price may vary depending on the language. If you need guides in other languages,
 				self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price/detail?currency="+value+(self.participants?'&participants='+self.participants:'')).then(function(res) {
 						self.picInfo.details=res.data
 						
-						//重设book价格
-						self.setPeoplePrice();
+						
 
-						self.sixArr=res.data
+						// self.sixArr=res.data
+						// if(res.data.length>6){
+						// 	self.isShowTable=true
+						// 	self.sixArr=res.data.concat().splice(0,6);
+						// }else{
+						// 	self.sixArr=res.data;
+						// }
 						if(self.participants>0){
 							self.adultsPic =thisDetail[self.participants-1].price;	
 						}
-						if(res.data.length>6){
-							self.isShowTable=true
-							self.sixArr=res.data.concat().splice(0,6);
-						}else{
-							self.sixArr=res.data;
-						}
+						
 				}, function(res) {
 					
 				});
@@ -1879,6 +1885,19 @@ Price may vary depending on the language. If you need guides in other languages,
 					.check_tip{
 						margin: 0 0 0.25rem;
 						span{ color: red; display: inline-block; vertical-align: middle;}
+					}
+					.inquire_box{
+						margin-top: 0.25rem;
+						font-size: 0.26rem;
+						line-height: 0.44rem;
+						padding: 0.06rem 0;
+						span{
+							display: inline-block;
+							vertical-align: top;
+							color: #1bbc9d;
+							text-decoration: underline;
+							margin-left: 0.2rem;
+						}
 					}
 				}
 				.check_people{
@@ -2668,7 +2687,7 @@ Price may vary depending on the language. If you need guides in other languages,
 			display: flex;
 			a{
 				flex: 1;
-				margin-right: 0.32rem;
+				// margin-right: 0.32rem;
 				width: 3.6rem;
 				height: 0.9rem;
 				line-height: 0.86rem;
@@ -2677,17 +2696,18 @@ Price may vary depending on the language. If you need guides in other languages,
 				font-weight: bold;
 				border-radius: 0.6rem;
 				font-size: 0.32rem;
-				&:last-child{
-					margin-right: 0;
-					background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
-				}
-				&:first-child{
-					border: solid 1px #1bbc9d;
-					box-sizing: border-box;
-					background: #fff;
-					color: #1bbc9d;
-					font-size:0.36rem;
-				}
+				background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+				// &:last-child{
+				// 	margin-right: 0;
+				// 	background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+				// }
+				// &:first-child{
+				// 	border: solid 1px #1bbc9d;
+				// 	box-sizing: border-box;
+				// 	background: #fff;
+				// 	color: #1bbc9d;
+				// 	font-size:0.36rem;
+				// }
 				
 			}
 		}

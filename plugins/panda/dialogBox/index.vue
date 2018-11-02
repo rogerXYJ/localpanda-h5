@@ -23,7 +23,7 @@
         <span class="dialog_cancel" v-if="cancelShow" @click="cancel">{{cancelText?cancelText:'Cancel'}}</span>
       </div>
       <!-- 关闭按钮 -->
-      <div class="dialog_close iconfont" @click="close">&#xe606;</div>
+      <div class="dialog_close iconfont" v-if="!hideClose" @click="close">&#xe606;</div>
     </div>
   </div>
 </template>
@@ -39,7 +39,9 @@
       cancelText: String,
       value: Boolean,
       width: String,
-      height:String
+      height:String,
+      bgNoClick:Boolean,
+      hideClose:Boolean
     },
 		data() {
 			return {
@@ -72,7 +74,9 @@
         history.back();
       },
       bgClick(){
-        this.close();
+        if(!this.bgNoClick){
+          this.close();
+        }
       },
       getW(str){
         if(/\%/.test(str)){

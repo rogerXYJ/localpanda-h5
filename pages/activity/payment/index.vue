@@ -134,6 +134,16 @@
 		</div>
 
 		<Loading :loadingStatus="loadingStatus"></Loading>
+
+		<!-- 提示订单状态 -->
+		<dialogBox title="Tips" v-model="dialogStatus" :bgNoClick="true" :hideClose="true" width="80%" height="auto">
+			<div class="order_status">
+				<p>{{dialogStatusText}}</p>
+				<a class="btn" :href="'https://www.localpanda.com/activity/details/'+orderInfo.activityId" v-if="orderInfo.status=='CANCELED'">Book Again</a>
+				<a class="btn" :href="'/user/myBookings?email='+orderInfo.contactInfo.emailAddress+'&orderid='+orderId" v-else>View Order Detail</a>
+				<a class="btn" href="/">Back to Home</a>
+			</div>
+		</dialogBox>
 	</div>
 
 </template>
@@ -145,10 +155,15 @@
 	import { GetQueryString,formatDate } from '~/assets/js/utils.js'
 	import Vue from 'vue'
 	import Loading from '~/components/plugin/Loading'
-import { clearInterval } from 'timers';
+	import dialogBox from '~/plugins/panda/dialogBox';
+	import { clearInterval } from 'timers';
 
 	export default {
 		name: 'payNow',
+		components: {
+			Loading,
+			dialogBox
+		},
 		head() {
 			let title = 'Payment';
 			let description = 'Enter your payment information and proceed to the confirmation page'
@@ -253,13 +268,15 @@ import { clearInterval } from 'timers';
 				payStatus:false,
 				payErrMsg:'',
 				isPay:false,
-				showWxPayBtn:false
+				showWxPayBtn:false,
+
+				//订单状态提醒
+				dialogStatus:false,
+				dialogStatusText:''
 				
 			}
 		},
-		components: {
-			Loading
-		},
+		
 		methods: {
 			formatDate:formatDate,
 			changeCurrency(e) {
@@ -339,10 +356,7 @@ import { clearInterval } from 'timers';
 			},
 			getInfo() {
 				let that = this;
-				var orderInfo = this.orderInfo;
-				that.opctions = orderInfo;
-				that.email = orderInfo.contactInfo.emailAddress;
-				that.refundTimeLimit = orderInfo.activityPrice.refundTimeLimit;
+				
 
 				//人民币支付
 				if(that.opctions.currency == 'CNY') {
@@ -537,7 +551,7 @@ import { clearInterval } from 'timers';
 						//window.location.href = openWxUrl;
 
 					} else {
-						alert(data.returnMsg + ', Try again!')
+						// alert(data.returnMsg + ', Try again!')
 					}
 					self.loadingStatus = false;
 
@@ -786,7 +800,7 @@ import { clearInterval } from 'timers';
 				this.showWxOpenBox = false;
 			},
 			paypal(){
-				console.log(this.orderInfo);
+				
 				var self = this;
 				var putData = {
 					"amount": this.orderInfo.amount,
@@ -931,26 +945,39 @@ import { clearInterval } from 'timers';
 			this.orderId = GetQueryString("objectId");
 			this.ua = window.navigator.userAgent.toLowerCase();
 			this.isWx = (this.ua.match(/MicroMessenger/i) == 'micromessenger') ? true : false;
-			
-			//微信支付
-			this.getInfo();
 
-			//paypal支付
-			if(this.orderInfo.currency !='CNY'){
-				this.paypal();
+
+
+			//渲染订单信息
+			var orderInfo = this.orderInfo;
+			this.opctions = orderInfo;
+			this.email = orderInfo.contactInfo.emailAddress;
+			this.refundTimeLimit = orderInfo.activityPrice.refundTimeLimit;
+
+			//检测支付状态
+			if(this.orderInfo.status=='PAYMENT_PENDING'){
+
+				//微信支付
+				this.getInfo();
+
+				//paypal支付
+				if(this.orderInfo.currency !='CNY'){
+					this.paypal();
+				}
+				
+				//stripe支付
+				this.stripeFn();
+
+			}else if(this.orderInfo.status=='CANCELED'){
+				this.dialogStatus = true;
+				this.dialogStatusText = 'The order has expired. ';
+			}else{
+				this.dialogStatus = true;
+				this.dialogStatusText = 'The order has been paid.';
 			}
 			
-			//stripe支付
-			this.stripeFn();
+			
 
-			//console.log(this.orderInfo);
-			
-//			console.log(this.opctions.currency)
-//			if(this.opctions.currency=="CNY"){
-//				this.id=0
-//			}
-			
-			
 			this.logIn = this.urlQuery.login ? this.urlQuery.login : 0;
 			if(!this.logIn) {
 				this.logInHide = true;
@@ -965,32 +992,7 @@ import { clearInterval } from 'timers';
 		}
 	}
 </script>
-<style lang="scss">
-.payNow{
-	.float{float: right;width: 85%;vertical-align:middle;}
-	.btn_pay{
-		
-		.btn{
-			position: relative;
-			.paypal-button{
-				position: absolute;
-				left: 0;
-				top: 0;
-				width: 100%;
-				height: 100%;
-				//opacity: 0.01;
-				z-index: 2;
-				.xcomponent-outlet{
-					width: 100%!important;
-					height: 100%!important;
-				}
-				
-			}
-		}
-	}
-}
-	
-</style>
+
 <style lang="scss" scoped>
 	 .icon {
        width: 1em; height: 1em;
@@ -1172,6 +1174,18 @@ import { clearInterval } from 'timers';
 				}
 			}
 		}
+
+		.order_status{
+			p{
+				text-align: center;
+				font-size: 0.36rem;
+				padding: 0.2rem 0;
+				font-weight: bold;
+			}
+			.btn{
+				margin-top: 0.3rem;
+			}
+		}
 	}
 	
 	.picRate {
@@ -1253,4 +1267,32 @@ import { clearInterval } from 'timers';
 			}
 		}
 	}
+	
+</style>
+
+<style lang="scss">
+.payNow{
+	.float{float: right;width: 85%;vertical-align:middle;}
+	.btn_pay{
+		
+		.btn{
+			position: relative;
+			.paypal-button{
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				//opacity: 0.01;
+				z-index: 2;
+				*{
+					width: 100%!important;
+					height: 100%!important;
+				}
+				
+			}
+		}
+	}
+}
+	
 </style>
