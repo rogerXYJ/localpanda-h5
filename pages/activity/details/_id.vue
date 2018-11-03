@@ -38,7 +38,7 @@
 				
 				<div class="price_select_box">
 					<small v-if="participants==0 && !picInfo.unifiedPricing">From</small>
-					<select v-model="selectCurrency" @change="changeCurrency">
+					<select v-model="selectCurrency">
 						<option :value="item.code" :key="index" v-for="(item,index) in exchange">{{item.code}}</option>
 					</select>
 					<i class="iconfont">&#xe666;</i>
@@ -170,7 +170,7 @@
 							<dt>Total Amount</dt>
 							<dd>
 								<div class="price_select_box">
-									<select v-model="selectCurrency" @change="changeCurrency">
+									<select v-model="selectCurrency">
 										<option :value="item.code" :key="index" v-for="(item,index) in exchange">{{item.code}}</option>
 									</select>
 									<i class="iconfont">&#xe666;</i>
@@ -1135,65 +1135,81 @@ Price may vary depending on the language. If you need guides in other languages,
 					self.detail.recommend = res.data;
 				}, function(res) {});
 			},
-			changeCurrency(e){
+			getPriceData(options,callback){
 				var self = this;
-				var value = e.target ? e.target.value : e;
-				var picInfo = this.picInfo;
-				var thisDetail = picInfo.details;
-				
+				//价格信息
+				var promisePrice = new Promise(function(resolve, reject){
+					self.axios.get("https://api.localpanda.com/api/product/activity/"+options.activityId+"/price?currency="+options.currency).then(function(res) {
+						resolve(res);
+					}, function(res) {
+						resolve(res);
+					});
+				});
+				var promisePriceDetail = new Promise(function(resolve, reject){
+					self.axios.get("https://api.localpanda.com/api/product/activity/"+options.activityId+"/price/detail?currency="+options.currency+(options.participants?'&participants='+options.participants:'')).then(function(res) {
+						resolve(res);
+					}, function(res) {
+						resolve(res);
+					});
+				});
+
+				Promise.all([promisePrice,promisePriceDetail]).then(function(results){
+					var priceData = results[0].data,
+						priceDetailData = results[1].data;
+						if(typeof callback === 'function'){
+							callback({
+								priceData:priceData,
+								priceDetailData:priceDetailData
+							});
+						}
+				});
+
+			},
+			changeCurrency(){
+				var self = this;
+				var selectCurrency = this.selectCurrency;
 				var exchange = this.exchange;
-				
-				//换算折扣价
-				self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price?currency="+value).then(function(res) {
-					if(self.picInfo.childDiscount){
-						self.picInfo.childDiscount=res.data.childDiscount
+
+				//获取最新价格信息
+				this.getPriceData({
+					activityId: this.id, //产品id
+					currency: selectCurrency,  //当前币种
+					participants: this.participants  //人数
+				},function(data){ //data包含价格基本信息，价格详情
+					var priceData = data.priceData,
+						priceDetailData = data.priceDetailData;
+
+					//设置价格信息
+					if(priceData.childDiscount){
+						self.picInfo.childDiscount= priceData.childDiscount
 					}
-					self.picInfo.bottomPrice=res.data.bottomPrice
-					self.picInfo.currency=res.data.currency;
-					
+					self.picInfo.bottomPrice = priceData.bottomPrice;
+					self.picInfo.currency = priceData.currency;
+
 					//设置当前币种
 					for(var i=0;i<exchange.length;i++){
 						var thisEx = exchange[i];
 						//检测当前货币类型
-						if(thisEx.code==value){
+						if(thisEx.code==selectCurrency){
 							self.nowExchange = thisEx;
 						}
 					}
-					//推荐产品
-					self.getRecommend();
 
-					//重设book价格
+					//更新价格详情
+					self.picInfo.details = priceDetailData;
+
+					//获取该人数的最新总价
+					if(self.participants>0){
+						self.adultsPic = self.getPeoplePrice(self.participants);
+					}
+
+					//重设book价格，计算儿童差价和pandaPhone之后得价格
 					self.setPeoplePrice();
 
-						
-				}, function(res) {
+					//推荐产品
+					self.getRecommend();
 					
 				});
-					
-				self.axios.get("https://api.localpanda.com/api/product/activity/"+this.id+"/price/detail?currency="+value+(self.participants?'&participants='+self.participants:'')).then(function(res) {
-						self.picInfo.details=res.data
-						
-						
-
-						// self.sixArr=res.data
-						// if(res.data.length>6){
-						// 	self.isShowTable=true
-						// 	self.sixArr=res.data.concat().splice(0,6);
-						// }else{
-						// 	self.sixArr=res.data;
-						// }
-						if(self.participants>0){
-							self.adultsPic =thisDetail[self.participants-1].price;	
-						}
-						
-				}, function(res) {
-					
-				});
-				
-				//切换币种
-				// self.$emit('input',this.nowExchange);
-
-				
 				
 			},
 			///选择日期和人数
@@ -1560,14 +1576,9 @@ Price may vary depending on the language. If you need guides in other languages,
 		},
 		watch: {
 			//监听币种变化
-			// value:function(val){
-			// 	if(this.nowExchange.code !== val.code){
-			// 		this.changeCurrency(val.code);
-			// 	}
-			// 	this.nowExchange = val;
-			// 	this.SelectCurrency=val.code
-				
-			// },
+			selectCurrency:function(){
+				this.changeCurrency();
+			},
 			participants(){
 				this.getRecommend();
 			},
