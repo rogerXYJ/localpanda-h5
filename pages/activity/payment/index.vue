@@ -136,7 +136,7 @@
 		<Loading :loadingStatus="loadingStatus"></Loading>
 
 		<!-- 提示订单状态 -->
-		<dialogBox title="Tips" v-model="dialogStatus" :bgNoClick="true" :hideClose="true" width="80%" height="auto">
+		<dialogBox title="Tips" v-model="dialogStatus" :modalClose="true" :hideClose="true" width="80%" height="auto">
 			<div class="order_status">
 				<p>{{dialogStatusText}}</p>
 				<a class="btn" :href="'https://www.localpanda.com/activity/details/'+orderInfo.activityId" v-if="orderInfo.status=='CANCELED'">Book Again</a>

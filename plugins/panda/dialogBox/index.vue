@@ -40,7 +40,7 @@
       value: Boolean,
       width: String,
       height:String,
-      bgNoClick:Boolean,
+      modalClose:Boolean,
       hideClose:Boolean
     },
 		data() {
@@ -74,7 +74,7 @@
         history.back();
       },
       bgClick(){
-        if(!this.bgNoClick){
+        if(!this.modalClose){
           this.close();
         }
       },
