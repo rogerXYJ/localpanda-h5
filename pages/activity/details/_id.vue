@@ -44,11 +44,12 @@
 					<i class="iconfont">&#xe666;</i>
 				</div>
 			</div>
+			<div class="price_tip" v-if="!participants && !picInfo.unifiedPricing">Price based on group of {{picInfo.maxParticipants}}</div>
 			<!-- 预定和点评次数 -->
 			<div class="booking_info" v-if="detail.sales">
 				<!-- <span v-if="reviewsData && reviewsData.records">( {{reviewsData.records}} )</span>
 				<div v-if="reviewsData && reviewsData.records" class="reviews_star" v-html="reviewsStarHtml(6)"></div> -->
-				Booked {{detail.sales}} {{detail.sales>1?'times':'time'}} (last 30 days)
+				Booked {{detail.sales}} {{detail.sales>1?'times':'time'}}
 			</div>
 
 			<!-- 产品基本信息 -->
@@ -181,7 +182,9 @@
 						<p class="book_tip" v-if="picInfo.refundTimeLimit && picInfo.fullRefund===1">Free cancellation  up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</p>
 						<!-- {{picInfo.refundInstructions}} -->
 						<span class="btn" @click="bookFn">Book</span>
-						<span class="btn_inquire" @click="gaInquire">Inquire</span>
+						<div class="inquire_box">
+							Got questions before booking? <span @click="gaInquire">Contact Us</span>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -1767,6 +1770,10 @@ Price may vary depending on the language. If you need guides in other languages,
 						color: #888;
 					}
 				}
+				
+			}
+			.price_tip{
+				text-align: right;
 			}
 			.booking_info{
 				color: #878e95;
@@ -2048,6 +2055,19 @@ Price may vary depending on the language. If you need guides in other languages,
 					.hr{ height: 1px; background-color: #ebebeb;}
 					.book_tip{ margin-top: 0.3rem; font-size: 0.22rem;}
 					.btn{margin-top: 0.6rem;}
+					.inquire_box{
+						margin-top: 0.25rem;
+						font-size: 0.26rem;
+						line-height: 0.44rem;
+						padding: 0.06rem 0;
+						span{
+							display: inline-block;
+							vertical-align: top;
+							color: #1bbc9d;
+							text-decoration: underline;
+							margin-left: 0.2rem;
+						}
+					}
 				}
 			}
 		}
