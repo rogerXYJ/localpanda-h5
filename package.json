@@ -13,8 +13,8 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "nuxt": "^1.4.0",
     "axios": "^0.18.0",
+    "nuxt": "^1.4.1",
     "vue-axios": "^2.0.2"
   },
   "devDependencies": {

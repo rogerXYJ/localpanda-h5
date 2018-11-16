@@ -265,7 +265,7 @@
 
 		<!-- 活动亮点 -->
 		<h3>Latest Highlights</h3>
-		<div class="highlights">
+		<!-- <div class="highlights">
 			<a href="/activity/list/Tibet">
 				<img src="https://cloud.localpanda.com/homepage/tibet.jpg" width="100%" alt="">
 				<div class="highlights_info">
@@ -273,7 +273,7 @@
 					<p>Hang out with living Buddhas, stargaze the cosmos over Mt. Everest, ride on horseback to forgotten temples.</p>
 				</div>
 			</a>
-		</div>
+		</div> -->
 		<div class="highlights">
 			<a href="/activity/list/Bund">
 				<img src="https://cloud.localpanda.com/homepage/bund.jpg" width="100%" alt="">
@@ -316,7 +316,7 @@
 					<img src="https://cloud.localpanda.com/homepage/forbiddencity.jpg" width="100%" alt="">
 					<strong>Forbidden City</strong>
 				</a>
-				<a class="specialties_img" href="/travel/expats">
+				<a class="specialties_img" href="https://m.localpanda.com/activity/list/Regional%20Multi-Day%20Trip">
 					<img src="https://cloud.localpanda.com/homepage/expatadventures.jpg" width="100%" alt="">
 					<strong>Expat Adventures</strong>
 				</a>

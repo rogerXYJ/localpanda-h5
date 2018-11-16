@@ -632,7 +632,7 @@
 							<div class="filter_products" @click="hideFilter" :class="{show_products:showProducts}">
 								<checkbox-group v-model="filterCheck.category">
 									<ul class="products_list city_list">
-										<li :key="index" v-for="(item,key,index) in aggregations[0].items">
+										<li :key="index" v-for="(item,key,index) in getProducts(aggregations)">
 											<checkbox :label="key">{{key}} ( {{item}} )</checkbox>
 										</li>
 									</ul>
@@ -702,7 +702,7 @@
 								<span class="list_price">{{!postData.participants?'From ':''}}
 									{{currency.code}}<b>{{currency.symbol}}{{postData.participants?item.perPersonPrice:item.bottomPrice}}</b>{{postData.participants?(postData.participants==1?'for 1 person':'pp for party of '+postData.participants):'pp'}}
 								</span>
-								<p v-if="item.sales">Booked {{item.sales}} {{item.sales>1?'times':'time'}} (last 30 days)</p>
+								<p v-if="item.sales">Booked {{item.sales}} {{item.sales>1?'times':'time'}} </p>
 							</div>
 						</div>
 					</a>
@@ -739,7 +739,7 @@
 						</div>
 					</dd>
 				</dl>
-				<dl :key="index" v-for="(item,index) in aggregations" v-if="getObjLength(item.items)>1&&item.items && item.type !='CATEGORY'">
+				<dl :key="index" v-for="(item,index) in aggregations" v-show="Object.getOwnPropertyNames(item.items).length && item.type !='CATEGORY'">
 					<dt>{{getFilterType(item.type)}}</dt>
 					<dd v-if="item.type=='DURATION'">
 						<checkbox-group v-model="filterCheck.duration">
@@ -1632,7 +1632,14 @@
 			listSearch(){
 				this.jumpUrl();
 			},
-
+			getProducts(data){
+				for(var i=0;i<data.length;i++){
+					var thisData = data[i];
+					if(thisData.type=='CATEGORY'){
+						return thisData.items;
+					}
+				}
+			},
 			//选择人数
 			peopleMinus(e){
 				this.peopleNum--;
@@ -1771,7 +1778,6 @@
 				localStorage.removeItem('listGa');
 			},900);
 			//filter统计ga   end  ///////////////////////////////////////////
-
 
 			//返回页面的时候币种不一致 就刷新页面
 			var nowCurrency = JSON.parse(Cookie.get('currency'));
