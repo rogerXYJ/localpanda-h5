@@ -103,9 +103,9 @@
 		<!-- 预定板块 -->
 		<div class="detail_box check" id="check_all">
 			<div class="check_all_box">
-				<h3><i></i>Available On</h3>
+				<h3>Available On</h3>
 				<ul class="check_info clearfix">
-					<li>
+					<li class="available_on">
 						<i class="iconfont input_icon">&#xe60d;</i>
 						<input id="js_changetime" v-model="startDate" readonly type="text" placeholder="Select Date">
 						<input class="time_box" :value="formatDate(startDate)" readonly type="text" placeholder="Date">
@@ -1850,6 +1850,13 @@ Price may vary depending on the language. If you need guides in other languages,
 				border: 2px solid #1bbc9d;
 				border-radius: 10px;
 				padding: 0.3rem;
+				h3{
+					line-height: 0.32rem;
+					font-size: 0.28rem;
+				}
+				.available_on{
+					margin-top: 0.15rem;
+				}
 			}
 			.check_info{
 				li{
