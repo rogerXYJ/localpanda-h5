@@ -46,7 +46,7 @@
 			<a href="/user/profile?menu=1&flag=1" v-else>My Profile</a>
 			<a :href="islogIn?'/user/myBookings?menu=0&flag=1':'/user/bookings/entry'">My Bookings</a>
 			<!-- <a href="/travel/customize/step1">Customize Your Trip</a> -->
-			<a href="/info/feedback/">Contact Us</a>
+			<a href="/info/feedback/?source=CONTACT">Contact Us</a>
 			<a href="/info/about-us">About Us</a>
 			<a href="javascript:;" @click="logout" v-if="islogIn">Log Out</a>
 		</nav>

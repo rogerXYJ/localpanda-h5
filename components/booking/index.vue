@@ -9,6 +9,8 @@
 				</div>
 			</div>
 			<ul v-if="codeList.length>0">
+				<li v-for="item in codeListHot" @click.stop="selectCodeFn(item.country_name,item.prefix)"  v-if="codeListHot.length>0 && !selectCode">{{item.country_name}} (+{{item.prefix}})</li>
+				<li class="line" v-if="!selectCode"></li>
 				<li :key="index" v-for="(item,index) in codeList" @click="selectCodeFn(item.country_name,item.prefix)">{{item.country_name}} (+{{item.prefix}})</li>
 			</ul>
 			<div class="empty" v-else>There are no results that match your search.</div>
@@ -24,6 +26,7 @@
 			return{
 				selectCode:"",
 				codeList:'',
+				codeListHot:[],
 				scroll:false
 			}
 			
@@ -89,7 +92,34 @@
     	},
     	mounted: function() {
     		let $this=this
-    		this.codeList=this.countryCode
+				this.codeList=this.countryCode;
+				
+				this.codeListHot = [
+					{
+						"country_name": "United States",
+						"prefix": "1"
+					},
+					{
+						"country_name": "United Kingdom",
+						"prefix": "44"
+					},
+					{
+						"country_name": "China Mainland",
+						"prefix": "86"
+					},
+					{
+						"country_name": "Canada",
+						"prefix": "1"
+					},
+					{
+						"country_name": "Australia",
+						"prefix": "61"
+					},
+					{
+						"country_name": "New Zealand",
+						"prefix": "64"
+					}
+				]
     		
     	},
     	watch:{
@@ -208,6 +238,13 @@
 					&:first-child{
 						margin-top: 0;
 					}
+				}
+				.line{
+					height: 1px;
+					background-color: #ddd;
+					overflow: hidden;
+					width: 100%;
+					margin: 0.58rem auto 0;
 				}
 				
 			}

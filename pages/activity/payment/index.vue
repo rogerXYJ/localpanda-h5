@@ -879,6 +879,7 @@
 						// putData.response = err;
 						// putData.status = 'FAILED';
 						// self.paypalCreate(putData);
+						self.loadingStatus = false;
 						console.log(data);
 					}
 
@@ -913,7 +914,7 @@
 						window.location.href = "/activity/payment/success?email=" + that.email + "&orderId=" + that.orderId + '&amount=' + that.opctions.amount + '&succeed=false&symbol=' + that.opctions.symbol + '&currency=' + that.opctions.currency + '&msg=fail';
 					}
 				}, function(response) {
-					
+					that.loadingStatus = false;
 				})
 			},
 			analyticsGa(data){
