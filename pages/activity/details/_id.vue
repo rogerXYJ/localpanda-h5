@@ -26,12 +26,12 @@
 			<div class="price_info clearfix">
 				
 
-				<div class="select_people">
+				<div class="select_people" :class="{'unified_pricing':picInfo.unifiedPricing}">
 					{{returnText(participants)}}
-					<select class="select_people_box" v-model="participants" @change="changePeople" v-if="!picInfo.unifiedPricing">
+					<select class="select_people_box" v-model="participants" @change="changePeople">
 						<option :value="item.people" :key="index" v-for="(item,index) in participantsData">{{item.text}}</option>
 					</select>
-					<i class="iconfont" v-if="!picInfo.unifiedPricing">&#xe666;</i>
+					<i class="iconfont">&#xe666;</i>
 				</div>
 				<p> {{nowExchange.symbol}} {{participants>0?returnFloat(getPeoplePrice(participants,true)):returnFloat(picInfo.bottomPrice)}}</p>
 
@@ -1745,6 +1745,12 @@ Price may vary depending on the language. If you need guides in other languages,
 						height: 100%;
 						z-index: 2;
 						opacity: 0;
+					}
+				}
+				.unified_pricing{
+					padding: 0;
+					.select_people_box,.iconfont{
+						display: none;
 					}
 				}
 				

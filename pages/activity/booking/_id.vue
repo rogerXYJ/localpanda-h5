@@ -693,6 +693,14 @@
 				}
 			};
 
+
+			ga(gaSend, {
+				hitType: 'event',
+				eventCategory: 'activity_booking',
+				eventAction: 'load',
+				eventLabel: 'js',
+			});
+
 		},
 		watch: {
 			

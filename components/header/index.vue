@@ -162,6 +162,13 @@
 				this.showLogin = true;
 				//隐藏导航
 				this.navIsShow = false;
+				//登录ga
+				ga(gaSend, {
+					hitType: 'event',
+					eventCategory: 'public',
+					eventAction: 'click',
+					eventLabel: 'login',
+				});
 			},
 			pageClose(){
 				//头部关闭回调
