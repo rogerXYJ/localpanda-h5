@@ -693,13 +693,20 @@
 				}
 			};
 
-
-			ga(gaSend, {
-				hitType: 'event',
-				eventCategory: 'activity_booking',
-				eventAction: 'load',
-				eventLabel: 'js',
-			});
+			//Ga检测
+			var gaTimer = setInterval(function(){
+        if(ga){
+          ga(gaSend, {
+						hitType: 'event',
+						eventCategory: 'activity_booking',
+						eventAction: 'load',
+						eventLabel: 'js',
+					});
+          //停止检测
+          window.clearInterval(gaTimer);
+        }
+      },300);
+			
 
 		},
 		watch: {
