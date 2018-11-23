@@ -42,7 +42,7 @@
 		<!-- 导航展开内容 -->
 		<nav class="header_nav" :class="{show_nav:navIsShow}">
 			<a href="/">Home</a>
-			<a href="javascript:;" @click="showLoginPage" v-if="!islogIn">Log in</a>
+			<a href="javascript:;" @click="showLoginPage" v-if="!islogIn">Log In</a>
 			<a href="/user/profile?menu=1&flag=1" v-else>My Profile</a>
 			<a :href="islogIn?'/user/myBookings?menu=0&flag=1':'/user/bookings/entry'">My Bookings</a>
 			<!-- <a href="/travel/customize/step1">Customize Your Trip</a> -->

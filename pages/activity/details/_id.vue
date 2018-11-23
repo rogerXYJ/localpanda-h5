@@ -134,10 +134,10 @@
 					</li>
 					<li v-show="!showPriceInfo">
 						<span class="btn" @click="availability">Book</span>
-						<div class="inquire_box">
+						<!-- <div class="inquire_box">
 							Got questions before booking? <span @click="gaInquire">Contact Us</span>
-						</div>
-						<!-- <span class="btn_inquire" @click="gaInquire">Inquire</span> -->
+						</div> -->
+						<span class="btn_inquire" @click="gaInquire">Inquire</span>
 					</li>
 				</ul>
 
@@ -182,9 +182,10 @@
 						<p class="book_tip" v-if="picInfo.refundTimeLimit && picInfo.fullRefund===1">Free cancellation  up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</p>
 						<!-- {{picInfo.refundInstructions}} -->
 						<span class="btn" @click="bookFn">Book</span>
-						<div class="inquire_box">
+						<span class="btn_inquire" @click="gaInquire">Inquire</span>
+						<!-- <div class="inquire_box">
 							Got questions before booking? <span @click="gaInquire">Contact Us</span>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</div>
@@ -351,7 +352,7 @@
 
 
 		<div class="bookBtnBox" v-show="showFixedBtn">
-			<!-- <a @click="gaInquire">Inquire</a> -->
+			<a @click="gaInquire">Inquire</a>
 			<a class="bookBtn" @click="goCheck">Book</a>
 		</div>
 		
@@ -2731,7 +2732,7 @@ Price may vary depending on the language. If you need guides in other languages,
 			display: flex;
 			a{
 				flex: 1;
-				// margin-right: 0.32rem;
+				margin-right: 0.32rem;
 				width: 3.6rem;
 				height: 0.9rem;
 				line-height: 0.86rem;
@@ -2741,17 +2742,17 @@ Price may vary depending on the language. If you need guides in other languages,
 				border-radius: 0.6rem;
 				font-size: 0.32rem;
 				background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
-				// &:last-child{
-				// 	margin-right: 0;
-				// 	background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
-				// }
-				// &:first-child{
-				// 	border: solid 1px #1bbc9d;
-				// 	box-sizing: border-box;
-				// 	background: #fff;
-				// 	color: #1bbc9d;
-				// 	font-size:0.36rem;
-				// }
+				&:last-child{
+					margin-right: 0;
+					background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);
+				}
+				&:first-child{
+					border: solid 1px #1bbc9d;
+					box-sizing: border-box;
+					background: #fff;
+					color: #1bbc9d;
+					font-size:0.36rem;
+				}
 				
 			}
 		}
