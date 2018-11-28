@@ -49,7 +49,7 @@
 			<div class="booking_info" v-if="detail.sales">
 				<!-- <span v-if="reviewsData && reviewsData.records">( {{reviewsData.records}} )</span>
 				<div v-if="reviewsData && reviewsData.records" class="reviews_star" v-html="reviewsStarHtml(6)"></div> -->
-				Booked {{detail.sales}} {{detail.sales>1?'times':'time'}}
+				Booked {{detail.sales}} {{detail.sales>1?'times':'time'}} (last 30 days)
 			</div>
 
 			<!-- 产品基本信息 -->

@@ -68,7 +68,7 @@
 					<textarea  @blur="gaBlur(4)" v-else v-model="comments" @focus="commentFocus"></textarea>
 				</div>
 			</div>
-			<div class="coupon">
+			<!-- <div class="coupon">
 				<checkbox v-model="checkedAll" :change="changeFn">Have a Gift Card or Coupon Code? Proceed to checkout to redeem it.</checkbox>
 				<div class="couponInput" v-if="checkedAll">
 					<input placeholder="Enter a gift card or coupon code" id="coupon" @keyup.enter="validateCode" v-model="couponCode" />
@@ -76,7 +76,7 @@
 					<p v-if="hasCode==0"><i class="iconfont">&#xe654;</i>- {{couponType=="RATE"?"":opctions.symbol}}{{couponType=="RATE"?couponRate*100:opctions.couponDiscount}}{{couponType=="RATE"?"%":""}} {{couponType=="RATE"?"off":""}}  (Coupon discount)</p>
 					<p v-if="hasCode==1" style="color: red;">The promotional code you entered is invalid. Please try again.</p>
 				</div>
-			</div>
+			</div> -->
 			<p class="booktip" v-if="!logIn">
 				<i class="iconfont">&#xe617;</i>
 				<span>As a guest user, you can access your order details through your name and email</span>
