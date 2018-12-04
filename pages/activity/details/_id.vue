@@ -1476,10 +1476,14 @@ Price may vary depending on the language. If you need guides in other languages,
 					title: this.detail.title,
 					childDiscount: this.picInfo.childDiscount*this.bookChildren, //儿童优惠总价
 					childDiscountP: this.picInfo.childDiscount,  //儿童优惠平均价
-				  pickup: this.detail.pickup,
+					pickup: this.detail.pickup,
+					venues: this.detail.venues,
 				  owner:this.detail.owner,
 		      averagePrice: this.perPersonPrice, //人均价 
-		      guideId: this.checkGuideIndex!=='' ? this.detail.guide[this.checkGuideIndex].guideId : null
+					guideId: this.checkGuideIndex!=='' ? this.detail.guide[this.checkGuideIndex].guideId : null,
+					phoneHirePrice: this.picInfo.phoneHirePrice,
+					pandaPhoneCheck:this.pandaPhoneCheck,
+					picInfo: this.picInfo
 				};
 				
 				
