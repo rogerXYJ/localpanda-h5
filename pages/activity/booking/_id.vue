@@ -73,11 +73,19 @@
 
 
 			<!-- 补填信息 -->
-			<div class="pickup_all">
-				<h4 v-if="opctions.pickup && opctions.pandaPhoneCheck">Pick-up & Panda Phone Device delivery  Information</h4>
-				<h4 v-else>Pick-up Information</h4>
-				<p>If you haven't decided on the details, you can provide us with the info later. (through email or our order system).</p>
-				<div class="pickup_info" v-show="opctions.pickup>0 || opctions.pickup==0 && opctions.venues">
+			<div class="pickup_all" v-show="opctions.pickup>0 || opctions.pickup==0 && opctions.venues">
+				<div v-if="opctions.pickup">
+					<h4 v-if="opctions.pickup && opctions.pandaPhoneCheck">Pick-up & Panda Phone Device delivery  Information</h4>
+					<h4 v-else>Pick-up Information</h4>
+					<p>If you haven't decided on the details, you can provide us with the info later through email or our order system.</p>
+				</div>
+				<div v-else>
+					<h4 v-if="opctions.venues && opctions.venues.length>1">Please Select a Venue<span class="red">*</span></h4>
+					<h4 v-else>Meeting Point<span class="red">*</span></h4>
+				</div>
+
+
+				<div class="pickup_info">
 					<div class="pickup_detail" v-if="opctions.pickup>0">
 						
 						<checkbox class="pickup_info_check" v-model="showPickupInfo">I have the info now</checkbox>
@@ -104,11 +112,11 @@
 							<div class="pickup_location_content" v-show="pickupLocation=='Hotel'">
 								<ul class="location_list location_list_address">
 									<li>
-										<h5><i class="red">*</i> Pick-up Time</h5>
+										<h5>Pick-up Time<i class="red">*</i> </h5>
 										<input class="js_validate" vType="text" type="text" @focus="openPicker" v-model="pickupData.arrivalTime">
 									</li>
 									<li>
-										<h5><i class="red">*</i> Hotel Name & Address</h5> 
+										<h5>Hotel Name & Address<i class="red">*</i> </h5> 
 										<textarea class="textarea js_validate" vType="text" type="text" v-model="pickupData.hotel" rows="2"></textarea></li>
 								</ul>
 								<!-- <h5><span class="red">*</span>Hotel Name & Address: </h5>
@@ -119,15 +127,15 @@
 							<div class="pickup_location_content" v-show="pickupLocation=='Airport'">
 								<ul class="location_list">
 									<li>
-										<h5><i class="red">*</i> Flight Number</h5> 
+										<h5>Flight Number<i class="red">*</i> </h5> 
 										<input class="js_validate" vType="text" type="text" v-model="pickupData.flightNumber">
 									</li>
 									<li>
-										<h5><i class="red">*</i> Arrival Time</h5> 
+										<h5>Arrival Time<i class="red">*</i> </h5> 
 										<input class="js_validate" vType="text" type="text" @focus="openPicker" v-model="pickupData.arrivalTime">
 									</li>
 									<li>
-										<h5><i class="red">*</i> Airport</h5> 
+										<h5>Airport<i class="red">*</i> </h5> 
 										<input class="js_validate" vType="text" type="text" v-model="pickupData.airport">
 									</li>
 								</ul>
@@ -135,13 +143,13 @@
 							<!-- Cruise Port -->
 							<div class="pickup_location_content" v-show="pickupLocation=='Cruise Port'">
 								<ul class="location_list">
-									<li><h5><i class="red">*</i> Cruise Number</h5> <input class="js_validate" vType="text" type="text" v-model="pickupData.cruiseNumber"></li>
+									<li><h5>Cruise Number<i class="red">*</i> </h5> <input class="js_validate" vType="text" type="text" v-model="pickupData.cruiseNumber"></li>
 									<li>
-										<h5><i class="red">*</i> Arrival Time</h5> 
+										<h5>Arrival Time<i class="red">*</i> </h5> 
 										<input class="js_validate" vType="text" type="text" @focus="openPicker" v-model="pickupData.arrivalTime">
 									</li>
 									
-									<li><h5><i class="red">*</i> Cruise Port</h5> <input class="js_validate" vType="text" type="text" v-model="pickupData.cruisePort"></li>
+									<li><h5>Cruise Port<i class="red">*</i> </h5> <input class="js_validate" vType="text" type="text" v-model="pickupData.cruisePort"></li>
 								</ul>
 							</div>
 
@@ -149,14 +157,14 @@
 							<div class="pickup_location_content" v-show="pickupLocation=='Railway Station'">
 								<ul class="location_list">
 									<li>
-										<h5><i class="red">*</i> Train Number</h5> 
+										<h5>Train Number<i class="red">*</i> </h5> 
 										<input class="js_validate" vType="text" type="text" v-model="pickupData.trainNumber"></li>
 									<li>
-										<h5><i class="red">*</i> Arrival Time</h5> 
+										<h5>Arrival Time<i class="red">*</i> </h5> 
 										<input class="js_validate" vType="text" type="text" @focus="openPicker" v-model="pickupData.arrivalTime">
 									</li>
 									<li>
-										<h5><i class="red">*</i> Railway Station</h5> 
+										<h5>Railway Station<i class="red">*</i> </h5> 
 										<input class="js_validate" vType="text" type="text" v-model="pickupData.railwayStation">
 									</li>
 								</ul>
@@ -166,12 +174,12 @@
 							<div class="pickup_location_content" v-show="pickupLocation=='Address or Intersection'">
 								<ul class="location_list location_list_address">
 									<li>
-										<h5><i class="red">*</i> Pick-up Time</h5> 
+										<h5>Pick-up Time<i class="red">*</i> </h5> 
 										<input class="js_validate" vType="text" type="text" @focus="openPicker" v-model="pickupData.arrivalTime">
 									</li>
 									<li>
-										<h5><i class="red">*</i> Address or Intersection</h5> 
-										<input class="js_validate" vType="text" type="text" v-model="pickupData.address">
+										<h5>Address or Intersection<i class="red">*</i> </h5> 
+										<textarea class="textarea js_validate" vType="text" type="text" v-model="pickupData.address" rows="2"></textarea>
 									</li>
 								</ul>
 							</div>
@@ -183,7 +191,6 @@
 					</div>
 
 					<div class="venue_detail" v-else>
-						<h3>Please Select a Venue<span class="red">*</span></h3>
 						<div class="red venue_tip" v-if="venueTip">Field is required</div>
 						<div class="venue_check" v-for="item in opctions.venues" :key="item">
 							<radio v-model="venueAddress" :label="item">{{item}}</radio>
@@ -213,7 +220,7 @@
 			<!-- <div  class="hint"></div> -->
 			<div class="price">Total Amount: <span @click="showPrice=!showPrice">{{opctions.currency}} {{opctions.symbol}}{{opctions.amount}}<i class="iconfont">&#xe659;</i></span></div>
 			<div class="nextBtn clearfix" v-show="!hideFiexd" @touchmove="stopMove">
-				<div class="next" @click="placeOrder">NEXT</div>
+				<div class="next" @click="placeOrder">Next</div>
 			</div>
 			<!-- <div v-if="isWork()" class="chat">Having trouble booking ?&nbsp;&nbsp;&nbsp;&nbsp; <a @click="chat()">Chat with Us</a></div> -->
 		</div>
@@ -1265,6 +1272,7 @@
 			}
 
 			.pickup_all{
+				margin-top: 0.2rem;
 				h4{
 					padding-bottom: 0.1rem;
 				}
@@ -1312,7 +1320,7 @@
 					.pickup_location_content{
 						margin-top: 0.1rem;
 						h5{
-							font-size: 16px;
+							font-size: 0.24rem;
 						}
 						.textarea{
 							width: 100%;
@@ -1348,12 +1356,6 @@
 									border-color: #858585 #c2c2c2 #c2c2c2;
 									border-radius: 3px;
 									box-shadow: inset 0 1px 0 rgba(0, 0, 0, .1), inset 0 1px 1px rgba(0, 0, 0, .05);
-								}
-								h5{
-									
-									.red{
-										margin-left: 0;
-									}
 								}
 								
 							}
@@ -1422,10 +1424,11 @@
 						font-size: 16px;
 						.radio_label{
 							padding: 5px 0 5px 20px;
+							font-size: 0.24rem;
 							.radio_box{
 								float: left;
 								margin-left: -20px;
-								margin-top: 2px;
+								margin-top: 1px;
 							}
 						}
 					}
@@ -1558,7 +1561,7 @@
 		.red{
 			color: red!important;
 			display: inline-block;
-			margin-left: 0.2rem;
+			margin-left: 0.1rem;
 		}
 	}
 </style>

@@ -44,7 +44,7 @@
 					<i class="iconfont">&#xe666;</i>
 				</div>
 			</div>
-			<div class="price_tip" v-if="!participants && !picInfo.unifiedPricing">Price based on group of {{picInfo.maxParticipants}}</div>
+			<div class="price_tip" v-if="!participants && !picInfo.unifiedPricing">Price based on group of {{getBottomCapacity()}}</div>
 			<!-- 预定和点评次数 -->
 			<div class="booking_info" v-if="detail.sales">
 				<!-- <span v-if="reviewsData && reviewsData.records">( {{reviewsData.records}} )</span>
@@ -55,8 +55,8 @@
 			<!-- 产品基本信息 -->
 			<ul class="activity_info">
 				<!-- Duration -->
-				<li v-if="/DAY/.test(detail.durationUnit)"><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}}</li>
-				<li @click="showDurationInfo=true" v-else><i class="iconfont">&#xe624;</i>Duration {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont" v-if="!/DAY/.test(detail.durationUnit)">&#xe689;</span></li>
+				<li v-if="/DAY/.test(detail.durationUnit)"><i class="iconfont">&#xe624;</i>Duration : {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}}</li>
+				<li @click="showDurationInfo=true" v-else><i class="iconfont">&#xe624;</i>Duration : {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont" v-if="!/DAY/.test(detail.durationUnit)">&#xe689;</span></li>
 				
 				<li v-if="getPickupTitle(detail.pickup) && detail.category!='Ticket' && detail.statement" @click="showPickupInfo=true"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont">&#xe689;</span></li>
 
@@ -284,9 +284,10 @@
 			<div class="other_list" v-if="delEnter(picInfo.refundInstructions)">
 				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Rescheduling & Cancellation Policy</h3>
 				<div class="other_content">
-					<ul class="detail_txt_list">
+					<p class="detail_p detail_p_mt" v-for="(item,index) in getTextArr(picInfo.refundInstructions)" :key="index">{{item}}</p>
+					<!-- <ul class="detail_txt_list">
 						<li v-for="(item,index) in getTextArr(picInfo.refundInstructions)" :key="index"><i class="dian"></i>{{item}}</li>
-					</ul>
+					</ul> -->
 				</div>
 			</div>
 
@@ -402,7 +403,9 @@
 
 		<!-- 顶部Duration信息弹层 -->
 		<dialogBox title="Duration tips" v-model="showDurationInfo" width="90%" height="auto">
-			<div class="dialog_tip_info">All trips start when you meet your tour guide (or driver if the trip does not include a guide), and conclude when you depart from your tour guide (or driver).</div>
+			<div class="dialog_tip_info">All trips start when you meet your tour guide (or driver if the trip does not include a guide), and conclude when you depart from your tour guide (or driver).
+				<p v-if="detail.groupType=='Private'">Since this is a private trip, you can appoint the starting time of your trip when booking.</p>
+			</div>
 		</dialogBox>
 
 		<!-- 顶部Languages信息弹层 -->
@@ -1501,6 +1504,13 @@ Price may vary depending on the language. If you need guides in other languages,
 					this.showFixedBtn = true;
 				}
 			},
+			getBottomCapacity(){
+				var details = Object.assign([],this.picInfo.details);
+				details.sort(function(a,b){
+					return a.perPersonPrice - b.perPersonPrice;
+				});
+				return details[0].capacity;
+			}
 		},
 		mounted: function() {
 			var self=this;
@@ -1515,7 +1525,8 @@ Price may vary depending on the language. If you need guides in other languages,
 			var currency= cookieCurrency ? cookieCurrency : (isWx ? {'code':'CNY','symbol':'¥'} : {'code':'USD','symbol':'$'});
 
 			if(this.nowExchange.code!=currency.code){
-				this.nowExchange=currency
+				this.nowExchange=currency;
+				this.selectCurrency =  currency.code;
 			}
 			// console.log(currency);
 			console.log(this.$data);
@@ -1704,6 +1715,9 @@ Price may vary depending on the language. If you need guides in other languages,
 			.detail_p{
 				font-size: 0.26rem;
 				line-height: 0.36rem;
+			}
+			.detail_p_mt{
+				margin-top: 0.1rem;
 			}
 		}
 		.activity_top{
@@ -2862,6 +2876,9 @@ Price may vary depending on the language. If you need guides in other languages,
 			h4{
 				font-weight: bold;
 				padding-bottom: 0.1rem;
+			}
+			p{
+				margin-top: 0.2rem;
 			}
 		}
 

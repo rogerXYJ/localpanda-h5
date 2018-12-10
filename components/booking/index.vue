@@ -124,7 +124,8 @@
     	},
     	watch:{
     		selectCode: function(val, oldVal) {
-				let self = this
+				let self = this;
+				val=val.replace(/(^\s+)|(\s+$)/g, "").toLowerCase();
 				if(val) {
 					
 					self.codeList = [];

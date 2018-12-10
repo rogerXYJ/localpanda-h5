@@ -129,7 +129,7 @@
 			<h3>Please confirm whether the payment has been completed ?</h3>
 			<div class="btn_list">
 				<a class="btn_ok" @touchstart="confirmation">Completion</a>
-				<a :href="tryAgainHref">Try again</a>
+				<a :href="tryAgainHref">Try Again</a>
 			</div>
 		</div>
 

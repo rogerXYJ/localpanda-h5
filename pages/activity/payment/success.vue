@@ -24,17 +24,28 @@
 
       <!-- <p class="order_contact" v-show="success">Our staff will confirm with you as soon as possible. We will reply you within one business day. You can know the details furthur by look at your order details.You can also email service@localpanda.com or call us at +86 (21) 8018-2090/ +1 (888) 930-8849 (US toll free).</p> -->
 
-      <div class="service_box" v-show="success">
-        <p class="tip_detail">A confirmation email has been sent to “{{orderInfo.contactInfo.emailAddress}}”,<br>Please check. If you have not received it, please check your junk mail folder. If you still do not see it,<br>please <a @click="showEmailBox=true">click here</a> to enter your correct or alternative email address.</p>
+      <div class="service_box" v-if="success && orderInfo.missingInfo">
+        <p class="tip_detail c_666">You haven't provided us with your "{{orderInfo.missingInfo}}" during your booking, so we will still need to confirm this before your departure. You will receive a confirmation email from service@localpanda.com. </p>
+        <p class="tip_detail">If you have not received the email, please check your junk mail folder. If you still do not see it,<br> please <a @click="showEmailBox=true">click here</a> to enter your correct or alternative email address.</p>
         <div class="email_box" v-show="showEmailBox">
           <input type="text" v-model="inqueryEmail">
           <div class="email_tip red" v-show="emailTip">Please enter a valid email</div>
           <span class="btn_sendemail" @click="sendEmail">Resend email address</span>
           <div class="email_tip green" v-show="emailSendTip"><i class="iconfont">&#xe654;</i> Email address has been updated ,and We have sent an email to your new mailbox</div>
         </div>
-
-        
       </div>
+
+      <div class="service_box" v-else-if="success">
+        <p class="tip_detail">In the meantime, a confirmation email has been sent to“{{orderInfo.contactInfo.emailAddress}}”, Please check. If you have not received it, please check your junk mail folder. <br>If you still do not see it, please <a @click="showEmailBox=true">click here</a> to enter your correct or alternative email address.</p>
+        <div class="email_box" v-show="showEmailBox">
+          <input type="text" v-model="inqueryEmail">
+          <div class="email_tip red" v-show="emailTip">Please enter a valid email</div>
+          <span class="btn_sendemail" @click="sendEmail">Resend email address</span>
+          <div class="email_tip green" v-show="emailSendTip"><i class="iconfont">&#xe654;</i> Email address has been updated ,and We have sent an email to your new mailbox</div>
+        </div>
+      </div>
+
+      
 
 
 
@@ -83,7 +94,7 @@
 
 			try {
         
-        orderInfo = await Vue.axios.get(apiBasePath + "order/activity/" + query.orderId);
+        orderInfo = await Vue.axios.get(apiBasePath + "order/activity/" + query.orderId+'?missInfoRequired=true');
         
 			} catch(err) {
 				return error({
