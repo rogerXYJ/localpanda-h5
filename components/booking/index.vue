@@ -37,21 +37,19 @@
     	methods: {
     		back(){
     			this.$emit('back',false)
-    			ga('gtag_UA_107010673_2.send', {
-
-					hitType: 'event',
-					eventCategory: 'activity_booking',
-					eventAction: 'input',
-					eventLabel: 'country_code_close'
-
-				});
+    			// ga('gtag_UA_107010673_2.send', {
+					// 	hitType: 'event',
+					// 	eventCategory: 'activity_booking',
+					// 	eventAction: 'input',
+					// 	eventLabel: 'country_code_close'
+					// });
 				},
 				selectCodeFn(country,code) {
     			ga('gtag_UA_107010673_2.send', {
 						hitType: 'event',
 						eventCategory: 'activity_booking',
 						eventAction: 'select',
-						eventLabel: 'country_code_select'
+						eventLabel: 'country_code'
 	
 					});
     			let codeDetails={
@@ -81,13 +79,13 @@
     	// 		this.$emit('getCode',codeDetails)
 			// },
 			Ga(){
-				ga('gtag_UA_107010673_2.send', {
-					hitType: 'event',
-					eventCategory: 'activity_booking',
-					eventAction: 'inpt',
-					eventLabel: 'country_code_input'
+				// ga('gtag_UA_107010673_2.send', {
+				// 	hitType: 'event',
+				// 	eventCategory: 'activity_booking',
+				// 	eventAction: 'inpt',
+				// 	eventLabel: 'country_code_input'
 
-				});
+				// });
 			}
     	},
     	mounted: function() {

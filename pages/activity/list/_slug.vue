@@ -1334,7 +1334,7 @@
 			filterClose(){
 				this.showFilter = false;
 				//GA统计
-				this.ga('filter','filter_close');
+				// this.ga('filter','filter_close');
 
 				//恢复check状态
 				this.filterCheck = JSON.parse(JSON.stringify(this.filterCheckDefault));
@@ -1356,7 +1356,7 @@
 			},
 			filterClear(){
 				//GA统计
-				this.ga('filter','filter_clear');
+				// this.ga('filter','filter_clear');
 				//清空数据
 				for(var key in this.filterCheck){
 					//只清Products地以外的数据

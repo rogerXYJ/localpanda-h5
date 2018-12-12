@@ -509,12 +509,12 @@
 			},
 			//显示国家
 			showCodeFn(index) {
-				ga('gtag_UA_107010673_2.send', {
-					hitType: 'event',
-					eventCategory: 'activity_booking',
-					eventAction: 'click',
-					eventLabel: 'country_code_open',
-				});
+				// ga('gtag_UA_107010673_2.send', {
+				// 	hitType: 'event',
+				// 	eventCategory: 'activity_booking',
+				// 	eventAction: 'click',
+				// 	eventLabel: 'country_code_open',
+				// });
 				if(index == 0) {
 					this.codeErr = false
 					this.index = 0
@@ -651,12 +651,12 @@
 					}
 				} else {
 					if(this.comments) {
-						ga('gtag_UA_107010673_2.send', {
-							hitType: 'event',
-							eventCategory: 'activity_booking',
-							eventAction: 'input',
-							eventLabel: 'comment',
-						});
+						// ga('gtag_UA_107010673_2.send', {
+						// 	hitType: 'event',
+						// 	eventCategory: 'activity_booking',
+						// 	eventAction: 'input',
+						// 	eventLabel: 'comment',
+						// });
 						// ga('gtag_UA_107010673_2.send', {
 						// 	hitType: 'event',
 						// 	eventCategory: 'activity_booking',

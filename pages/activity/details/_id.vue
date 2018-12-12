@@ -56,13 +56,13 @@
 			<ul class="activity_info">
 				<!-- Duration -->
 				<li v-if="/DAY/.test(detail.durationUnit)"><i class="iconfont">&#xe624;</i>Duration : {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}}</li>
-				<li @click="showDurationInfo=true" v-else><i class="iconfont">&#xe624;</i>Duration : {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont" v-if="!/DAY/.test(detail.durationUnit)">&#xe689;</span></li>
+				<li @click="durationInfoGa" v-else><i class="iconfont">&#xe624;</i>Duration : {{detail.duration}} {{setTimeStr(detail.duration,detail.durationUnit)}} <span class="iconfont" v-if="!/DAY/.test(detail.durationUnit)">&#xe689;</span></li>
 				
-				<li v-if="getPickupTitle(detail.pickup) && detail.category!='Ticket' && detail.statement" @click="showPickupInfo=true"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont">&#xe689;</span></li>
+				<li v-if="getPickupTitle(detail.pickup) && detail.category!='Ticket' && detail.statement" @click="pickupGa"><i class="iconfont">&#xe68a;</i>{{getPickupTitle(detail.pickup)}} <span class="iconfont">&#xe689;</span></li>
 
 				<!-- 语言 -->
 				<li v-if="detail.groupType=='Group'"><i class="iconfont">&#xe627;</i>Offered in English</li>
-				<li @click="showLanguagesInfo=true" v-else-if="detail.category!='Ticket'"><i class="iconfont">&#xe627;</i>English (and other languages)-speaking guide <span class="iconfont">&#xe689;</span></li>
+				<li @click="languageGa" v-else-if="detail.category!='Ticket'"><i class="iconfont">&#xe627;</i>English (and other languages)-speaking guide <span class="iconfont">&#xe689;</span></li>
 
 				<li v-if="detail.destinations.length>1"><i class="iconfont">&#xe610;</i>{{detail.destinations.join(', ')}}</li>
 				<li v-if="picInfo.fullRefund===1"><i class="iconfont">&#xe688;</i>Free cancellation  up to {{(picInfo.refundTimeLimit>2?picInfo.refundTimeLimit+' days':24*picInfo.refundTimeLimit+' hours')}} before your trip</li>
@@ -889,6 +889,13 @@ Price may vary depending on the language. If you need guides in other languages,
 				}else{
 					document.querySelector('.btn_viewall').innerHTML = 'View all';
 				}
+
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "click",
+					eventLabel: "expand"
+				});
 				
 			},
 			itineraryViewall(e){
@@ -913,6 +920,13 @@ Price may vary depending on the language. If you need guides in other languages,
 						thisData.className = 'itinerary_list';
 					}
 				}
+
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "click",
+					eventLabel: "expand_all"
+				});
 				
 				
 			},
@@ -1459,7 +1473,7 @@ Price may vary depending on the language. If you need guides in other languages,
 					hitType: "event",
 					eventCategory: "activity_detail",
 					eventAction: "click",
-					eventLabel:"book_succeed"
+					eventLabel:"activity_book_succ"
 				});
 				
 				var orderInfo = {
@@ -1510,6 +1524,33 @@ Price may vary depending on the language. If you need guides in other languages,
 					return a.perPersonPrice - b.perPersonPrice;
 				});
 				return details[0].capacity;
+			},
+			languageGa(){
+				this.showLanguagesInfo=true;
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "click",
+					eventLabel:"language"
+				});
+			},
+			durationInfoGa(){
+				this.showDurationInfo=true;
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "click",
+					eventLabel:"duration"
+				});
+			},
+			pickupGa(){
+				this.showPickupInfo=true;
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "click",
+					eventLabel:"pickup"
+				});
 			}
 		},
 		mounted: function() {
