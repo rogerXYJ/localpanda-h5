@@ -594,12 +594,12 @@
 							eventAction: 'input',
 							eventLabel: 'first_name',
 						});
-						ga('gtag_UA_107010673_2.send', {
-							hitType: 'event',
-							eventCategory: 'activity_booking',
-							eventAction: 'input',
-							eventLabel: 'booking_input',
-						});
+						// ga('gtag_UA_107010673_2.send', {
+						// 	hitType: 'event',
+						// 	eventCategory: 'activity_booking',
+						// 	eventAction: 'input',
+						// 	eventLabel: 'booking_input',
+						// });
 					}
 
 				} else if(id == 1) {
@@ -610,12 +610,12 @@
 							eventAction: 'input',
 							eventLabel: 'last_name',
 						});
-						ga('gtag_UA_107010673_2.send', {
-							hitType: 'event',
-							eventCategory: 'activity_booking',
-							eventAction: 'input',
-							eventLabel: 'booking_input',
-						});
+						// ga('gtag_UA_107010673_2.send', {
+						// 	hitType: 'event',
+						// 	eventCategory: 'activity_booking',
+						// 	eventAction: 'input',
+						// 	eventLabel: 'booking_input',
+						// });
 					}
 
 				} else if(id == 2) {
@@ -626,12 +626,12 @@
 							eventAction: 'input',
 							eventLabel: 'email_address',
 						});
-						ga('gtag_UA_107010673_2.send', {
-							hitType: 'event',
-							eventCategory: 'activity_booking',
-							eventAction: 'input',
-							eventLabel: 'booking_input',
-						});
+						// ga('gtag_UA_107010673_2.send', {
+						// 	hitType: 'event',
+						// 	eventCategory: 'activity_booking',
+						// 	eventAction: 'input',
+						// 	eventLabel: 'booking_input',
+						// });
 					}
 
 				} else if(id == 3) {
@@ -642,12 +642,12 @@
 							eventAction: 'input',
 							eventLabel: 'phone_number',
 						});
-						ga('gtag_UA_107010673_2.send', {
-							hitType: 'event',
-							eventCategory: 'activity_booking',
-							eventAction: 'input',
-							eventLabel: 'booking_input',
-						});
+						// ga('gtag_UA_107010673_2.send', {
+						// 	hitType: 'event',
+						// 	eventCategory: 'activity_booking',
+						// 	eventAction: 'input',
+						// 	eventLabel: 'booking_input',
+						// });
 					}
 				} else {
 					if(this.comments) {
@@ -657,12 +657,12 @@
 							eventAction: 'input',
 							eventLabel: 'comment',
 						});
-						ga('gtag_UA_107010673_2.send', {
-							hitType: 'event',
-							eventCategory: 'activity_booking',
-							eventAction: 'input',
-							eventLabel: 'booking_input',
-						});
+						// ga('gtag_UA_107010673_2.send', {
+						// 	hitType: 'event',
+						// 	eventCategory: 'activity_booking',
+						// 	eventAction: 'input',
+						// 	eventLabel: 'booking_input',
+						// });
 					}
 
 				}

@@ -165,7 +165,7 @@
 				//登录ga
 				ga(gaSend, {
 					hitType: 'event',
-					eventCategory: 'public',
+					eventCategory: 'public_header',
 					eventAction: 'click',
 					eventLabel: 'login',
 				});
@@ -307,16 +307,9 @@
 
 			//ga公用方法
 			ga(action,label){
-				var urlPath = this.$route.path.substring(1).split('/').join('_');
-				if(/activity_list/.test(urlPath)){
-					urlPath = 'activity_list';
-				}else if(/activity_details/.test(urlPath)){
-					urlPath = 'activity_details';
-				}
-
-				ga('gtag_UA_107010673_2.send', {
+				ga(gaSend, {
 					hitType: 'event',
-					eventCategory: urlPath,
+					eventCategory: 'public_header',
 					eventAction: action,
 					eventLabel: label
 				});

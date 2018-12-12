@@ -593,13 +593,12 @@
 				       if (result.error) {
 				      // Inform the user if there was an error.
 				      //console.log(that.loadingStatus)
-				      ga('gtag_UA_107010673_2.send', {
-						hitType: 'event',
-						eventCategory: 'activity_payment',
-						eventAction: 'click',
-						eventLabel: 'activity_pay_fail'
-	
-					});
+				      // ga('gtag_UA_107010673_2.send', {
+							// 	hitType: 'event',
+							// 	eventCategory: 'activity_payment',
+							// 	eventAction: 'click',
+							// 	eventLabel: 'activity_pay_fail'
+							// });
 				      	that.loadingStatus = false
 				      	//console.log(that.loadingStatus)
 					     that.payStatus=true
@@ -608,13 +607,12 @@
 					      // Send the token to your server.
 					      //stripeTokenHandler(result.token);
 					      that.payStatus=false
-					          ga('gtag_UA_107010673_2.send', {
-								hitType: 'event',
-								eventCategory: 'activity_payment',
-								eventAction: 'click',
-								eventLabel: 'activity_pay_succ'
-			
-							});
+								// ga('gtag_UA_107010673_2.send', {
+								// 	hitType: 'event',
+								// 	eventCategory: 'activity_payment',
+								// 	eventAction: 'click',
+								// 	eventLabel: 'activity_pay_succ'
+								// });
 					      //console.log(result.token)
 					      if(!that.isPay){
 					      	that.stripeTokenHandler(result.token,that.isPay)

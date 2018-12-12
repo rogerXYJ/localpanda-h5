@@ -115,9 +115,9 @@ get back to you within 1 day. </p>
 				this.textInfoErr = false
 			},
 			gaFail(){
-				ga('gtag_UA_107010673_2.send', {
+				ga(gaSend, {
 					hitType: 'event',
-					eventCategory: 'public',
+					eventCategory: 'contact_us',
 					eventAction: 'submit',
 					eventLabel: 'feedback_fail',
 
@@ -137,9 +137,9 @@ get back to you within 1 day. </p>
 					status=false
 				}else{
 					status=true
-					ga('gtag_UA_107010673_2.send', {
+					ga(gaSend, {
 						hitType: 'event',
-						eventCategory: 'public',
+						eventCategory: 'contact_us',
 						eventAction: 'submit',
 						eventLabel: 'feedback_succ',
 		
