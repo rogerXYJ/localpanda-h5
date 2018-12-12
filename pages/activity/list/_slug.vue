@@ -1673,6 +1673,9 @@
 				location.href = '/activity/list/China' + (urlQuery ? ('?' + urlQuery) : '');
 				this.loadingStatus = true;
 
+				//GA统计
+				this.ga('filter','travelers');
+
 			},
 
 			showPrice(value){
@@ -1755,6 +1758,9 @@
 					maxValue: value[1]
 				}
 				this.showClear = true;
+
+				
+
 				//隐藏关闭按钮
 				//this.hideFilterClose = true;
 			}
@@ -1771,6 +1777,9 @@
 						//check的类型有数据则统计这个类型的ga
 						if(thisArr.length){
 							self.ga('filter',key);
+						}else if (key == "price") {
+							//GA统计
+							this.ga('filter','price');
 						}
 					}
 				}
