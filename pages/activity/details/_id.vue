@@ -707,7 +707,7 @@ Price may vary depending on the language. If you need guides in other languages,
 					"id": id,
 					'currency':data.nowExchange.code,
 					'pageNum':1,
-					'pageSize':3
+					'pageSize':10
 				};
 				if(data.participants){
 					manualOptions.participants = data.participants;
