@@ -206,14 +206,21 @@
 		</div>
 
 		<!-- 相似产品推荐1 -->
-		<!-- <div class="detail_box similar">
+		<div class="detail_box similar" v-if="detail.manual.records">
 			<h3><i></i>Similar Experiences</h3>
-			<ul class="similar_list">
-				<li><i class="iconfont">&#xe620;</i>Forbidden City + Lunch</li>
-				<li><i class="iconfont">&#xe620;</i>Forbidden City + Lunch</li>
-				<li><i class="iconfont">&#xe620;</i>Forbidden City + Lunch</li>
+			<ul class="similar_list_manual">
+				<li :key="index" v-for="(i,index) in detail.manual.entities">
+					<a :href="'/activity/details/'+i.activityId">
+						<h4><span class="tag" :class="{'private':i.groupType=='Private'}" v-if="i.groupType">{{i.groupType}}</span> {{i.shortTitle?i.shortTitle:i.title}} <span class="tag_time">{{i.duration}} {{setTimeStr(i.duration,i.durationUnit)}}</span>	</h4>
+						<div class="similar_list_foot">
+							<span class="price"><i class="gray">{{participants==0?'From':''}}</i><b>{{nowExchange.code}} {{nowExchange.symbol}}{{participants==0?returnFloat(i.bottomPrice):returnFloat(i.perPersonPrice)}}</b>{{returnText(participants)}}</span>
+						</div>
+
+						<i class="iconfont similar_arrow">&#xe64a;</i>
+					</a>
+				</li>
 			</ul>
-		</div> -->
+		</div>
 
 		<!-- 其他产品信息 -->
 		<div class="detail_box other_box">
@@ -694,8 +701,30 @@ Price may vary depending on the language. If you need guides in other languages,
 					});
 				});
 
+				//人工推荐
+				var manualOptions = {
+					"id": id,
+					'currency':data.nowExchange.code,
+					'pageNum':1,
+					'pageSize':3
+				};
+				if(data.participants){
+					manualOptions.participants = data.participants;
+				}
+				var Promise12 = new Promise(function(resolve, reject){
+					Vue.axios.post(apiBasePath+"search/activity/recommend/manual",JSON.stringify(manualOptions),{
+							headers: {
+							'Content-Type': 'application/json'
+							}
+						}).then(function(res) {
+						resolve(res);
+					}, function(res) {
+						resolve(res);
+					});
+				});
+
 				
-				Promise.all([Promise1,Promise2,Promise3,Promise4,Promise5,Promise6,Promise7,Promise8,Promise9,Promise10,Promise11]).then(function(results){
+				Promise.all([Promise1,Promise2,Promise3,Promise4,Promise5,Promise6,Promise7,Promise8,Promise9,Promise10,Promise11,Promise12]).then(function(results){
 
 					//基本信息
 					var detailData = results[0].data;
@@ -739,6 +768,9 @@ Price may vary depending on the language. If you need guides in other languages,
 
 						//推荐信息
 						data.detail.recommend = results[1].data;
+
+						//人工推荐信息
+						data.detail.manual = results[11].data;
 
 
 						if(detailData.latestBooking < 1) {
@@ -2227,6 +2259,97 @@ Price may vary depending on the language. If you need guides in other languages,
 
 		.similar{
 			padding-bottom: 0.5rem;
+			.similar_list_manual{
+				li{
+					background-color: #fff;
+					box-shadow: 0px 2px 0.3rem 0px rgba(0, 0, 0, 0.08);
+					border-radius: 5px;
+					margin-top: 10px;
+					position: relative;
+					&:hover{
+						box-shadow: 0px 2px 0.3rem 0px rgba(0, 0, 0, 0.12);
+					}
+					a{
+						display: block;
+						padding:0.2rem 0.8rem 0.2rem 0.3rem;
+					}
+					h4{
+						font-size: 0.28rem;
+						color: #353a3f;
+						font-weight: bold;
+						overflow:hidden;
+						-webkit-line-clamp: 2;   //要设置的行数
+						-webkit-box-orient: vertical;
+						display: -webkit-box;
+						text-overflow: ellipsis;
+						max-height: 0.86rem;
+					}
+					.tag{
+						color: #fff;
+						display: inline-block;
+						height: 0.28rem;
+						line-height: 0.28rem;
+						border-radius: 0.14rem;
+						padding: 0 0.2rem;
+						background-color: #efae99;
+						font-size: 0.2rem;
+						font-weight: normal;
+						vertical-align: top;
+						margin-right: 5px;
+						position: relative;
+						top: 0.08rem;
+					}
+					.private{ background-color: #1bbc9d;}
+					.tag_time{
+						display: inline-block;
+						font-size: 0.2rem;
+						height: 0.28rem;
+						line-height: 0.26rem;
+						padding: 0 0.2rem;
+						border-radius:0.1rem;
+						border: 1px solid #878e95;
+						vertical-align: top;
+						position: relative;
+						top: 3px;
+						margin-left: 5px;
+						color: #878e95;
+						font-weight: normal;
+					}
+					.similar_list_foot{
+						margin-top: 0.2rem;
+						line-height: 0.3rem;
+						font-size: 0.22rem;
+						width: 100%;
+						box-sizing:border-box;
+						overflow: hidden;
+						color: #878e95;
+						.price{
+							b{
+								font-size: 0.28rem;
+								margin: 0 3px;
+								color: #353a3f;
+							}
+						}
+						.gray{
+							color: #878e95;
+						}
+						.reviews_star{
+							float: left;
+							margin-top: 8px;
+							margin-right: 6px;
+						}
+					}
+
+					.similar_arrow{
+						font-size: 0.4rem;
+						position: absolute;
+						right: 10px;
+						top: 50%;
+						margin-top: -0.3rem;
+						color: #878e95;
+					}
+				}
+			}
 			.similar_list{
 				margin-top: 0.3rem;
 				li{
