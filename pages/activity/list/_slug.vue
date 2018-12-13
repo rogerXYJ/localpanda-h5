@@ -1779,7 +1779,7 @@
 							self.ga('filter',key);
 						}else if (key == "price") {
 							//GA统计
-							this.ga('filter','price');
+							self.ga('filter','price');
 						}
 					}
 				}
