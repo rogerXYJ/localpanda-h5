@@ -1176,7 +1176,7 @@ Price may vary depending on the language. If you need guides in other languages,
 					"id": self.id,
 					'currency':self.nowExchange.code,
 					'pageNum':1,
-					'pageSize':3
+					'pageSize':10
 				};
 				if(self.participants){
 					manualOptions.participants = self.participants;
@@ -1699,7 +1699,7 @@ Price may vary depending on the language. If you need guides in other languages,
 
 				//更新人工推荐产品价格
 				this.getManual();
-				
+
 				this.getRecommend();
 			},
 			bookAdults:function(val){
