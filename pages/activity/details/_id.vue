@@ -210,6 +210,7 @@
 			<h3><i></i>Similar Experiences</h3>
 			<ul class="similar_list_manual">
 				<li :key="index" v-for="(i,index) in detail.manual.entities">
+					<!--  v-show="participants==0 || participants && i.perPersonPrice" -->
 					<a :href="'/activity/details/'+i.activityId">
 						<h4><span class="tag" :class="{'private':i.groupType=='Private'}" v-if="i.groupType">{{i.groupType}}</span> {{i.shortTitle?i.shortTitle:i.title}} <span class="tag_time">{{i.duration}} {{setTimeStr(i.duration,i.durationUnit)}}</span>	</h4>
 						<div class="similar_list_foot">
@@ -1168,6 +1169,26 @@ Price may vary depending on the language. If you need guides in other languages,
 				this.showGuideDetail = false;
 				this.checkGuideIndex = index;
 			},
+			getManual(){
+				var self = this;
+				//人工推荐
+				var manualOptions = {
+					"id": self.id,
+					'currency':self.nowExchange.code,
+					'pageNum':1,
+					'pageSize':3
+				};
+				if(self.participants){
+					manualOptions.participants = self.participants;
+				}
+				self.axios.post("https://api.localpanda.com/api/search/activity/recommend/manual",JSON.stringify(manualOptions),{
+					headers: {
+					'Content-Type': 'application/json'
+					}
+				}).then(function(res) {
+					self.detail.manual = res.data;
+				}, function(res) {});
+			},
 			getRecommend(){
 				var self = this;
 				//请求推荐信息
@@ -1258,6 +1279,9 @@ Price may vary depending on the language. If you need guides in other languages,
 
 					//重设book价格，计算儿童差价和pandaPhone之后得价格
 					self.setPeoplePrice();
+
+					//更新人工推荐产品价格
+					self.getManual();
 
 					//推荐产品
 					self.getRecommend();
@@ -1672,6 +1696,10 @@ Price may vary depending on the language. If you need guides in other languages,
 				this.changeCurrency();
 			},
 			participants(){
+
+				//更新人工推荐产品价格
+				this.getManual();
+				
 				this.getRecommend();
 			},
 			bookAdults:function(val){
@@ -1707,7 +1735,8 @@ Price may vary depending on the language. If you need guides in other languages,
 					this.bookPeople = val + this.bookAdults;
 				}
 			},
-			bookPeople:function(){
+			bookPeople:function(val){
+				this.participants = val;
 				//设置价格
 				this.setPeoplePrice();
 			},
