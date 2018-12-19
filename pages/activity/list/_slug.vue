@@ -857,6 +857,20 @@
 				}
 			};
 
+			//获取IP 
+			var ABType = 'A';
+			if(userCookie.ABType){
+				ABType = userCookie.ABType;
+			}else{
+				var ip = req.headers['x-real-ip'],
+					ipNum = ip.split('.').join('')%2;
+				if(ipNum){ //奇数
+					ABType = 'B'
+				}
+				console.log('IP:'+ip);
+			}
+			
+
 			
 			var participants = 0
 			var currency = {code: "USD", symbol: "$", exchangeRate: 1};
@@ -867,6 +881,8 @@
 			
 			if(userCookie.participants){
 				postData.participants=JSON.parse(decodeURIComponent(userCookie.participants));
+			}else if(ABType=='B'){
+				postData.participants=2;
 			}
 			//兼容老的key，老key转为新key
 			var oldType = function(text){
@@ -1069,6 +1085,7 @@
 
 
 			return {
+				ABType:ABType,
 				listdata: data,
 				activityList: data.entities?data.entities:[],
 				apiBasePath: apiBasePath,
@@ -1815,6 +1832,17 @@
 				if(self.zendeskStatus){
 					self.zendeskStatus=false
 				}
+			};
+
+			
+			//ABtest类型
+			if(this.ABType == 'B'){
+				//没有cookie，写入cookie
+				if(!Cookie.get('ABType')){
+					Cookie.set('ABType',this.ABType,{path:'/','expires':30});
+				}
+				//写入默认人数记录
+				Cookie.set('participants',this.postData.participants,{path:'/','expires':30});
 			};
 			
 		},

@@ -332,7 +332,7 @@
 
 		<!-- 相似产品推荐2 -->
 		<div class="detail_box experiences">
-			<h3><i></i>Similar Experiences</h3>
+			<h3><i></i>Other People Also Choose</h3>
 			<div class="swiper-container" id="swiper_experiences">
 				<div class="swiper-wrapper">
 					<div class="swiper-slide" :key="index" v-for="(i,index) in detail.recommend.entities">
@@ -511,6 +511,20 @@ Price may vary depending on the language. If you need guides in other languages,
 				}
 			};
 
+
+			//获取IP 
+			var ABType = 'A';
+			if(userCookie.ABType){
+				ABType = userCookie.ABType;
+			}else{
+				var ip = req.headers['x-real-ip'],
+					ipNum = ip.split('.').join('')%2;
+				if(ipNum){ //奇数
+					ABType = 'B'
+				}
+				console.log('IP:'+ip);
+			}
+
 			//console.log(userCookie.currency);
 
 			//node请求时间
@@ -520,6 +534,7 @@ Price may vary depending on the language. If you need guides in other languages,
 			let id = route.params.id;
 			// 服务端渲染部分 这部分操作还没有页面实例，只是初始化页面数据
 			let data = {
+				ABType: ABType,
 				id: id,
 				detail: {}, //详情数据
 				logIn: "",
@@ -565,6 +580,8 @@ Price may vary depending on the language. If you need guides in other languages,
 			//设置人数
 			if(userCookie.participants){
 				data.participants=JSON.parse(decodeURIComponent(userCookie.participants))
+			}else if(ABType=='B'){
+				data.participants=2;
 			}
 
 			
@@ -1640,6 +1657,17 @@ Price may vary depending on the language. If you need guides in other languages,
 			if(this.participants){
 				this.bookAdults = this.participants;
 			}
+
+
+			//ABtest类型
+			if(this.ABType == 'B'){
+				//没有cookie，写入cookie
+				if(!Cookie.get('ABType')){
+					Cookie.set('ABType',this.ABType,{path:'/','expires':30});
+				}
+				//写入默认人数记录
+				Cookie.set('participants',this.participants,{path:'/','expires':30});
+			};
 
 			//等待渲染完毕后调用
 			this.$nextTick(function(){

@@ -43,14 +43,14 @@ var Cookie = {
 window.Cookie = Cookie;
 
 //设置cookie，记录用户id用于ABtest
-if(!Cookie.get('userABtestID')){
-  //生成8位数ID
-  var ABID = '';
-  for(var i=0;i<6;i++){
-    ABID += (parseInt(Math.random()*9)+1);
-  }
-  Cookie.set('userABtestID',ABID,{path:'/','expires':30});
-}
+// if(!Cookie.get('userABtestID')){
+//   //生成8位数ID
+//   var ABID = '';
+//   for(var i=0;i<6;i++){
+//     ABID += (parseInt(Math.random()*9)+1);
+//   }
+//   Cookie.set('userABtestID',ABID,{path:'/','expires':30});
+// }
 
 
 window.hasClass = function(obj,name){
