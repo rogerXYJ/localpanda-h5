@@ -865,7 +865,7 @@ import { clearInterval } from 'timers';
 				ABType = userCookie.ABType;
 			}else{
 				userIp = req.headers['x-real-ip'];
-				var ipNum = userIp.split('.').join('')%2;
+				var ipNum = userIp ? userIp.split('.').join('')%2 : '';
 				if(ipNum){ //奇数
 					ABType = 'B'
 				}

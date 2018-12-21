@@ -520,7 +520,7 @@ Price may vary depending on the language. If you need guides in other languages,
 				ABType = userCookie.ABType;
 			}else{
 				var ip = req.headers['x-real-ip'],
-					ipNum = ip.split('.').join('')%2;
+					ipNum = ip ? ip.split('.').join('')%2 : '';
 				if(ipNum){ //奇数
 					ABType = 'B'
 				}
