@@ -237,7 +237,7 @@
 								text-align: right;
 							}
 							.price_box{
-								margin-top: -0.14rem;
+								// margin-top: -0.14rem;
 								
 								.list_price{
 									float: right;
@@ -700,7 +700,7 @@
 							</div> -->
 							<div class="price_box clearfix">
 								<span class="list_price">{{!postData.participants?'From ':''}}
-									{{currency.code}}<b>{{currency.symbol}}{{postData.participants?item.perPersonPrice:item.bottomPrice}}</b>{{postData.participants?(postData.participants==1?'for 1 person':'pp for party of '+postData.participants):'pp'}}
+									{{currency.code}}<b>{{currency.symbol}}{{postData.participants?item.perPersonPrice:item.bottomPrice}}</b>{{postData.participants?(postData.participants==1?'for 1 person':'based on group of '+postData.participants):'pp'}}
 								</span>
 								<p v-if="item.sales">Booked {{item.sales}} {{item.sales>1?'times':'time'}} (last 30 days)</p>
 							</div>
@@ -859,15 +859,16 @@
 
 			//获取IP 
 			var ABType = 'A';
+			var userIp = '';
 			if(userCookie.ABType){
 				ABType = userCookie.ABType;
 			}else{
-				var ip = req.headers['x-real-ip'],
-					ipNum = ip.split('.').join('')%2;
+				userIp = req.headers['x-real-ip'];
+				var ipNum = userIp.split('.').join('')%2;
 				if(ipNum){ //奇数
 					ABType = 'B'
 				}
-				console.log('IP:'+ip);
+				console.log('IP:'+userIp);
 			}
 			
 
@@ -1085,6 +1086,7 @@
 
 
 			return {
+				userIp:userIp,
 				ABType:ABType,
 				listdata: data,
 				activityList: data.entities?data.entities:[],
@@ -1786,7 +1788,7 @@
 			var self = this;
 			//filter统计ga   start  ///////////////////////////////////////////
 			var listGa = localStorage.getItem('listGa');
-			//延迟执行防止ga组件没加载完毕
+			//延迟执行防止ga组件没加载完毕，项目太急粗暴做法
 			setTimeout(function(){
 				if(listGa){
 					for(var key in self.filterCheck){
@@ -1802,6 +1804,23 @@
 				}
 				//干掉ga触发，这个在点击的时候才开启触发，从新加载页面统计过后，干掉触发条件
 				localStorage.removeItem('listGa');
+
+
+				if(self.ABType == 'B'){
+					ga(gaSend, {
+						hitType: 'event',
+						eventCategory: 'visitor',
+						eventAction: 'count',
+						eventLabel: 'group_b'
+					});
+				}else{
+					ga(gaSend, {
+						hitType: 'event',
+						eventCategory: 'visitor',
+						eventAction: 'count',
+						eventLabel: 'group_a'
+					});
+				};
 			},900);
 			//filter统计ga   end  ///////////////////////////////////////////
 
@@ -1836,11 +1855,12 @@
 
 			
 			//ABtest类型
+			console.log(this.userIp);
+			//没有cookie，写入cookie
+			if(!Cookie.get('ABType')){
+				Cookie.set('ABType',this.ABType,{path:'/','expires':30});
+			}
 			if(this.ABType == 'B'){
-				//没有cookie，写入cookie
-				if(!Cookie.get('ABType')){
-					Cookie.set('ABType',this.ABType,{path:'/','expires':30});
-				}
 				//写入默认人数记录
 				Cookie.set('participants',this.postData.participants,{path:'/','expires':30});
 			};

@@ -211,7 +211,7 @@
 			<ul class="similar_list_manual">
 				<li :key="index" v-for="(i,index) in detail.manual.entities">
 					<!--  v-show="participants==0 || participants && i.perPersonPrice" -->
-					<a :href="'/activity/details/'+i.activityId">
+					<a @click="similarFn(i.activityId)">
 						<h4><span class="tag" :class="{'private':i.groupType=='Private'}" v-if="i.groupType">{{i.groupType}}</span> {{i.shortTitle?i.shortTitle:i.title}} <span class="tag_time">{{i.duration}} {{setTimeStr(i.duration,i.durationUnit)}}</span>	</h4>
 						<div class="similar_list_foot">
 							<span class="price"><i class="gray">{{participants==0?'From':''}}</i><b>{{nowExchange.code}} {{nowExchange.symbol}}{{participants==0?returnFloat(i.bottomPrice):returnFloat(i.perPersonPrice)}}</b>{{returnText(participants)}}</span>
@@ -336,7 +336,7 @@
 			<div class="swiper-container" id="swiper_experiences">
 				<div class="swiper-wrapper">
 					<div class="swiper-slide" :key="index" v-for="(i,index) in detail.recommend.entities">
-						<a :href="'/activity/details/'+i.activityId">
+						<a @click="alsoFn(i.activityId)">
 							<div class="activity-pic">
 								<img v-lazy="i.coverPhotoUrl">
 							</div>
@@ -912,7 +912,8 @@ Price may vary depending on the language. If you need guides in other languages,
 		methods: {
 			formatDate:formatDate,
 			changePeople(e){
-				// this.participants = e.target.value;
+				this.bookAdults = this.participants;
+				this.bookChildren = 0;
 				Cookie.set('participants',this.participants,{path:'/','expires':30})
 			},
 			headCurrencyFn(){
@@ -984,7 +985,7 @@ Price may vary depending on the language. If you need guides in other languages,
 				if(this.picInfo.unifiedPricing){
 					return ' pp';
 				}
-				return peopleNum?(peopleNum==1?' for 1 person':' pp for party of '+ peopleNum):' pp '
+				return peopleNum?(peopleNum==1?' for 1 person':' based on group of '+ peopleNum):' pp '
 			},
 			getPeoplePrice(peopleNum,pp){
 				var price = this.picInfo.details
@@ -1624,6 +1625,26 @@ Price may vary depending on the language. If you need guides in other languages,
 					eventAction: "click",
 					eventLabel:"pickup"
 				});
+			},
+			similarFn(activityId){
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "click",
+					eventLabel:"recommend_manual"
+				});
+
+				location.href =  '/activity/details/'+activityId;
+			},
+			alsoFn(activityId){
+				ga(gaSend, {
+					hitType: "event",
+					eventCategory: "activity_detail",
+					eventAction: "click",
+					eventLabel:"recommend_system"
+				});
+
+				location.href =  '/activity/details/'+activityId;
 			}
 		},
 		mounted: function() {
@@ -1660,11 +1681,11 @@ Price may vary depending on the language. If you need guides in other languages,
 
 
 			//ABtest类型
+			//没有cookie，写入cookie
+			if(!Cookie.get('ABType')){
+				Cookie.set('ABType',this.ABType,{path:'/','expires':30});
+			}
 			if(this.ABType == 'B'){
-				//没有cookie，写入cookie
-				if(!Cookie.get('ABType')){
-					Cookie.set('ABType',this.ABType,{path:'/','expires':30});
-				}
 				//写入默认人数记录
 				Cookie.set('participants',this.participants,{path:'/','expires':30});
 			};
@@ -3123,7 +3144,7 @@ Price may vary depending on the language. If you need guides in other languages,
 				vertical-align: top;
 				width: 0.32rem;
 				height: 0.32rem;
-				padding: 1px;
+				padding: 2px;
 				border-radius: 50%;
 				background-image: -webkit-gradient(linear, right top, left top, from(#009efd), to(#1bbc9d));
 				background-image: linear-gradient(270deg, #009efd 0%, #1bbc9d 100%);

@@ -39,8 +39,6 @@ get back to you within 1 day. </p>
           <div class="email_tip red" v-show="emailTip">Please enter a valid email</div>
 					<div class="email_tip green" v-show="emailSendTip"><i class="iconfont">&#xe654;</i> Email address has been updated ,and We have sent an email to your new mailbox</div>
 					<span class="btn_sendemail" @click="sendEmail">Resend email address</span>
-
-					
 					
 				</div>
 

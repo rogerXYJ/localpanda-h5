@@ -65,6 +65,15 @@
 				<p>Email Address<span>*</span></p>
 				<input v-model="email" :class="{err:emailErr}" @focus="emailfocus" class="inputin"/>
 			</div>
+
+      <div class="inputItem">
+				<p>Country or Territory Code</p>
+				<input class="inputin" v-model="mobileCode" @click.stop="focusFn">
+			</div>
+			<div class="inputItem">
+				<p>Phone Number</p>
+				<input v-model="phoneNumber" class="inputin"/>
+			</div>
 			
 
       <div class="btn" @click.stop="submit">Submit</div>
@@ -123,6 +132,8 @@ export default {
       emailErr: false,
       textInfo: "",
       textInfoErr: false,
+      mobileCode:'',
+      phoneNumber:'',
 
       isInquiry:true,
       webWidgetTimer:null,
@@ -218,7 +229,7 @@ export default {
           userName: that.name,
           emailAddress: that.email,
           message: that.textInfo,
-          //phoneNumber:that.phone?that.phone:null,
+          phoneNumber: that.mobileCode + ' ' + that.phoneNumber,
           travelDate: that.dateTime ? that.dateTime : null,
           participants: that.peopleNub,
           objectId: that.objectId ? that.objectId : null,
