@@ -228,7 +228,7 @@
 			
 			<div class="other_list" v-if="inclusions.length">
 				<!--  || detail.pickup -->
-				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Inclusions</h3>
+				<h3 @click="otherFn($event,'inclusions')"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Inclusions</h3>
 				<div class="other_content">
 					<ul class="detail_txt_list">
 						<li v-for="(item,index) in inclusions" :key="index">
@@ -274,7 +274,7 @@
 			</div>
 
 			<div class="other_list" v-if="delEnter(detail.remark) || notice.length">
-				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>{{delEnter(detail.remark)?'Important Info':'Additional Info'}}</h3>
+				<h3 @click="otherFn($event,'important_info')"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>{{delEnter(detail.remark)?'Important Info':'Additional Info'}}</h3>
 				<div class="other_content">
 					<ul class="detail_txt_list">
 						<li v-for="item in getTextArr(detail.remark)" :key="item">
@@ -290,7 +290,7 @@
 			</div>
 
 			<div class="other_list" v-if="delEnter(picInfo.refundInstructions)">
-				<h3 @click="otherFn"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Rescheduling & Cancellation Policy</h3>
+				<h3 @click="otherFn($event,'cancellation_policy')"><span class="iconfont i_down">&#xe667;</span><span class="iconfont i_up">&#xe666;</span><i></i>Rescheduling & Cancellation Policy</h3>
 				<div class="other_content">
 					<p class="detail_p detail_p_mt" v-for="(item,index) in getTextArr(picInfo.refundInstructions)" :key="index">{{item}}</p>
 					<!-- <ul class="detail_txt_list">
@@ -323,7 +323,9 @@
 				</div>
 				<div class="reviews_list_content" :content="item.content">{{item.content.length>200?item.content.substring(0,200)+'...':item.content}} <span class="reviews_text_more" v-if="item.content.length>200" @click="reviewsShowMore">View More</span> </div>
 				<ul class="reviews_img_s">
-					<li v-if="item.userCommentPhoto" v-for="(itemChild,index2) in item.userCommentPhoto" @click="showBigPic(index,index2)" :key="index2"><img v-lazy="itemChild.url" alt=""></li>
+					<li v-if="item.userCommentPhoto" v-for="(itemChild,index2) in item.userCommentPhoto" @click="showBigPic(index,index2)" :key="index2"  v-lazy:background-image="itemChild.url">
+						<!-- <img v-lazy="itemChild.url" alt=""> -->
+					</li>
 				</ul>
 			</div>
 			<div class="reviews_more" @click="loadMoreReviews" v-if="reviewsData && reviewsData.records>3 && reviewsData.records>reviews.length">Show more</div>
@@ -985,7 +987,7 @@ Price may vary depending on the language. If you need guides in other languages,
 				if(this.picInfo.unifiedPricing){
 					return ' pp';
 				}
-				return peopleNum?(peopleNum==1?' for 1 person':' based on group of '+ peopleNum):' pp '
+				return peopleNum?(peopleNum==1?' for 1 person':' pp for party of '+ peopleNum):' pp '
 			},
 			getPeoplePrice(peopleNum,pp){
 				var price = this.picInfo.details
@@ -1023,12 +1025,21 @@ Price may vary depending on the language. If you need guides in other languages,
 			enterToBr(text){
 				return text ? text.replace(/\n/g,'<br>') : '';
 			},
-			otherFn(e){
+			otherFn(e,eventLabel){
 				var thisList = getParents(e.target,'other_list');
 				if(/active/.test(thisList.className)){
 					thisList.className = 'other_list';
 				}else{
 					thisList.className = 'other_list active';
+				}
+
+				if(eventLabel){
+					ga(gaSend, {
+						hitType: "event",
+						eventCategory: "activity_detail",
+						eventAction: "click",
+						eventLabel: eventLabel
+					});
 				}
 			},
 			reviewsShowMore(e){
@@ -1737,6 +1748,30 @@ Price may vary depending on the language. If you need guides in other languages,
 			window.onscroll = function(){
 				self.scrollFn($check_all);
 			}
+
+
+			//监听ga组件没加载完毕
+			var gaTimer = setInterval(function(){
+				if(window.ga){
+					clearInterval(gaTimer);
+
+					if(self.ABType == 'B'){
+						ga(gaSend, {
+							hitType: 'event',
+							eventCategory: 'visitor',
+							eventAction: 'count',
+							eventLabel: 'group_b'
+						});
+					}else{
+						ga(gaSend, {
+							hitType: 'event',
+							eventCategory: 'visitor',
+							eventAction: 'count',
+							eventLabel: 'group_a'
+						});
+					};
+				}
+			},1000)
 
 		},
 		watch: {
@@ -2565,6 +2600,8 @@ Price may vary depending on the language. If you need guides in other languages,
 						float: left;
 						border-radius: 0.1rem;
 						width: 31%;
+						height: 1.5rem;
+						background-size:cover; 
 						margin-left: 2%;
 						margin-top: 0.1rem;
 						overflow: hidden;

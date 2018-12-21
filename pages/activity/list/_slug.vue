@@ -700,7 +700,7 @@
 							</div> -->
 							<div class="price_box clearfix">
 								<span class="list_price">{{!postData.participants?'From ':''}}
-									{{currency.code}}<b>{{currency.symbol}}{{postData.participants?item.perPersonPrice:item.bottomPrice}}</b>{{postData.participants?(postData.participants==1?'for 1 person':'based on group of '+postData.participants):'pp'}}
+									{{currency.code}}<b>{{currency.symbol}}{{postData.participants?item.perPersonPrice:item.bottomPrice}}</b>{{postData.participants?(postData.participants==1?'for 1 person':'pp based on group of '+postData.participants):'pp'}}
 								</span>
 								<p v-if="item.sales">Booked {{item.sales}} {{item.sales>1?'times':'time'}} (last 30 days)</p>
 							</div>
@@ -783,6 +783,7 @@
 	// import Talk from '~/components/booking/talk'
 
 	import Vue from "vue";
+import { clearInterval } from 'timers';
 	
 	export default {
 		name: 'activityList',
@@ -1786,43 +1787,50 @@
 		},
 		mounted: function() {
 			var self = this;
+
+
 			//filter统计ga   start  ///////////////////////////////////////////
 			var listGa = localStorage.getItem('listGa');
-			//延迟执行防止ga组件没加载完毕，项目太急粗暴做法
-			setTimeout(function(){
-				if(listGa){
-					for(var key in self.filterCheck){
-						var thisArr = self.filterCheck[key];
-						//check的类型有数据则统计这个类型的ga
-						if(thisArr.length){
-							self.ga('filter',key);
-						}else if (key == "price") {
-							//GA统计
-							self.ga('filter','price');
+			//监听ga组件没加载完毕
+			var gaTimer = setInterval(function(){
+				if(window.ga){
+					clearInterval(gaTimer);
+					if(listGa){
+						for(var key in self.filterCheck){
+							var thisArr = self.filterCheck[key];
+							//check的类型有数据则统计这个类型的ga
+							if(thisArr.length){
+								self.ga('filter',key);
+							}else if (key == "price") {
+								//GA统计
+								self.ga('filter','price');
+							}
 						}
 					}
+					//干掉ga触发，这个在点击的时候才开启触发，从新加载页面统计过后，干掉触发条件
+					localStorage.removeItem('listGa');
+
+
+					if(self.ABType == 'B'){
+						ga(gaSend, {
+							hitType: 'event',
+							eventCategory: 'visitor',
+							eventAction: 'count',
+							eventLabel: 'group_b'
+						});
+					}else{
+						ga(gaSend, {
+							hitType: 'event',
+							eventCategory: 'visitor',
+							eventAction: 'count',
+							eventLabel: 'group_a'
+						});
+					};
 				}
-				//干掉ga触发，这个在点击的时候才开启触发，从新加载页面统计过后，干掉触发条件
-				localStorage.removeItem('listGa');
-
-
-				if(self.ABType == 'B'){
-					ga(gaSend, {
-						hitType: 'event',
-						eventCategory: 'visitor',
-						eventAction: 'count',
-						eventLabel: 'group_b'
-					});
-				}else{
-					ga(gaSend, {
-						hitType: 'event',
-						eventCategory: 'visitor',
-						eventAction: 'count',
-						eventLabel: 'group_a'
-					});
-				};
-			},900);
+			},1000);
 			//filter统计ga   end  ///////////////////////////////////////////
+
+
 
 			//返回页面的时候币种不一致 就刷新页面
 			var nowCurrency = JSON.parse(Cookie.get('currency'));
