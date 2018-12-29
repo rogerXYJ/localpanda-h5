@@ -639,7 +639,7 @@
 								</checkbox-group>
 								<div class="products_footer">
 									<span class="btn btn_plain" @click="productsClear">Clear</span>
-									<span class="btn" @click="productsConfirm">See experiences</span>
+									<span class="btn" @click="productsConfirm">Apply</span>
 								</div>
 							</div>
 						</dd>

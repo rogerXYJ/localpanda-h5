@@ -26,14 +26,8 @@
 			<div class="price_info clearfix">
 				
 
-				<div class="select_people" :class="{'unified_pricing':picInfo.unifiedPricing}">
-					{{returnText(participants)}}
-					<select class="select_people_box" v-model="participants" @change="changePeople">
-						<option :value="item.people" :key="index" v-for="(item,index) in participantsData">{{item.text}}</option>
-					</select>
-					<i class="iconfont">&#xe666;</i>
-				</div>
-				<p> {{nowExchange.symbol}} {{participants>0?returnFloat(getPeoplePrice(participants,true)):returnFloat(picInfo.bottomPrice)}}</p>
+				
+				<p> {{nowExchange.symbol}} {{participants>0?returnFloat(getPeoplePrice(participants,true)):returnFloat(picInfo.bottomPrice)}} <span>pp</span> </p>
 
 				
 				<div class="price_select_box">
@@ -43,7 +37,20 @@
 					</select>
 					<i class="iconfont">&#xe666;</i>
 				</div>
+
+
+
+				<div class="select_people" :class="{'unified_pricing':picInfo.unifiedPricing}" v-if="!picInfo.unifiedPricing">
+					{{returnText(participants,'top')}}
+					<select class="select_people_box" v-model="participants" @change="changePeople">
+						<option :value="item.people" :key="index" v-for="(item,index) in participantsData">{{item.text}}</option>
+					</select>
+					<i class="iconfont">&#xe666;</i>
+				</div>
+
 			</div>
+
+			
 			<div class="price_tip" v-if="!participants && !picInfo.unifiedPricing">Price based on group of {{getBottomCapacity()}}</div>
 			<!-- 预定和点评次数 -->
 			<div class="booking_info" v-if="detail.sales">
@@ -947,7 +954,7 @@ Price may vary depending on the language. If you need guides in other languages,
 					hitType: "event",
 					eventCategory: "activity_detail",
 					eventAction: "click",
-					eventLabel: "expand"
+					eventLabel: "ititinerary"
 				});
 				
 			},
@@ -983,11 +990,11 @@ Price may vary depending on the language. If you need guides in other languages,
 				
 				
 			},
-			returnText(peopleNum){
-				if(this.picInfo.unifiedPricing){
-					return ' pp';
-				}
-				return peopleNum?(peopleNum==1?' for 1 person':' pp for party of '+ peopleNum):' pp '
+			returnText(peopleNum,returnText){
+				// if(this.picInfo.unifiedPricing){
+				// 	return ' pp';
+				// }
+				return peopleNum?(peopleNum==1?' for 1 person':(returnText?' based on group of ':' pp based on group of ')+ peopleNum):' pp '
 			},
 			getPeoplePrice(peopleNum,pp){
 				var price = this.picInfo.details
@@ -1919,6 +1926,7 @@ Price may vary depending on the language. If you need guides in other languages,
 				padding-top: 0.2rem;
 				.select_people{
 					float: right;
+					clear: both;
 					margin-left: 0.2rem;
 					position: relative;
 					font-size: 0.32rem;
@@ -1973,7 +1981,7 @@ Price may vary depending on the language. If you need guides in other languages,
 					font-size: 0.46rem;
 					position: relative;
 					span{
-						font-size: 0.22rem;
+						font-size: 0.32rem;
 						color: #878e95;
 					}
 					small{

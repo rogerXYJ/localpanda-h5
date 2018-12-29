@@ -807,6 +807,9 @@
 						eventAction: 'submit',
 						eventLabel: 'activity_order_succ',
 					});
+
+					
+					
 						obj = {
 							 "userId": localStorage.getItem("userid")
 		            ? localStorage.getItem("userid"): null,
@@ -821,7 +824,7 @@
 							"averagePrice": that.opctions.averagePrice,
 							"couponDiscount":that.couponType?that.opctions.couponDiscount:null,
 							// "couponCode":that.couponType?that.couponCode:null,
-							"couponCode": localStorage.getItem("ABType")=='B' ? 'B' : null,
+							"couponCode": Cookie.get("ABType")=='B' ? 'B' : null,
 							"childDiscount": that.opctions.childDiscount,
 							"comments": that.comments ? that.comments : null,
 							"finalRefundPeriod":that.opctions.finalRefundPeriod,
