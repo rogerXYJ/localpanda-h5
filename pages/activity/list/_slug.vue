@@ -1217,7 +1217,7 @@ import { clearInterval } from 'timers';
 					'GROUP_TYPE':3,
 					'ATTRACTION':4,
 					'DURATION':5,
-					'TOUR_TYPE':6,
+					// 'TOUR_TYPE':6,
 					'CITY': 6
 				};
 
@@ -1235,7 +1235,7 @@ import { clearInterval } from 'timers';
 
 				//排序
 				newAggregations = newAggregations.sort(function(a,b){
-					return a.number > b.number;
+					return a.number - b.number;
 				});
 
 				return newAggregations;
