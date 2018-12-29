@@ -994,7 +994,12 @@ Price may vary depending on the language. If you need guides in other languages,
 				// if(this.picInfo.unifiedPricing){
 				// 	return ' pp';
 				// }
-				return peopleNum?(peopleNum==1?' for 1 person':(returnText?' based on group of ':' pp based on group of ')+ peopleNum):' pp '
+				if(returnText){
+					return peopleNum ? (peopleNum==1?' for 1 person':' based on group of '+ peopleNum) : ' based on group of '+this.picInfo.maxParticipants;
+				}else{
+					return peopleNum ? (peopleNum==1?' for 1 person':' pp based on group of '+ peopleNum) : ' pp ';
+				}
+				
 			},
 			getPeoplePrice(peopleNum,pp){
 				var price = this.picInfo.details
