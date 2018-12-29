@@ -51,7 +51,7 @@
 			</div>
 
 			
-			<div class="price_tip" v-if="!participants && !picInfo.unifiedPricing">Price based on group of {{getBottomCapacity()}}</div>
+			<!-- <div class="price_tip" v-if="!participants && !picInfo.unifiedPricing">Price based on group of {{getBottomCapacity()}}</div> -->
 			<!-- 预定和点评次数 -->
 			<div class="booking_info" v-if="detail.sales">
 				<!-- <span v-if="reviewsData && reviewsData.records">( {{reviewsData.records}} )</span>
