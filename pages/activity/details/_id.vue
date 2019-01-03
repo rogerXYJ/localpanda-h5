@@ -358,7 +358,7 @@
 									-webkit-box-orient:vertical;">{{i.title}}</h4>
 								<div class="duration"><i class="iconfont">&#xe624;</i>Duration: {{i.duration}} {{setTimeStr(i.duration,i.durationUnit)}}</div>
 								<div class="pic">
-									<div class="current-price">{{participants==0?'From':''}} {{nowExchange.code}} <b>{{nowExchange.symbol}}{{participants==0?returnFloat(i.bottomPrice):returnFloat(i.perPersonPrice)}}</b><span>  {{returnText(participants)}}</span></div>
+									<div class="current-price">{{participants==0?'From':''}} {{nowExchange.code}} <b>{{nowExchange.symbol}}{{participants==0?returnFloat(i.bottomPrice):returnFloat(i.perPersonPrice)}}</b><span>  {{i.unifiedPricing?'pp':returnText(participants)}}</span></div>
 								</div>
 							</div>
 						</a>

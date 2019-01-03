@@ -700,7 +700,7 @@
 							</div> -->
 							<div class="price_box clearfix">
 								<span class="list_price">{{!postData.participants?'From ':''}}
-									{{currency.code}}<b>{{currency.symbol}}{{postData.participants?item.perPersonPrice:item.bottomPrice}}</b>{{postData.participants?(postData.participants==1?'for 1 person':'pp based on group of '+postData.participants):'pp'}}
+									{{currency.code}}<b>{{currency.symbol}}{{postData.participants?item.perPersonPrice:item.bottomPrice}}</b>{{postData.participants&&!item.unifiedPricing?(postData.participants==1?'for 1 person':'pp based on group of '+postData.participants):'pp'}}
 								</span>
 								<p v-if="item.sales">Booked {{item.sales}} {{item.sales>1?'times':'time'}} (last 30 days)</p>
 							</div>
