@@ -1689,6 +1689,15 @@ import { clearInterval } from 'timers';
 				Cookie.set('participants',this.postData.participants,{path:'/','expires':30})
 				var urlQuery = this.getUrlQuery(urlObj);
 
+				var slug = this.$route.params.slug;
+				if(slug!='China'){
+					if(urlQuery){
+						urlQuery+= '&keyword='+slug;
+					}else{
+						urlQuery+= '?keyword='+slug;
+					}
+				}
+			
 				//有数据则跳转
 				location.href = '/activity/list/China' + (urlQuery ? ('?' + urlQuery) : '');
 				this.loadingStatus = true;
@@ -1794,7 +1803,7 @@ import { clearInterval } from 'timers';
 			//监听ga组件没加载完毕
 			var gaTimer = setInterval(function(){
 				if(window.ga){
-					clearInterval(gaTimer);
+					window.clearInterval(gaTimer);
 					if(listGa){
 						for(var key in self.filterCheck){
 							var thisArr = self.filterCheck[key];
