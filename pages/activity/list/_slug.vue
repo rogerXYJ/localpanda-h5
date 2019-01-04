@@ -678,7 +678,7 @@
 			</div>
 			<ul class="list_ul" v-show="activityList.length">
 				<li :key="index" v-for="(item,index) in activityList">
-					<a :href="'/activity/details/'+item.activityId">
+					<a :href="item.detailUrl">
 						<div class="list_img" v-lazy:background-image="item.coverPhotoUrl">
 							<p>{{item.category}}</p>
 						</div>
