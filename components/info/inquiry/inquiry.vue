@@ -68,7 +68,8 @@
 
       <div class="inputItem">
 				<p>Country or Territory Code</p>
-				<input class="inputin" v-model="mobileCode" @click.stop="focusFn">
+        <!-- @click.stop="focusFn" -->
+				<input class="inputin" v-model="mobileCode">
 			</div>
 			<div class="inputItem">
 				<p>Phone Number</p>
@@ -424,6 +425,9 @@ export default {
         maxDate: addmulMonth(GetDateStr(1), 12),
         disableMobile: true,
         onOpen: function(selectedDates, dateStr, instance) {
+          setTimeout(function(){
+						that.flatPickr.open();
+					},80);
           that.showInquiryWinBg = true;
         },
         onChange() {

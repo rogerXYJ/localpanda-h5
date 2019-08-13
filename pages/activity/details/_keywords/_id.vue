@@ -1347,7 +1347,9 @@ Price may vary depending on the language. If you need guides in other languages,
 					disableMobile: true,
 					enable: saleDate,
 					onOpen : function(e){
-						
+						setTimeout(function(){
+							self.flatPickr.open();
+						},80);
 						self.showWinBg = true;
 					},
 					onChange(){
